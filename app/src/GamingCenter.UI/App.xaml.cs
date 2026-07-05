@@ -27,6 +27,18 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        // Diagnostic: dump every hardware sensor and exit. Used to match sensor
+        // names precisely against the real machine (GC_DUMP_SENSORS=<path>).
+        var dumpPath = Environment.GetEnvironmentVariable("GC_DUMP_SENSORS");
+        if (!string.IsNullOrWhiteSpace(dumpPath))
+        {
+            try { GamingCenter.UI.Hardware.SensorDump.Write(dumpPath); }
+            catch (Exception ex) { Log($"sensor dump failed: {ex}"); }
+            Shutdown();
+            return;
+        }
+
         try
         {
             new MainWindow().Show();
