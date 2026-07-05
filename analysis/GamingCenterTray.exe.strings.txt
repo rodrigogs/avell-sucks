@@ -1,0 +1,858 @@
+!This program cannot be run in DOS mode.
+.text
+`.rsrc
+-Ns5
+,#r+	
+,#rq	
+,#r1
+p	oG
+*Js.
++k	r
++#	r
+,Ms5
+*VsO
+*.sR
+*BSJB
+v4.0.30319
+#Strings
+#GUID
+#Blob
+OSD_KB_LED_LEVEL0
+<>9__11_0
+<.ctor>b__11_0
+<>c__DisplayClass14_0
+<SetLanguageDictionary>b__0
+ADDR_SUPPORT_BYTE1
+OSD_KB_LED_LEVEL1
+Collection`1
+User_Fan_Level1
+kernel32
+Microsoft.Win32
+Int32
+ADDR_BIOS_OEM_BYTE2
+ADDR_TRIGGER_BYTE2
+ADDR_SUPPORT_BYTE2
+OSD_KB_LED_LEVEL2
+OSD_OSD_MENU_2
+OnRegChanged2
+User_Fan_Level2
+OSD_KB_LED_LEVEL3
+User_Fan_Level3
+ToUInt64
+OSD_KB_LED_LEVEL4
+User_Fan_Level4
+User_Fan_Level5
+<Module>
+WMIEC
+ecBt1RSOC
+Origin_PC
+MSG_GAMINGCENTER_MASK_HIDE
+MSG_MYAPP_AP_HIDE
+MSG_MYCOLOR_AP_HIDE
+MSG_MYFANBOOST_AP_HIDE
+MSG_MYMACROKEY_AP_HIDE
+de_DE
+FAN_LEVEL_THREE
+HASEE
+MSG_GAMINGCENTER_AP_SET_LANGUAGE
+FAN_LEVEL_ONE
+MSG_MYAPP_AP_CLOSE
+MSG_GAMINGCENTER_AP_CLOSE
+MSG_MYCOLOR_AP_CLOSE
+MSG_MYFANBOOST_AP_CLOSE
+MSG_MYMACROKEY_AP_CLOSE
+OSD_MUTE
+ADDR_MAFAN_CONTROL_BYTE
+ADDR_TRIGGER_BYTE
+ADDR_STAUTS_BYTE
+FAN_LEVEL_FIVE
+GamingCenter_EXE
+MSG_MYAPP_AP_MINIMIZE
+MSG_MYCOLOR_AP_MINIMIZE
+MSG_MYFANBOOST_AP_MINIMIZE
+MSG_MYMACROKEY_AP_MINIMIZE
+FAN_MODE_CUSTOMIZE
+OSD_CAMERAOFF
+OSD_RFOFF
+OSD_3GOFF
+OSD_WEBCAMOFF
+OSD_WLANOFF
+OSD_RADIOOFF
+OSD_TPOFF
+OSD_BTOFF
+OSD_SILENTOFF
+OSD_WINMAXOFF
+OSD_BREATH_LED_OFF
+MSG_MYAPP_EVENT_WMI
+OSD_SROLLOCK
+OSD_NUMLOCK
+OSD_WINKEY_UNLOCK
+OSD_CAPSLOCK
+OSD_WINKEY_LOCK
+FAN_MODE_NORMAL
+Mechrevo_COML
+WMIReadECRAM
+WMIWriteECRAM
+zh_CN
+MSG_MYAPP_AP_OPEN
+MSG_MYCOLOR_AP_OPEN
+MSG_MYFANBOOST_AP_OPEN
+MSG_MYMACROKEY_AP_OPEN
+OSD_CAMERAON
+OSD_RFON
+OSD_3GON
+OSD_WEBCAMON
+OSD_WLANON
+OSD_RADIOON
+OSD_TPON
+OSD_BTON
+OSD_SILENTON
+OSD_WINMAXON
+OSD_BREATH_LED_ON
+OSD_VOLUMEDOWN
+OSD_BRIGHTNESSDOWN
+System.IO
+FAN_LEVEL_TWO
+OSD_MENU_JP
+ja_JP
+OSD_FAN_OVER_TEMP
+WINDOW_NAME_MYAPP
+WM_MSG_MYAPP
+OSD_VOLUMEUP
+OSD_BRIGHTNESSUP
+WM_MSG_GAMINGCENTER
+WINDOW_NAME_GANINGCENTER
+WINDOW_NAME_CONTROLCENTER
+MSG_MYFANBOOST_EVENT_POWER
+ko_KR
+WINDOW_NAME_MYCOLOR
+tr_TR
+FAN_LEVEL_FOUR
+en_US
+WINDOW_NAME_MYFANBOOST
+FAN_MODE_BOOST
+hu_HU
+OSD_MENU
+ru_RU
+MSG_MYAPP_AP_SHOW
+MSG_GAMINGCENTER_AP_SHOW
+MSG_MYCOLOR_AP_SHOW
+MSG_MYFANBOOST_AP_SHOW
+MSG_MYMACROKEY_AP_SHOW
+OSD_LCD_SW
+zh_TW
+WINDOW_NAME_MYAPPTRAY
+WM_MSG_GAMINGCENTERTRAY
+WINDOW_NAME_MYMACROKEY
+value__
+data
+mscorlib
+ECSpec
+connectionId
+RegistrySoftwareKeyRead
+RegistryKeyRead
+Thread
+BreathLed
+_contentLoaded
+add_RegChanged
+OnRegChanged
+add_DisplaySettingsChanged
+SystemEvents_DisplaySettingsChanged
+add_BalloonTipClosed
+add_Deleted
+fsw_Deleted
+add_EventArrived
+Synchronized
+RegistryValueKind
+UriKind
+valuekind
+hwnd
+InvokeMethod
+NativeMethod
+Standard
+RGBKeyBoard
+defaultInstance
+set_Source
+ecPowSource
+FindResource
+UPSCheckACMode
+UPSSetAPHPMode
+UPSGetHPMode
+Normal_Mode
+User_Fan_Mode
+FanBoost_Mode
+AirplaneMode
+SwitchMode
+USBChargerMode
+UPSCheckBatMode
+GetDefaultMode
+SilentMode
+IconName_office_mode
+IconName_gaming_mode
+APMessage
+get_Message
+SendMessage
+logMessage
+PostMessage
+RegisterWindowMessage
+AppLanguage
+Machenike
+Invoke
+UPSEnable
+b_LogEnable
+enable
+status_disable
+IDisposable
+GamingCenter_Visible
+set_Visible
+RuntimeTypeHandle
+GetTypeFromHandle
+WaitHandle
+IniFile
+Console
+set_Title
+IsNewMyFan2Rule
+SupportMyFan2NewRule
+GetEXEName
+get_Name
+set_FileName
+processeName
+get_FullName
+LoadRegistry_TrayIconName
+GetTrayIconName
+AppName
+lpClassName
+lpWindowName
+GetProcessesByName
+get_DirectoryName
+DateTime
+GetTime
+WaitOne
+WriteLine
+MyDefine
+QkeyDefine
+ManagementScope
+TitleNameType
+AppType
+ecBt1Temperature
+get_Culture
+set_Culture
+resourceCulture
+ApplicationSettingsBase
+WindowsBase
+Dispose
+OSD_MyBat_ACUpdate
+CheckProcessExistAndCreate
+EditorBrowsableState
+RegistrySoftwareKeyDelete
+RegistrySoftwareKeyWrite
+RegistryKeyWrite
+STAThreadAttribute
+CompilerGeneratedAttribute
+GeneratedCodeAttribute
+DebuggerNonUserCodeAttribute
+DebuggableAttribute
+EditorBrowsableAttribute
+ComVisibleAttribute
+AssemblyTitleAttribute
+AssemblyTrademarkAttribute
+TargetFrameworkAttribute
+AssemblyFileVersionAttribute
+AssemblyConfigurationAttribute
+AssemblyDescriptionAttribute
+ThemeInfoAttribute
+FlagsAttribute
+CompilationRelaxationsAttribute
+AssemblyProductAttribute
+AssemblyCopyrightAttribute
+AssemblyCompanyAttribute
+RuntimeCompatibilityAttribute
+set_UseShellExecute
+IniReadValue
+DeleteValue
+IniWriteValue
+GetValue
+SetValue
+setvalue
+defaultvalue
+RegistryHive
+GamingCenterTray.exe
+Customize
+size
+OSD_MyBat_HPOff
+status_off
+StatusByteOneFlag
+SupportByteOneFlag
+MyFanCTLByteFlag
+TriggerByteFlag
+SupportByteTwoFlag
+BIOSFuncReg
+g_Lang
+strLang
+System.Threading
+System.Windows.Threading
+Gaming
+System.Runtime.Versioning
+WritePrivateProfileString
+GetPrivateProfileString
+ToString
+lpString
+add_Closing
+MainWindow_Closing
+System.Drawing
+EnableLog
+DisableLog
+FastSwitchLog
+MyLightBarLog
+ComputerMonitorLog
+FanManagementLog
+GamingCenterTrayLog
+wMsg
+GPSSwitch
+INIPath
+filePath
+path
+set_StartupUri
+add_Click
+add_DoubleClick
+notifyIcon_DoubleClick
+item_ExitClick
+WinLock
+OverClock
+PresentationFramework
+retVal
+System.Collections.ObjectModel
+System.ComponentModel
+user32.dll
+System.Xaml
+lParam
+wParam
+get_Item
+set_Item
+MenuItem
+get_Is64BitOperatingSystem
+Custom
+Enum
+MyFan
+resourceMan
+TimeSpan
+LoadRegistry_MyAppIocn
+Main
+status_on
+set_Icon
+NotifyIcon
+notifyIcon
+Application
+get_Location
+ResourceDictionaryLocation
+System.Configuration
+System.Globalization
+Action
+Section
+System.Reflection
+MenuItemCollection
+section
+ManagementException
+Shutdown
+FileInfo
+CultureInfo
+FileSystemInfo
+ProcessStartInfo
+DirectoryInfo
+Zero
+Sleep
+set_ContextMenuStrip
+IconName_tmp
+Stop
+System.Windows.Markup
+OnStartup
+LightBar
+Illegear
+Addr
+StringBuilder
+sender
+get_ResourceManager
+RGBKeybaord_Trigger
+SilentMode_Trigger
+RGBKeybaordWelcome_Trigger
+WinLock_Trigger
+RGBLogo_Trigger
+LightBar_Trigger
+USBCharger_Trigger
+FanBoost_Trigger
+FileSystemWatcher
+ManagementEventWatcher
+get_Dispatcher
+watcher
+EventArrivedEventHandler
+CancelEventHandler
+FileSystemEventHandler
+System.CodeDom.Compiler
+StreamWriter
+TextWriter
+LightMonster
+.ctor
+.cctor
+IComponentConnector
+StopMonitor
+StartMonitor
+bSupportMonitor
+IsSupportMonitor
+SetRegistry_TrayMonitor
+RegistryMonitor
+registryMonitor
+IntPtr
+System.Diagnostics
+System.Runtime.InteropServices
+System.Runtime.CompilerServices
+System.Resources
+get_Resources
+GamingCenterTray.g.resources
+GamingCenterTray.Properties.Resources.resources
+DebuggingModes
+get_MergedDictionaries
+GamingCenterTray.Properties
+Settings
+CancelEventArgs
+FileSystemEventArgs
+StartupEventArgs
+<>4__this
+Equals
+RegistryUtils
+get_MenuItems
+System.Windows.Forms
+InvokeMethodOptions
+ObjectGetOptions
+GetMethodParameters
+get_Is64BitProcess
+set_EnableRaisingEvents
+SystemEvents
+UPSStatus
+System.Windows
+UPSCheckPowerBat
+MyBatPowerBat
+MyBat
+Concat
+ManagementBaseObject
+DispatcherObject
+ManagementObject
+System.Windows.Markup.IComponentConnector.Connect
+dict
+GetCustomizeTarget
+target
+Exit
+get_Default
+System.Management
+FrameworkElement
+Environment
+LoadComponent
+InitializeComponent
+get_Current
+WMIHandleEvent
+EndWMIRecieveEvent
+StartWMIReceiveEvent
+Start
+Convert
+FanBoost
+set_RedirectStandardInput
+set_RedirectStandardOutput
+System.Text
+set_Text
+AppendText
+set_ContextMenu
+RegistryView
+get_Now
+FindWindow
+MainWindow
+set_CreateNoWindow
+ReleaseMutex
+traymutex
+RegistryUtils_Tray
+GamingCenterTray
+CreateSubKey
+OpenSubKey
+OpenBaseKey
+hKey
+WinLockKey
+MacroKey
+ShortCutKey
+RegistryKey
+FanQkey
+get_Assembly
+GetExecutingAssembly
+ResourceDictionary
+FirstSetLanguageDictionary
+WqlEventQuery
+get_Directory
+set_WorkingDirectory
+LoadUPSRegistry
+SetUPSRegistry
+op_Equality
+Utility
+Empty
+WrapNonExceptionThrows
+GamingCenterTray
+Copyright 
+  2018
+1.2.2.9
+.NETFramework,Version=v4.6.1
+FrameworkDisplayName
+.NET Framework 4.6.1#
+PresentationBuildTasks
+4.0.0.0
+3System.Resources.Tools.StronglyTypedResourceBuilder
+15.0.0.0
+KMicrosoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator
+15.5.0.0
+lSystem.Resources.ResourceReader, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089#System.Resources.RuntimeResourceSet
+PADPADPH^3
+Kmscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+1&clr-namespace:System;assembly=mscorlib
+System
+SPresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NWindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+XPresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NSystem.Xaml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 
+Launch 
+strMechrevLogoTitle 
+strMechrevLogoTitle_Z2 
+Exit
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+sys&clr-namespace:System;assembly=mscorlib
+ffnen
+Enable Mechrevo Gaming Center
+Enable Mechrevo Control Center
+Beenden
+Kmscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+1&clr-namespace:System;assembly=mscorlib
+System
+SPresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NWindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+XPresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NSystem.Xaml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 
+Launch 
+strMechrevLogoTitle 
+strMechrevLogoTitle_Z2 
+Exit
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+sys&clr-namespace:System;assembly=mscorlib
+Enable Control Center
+Enable Mechrevo Gaming Center
+Enable Mechrevo Control Center
+Exit
+Kmscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+1&clr-namespace:System;assembly=mscorlib
+System
+SPresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NWindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+XPresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NSystem.Xaml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 
+Launch 
+strMechrevLogoTitle 
+strMechrevLogoTitle_Z2 
+Exit
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+sys&clr-namespace:System;assembly=mscorlib
+%!Vez
+zpont Enged
+lyez
+Enable Mechrevo Gaming Center
+Enable Mechrevo Control Center
+Kmscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+1&clr-namespace:System;assembly=mscorlib
+System
+SPresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NWindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+XPresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NSystem.Xaml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 
+Launch 
+strMechrevLogoTitle 
+strMechrevLogoTitle_Z2 
+Exit
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+sys&clr-namespace:System;assembly=mscorlib
+Enable Mechrevo Gaming Center
+Enable Mechrevo Control Center
+Kmscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+1&clr-namespace:System;assembly=mscorlib
+System
+SPresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NWindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+XPresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NSystem.Xaml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 
+Launch 
+strMechrevLogoTitle 
+strMechrevLogoTitle_Z2 
+Exit
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+sys&clr-namespace:System;assembly=mscorlib
+Kmscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+1&clr-namespace:System;assembly=mscorlib
+System
+SPresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NWindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+XPresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NSystem.Xaml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 
+Launch 
+strMechrevLogoTitle 
+strMechrevLogoTitle_Z2 
+Exit
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+sys&clr-namespace:System;assembly=mscorlib
+Enable Mechrevo Gaming Center
+Enable Mechrevo Control Center
+Kmscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+1&clr-namespace:System;assembly=mscorlib
+System
+SPresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NWindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+XPresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NSystem.Xaml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 
+Launch 
+strMechrevLogoTitle 
+strMechrevLogoTitle_Z2 
+Exit
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+sys&clr-namespace:System;assembly=mscorlib
+Kontrol Merkezi'ni A
+Enable Mechrevo Gaming Center
+Enable Mechrevo Control Center
+Kmscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+1&clr-namespace:System;assembly=mscorlib
+System
+SPresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NWindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+XPresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NSystem.Xaml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 
+Launch 
+strMechrevLogoTitle 
+strMechrevLogoTitle_Z2 
+Exit
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+sys&clr-namespace:System;assembly=mscorlib
+Kmscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+1&clr-namespace:System;assembly=mscorlib
+System
+SPresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NWindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+XPresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NSystem.Xaml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 
+Launch 
+strMechrevLogoTitle 
+strMechrevLogoTitle_Z2 
+Exit
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+sys&clr-namespace:System;assembly=mscorlib
+Enable Mechrevo Control Center
+GamingCenterTray
+GamingCenterTray.MainWindow
+SPresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+NWindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+XPresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+NSystem.Xaml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+x,http://schemas.microsoft.com/winfx/2006/xaml
+Title$
+GamingCenterTray
+ShowInTaskbar
+Hidden=
+	Resources
+MergedDictionaries
+Source
+Language\zh-CN.xaml?
+lSystem.Resources.ResourceReader, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089#System.Resources.RuntimeResourceSet
+PADPADP
+RSDS
+D:\Max\Source\GamingCenter\GamingCenterALL_1.2.2.9\GamingCenterALL\GamingCenterTray\GamingCenterTray\obj\Release\GamingCenterTray.pdb
+<?xml version="1.0" encoding="utf-8"?>
+<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
+  <assemblyIdentity version="1.0.0.0" name="MyApplication.app" />
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
+    <security>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!-- UAC 
+             
+ Windows 
+             requestedExecutionLevel 
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+            
+ requestedExecutionLevel 
+            
+            
+        -->
+        <requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
+      </requestedPrivileges>
+      <applicationRequestMinimum>
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+        <PermissionSet class="System.Security.PermissionSet" version="1" Unrestricted="true" ID="Custom" SameSite="site" />
+      </applicationRequestMinimum>
+    </security>
+  </trustInfo>
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <application>
+      <!-- 
+           Windows 
+Windows 
+           
+      <!-- Windows Vista -->
+      <!--<supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}" />-->
+      <!-- Windows 7 -->
+      <!--<supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />-->
+      <!-- Windows 8 -->
+      <!--<supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />-->
+      <!-- Windows 8.1 -->
+      <!--<supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />-->
+      <!-- Windows 10 -->
+      <!--<supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />-->
+    </application>
+  </compatibility>
+  <!-- 
+ DPI 
+Windows 
+ DPI 
+       
+Windows Presentation Foundation (WPF) 
+ DPI
+       
+ .NET Framework 4.6 
+ Windows Form 
+       
+ app.config 
+ 'EnableWindowsFormsHighDpiAutoResizing' 
+ 'true'
+  <!--
+  <application xmlns="urn:schemas-microsoft-com:asm.v3">
+    <windowsSettings>
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true</dpiAware>
+    </windowsSettings>
+  </application>
+  -->
+  <!-- 
+ Windows 
+ (Windows XP 
+) -->
+  <!--
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity
+          type="win32"
+          name="Microsoft.Windows.Common-Controls"
+          version="6.0.0.0"
+          processorArchitecture="*"
+          publicKeyToken="6595b64144ccf1df"
+          language="*"
+        />
+    </dependentAssembly>
+  </dependency>
+  -->
+</assembly>
+>0<0
+0!0	
+Western Cape1
+Durbanville1
+Thawte1
+Thawte Certification1
+Thawte Timestamping CA0
+121221000000Z
+201230235959Z0^1
+Symantec Corporation100.
+'Symantec Time Stamping Services CA - G20
+"W*o
+]jxdE
+`F~T
+&0$0"
+http://ocsp.thawte.com0
+80604
+.http://crl.thawte.com/ThawteTimestampingCA.crl0
+TimeStamp-2048-10
+y@b%
+Symantec Corporation100.
+'Symantec Time Stamping Services CA - G20
+121018000000Z
+201229235959Z0b1
+Symantec Corporation1402
++Symantec Time Stamping Services Signer - G40
+2oNW
+a;EQ
+g0e0*
+http://ts-ocsp.ws.symantec.com07
++http://ts-aia.ws.symantec.com/tss-ca-g2.cer0<
+50301
++http://ts-crl.ws.symantec.com/tss-ca-g2.crl0(
+TimeStamp-2048-20
+b07x
+,&c3
+\vnO^
+EFAn
+y3+.{
+>"hcS
+0L1 0
+GlobalSign Root CA - R31
+GlobalSign1
+GlobalSign0
+160615000000Z
+240615000000Z0n1
+GlobalSign nv-sa1D0B
+;GlobalSign Extended Validation CodeSigning CA - SHA256 - G30
+QAY3yd
+bI({
+,X,*o5-
+2000.
+"http://ocsp2.globalsign.com/rootr306
+/0-0+
+%http://crl.globalsign.com/root-r3.crl0b
+[0Y0
+_0402
+&https://www.globalsign.com/repository/0
+J1 ~O]
+GlobalSign nv-sa1D0B
+;GlobalSign Extended Validation CodeSigning CA - SHA256 - G30
+171106020537Z
+200218083812Z0
+Private Organization1
+245775721
+TAIPEI1
+TAIPEI1503
+,2F., NO.240, SEC. 1, NEIHU RD., NEIHU DIST.,1 0
+Uniwill Technology Inc.1 0
+Uniwill Technology Inc.0
+0g>a
+,yHk
+`.p	
+0 ?B
+Bhttp://secure.globalsign.com/cacert/gsextendcodesignsha2g3ocsp.crt0>
+2http://ocsp2.globalsign.com/gsextendcodesignsha2g30U
+N0L0A
+0402
+&https://www.globalsign.com/repository/0
+>0<0:
+4http://crl.globalsign.com/gsextendcodesignsha2g3.crl0
+<=0l
+,X,*o5-
+>[Rz
+0~0n1
+GlobalSign nv-sa1D0B
+;GlobalSign Extended Validation CodeSigning CA - SHA256 - G3
+6YN|q0
+l;A/f
+_.{N
+U4U8mwl
+0r0^1
+Symantec Corporation100.
+'Symantec Time Stamping Services CA - G2
+181115032639Z0#
+PhZ$f
+{]-]
+$3Gd
+6]?1

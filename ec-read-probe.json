@@ -1,0 +1,114 @@
+[
+    {
+        "Address":  1857,
+        "Hex":  "0x741",
+        "Value":  513,
+        "ValueHex":  "0x201",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1858,
+        "Hex":  "0x742",
+        "Value":  2,
+        "ValueHex":  "0x2",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1859,
+        "Hex":  "0x743",
+        "Value":  0,
+        "ValueHex":  "0x0",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1860,
+        "Hex":  "0x744",
+        "Value":  30720,
+        "ValueHex":  "0x7800",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1861,
+        "Hex":  "0x745",
+        "Value":  35960,
+        "ValueHex":  "0x8C78",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1862,
+        "Hex":  "0x746",
+        "Value":  35980,
+        "ValueHex":  "0x8C8C",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1863,
+        "Hex":  "0x747",
+        "Value":  140,
+        "ValueHex":  "0x8C",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1873,
+        "Hex":  "0x751",
+        "Value":  27808,
+        "ValueHex":  "0x6CA0",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1885,
+        "Hex":  "0x75D",
+        "Value":  4608,
+        "ValueHex":  "0x1200",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1893,
+        "Hex":  "0x765",
+        "Value":  65535,
+        "ValueHex":  "0xFFFF",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1894,
+        "Hex":  "0x766",
+        "Value":  255,
+        "ValueHex":  "0xFF",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1895,
+        "Hex":  "0x767",
+        "Value":  512,
+        "ValueHex":  "0x200",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1896,
+        "Hex":  "0x768",
+        "Value":  2,
+        "ValueHex":  "0x2",
+        "Ok":  true,
+        "Error":  null
+    },
+    {
+        "Address":  1922,
+        "Hex":  "0x782",
+        "Value":  0,
+        "ValueHex":  "0x0",
+        "Ok":  true,
+        "Error":  null
+    }
+]

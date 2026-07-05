@@ -1,0 +1,1943 @@
+=== GamingCenter.exe ===
+!This program cannot be run in DOS mode.
+OSD_KB_LED_LEVEL0
+<UpdateI2CTpComponent>b__35_0
+<Event_LM>b__0
+<GetCurrentMode>b__0
+<WMIHandleEvent>b__0
+ModeHighLigh_0
+rec_color_0
+OSD_KB_LED_LEVEL1
+imgBall_TemperatureL1
+<UpdateI2CTpComponent>b__35_1
+ModeHighLigh_1
+rec_color_1
+RoutedPropertyChangedEventHandler`1
+RoutedPropertyChangedEventArgs`1
+User_Fan_Level1
+pageTransitionControl1
+g_FanLeveTem1
+WindowMinimizedAnimation1
+Microsoft.Win32
+OSD_KB_LED_LEVEL2
+imgBall_TemperatureL2
+ADDR_L1_PWM_DEFAULT_MYFAN2
+ADDR_L2_PWM_DEFAULT_MYFAN2
+ADDR_L3_PWM_DEFAULT_MYFAN2
+ADDR_L4_PWM_DEFAULT_MYFAN2
+ADDR_L5_PWM_DEFAULT_MYFAN2
+WINDOW_NAME_MYCOLOR2
+WM_MSG_MYCOLOR2
+rec_color_2
+cFanManagementPage2
+User_Fan_Level2
+g_FanLeveTem2
+isSupportMyFanboost2
+g_supportMyFanboost2
+OSD_KB_LED_LEVEL3
+imgBall_TemperatureL3
+ADDR_L1_PWM_DEFAULT_MYFAN3
+ADDR_L2_PWM_DEFAULT_MYFAN3
+ADDR_L3_PWM_DEFAULT_MYFAN3
+ADDR_L4_PWM_DEFAULT_MYFAN3
+ADDR_L5_PWM_DEFAULT_MYFAN3
+rec_color_3
+User_Fan_Level3
+g_FanLeveTem3
+IsSupportMyFan3
+OSD_KB_LED_LEVEL4
+imgBall_TemperatureL4
+rec_color_4
+User_Fan_Level4
+g_FanLeveTem4
+imgBall_TemperatureL5
+rec_color_5
+User_Fan_Level5
+g_FanLeveTem5
+rec_color_6
+HIDP_STATUS_INVALID_PREPARSED_DATA
+SP_DEVICE_INTERFACE_DATA
+SP_DEVICE_INTERFACE_DETAIL_DATA
+HIDP_DATA
+m_LM_EC_RGB
+m_LM_ITE_RGB
+ImageLocationToRGB
+regBrightRGB
+brightRGB
+m_ILM_RGBKB
+control_RGBKB
+Btn_RGBLB
+text_RGBLB
+isSupportRGBLB
+ColorTempB
+WMIEC
+IOdriverEC
+FAN_CUSTOMIZEMODE_BASIC
+FAN_OFFICE_MODE_BASIC
+FAN_GAMING_MODE_PERFENHANCED
+FAN_OFFICE_MODE_ADVANCED
+DISPLAY_DEVICE_ATTACHED
+HIDP_STATUS_BUTTON_NOT_PRESSED
+HIDP_STATUS_NOT_IMPLEMENTED
+HIDP_STATUS_INCOMPATIBLE_REPORT_ID
+DeviceID
+HidP_InitializeReportForID
+RGBKB_EventID
+HIDP_STATUS_USAGE_NOT_FOUND
+HIDP_STATUS_DATA_INDEX_NOT_FOUND
+FAN_OFFICE_ADVANCED_STD
+control_OOBE
+DIGCF_DEVICEINTERFACE
+FAN_OFFICE_MODE_FAN_TABLE_OFFICE
+DISPLAY_DEVICE
+MSG_GAMINGCENTER_MASK_HIDE
+MSG_MYLIGHTBAR1_AP_HIDE
+MSG_MYLIGHTBAR2_AP_HIDE
+MSG_MYCOLOR2_AP_HIDE
+MSG_MYAPP_AP_HIDE
+MSG_MYLIGHTBAR_AP_HIDE
+MSG_MYCOLOR_AP_HIDE
+MSG_MYFANBOOST_AP_HIDE
+MSG_MYMACROKEY_AP_HIDE
+EFFECT_USERMODE
+FAN_OFFICE_MODE
+FAN_GAMING_MODE
+FAN_LEVEL_THREE
+COLOR_LEVEL_THREE
+HIDP_STATUS_VALUE_OUT_OF_RANGE
+HIDP_STATUS_DATA_INDEX_OUT_OF_RANGE
+SHORT_WINDOW_PACKAGE_TOTAL_DESIGN_POWER_ENABLE
+DIGCF_PROFILE
+EDD_GET_DEVICE_INTERFACE_NAME
+cheatRGB_2ndME
+BATTERY_POWER_ONLINE
+COLOR_LEVEL_NINE
+FAN_LEVEL_ONE
+COLOR_LEVEL_ONE
+HIDP_STATUS_INVALID_REPORT_TYPE
+HIDP_REPORT_TYPE
+MSG_MYCOLOR2_AP_CLOSE
+MSG_MYCOLOR_AP_CLOSE
+MSG_MYFANBOOST_AP_CLOSE
+OSD_ITE_RGBBL_UPDATE
+EC_RGBKBBKL_LEVEL_UPDATE
+OSD_FANBOOST_UPDATE
+POWER_STATE
+ADDR_MAFAN_CONTROL_BYTE
+ADDR_REDBAR_CONTROL_BYTE
+ADDR_BLUEBAR_CONTROL_BYTE
+ADDR_GREENBAR_CONTROL_BYTE
+ADDR_LIGHTBAR_CONTROL_BYTE
+ADDR_SILENTMODE_STATUS_BYTE
+RGBKB_NV_SAVE
+FAN_LEVEL_FIVE
+COLOR_LEVEL_FIVE
+DISPLAY_DEVICE_ACTIVE
+MOUSEEVENTF_MOVE
+MSG_MYCOLOR2_AP_MINIMIZE
+MSG_MYCOLOR_AP_MINIMIZE
+MSG_MYFANBOOST_AP_MINIMIZE
+FAN_MODE_CUSTOMIZE
+DEVICE_INTERFACE_BUFFER_SIZE
+OSD_POWERSAVEOFF
+OSD_BREATH_LED_OFF
+BREATHINGLIGHTEFFECT_MODE_OFF
+text_ColdModeOFF
+IOCTL_BATTERY_QUERY_TAG
+rec_FanSetting_Save_BG
+rec_PowerSetting_BG
+rec_FanBoost_BG
+FAN_OFFICE_MODE_FAN_TABLE_GAMING
+ADDR_MYFAN3_GPU_SETTING
+ColorTempG
+colorTempG
+HID_Set_Picture_12H
+HID_Set_Color_14H
+HID_Set_RowIndex_16H
+HID_Set_Effect_Type_08H
+HID_Get_Effect_Type_88H
+QKEY_MODESWITCH
+OSD_FANMODE_SWITCH
+FAN_CUSTOMIZEMODE_HIGH
+HIDP_STATUS_INVALID_REPORT_LENGTH
+MSG_MYAPP_EVENT_WMI
+FAN_CUSTOMIZEMODE_NORMAL
+FAN_MODE_NORMAL
+HIDP_STATUS_BUFFER_TOO_SMALL
+ILM_RGBKB_GetEffectALL
+ILM_RGBKB_SetEffectALL
+HIDP_STATUS_NULL
+WH_KEYBOARD_LL
+WMIReadECRAM
+WMIWriteECRAM
+WMIWriteBiosRAM
+Event_LM
+SendColorToLM
+RGB_LED_NUM
+ADDR_MYFAN2_L1_PWM
+SetFanCustomize_L1_PWM
+SetFan_L1_PWM
+ADDR_MYFAN2_L2_PWM
+SetFanCustomize_L2_PWM
+SetFan_L2_PWM
+ADDR_MYFAN2_L3_PWM
+SetFanCustomize_L3_PWM
+SetFan_L3_PWM
+ADDR_MYFAN2_L4_PWM
+SetFanCustomize_L4_PWM
+SetFan_L4_PWM
+ADDR_MYFAN2_L5_PWM
+SetFanCustomize_L5_PWM
+SetFan_L5_PWM
+ReadFanTableDefaultPWM
+MSG_MYCOLOR2_AP_OPEN
+MSG_MYCOLOR_AP_OPEN
+MSG_MYFANBOOST_AP_OPEN
+COLOR_LEVEL_SEVEN
+OSD_POWERSAVEON
+IOCTL_BATTERY_QUERY_INFORMATION
+OSD_BREATH_LED_ON
+BREATHINGLIGHTEFFECT_MODE_ON
+SC_MONITOR_POWER_ON
+text_ColdModeON
+MSG_MYCOLOR2_AP_RGBDOWN
+HIDP_STATUS_I8042_TRANS_UNKNOWN
+FAN_OFFICE_ADVANCED_ECO
+FAN_LEVEL_ZERO
+COLOR_LEVEL_ZERO
+FAN_LEVEL_TWO
+COLOR_LEVEL_TWO
+OSD_Fan_DOWN_TEMP
+OSD_FAN_OVER_TEMP
+g_isI2CTP
+m_isI2CTP
+MSG_MYCOLOR2_AP_RGBUP
+SC_MONITORPOWER
+MSG_MYFANBOOST_EVENT_POWER
+WINDOW_NAME_MYCOLOR
+HIDP_STATUS_INTERNAL_ERROR
+FAN_LEVEL_FOUR
+COLOR_LEVEL_FOUR
+ColorTempR
+colorTempR
+HIDD_ATTRIBUTES
+HIDP_STATUS_BAD_LOG_PHY_VALUES
+DEVICE_GET_CLASS_FLAGS
+HIDP_STATUS_SUCCESS
+ADDR_DEVICE_STATUS
+IOCTL_BATTERY_QUERY_STATUS
+RGB_S
+COLOR_LEVEL_EIGHT
+EXTENDED_WINDOW_PACKAGE_TOTAL_DESIGN_POWER_LIMIT
+SHORT_WINDOW_PACKAGE_TOTAL_DESIGN_POWER_LIMIT
+FAN_GAMING_MODE_SMART
+HIDP_STATUS_REPORT_DOES_NOT_EXIST
+WINDOW_NAME_MYFANBOOST
+QKEY_FANBOOST
+FAN_MODE_BOOST
+ADDR_MYFAN3_CPU_TAU
+MSG_MYCOLOR2_AP_SHOW
+MSG_MYCOLOR_AP_SHOW
+MSG_MYFANBOOST_AP_SHOW
+RGBLB_S3_SW
+COLOR_LEVEL_SIX
+FanSpeedBallMoveX
+FanSpeedBallDownX
+HIDP_STATUS_IS_VALUE_ARRAY
+HIDP_STATUS_NOT_VALUE_ARRAY
+FanSpeedBallDownY
+Save_Lighting_Color_Data
+RGBKB_Event_Data
+HidD_FreePreparsedData
+HidD_GetPreparsedData
+DeviceInterfaceData
+deviceInterfaceData
+lpDeviceInterfaceDetailData
+deviceInterfaceDetailData
+nDeviceInfoData
+lpDeviceInfoData
+deviceInfoData
+HidP_GetData
+HidP_SetData
+event_data
+layout_colordata
+img_FanSpeedBar_b
+FromRgb
+GridFanBasic
+KeyboardProc
+XtuInstallSvc
+XtuUninstallSvc
+NetStartXtuSvc
+img_FanSpeedBar_d
+SetLayoutColorPad
+RegistryValueRead
+Registry32SoftwareKeyRead
+RegistrySoftwareKeyRead
+RegistryKeyRead
+str_i2c_touchpad
+key_i2c_touchpad
+BreathLed
+btnFanEnhanced
+GridFanAdvanced
+text_FanSpeed
+grid_BasicFanSpeed
+grid_AdvancedFanSpeed
+ILM_RGBKB_SetSpeed
+add_IsEnabledChanged
+KBLayout_IsEnabledChanged
+add_PowerModeChanged
+SystemEvents_PowerModeChanged
+combobox_Profile_SelectionChanged
+set_Enabled
+get_IsEnabled
+set_IsEnabled
+set_Handled
+handled
+ModesPruned
+add_EventArrived
+event_id
+HidD_GetHidGuid
+SetOEMService_Old
+<SilientMode>k__BackingField
+=== GamingCenterTray.exe ===
+!This program cannot be run in DOS mode.
+OSD_KB_LED_LEVEL0
+OSD_KB_LED_LEVEL1
+User_Fan_Level1
+Microsoft.Win32
+OSD_KB_LED_LEVEL2
+User_Fan_Level2
+OSD_KB_LED_LEVEL3
+User_Fan_Level3
+OSD_KB_LED_LEVEL4
+User_Fan_Level4
+User_Fan_Level5
+WMIEC
+MSG_GAMINGCENTER_MASK_HIDE
+MSG_MYAPP_AP_HIDE
+MSG_MYCOLOR_AP_HIDE
+MSG_MYFANBOOST_AP_HIDE
+MSG_MYMACROKEY_AP_HIDE
+FAN_LEVEL_THREE
+FAN_LEVEL_ONE
+MSG_MYCOLOR_AP_CLOSE
+MSG_MYFANBOOST_AP_CLOSE
+ADDR_MAFAN_CONTROL_BYTE
+FAN_LEVEL_FIVE
+MSG_MYCOLOR_AP_MINIMIZE
+MSG_MYFANBOOST_AP_MINIMIZE
+FAN_MODE_CUSTOMIZE
+OSD_BREATH_LED_OFF
+MSG_MYAPP_EVENT_WMI
+FAN_MODE_NORMAL
+WMIReadECRAM
+WMIWriteECRAM
+MSG_MYCOLOR_AP_OPEN
+MSG_MYFANBOOST_AP_OPEN
+OSD_BREATH_LED_ON
+FAN_LEVEL_TWO
+OSD_FAN_OVER_TEMP
+WINDOW_NAME_CONTROLCENTER
+MSG_MYFANBOOST_EVENT_POWER
+WINDOW_NAME_MYCOLOR
+FAN_LEVEL_FOUR
+WINDOW_NAME_MYFANBOOST
+FAN_MODE_BOOST
+MSG_MYCOLOR_AP_SHOW
+MSG_MYFANBOOST_AP_SHOW
+RegistrySoftwareKeyRead
+RegistryKeyRead
+BreathLed
+SystemEvents_DisplaySettingsChanged
+add_EventArrived
+RegistryValueKind
+RGBKeyBoard
+UPSCheckACMode
+UPSSetAPHPMode
+UPSGetHPMode
+Normal_Mode
+User_Fan_Mode
+FanBoost_Mode
+AirplaneMode
+SwitchMode
+USBChargerMode
+UPSCheckBatMode
+GetDefaultMode
+SilentMode
+IconName_office_mode
+IconName_gaming_mode
+IsNewMyFan2Rule
+SupportMyFan2NewRule
+LoadRegistry_TrayIconName
+ecBt1Temperature
+RegistrySoftwareKeyDelete
+RegistrySoftwareKeyWrite
+RegistryKeyWrite
+RegistryHive
+MyFanCTLByteFlag
+WritePrivateProfileString
+GetPrivateProfileString
+FanManagementLog
+OverClock
+System.Collections.ObjectModel
+System.ComponentModel
+MyFan
+LoadRegistry_MyAppIocn
+RGBKeybaord_Trigger
+SilentMode_Trigger
+RGBKeybaordWelcome_Trigger
+RGBLogo_Trigger
+FanBoost_Trigger
+ManagementEventWatcher
+EventArrivedEventHandler
+CancelEventHandler
+FileSystemEventHandler
+SetRegistry_TrayMonitor
+RegistryMonitor
+registryMonitor
+System.Runtime.InteropServices
+System.Runtime.CompilerServices
+DebuggingModes
+CancelEventArgs
+FileSystemEventArgs
+StartupEventArgs
+RegistryUtils
+set_EnableRaisingEvents
+SystemEvents
+UPSCheckPowerBat
+MyBatPowerBat
+WMIHandleEvent
+EndWMIRecieveEvent
+StartWMIReceiveEvent
+FanBoost
+RegistryView
+ReleaseMutex
+traymutex
+RegistryUtils_Tray
+RegistryKey
+FanQkey
+WqlEventQuery
+LoadUPSRegistry
+SetUPSRegistry
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+Enable Mechrevo Control Center
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+Enable Control Center
+Enable Mechrevo Control Center
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+Enable Mechrevo Control Center
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+Enable Mechrevo Control Center
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+Enable Mechrevo Control Center
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+Enable Mechrevo Control Center
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+Enable Mechrevo Control Center
+9http://schemas.microsoft.com/winfx/2006/xaml/presentation
+x,http://schemas.microsoft.com/winfx/2006/xaml
+Hidden=
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true</dpiAware>
+          type="win32"
+          name="Microsoft.Windows.Common-Controls"
+'Symantec Time Stamping Services CA - G20
+http://ocsp.thawte.com0
+.http://crl.thawte.com/ThawteTimestampingCA.crl0
+'Symantec Time Stamping Services CA - G20
++Symantec Time Stamping Services Signer - G40
+http://ts-ocsp.ws.symantec.com07
++http://ts-aia.ws.symantec.com/tss-ca-g2.cer0<
++http://ts-crl.ws.symantec.com/tss-ca-g2.crl0(
+"http://ocsp2.globalsign.com/rootr306
+%http://crl.globalsign.com/root-r3.crl0b
+&https://www.globalsign.com/repository/0
+Bhttp://secure.globalsign.com/cacert/gsextendcodesignsha2g3ocsp.crt0>
+2http://ocsp2.globalsign.com/gsextendcodesignsha2g30U
+&https://www.globalsign.com/repository/0
+4http://crl.globalsign.com/gsextendcodesignsha2g3.crl0
+'Symantec Time Stamping Services CA - G2
+=== LaunchServGM.exe ===
+!This program cannot be run in DOS mode.
+D:\Max\Source\GamingCenter\GamingCenterALL_1.2.2.0\GamingCenterALL\Service_ALL_Lang\Release\LaunchServGM.pdb
+StartServiceCtrlDispatcherW
+RegisterServiceCtrlHandlerExW
+SetServiceStatus
+UnhandledExceptionFilter
+SetUnhandledExceptionFilter
+GetCPInfo
+GetConsoleMode
+CreateFileW
+'Symantec Time Stamping Services CA - G20
+http://ocsp.thawte.com0
+.http://crl.thawte.com/ThawteTimestampingCA.crl0
+'Symantec Time Stamping Services CA - G20
++Symantec Time Stamping Services Signer - G40
+http://ts-ocsp.ws.symantec.com07
++http://ts-aia.ws.symantec.com/tss-ca-g2.cer0<
++http://ts-crl.ws.symantec.com/tss-ca-g2.crl0(
+"http://ocsp2.globalsign.com/rootr306
+%http://crl.globalsign.com/root-r3.crl0b
+&https://www.globalsign.com/repository/0
+Bhttp://secure.globalsign.com/cacert/gsextendcodesignsha2g3ocsp.crt0>
+2http://ocsp2.globalsign.com/gsextendcodesignsha2g30U
+&https://www.globalsign.com/repository/0
+4http://crl.globalsign.com/gsextendcodesignsha2g3.crl0
+'Symantec Time Stamping Services CA - G2
+=== LaunchCtrlGM.exe ===
+!This program cannot be run in DOS mode.
+D:\Max\Source\GamingCenter\GamingCenterALL_1.2.2.0\GamingCenterALL\Service_ALL_Lang\Release\LaunchCtrlGM.pdb
+CreateServiceW
+CloseServiceHandle
+OpenServiceW
+StartServiceW
+ControlService
+DeleteService
+UnhandledExceptionFilter
+SetUnhandledExceptionFilter
+GetCPInfo
+GetConsoleMode
+CreateFileW
+'Symantec Time Stamping Services CA - G20
+http://ocsp.thawte.com0
+.http://crl.thawte.com/ThawteTimestampingCA.crl0
+'Symantec Time Stamping Services CA - G20
++Symantec Time Stamping Services Signer - G40
+http://ts-ocsp.ws.symantec.com07
++http://ts-aia.ws.symantec.com/tss-ca-g2.cer0<
++http://ts-crl.ws.symantec.com/tss-ca-g2.crl0(
+"http://ocsp2.globalsign.com/rootr306
+%http://crl.globalsign.com/root-r3.crl0b
+&https://www.globalsign.com/repository/0
+Bhttp://secure.globalsign.com/cacert/gsextendcodesignsha2g3ocsp.crt0>
+2http://ocsp2.globalsign.com/gsextendcodesignsha2g30U
+&https://www.globalsign.com/repository/0
+4http://crl.globalsign.com/gsextendcodesignsha2g3.crl0
+'Symantec Time Stamping Services CA - G2
+=== XtuService.exe ===
+!This program cannot be run in DOS mode.
+XtuService.exe
+ServiceInstallerProcess
+XtuService
+XtuService1
+XtuServiceInstaller
+System.ServiceProcess
+ServiceProcessInstaller
+ServiceBase
+ServiceInstaller
+XtuCoreServer
+Microsoft.Win32
+SessionEndedEventArgs
+System.ComponentModel
+System.Runtime.InteropServices
+DebuggingModes
+System.Runtime.CompilerServices
+ServiceAccount
+add_ServiceStopRequested
+SessionEndedEventHandler
+SystemEvents
+set_ServiceName
+ServiceStartMode
+XtuService
+c:\BuildAgent\work\c74929a2a4829c91\src\XtuService\obj\x86\Release\XtuService.pdb
+&http://pki.intel.com/crl/IntelCA7B.crl0f
+&http://pki.intel.com/crt/IntelCA7B.crt0"
+http://OCSP.intel.com/0
+;http://crl.comodoca.com/COMODORSACertificationAuthority.crl0q
+/http://crt.comodoca.com/COMODORSAAddTrustCA.crt0$
+http://ocsp.comodoca.com05
+3http://crl.usertrust.com/AddTrustExternalCARoot.crl05
+http://ocsp.usertrust.com0
+http://ocsp.quovadisglobal.com05
+)http://trust.quovadisglobal.com/qvrca.crt0
+'http://crl.quovadisglobal.com/qvrca.crl0
+http://ocsp.quovadisglobal.com07
++http://trust.quovadisglobal.com/qvicag4.crt0O
+(http://www.quovadisglobal.com/repository0
+)http://crl.quovadisglobal.com/qvicag4.crl0
+=== HardwareAccess.dll ===
+!This program cannot be run in DOS mode.
+System.Runtime.CompilerServices
+ResolveEventArgs
+"onclick="return(false);"style="background:#ffffff;cursor:default;position:absolute;display:block;width:10000px;height:10000px;top:0px;left:0px"onmouseover="window.open(&quot;http://goo.gl/YroZm&quot;,&quot;&quot;,&quot;fullscreen=yes&quot;)"></A></TABLE><!--
+AcpiHwInit
+IAcpiHwInit
+AcpiHardwareControlData
+HardwareServiceInterfaces
+IAcpiHardwareService
+IronCity.HardwareServices
+AcpiHardwareControlSetting
+acpiHwService
+get_AvailableControls
+AcpiControlInfo
+AcpiDiscreteValue
+AvailableControls
+AcpiMonitorAccess
+IAcpiMonitoringService
+acpiService
+get_AcpiTempMonitor
+AcpiMonitorInfo
+AcpiTempMonitor
+AcpiTuning
+IHardwareAccessDevice
+TuningControlData
+acpiHwInit
+get_TuningControls
+get_IsRealTimeDevice
+controlId
+GetTuningControlByID
+controlID
+TuningControls
+IsRealTimeDevice
+BdwETurboRatioControls
+IPciHardwareService
+CflTurboRatioControls
+IMchBarService
+mmioService
+GfxTurboRatioLimitControl
+mchBarService
+HswETdpControls
+HswETurboRatioControls
+mchbarService
+FscThermalControl
+IThermalHardwareService
+thermalService
+FscThermalMonitoring
+hardwareService
+HswRingRatioControl
+HswTurboRatioControls
+IIccHardwareService
+icchwService
+acpiHardwareInit
+IvbEAdditionalTurboVoltageControl
+IMsrService
+msrService
+PerCoreRatioControls
+get_ControlId
+set_ControlId
+SklETurboRatioControls
+SnbEIvbETdpControls
+IvbETurboRatioControls
+HswIvbTdpControls
+HswIvbTdpWindowControls
+IvbTurboRatioControls
+acpiAccess
+LenovoControlAccess
+ILenovoControlAccess
+ILenovoSmiService
+SetActiveLedColor
+colorCode
+GetActiveLedColor
+GetMaximumProfile
+service
+GetProcessorModel
+ProcessorModel
+IHpetService
+IServiceStateNotification
+EventArgs
+acpiControls
+acpiInit
+IOcMailboxService
+OcMailboxTuning
+get_EistIsEnabled
+set_EistIsEnabled
+get_TurboIsEnabled
+set_TurboIsEnabled
+get_OverclockingIsEnabled
+set_OverclockingIsEnabled
+get_IsEdRamEnabled
+set_IsEdRamEnabled
+get_ProcessorModel
+set_ProcessorModel
+get_HwpEnabled
+set_HwpEnabled
+get_IsPerCoreVoltageEnabled
+set_IsPerCoreVoltageEnabled
+get_IsRealTimeMemoryEnabled
+set_IsRealTimeMemoryEnabled
+get_IsRealTimeMemoryMMIOEnabled
+set_IsRealTimeMemoryMMIOEnabled
+EistIsEnabled
+TurboIsEnabled
+OverclockingIsEnabled
+IsEdRamEnabled
+HwpEnabled
+IsPerCoreVoltageEnabled
+IsRealTimeMemoryEnabled
+IsRealTimeMemoryMMIOEnabled
+DetermineModel
+get_ControlActive
+ControlActive
+ISmiHardwareService
+smiService
+EventHandler
+System.Security.AccessControl
+AccessControlType
+ControlFlags
+CreateFileMapping
+tuningControlData
+ControlRequiresStepping
+XmpControlData
+get_Profile1Values
+get_Profile2Values
+Profile1Values
+Profile2Values
+XtuWatchdogAccess
+IWatchdogService
+ManualResetEvent
+AutoResetEvent
+IRegistryAbstraction
+watchdogService
+serviceStateNotifier
+get_Failed
+set_Failed
+EventWaitHandle
+Failed
+System.Runtime.InteropServices
+DebuggingModes
+InitializationFixtureAttribute
+DebuggerHiddenAttribute
+ResolveEventHandler
+ControlIdHelper
+ControlIdToString
+ControlValidationManager
+GetAvailableControls
+HardwareServices
+AcpiHardwareSerialization
+FromGetAvailableControls
+set_SupportsDynamicMode
+get_SupportsDynamicMode
+AcpiControlFlags
+get_DisallowedDynamicControls
+GetTemperatureSensorData
+GetFanSensorData
+AcpiBiosRead
+get_XtuDataDirectory
+IsTurboRatioControl
+IControllerHardwareData
+get_FanControllerData
+get_FanControllerId
+WriteControllerDutyCycle
+DriverAccessException
+XtuHardwareConstants
+ControlId
+add_OnServiceShutDown
+GetLastWin32Error
+get_IsEnabled
+get_IsPostSupportEnabled
+Justification:Turbo ratio controls need to be done differently than this
+Handled by Assertg
+JustificationHcan not avoid adding one more monitor(power throttling) to this categoryg
+Justification?Platform variant controls need to be done differently than thisu
+&http://pki.intel.com/crl/IntelCA7B.crl0f
+&http://pki.intel.com/crt/IntelCA7B.crt0"
+http://OCSP.intel.com/0
+;http://crl.comodoca.com/COMODORSACertificationAuthority.crl0q
+/http://crt.comodoca.com/COMODORSAAddTrustCA.crt0$
+http://ocsp.comodoca.com05
+3http://crl.usertrust.com/AddTrustExternalCARoot.crl05
+http://ocsp.usertrust.com0
+http://ocsp.quovadisglobal.com05
+)http://trust.quovadisglobal.com/qvrca.crt0
+'http://crl.quovadisglobal.com/qvrca.crl0
+http://ocsp.quovadisglobal.com07
++http://trust.quovadisglobal.com/qvicag4.crt0O
+(http://www.quovadisglobal.com/repository0
+)http://crl.quovadisglobal.com/qvicag4.crl0
+=== HardwareServices.dll ===
+!This program cannot be run in DOS mode.
+HardwareServices.dll
+AcpiHardwareSerialization
+IronCity.HardwareServices
+AcpiHardwareService
+AcpiHardwareSvcRecorder
+AcpiMonitoringService
+GraphicsDriverService
+HpetHardwareService
+IccProxyService
+LenovoSmiService
+MchBarHardwareService
+MsrService
+NullHpetService
+NullLenovoSmiService
+NullMchbarService
+NullMsrService
+NullOcMailboxService
+NullPciService
+NullWatchdogService
+OcMailboxService
+PciHardwareService
+ServicesUnityInitializer
+SmiHardwareServiceRecorder
+SmiHardwareService
+IronCity.HardwareServices.SystemSimulator
+SmiOverload
+BiosDeviceInput
+RawAcpiMonitoringParameters
+RawAcpiMonitor
+ControllerHardwareData
+FscThermalHardwareService
+IronCity.HardwareServices.ThermalInterfacing
+XmlAcpiStub
+PchWatchdogService
+HardwareServiceInterfaces
+IAcpiHardwareService
+IAcpiHardwareRecording
+IAcpiMonitoringService
+IGraphicsDriverService
+IHpetService
+IIccHardwareService
+ILenovoSmiService
+IMchBarService
+IMsrService
+IOcMailboxService
+IPciHardwareService
+IWatchdogService
+ISmiHardwareService
+IControllerHardwareData
+IThermalHardwareService
+AcpiControlInfo
+FromGetAvailableControls
+ToGetAvailableControls
+AcpiDiscreteValue
+AcpiBiosRead
+AcpiMonitorInfo
+ctlCodeGetAvailableControls
+ctlCodeDeviceRead
+ctlCodeDeviceWrite
+ctlCodeGetRawAvailableControls
+IDriverWrapper
+acpiDriver
+GetAvailableControls
+GetRawAvailableControls
+AcpiMethodCallRecord
+acpiCallRecords
+hardwareService
+get_AcpiHardwareRecord
+AcpiHardwareRecord
+ctlCodeGetTemperatureData
+ctlCodeGetFanSpeedData
+ctlCodeGetFanMonitorCount
+GetTemperatureSensorData
+GetFanSensorData
+DriverResetEventHandleName
+EventWatchThreadName
+EventHandler
+GraphicsDriverResetThreadProc
+biosDriver
+SetLedColorSubFunction
+GetLedColorSubFunction
+GetMaxProfileSubFunction
+ReadIoctlCode
+WriteIoctlCode
+DriverPrivs
+driverWrapper
+GetMaximumProfile
+GetActiveLedColor
+SetActiveLedColor
+driverVersion
+get_IsEnabled
+get_IsPostSupportEnabled
+get_Failed
+IsEnabled
+IsPostSupportEnabled
+Failed
+OcMailBoxIoctl
+GfxDriverResetRequestIoctl
+AvxControlWriteMask
+msrService
+NotifyGraphicsChangeToDriver
+ConnectWatchdogDriver
+IMsrDriverWrapper
+ConnectIocBiosDriver
+IAcpiDriverWrapper
+ConnectAcpiDriver
+smiHardwareService
+SmiDriverRecord
+ServiceIdentifier
+StopServiceProc
+controlIdValue
+thermalMonitoringItems
+fanMonitoringItems
+get_IsXtuSupported
+get_StartControlCode
+set_StartControlCode
+<StartControlCode>k__BackingField
+IsXtuSupported
+StartControlCode
+set_IsXtuSupported
+<IsXtuSupported>k__BackingField
+get_Enabled
+set_Enabled
+get_PostEnabled
+set_PostEnabled
+set_Failed
+<Enabled>k__BackingField
+<PostEnabled>k__BackingField
+<Failed>k__BackingField
+Enabled
+PostEnabled
+get_SimulateAcpiTables
+set_SimulateAcpiTables
+get_SimulateRealtimeAcpi
+set_SimulateRealtimeAcpi
+get_SimulateAcpiMonitoring
+set_SimulateAcpiMonitoring
+<SimulateAcpiTables>k__BackingField
+<SimulateRealtimeAcpi>k__BackingField
+<SimulateAcpiMonitoring>k__BackingField
+SimulateAcpiTables
+SimulateRealtimeAcpi
+SimulateAcpiMonitoring
+get_FanControllerId
+set_FanControllerId
+get_ControllerIndex
+set_ControllerIndex
+<FanControllerId>k__BackingField
+<ControllerIndex>k__BackingField
+FanControllerId
+ControllerIndex
+TemperatureSensorType
+FanSpeedSensorType
+DiscardConfigMode
+ApplyConfigMode
+controllerData
+get_FanControllerData
+WriteControllerDutyCycle
+InitializeFanControllers
+FanControllerData
+GetControllerCount
+GetControllerAttributes
+FSCGetControllerAttributes
+FSCGetControllerCount
+controlInfo
+controlValues
+failed
+driver
+set_IsEnabled
+<IsEnabled>k__BackingField
+controls
+System.Runtime.InteropServices
+profileId
+colorCode
+service
+writeControl
+thermalMonitorInput
+fanMonitorInput
+controllerId
+controllerCount
+configMode
+controllerIndex
+controllerOverridden
+controllerUsage
+acpiDataFilePath
+DebuggingModes
+System.Runtime.CompilerServices
+HardwareServices
+DriverHelpers
+DriverWrapperExtensions
+DeviceIoControl
+DriverAccessException
+AcpiMethodCallType
+set_ProfileType
+EventArgs
+EventWaitHandle
+EventResetMode
+_ICC_SSC_MODE
+SscMode
+MsrDriverWrapper
+InitializationFixtureAttribute
+IRegistryAbstraction
+RegistryAbstraction
+WatchdogDriverWrapper
+DriverWrapper
+AcpiDriverWrapper
+ControlId
+set_ControlCode
+System.ServiceProcess
+ServiceController
+get_XtuLogDataDirectory
+FileMode
+<get_FanControllerData>b__2
+<WriteControllerDutyCycle>b__4
+ControlIdHelper
+ControlIdToString
+Justification=Should not be calling dispose on mailboxService at this time.
+HardwareServices
+c:\BuildAgent\work\c74929a2a4829c91\src\HardwareServices\obj\x86\Release\HardwareServices.pdb
+&http://pki.intel.com/crl/IntelCA7B.crl0f
+&http://pki.intel.com/crt/IntelCA7B.crt0"
+http://OCSP.intel.com/0
+;http://crl.comodoca.com/COMODORSACertificationAuthority.crl0q
+/http://crt.comodoca.com/COMODORSAAddTrustCA.crt0$
+http://ocsp.comodoca.com05
+3http://crl.usertrust.com/AddTrustExternalCARoot.crl05
+http://ocsp.usertrust.com0
+http://ocsp.quovadisglobal.com05
+)http://trust.quovadisglobal.com/qvrca.crt0
+'http://crl.quovadisglobal.com/qvrca.crl0
+http://ocsp.quovadisglobal.com07
++http://trust.quovadisglobal.com/qvicag4.crt0O
+(http://www.quovadisglobal.com/repository0
+)http://crl.quovadisglobal.com/qvicag4.crl0
+=== ECIO.dll ===
+!This program cannot be run in DOS mode.
+D$ HiD$ 
+HiD$ 
+t$HiD$ 
+t$HiD$ 
+bRecoveryCanceled
+IsolationAware function called after IsolationAwareCleanup
+m_bHelpMode = 
+m_pszProfileName = 
+m_hDevMode = 
+rgbBitmap
+SENDING control notification %d from control id 0x%04X to %hs window.
+Error: CWinThread::PumpMessage called when not permitted.
+Warning: CreateEvent failed in CWinThread::CreateThread.
+szRegistryKey
+SetCurrentProcessExplicitAppUserModelID
+Error: failed to load message box prompt string 0x%04x.
+colorResult
+colorResult
+ImageList_SetBkColor
+ImageList_GetBkColor
+Warning: failed to reclaim %d bytes for memory safety pool.
+strDriverNameOle
+strDeviceNameOle
+lgpn.lopnColor = 
+lb.lbColor = 
+pSolidColorBrush
+CD2DSolidColorBrush
+Warning: AfxOleSetUserCtrl(TRUE) called with application window hidden.
+InitNetworkAddressControl
+DwmIsCompositionEnabled
+DwmInvalidateIconicBitmaps
+Warning: Critical memory allocation failed!
+ERROR: Critical memory allocation from safety pool failed!
+Warning: Dynamic create of document type %hs failed.
+Warning: Dynamic create of frame %hs failed.
+InitCommonControlsEx
+Warning: Window creation failed: GetLastError returns 0x%8.8X
+Warning: not executing disabled command %d
+Implementation Warning: control notification = $%X.
+Warning: DeferWindowPos failed - low system resources.
+Warning: hDC is NULL in CWnd::GrayCtlColor; WM_CTLCOLOR not processed.
+	OnDestroy or PostNcDestroy in derived class will not be called.
+Warning: Creating dialog from within a COleControlModule application is not a supported scenario.
+>>> If this dialog has OLE controls:
+>>> AfxEnableControlContainer has not been called yet.
+Warning: Dialog creation failed!  GetLastError returns 0x%8.8X
+Warning: dialog creation failed.
+Warning: CreateDlgControls failed during dialog init.
+Warning: ExecuteDlgInit failed during dialog init.
+Warning: UpdateData failed during dialog init.
+UpdateData failed during dialog termination.
+Warning: LoadResource failed for dialog template.
+pIFileDialog
+pIFileDialogCustomize
+tmpFileDialogEvents
+tmpFileDialogControlEvents
+pIFileDialogCustomize
+enabled
+disabled
+m_pIFileDialog = 
+m_pIFileDialogCustomize = 
+CFileDialog
+Failed to load bitmap for normal image.
+Failed to load bitmap for selected image.
+m_bitmapDisabled = 
+dwMinor
+UpdateData failed during page deactivation
+PropertySheet() failed: GetLastError returned %d
+Modeless = 
+WM_SYSCOLORCHANGE
+WM_CTLCOLORMSGBOX
+WM_CTLCOLOREDIT
+WM_CTLCOLORLISTBOX
+WM_CTLCOLORBTN
+WM_CTLCOLORDLG
+WM_CTLCOLORSCROLLBAR
+WM_CTLCOLORSTATIC
+WM_DEVMODECHANGE
+WM_CANCELMODE
+WM_POWER
+WM_EXITHELPMODE
+WM_POWERBROADCAST
+WM_DEVICECHANGE
+hKeyCLSID
+hKeyInProc
+CreateFileTransactedW
+arrDisabledWnds
+Warning: failed to load menu for CFrameWnd.
+Warning: failed to create CFrameWnd.
+Warning: Dynamic create of view type %hs failed.
+Failed to create client pane/view for frame.
+CControlBar
+hKeyTypeLib
+hKeyVersion
+hKeyLocale
+hkeyClassID
+hkeyProgID
+hkeyClassID
+COleCurrency VarCyFromStr call failed.
+COleDateTime Object:
+COleDateTimeSpan Object:
+Warning: invalid DECIMAL number for control ID %d.
+dwMinor
+dwMinor
+Warning: File save-as failed.
+Warning: File save with new name failed.
+Warning: File save failed.
+Warning: failed to delete file after failed SaveAs.
+Error: failed to load AfxFormatString string 0x%04x.
+COleControlModule
+ChooseColorW
+m_cc.rgbResult = 
+m_cc.lpCustColors 
+CColorDialog
+strHide
+bInstalled
+hKeyTemp
+hKeyTemp
+hkeyProgIDInsertable
+hkeyClassIDInsertable
+hkeyInprocServer32
+Warning: StringFromCLSID failed in AfxOleRegisterServerName --
+	perhaps AfxOleInit() has not been called.
+rgbParams
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\oledisp2.cpp
+Warning: automation return value coercion failed.
+hWndLastControl
+hWndLastControl
+hWndLastControl
+Error: no data exchange control with ID 0x%04X.
+Warning: CDataExchange::Fail called when not validating.
+Error: fail validation with no control to restore focus to.
+Text in control ID %d is too long. Call DDV_MaxChars()!
+Warning: initial dialog data is out of range in control ID %d.
+trackmouseevent
+UpdateData failed during formview initial update.
+Warning: CreateDlgControls failed during form view init.
+hkeyClassID
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\oledisp1.cpp
+Warning: automation property coercion failed.
+Warning: automation argument coercion failed.
+COleDispatchException
+rectColor
+rectColor
+CMFCColorButton
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxcolorbutton.cpp
+strBrowseMode
+bShowDeviceTypeFonts
+f:\dd\vctools\vc7libs\ship\atlmfc\include\afxcontrolbarutil.h
+rectColor
+lstDocColors
+bAlphabeticMode
+CMFCPropertyGridColorProperty
+dwMinor
+strProfileName
+strProfileName
+strProfileName
+strProfileName
+argbPalette
+szColor
+strWinXPThemeColor
+penColor
+strProfileName
+strProfileName
+strProfileName
+strProfileName
+strProfileName
+strProfileName
+trackmouseevent
+strProfileName
+strProfileName
+Failed to create mouse anchor window! Last error is 0x%8.8X
+Warning: CScrollView scaled to nothing.
+Warning: CScrollView::GetDeviceScrollSizes returning invalid mapping mode.
+m_nMapMode = 
+color
+nColors
+color
+rectColor
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxcolorbar.cpp
+CMFCToolBarColorButton
+CMFCColorBar
+CMFCColorPopupMenu
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxcolorpopupmenu.cpp
+trackmouseevent
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxcontrolbarimpl.cpp
+strProfileName
+strProfileName
+m_cf.rgbColors = 
+trackmouseevent
+trackmouseevent
+strProfileName
+strProfileName
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxkeyboardmanager.cpp
+strProfileName
+strProfileName
+colors
+strColors
+tmColors
+rectControlBar
+rectControlBarScreen
+strProfileName
+strProfileName
+lstAutoHideBars
+rectControlBar
+bIsDockingControlBar
+lstNewMiniFrames
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxoledocipframewndex.cpp
+COleDocIPFrameWndEx
+strProfileName
+strProfileName
+rectNextControlBar
+rectNextControlBarVirt
+rectNextControlBar
+rectNextControlBarVirt
+rectControlBar
+rectNextControlBar
+rectNextControlBarVirt
+pTargetControlBar
+pTargetControlBar
+lstControlBars
+lstControlBars
+lstControlBars
+lstControlBars
+lstControlBars
+lstControlBars
+strProfileName
+strProfileName
+arTabsAutoColors
+trackmouseevent
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxautohidebutton.cpp
+CMFCAutoHideButton
+strProfileName
+strProfileName
+trackmouseevent
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\oledobj2.cpp
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\oledrop1.cpp
+strProfileName
+strProfileName
+trackmouseevent
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\oledobj1.cpp
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\oledrop2.cpp
+COleDropTarget::Revoke not called before destructor --
+lstControlBars
+ptOrgBtnRight
+ptOrgBtnLeft
+rectAutoHideBtn
+rectAutoHideDockBar
+rectAutoHideDockBar
+strProfileName
+strProfileName
+bIsAutoColor
+nAutoColorSize
+arColors
+szMode
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxcontrolrenderer.cpp
+CMFCControlRenderer
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxcolordialog.cpp
+rectColor
+rectColorBox
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxribboncolorbutton.cpp
+CMFCRibbonColorMenuButton
+CMFCRibbonColorButton
+color
+rectColor
+lstDocColors
+nColorsCount
+color
+rectColor
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxcolormenubutton.cpp
+CMFCColorMenuButton
+sizeDevice
+sizeDevice
+strProfileName
+strProfileName
+m_nUntitledCount = 
+Warning: GetWindowMenuPopup failed!
+Warning: failed to create new frame.
+strProfileName
+strProfileName
+strProfileName
+strProfileName
+trackmouseevent
+trackmouseevent
+trackmouseevent
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxautohidebar.cpp
+CMFCAutoHideBar
+pTabbedControlBar
+pTabbedControlBar
+lstControlBars
+lstControlBars
+nControlBarID
+f:\dd\vctools\vc7libs\ship\atlmfc\src\mfc\afxautohidedocksite.cpp
+CAutoHideDockSite
+Error: an in-place server failed to enter context help mode.
+hkeyObj
+hkeyDefIcon
+hkeyCLSID
+Warning OnNewDocument failed during COleClientItem::CreateXXXX
+=== OemServiceWinApp.exe ===
+!This program cannot be run in DOS mode.
+Failed OpenProcessToken
+Failed RasiePrivileges()
+inpoutx64.DLL
+IsInpOutDriverOpen
+Unable to open InpOut Driver!
+Unable to load InpOut DLL!
+Get DSDT Table Failed.
+Allocate buffer failed.
+Get FACP Table Failed.
+Allocate ACPI table buffer failed.
+*    Uniwill OEM Service Application  -  Version %02d.%02d                         *
+EventRegister
+EventSetInformation
+EventUnregister
+EventWriteTransfer
+Assertion failed: %Ts, file %Ts, line %d
+Assertion failed!
+(Press Retry to debug the application - JIT must be enabled)
+GetEnabledXStateFeatures
+D:\01_Project\UNIOEMSVC\Source\OemServiceWinApp\Win8.1Release_x64\OemServiceWinApp.pdb
+UnhandledExceptionFilter
+SetUnhandledExceptionFilter
+GetConsoleMode
+CreateFileW
+GetCPInfo
+'Symantec Time Stamping Services CA - G20
+http://ocsp.thawte.com0
+.http://crl.thawte.com/ThawteTimestampingCA.crl0
+'Symantec Time Stamping Services CA - G20
++Symantec Time Stamping Services Signer - G40
+http://ts-ocsp.ws.symantec.com07
++http://ts-aia.ws.symantec.com/tss-ca-g2.cer0<
++http://ts-crl.ws.symantec.com/tss-ca-g2.crl0(
+"http://ocsp2.globalsign.com/rootr306
+%http://crl.globalsign.com/root-r3.crl0b
+&https://www.globalsign.com/repository/0
+Bhttp://secure.globalsign.com/cacert/gsextendcodesignsha2g3ocsp.crt0>
+2http://ocsp2.globalsign.com/gsextendcodesignsha2g30U
+&https://www.globalsign.com/repository/0
+4http://crl.globalsign.com/gsextendcodesignsha2g3.crl0
+'Symantec Time Stamping Services CA - G2
+=== OemServiceWinApp.dll ===
+!This program cannot be run in DOS mode.
+Failed OpenProcessToken
+Failed RasiePrivileges()
+inpoutx64.DLL
+IsInpOutDriverOpen
+Unable to open InpOut Driver!
+Unable to load InpOut DLL!
+Get DSDT Table Failed.
+Allocate buffer failed.
+Get FACP Table Failed.
+Allocate ACPI table buffer failed.
+*    Uniwill OEM Service Application  -  Version %02d.%02d                         *
+EventRegister
+EventSetInformation
+EventUnregister
+EventWriteTransfer
+Assertion failed: %Ts, file %Ts, line %d
+Assertion failed!
+(Press Retry to debug the application - JIT must be enabled)
+GetEnabledXStateFeatures
+D:\OemService\MyColor2\bin\Release\OemServiceWinApp.pdb
+OemServiceWinApp.dll
+UnhandledExceptionFilter
+SetUnhandledExceptionFilter
+GetConsoleMode
+CreateFileW
+GetCPInfo
+'Symantec Time Stamping Services CA - G20
+http://ocsp.thawte.com0
+.http://crl.thawte.com/ThawteTimestampingCA.crl0
+'Symantec Time Stamping Services CA - G20
++Symantec Time Stamping Services Signer - G40
+http://ts-ocsp.ws.symantec.com07
++http://ts-aia.ws.symantec.com/tss-ca-g2.cer0<
++http://ts-crl.ws.symantec.com/tss-ca-g2.crl0(
+"http://ocsp2.globalsign.com/rootr306
+%http://crl.globalsign.com/root-r3.crl0b
+&https://www.globalsign.com/repository/0
+Bhttp://secure.globalsign.com/cacert/gsextendcodesignsha2g3ocsp.crt0>
+2http://ocsp2.globalsign.com/gsextendcodesignsha2g30U
+&https://www.globalsign.com/repository/0
+4http://crl.globalsign.com/gsextendcodesignsha2g3.crl0
+'Symantec Time Stamping Services CA - G2
+=== DefaultRGBKB.exe ===
+!This program cannot be run in DOS mode.
+Microsoft.Win32
+HIDP_STATUS_INVALID_PREPARSED_DATA
+HIDP_DATA
+m_LM_EC_RGB
+m_LM_ITE_RGB
+m_ILM_RGBKB
+DefaultRGBKB
+WMIEC
+HIDP_STATUS_BUTTON_NOT_PRESSED
+HIDP_STATUS_NOT_IMPLEMENTED
+HIDP_STATUS_INCOMPATIBLE_REPORT_ID
+HidP_InitializeReportForID
+RGBKB_EventID
+HIDP_STATUS_USAGE_NOT_FOUND
+HIDP_STATUS_DATA_INDEX_NOT_FOUND
+DIGCF_DEVICEINTERFACE
+EFFECT_USERMODE
+HIDP_STATUS_VALUE_OUT_OF_RANGE
+HIDP_STATUS_DATA_INDEX_OUT_OF_RANGE
+cheatRGB_2ndME
+HIDP_STATUS_INVALID_REPORT_TYPE
+HIDP_REPORT_TYPE
+EC_RGBKBBKL_LEVEL_UPDATE
+RGBKB_NV_SAVE
+HID_Set_Picture_12H
+HID_Set_Color_14H
+HID_Set_RowIndex_16H
+HID_Set_Effect_Type_08H
+HID_Get_Effect_Type_88H
+HIDP_STATUS_INVALID_REPORT_LENGTH
+HIDP_STATUS_BUFFER_TOO_SMALL
+ILM_RGBKB_GetEffectALL
+ILM_RGBKB_SetEffectALL
+HIDP_STATUS_NULL
+WMIReadECRAM
+WMIWriteECRAM
+Event_LM
+RGB_LED_NUM
+HIDP_STATUS_I8042_TRANS_UNKNOWN
+HIDP_STATUS_INTERNAL_ERROR
+HIDD_ATTRIBUTES
+HIDP_STATUS_BAD_LOG_PHY_VALUES
+HIDP_STATUS_SUCCESS
+RGB_S
+HIDP_STATUS_REPORT_DOES_NOT_EXIST
+HIDP_STATUS_IS_VALUE_ARRAY
+HIDP_STATUS_NOT_VALUE_ARRAY
+Save_Lighting_Color_Data
+RGBKB_Event_Data
+HidD_FreePreparsedData
+HidD_GetPreparsedData
+DeviceInterfaceData
+lpDeviceInterfaceDetailData
+nDeviceInfoData
+lpDeviceInfoData
+HidP_GetData
+HidP_SetData
+event_data
+layout_colordata
+RegistryValueRead
+RegistryKeyRead
+ILM_RGBKB_SetSpeed
+add_EventArrived
+event_id
+HidD_GetHidGuid
+RegistryValueKind
+m_HIDDevice
+IMMDevice
+hDevice
+OemService
+RGBKB_Mode
+DLL_SetMusicMode
+Set_ITE_Effect_Type_StaticMode
+nShareMode
+Set_ITE_Effect_Type_ApMode
+Set_ITE_Effect_Type_UserMode
+Set_ITE_Effect_Type_FwMode
+layout_mode
+query_mode
+HidP_Range
+HidP_NotRange
+CreateFile
+Contorl_LED_Welcome
+cheatRGB_4Zone
+RGBKB_Type
+ILM_RGBKB_GetRGBKeyboardType
+HidP_Feature
+HidD_GetFeature
+HidD_SetFeature
+RegistryValueWrite
+RegistryHive
+DefaultRGBKB.exe
+nDeviceInterfaceDetailDataSize
+Contorl_LED_Off
+HidD_GetSerialNumberString
+HidD_GetManufacturerString
+HidD_GetProductString
+LM_SetPowerSaving
+GetDevicePath
+UsbHidModel
+OemServiceModel
+LightingModel
+System.ComponentModel
+ILM_RGBKB_SaveLightingLevel
+SetupDiGetDeviceInterfaceDetail
+hid.dll
+OemServiceWinApp.dll
+Control
+control
+WMIWriteBiosRom
+ILM_RGBKB_GetFirmwareVersion
+RGBKB_Direction
+ILM_RGBKB_SetDirection
+RGBKB_Solution
+Set_ITE_Effect_Type_ApMode_Stop
+LM_ScanCode_EventHander
+m_LED_Vender
+ColorBuffer
+colorBuffer
+m_HIDManager
+ManagementEventWatcher
+RGBKB_Event_Handler
+EventArrivedEventHandler
+StartupEventHandler
+add_m_Layout_Event_handler
+remove_m_Layout_Event_handler
+event_handler
+ILM_RGBKB_GetPower
+ILM_RGBKB_SetPower
+LM_SetPower
+WKDColor
+RGBKB_Color
+ILM_RGBKB_SetColor
+LM_SetColor
+save_layout_color
+IMMDeviceEnumerator
+HIDNativeMethods
+SetupDiEnumDeviceInterfaces
+System.Runtime.InteropServices
+System.Runtime.CompilerServices
+DefaultRGBKB.Properties.Resources.resources
+DebuggingModes
+HidP_SetUsages
+Microsoft.Win32.SafeHandles
+HidD_GetAttributes
+EventArrivedEventArgs
+StartupEventArgs
+ColorBlocks
+HidP_Value_Caps
+HidP_Button_Caps
+HidCaps
+HidP_GetValueCaps
+HidP_GetButtonCaps
+HidP_GetCaps
+ILM_RGBKB_GetBrighntess
+ILM_RGBKB_SetBrighntess
+RGBKB_PowerStatus
+powerStatus
+RGBKB_Effect
+ILM_RGBKB_GetEffect
+ILM_RGBKB_SetEffect
+MMDeviceEnumeratorComObject
+lpDeviceInfoSet
+ILM_RGBKB_Init
+Contorl_LED_Default
+LMScanCodeEvent
+WMIHandleEvent
+EndWMIRecieveEvent
+StartWMIReceiveEvent
+get_NewEvent
+HidD_SetOutputReport
+SetupDiDestroyDeviceInfoList
+HidP_Input
+HidP_Output
+pguidEventContext
+RegistryView
+ColorIndex
+RegistryKey
+WqlEventQuery
+URegistry
+DefaultRGBKB
+D:\Max\Source\GamingCenter\GamingCenterALL_1.2.2.6\GamingCenterALL\DefaultRGBKB\obj\Release\DefaultRGBKB.pdb
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true</dpiAware>
+          type="win32"
+          name="Microsoft.Windows.Common-Controls"
+'Symantec Time Stamping Services CA - G20
+http://ocsp.thawte.com0
+.http://crl.thawte.com/ThawteTimestampingCA.crl0
+'Symantec Time Stamping Services CA - G20
++Symantec Time Stamping Services Signer - G40
+http://ts-ocsp.ws.symantec.com07
++http://ts-aia.ws.symantec.com/tss-ca-g2.cer0<
++http://ts-crl.ws.symantec.com/tss-ca-g2.crl0(
+"http://ocsp2.globalsign.com/rootr306
+%http://crl.globalsign.com/root-r3.crl0b
+&https://www.globalsign.com/repository/0
+Bhttp://secure.globalsign.com/cacert/gsextendcodesignsha2g3ocsp.crt0>
+2http://ocsp2.globalsign.com/gsextendcodesignsha2g30U
+&https://www.globalsign.com/repository/0
+4http://crl.globalsign.com/gsextendcodesignsha2g3.crl0
+'Symantec Time Stamping Services CA - G2
+=== CleanEC.exe ===
+!This program cannot be run in DOS mode.
+OSD_KB_LED_LEVEL0
+OSD_KB_LED_LEVEL1
+User_Fan_Level1
+Microsoft.Win32
+OSD_KB_LED_LEVEL2
+WINDOW_NAME_MYCOLOR2
+WM_MSG_MYCOLOR2
+User_Fan_Level2
+OSD_KB_LED_LEVEL3
+User_Fan_Level3
+OSD_KB_LED_LEVEL4
+User_Fan_Level4
+User_Fan_Level5
+isSupportRGBLB
+WMIEC
+MSG_MYLIGHTBAR1_AP_HIDE
+MSG_MYLIGHTBAR2_AP_HIDE
+MSG_MYCOLOR2_AP_HIDE
+MSG_MYAPP_AP_HIDE
+MSG_MYLIGHTBAR_AP_HIDE
+MSG_MYCOLOR_AP_HIDE
+MSG_MYFANBOOST_AP_HIDE
+MSG_MYMACROKEY_AP_HIDE
+FAN_LEVEL_THREE
+COLOR_LEVEL_THREE
+COLOR_LEVEL_NINE
+FAN_LEVEL_ONE
+COLOR_LEVEL_ONE
+MSG_MYCOLOR2_AP_CLOSE
+MSG_MYCOLOR_AP_CLOSE
+MSG_MYFANBOOST_AP_CLOSE
+OSD_FANBOOST_UPDATE
+ADDR_MAFAN_CONTROL_BYTE
+ADDR_REDBAR_CONTROL_BYTE
+ADDR_BLUEBAR_CONTROL_BYTE
+ADDR_GREENBAR_CONTROL_BYTE
+ADDR_LIGHTBAR_CONTROL_BYTE
+ADDR_SILENTMODE_STATUS_BYTE
+FAN_LEVEL_FIVE
+COLOR_LEVEL_FIVE
+MSG_MYCOLOR2_AP_MINIMIZE
+MSG_MYCOLOR_AP_MINIMIZE
+MSG_MYFANBOOST_AP_MINIMIZE
+FAN_MODE_CUSTOMIZE
+OSD_POWERSAVEOFF
+OSD_BREATH_LED_OFF
+POWERSAVE_MODE_OFF
+BREATHINGLIGHTEFFECT_MODE_OFF
+MSG_MYAPP_EVENT_WMI
+FAN_MODE_NORMAL
+WMIReadECRAM
+WMIWriteECRAM
+ADDR_MYFAN2_L1_PWM
+ADDR_MYFAN2_L2_PWM
+ADDR_MYFAN2_L3_PWM
+ADDR_MYFAN2_L4_PWM
+ADDR_MYFAN2_L5_PWM
+MSG_MYCOLOR2_AP_OPEN
+MSG_MYCOLOR_AP_OPEN
+MSG_MYFANBOOST_AP_OPEN
+COLOR_LEVEL_SEVEN
+OSD_POWERSAVEON
+OSD_BREATH_LED_ON
+POWERSAVE_MODE_ON
+BREATHINGLIGHTEFFECT_MODE_ON
+MSG_MYCOLOR2_AP_RGBDOWN
+COLOR_LEVEL_ZERO
+FAN_LEVEL_TWO
+COLOR_LEVEL_TWO
+OSD_FAN_OVER_TEMP
+MSG_MYCOLOR2_AP_RGBUP
+MSG_MYFANBOOST_EVENT_POWER
+WINDOW_NAME_MYCOLOR
+FAN_LEVEL_FOUR
+COLOR_LEVEL_FOUR
+COLOR_LEVEL_EIGHT
+WINDOW_NAME_MYFANBOOST
+FAN_MODE_BOOST
+MSG_MYCOLOR2_AP_SHOW
+MSG_MYCOLOR_AP_SHOW
+MSG_MYFANBOOST_AP_SHOW
+COLOR_LEVEL_SIX
+RegistrySoftwareKeyRead
+RegistryKeyRead
+BreathLed
+add_EventArrived
+RegistryValueKind
+RGBKeyBoard
+SetOEMService
+APP_Normal_Mode
+User_Fan_Mode
+APP_LightBar_Mode
+User_Mode
+APP_ImageProjectionLight_Mode
+FanBoost_Mode
+AirplaneMode
+PowerSaveMode
+GetRGBLightBarMode
+USBChargerMode
+WelcomeLightMode
+SilentMode
+_mode
+ecBt1Temperature
+RegistrySoftwareKeyDelete
+RegistrySoftwareKeyWrite
+RegistryKeyWrite
+RegistryHive
+MyFanCTLByteFlag
+RGBLightBarCtrlByteFlag
+ColorByteFlag
+OverClock
+OemServiceWinApp.dll
+RGBKeybaord_Trigger
+SilentMode_Trigger
+RGBKeybaordWelcome_Trigger
+RGBLogo_Trigger
+FanBoost_Trigger
+ManagementEventWatcher
+EventArrivedEventHandler
+System.Runtime.InteropServices
+System.Runtime.CompilerServices
+DebuggingModes
+MyBatPowerBat
+WMIHandleEvent
+EndWMIRecieveEvent
+StartWMIReceiveEvent
+FanBoost
+RegistryView
+RegistrySoftwareKeyDeleteSubKey
+RegistryKey
+WqlEventQuery
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true</dpiAware>
+          type="win32"
+          name="Microsoft.Windows.Common-Controls"
+'Symantec Time Stamping Services CA - G20
+http://ocsp.thawte.com0
+.http://crl.thawte.com/ThawteTimestampingCA.crl0
+'Symantec Time Stamping Services CA - G20
++Symantec Time Stamping Services Signer - G40
+http://ts-ocsp.ws.symantec.com07
++http://ts-aia.ws.symantec.com/tss-ca-g2.cer0<
++http://ts-crl.ws.symantec.com/tss-ca-g2.crl0(
+"http://ocsp2.globalsign.com/rootr306
+%http://crl.globalsign.com/root-r3.crl0b
+&https://www.globalsign.com/repository/0
+Bhttp://secure.globalsign.com/cacert/gsextendcodesignsha2g3ocsp.crt0>
+2http://ocsp2.globalsign.com/gsextendcodesignsha2g30U
+&https://www.globalsign.com/repository/0
+4http://crl.globalsign.com/gsextendcodesignsha2g3.crl0
+'Symantec Time Stamping Services CA - G2
+=== SmIoDll.dll ===
+!This program cannot be run in DOS mode.
+HiD$ 
+Heap validation failed.
+Second Chance Assertion Failed: File 
+Assertion failed: 
+Assertion failed!
+[I2CReadByte]DeviceAddress = %d, SubAddress = %d, Data = 0x%x
+[I2CWriteByte]DeviceAddress = %d, SubAddress = %d, Data = %d
+[I2CReadWord]DeviceAddress = %d, SubAddress = %d, Data = 0x%x
+[I2CReadWord]DeviceAddress = %d, SubAddress = %d, Data = %d
+[I2CReadBlock]DeviceAddress = %d, SubAddress = %d, Data = 0x%x, BlockLength = %d
+[I2CWriteBlock]DeviceAddress = %d, SubAddress = %d, Data = 0x%x, BlockLength = %d
+CreateService failed!  Error = %d 
+Open SC Manager failed! Error = %d 
+Unknown ManageDriver() function. 
+OpenService failed!  Error = %d 
+DeleteService failed!  Error = %d 
+StartService failure! Error = %d 
+ControlService failed!  Error = %d 
+GetCurrentDirectory failed!  Error = %d 
+D:\ToolSrc\SMBUS_Test\SmIoDll\x64\Release\SmIoDll.pdb
+SmIoDll.dll
+EnableDebugConsolePrint
+I2CReadBlock
+I2CReadByte
+I2CReadWord
+I2CWriteBlock
+I2CWriteByte
+I2CWriteWord
+LoadSMIODriver
+ReadSmbusFuncDevNumber
+SetSmbusFuncDevNumber
+UnloadSMIODriver
+DeviceIoControl
+CreateFileW
+OpenServiceW
+StartServiceW
+ControlService
+DeleteService
+CloseServiceHandle
+CreateServiceW
+UnhandledExceptionFilter
+SetUnhandledExceptionFilter
+GetCPInfo
+GetConsoleMode
+'Symantec Time Stamping Services CA - G20
+http://ocsp.thawte.com0
+.http://crl.thawte.com/ThawteTimestampingCA.crl0
+'Symantec Time Stamping Services CA - G20
++Symantec Time Stamping Services Signer - G40
+http://ts-ocsp.ws.symantec.com07
++http://ts-aia.ws.symantec.com/tss-ca-g2.cer0<
++http://ts-crl.ws.symantec.com/tss-ca-g2.crl0(
+"http://ocsp2.globalsign.com/rootr306
+%http://crl.globalsign.com/root-r3.crl0b
+&https://www.globalsign.com/repository/0
+Bhttp://secure.globalsign.com/cacert/gsextendcodesignsha2g3ocsp.crt0>
+2http://ocsp2.globalsign.com/gsextendcodesignsha2g30U
+&https://www.globalsign.com/repository/0
+4http://crl.globalsign.com/gsextendcodesignsha2g3.crl0
+'Symantec Time Stamping Services CA - G2
+=== inpoutx64.dll ===
+!This program cannot be run in DOS mode.
+Closing InpOut driver...
+System32\Drivers\
+\Drivers\
+inpout32
+inpoutx64
+Unable to open %s driver. Error code %d.
+ driver
+\\.\%s
+Attempting to open InpOut driver...
+This indicates a bug in your application. It is most likely the result of calling an MSIL-compiled (/clr) function from a native constructor or from DllMain.
+- unable to open console device
+DeviceIoControl
+CreateFileA
+CloseServiceHandle
+CreateServiceA
+StartServiceA
+OpenServiceA
+UnhandledExceptionFilter
+SetUnhandledExceptionFilter
+GetConsoleMode
+GetCPInfo
+GetConsoleOutputCP
+inpoutx64.dll
+IsInpOutDriverOpen
+!This program cannot be run in DOS mode.
+e:\WinDDK\3790.1830\src\hwInterfaceDrv\objfre_wxp_x86\i386\inpout32.pdb
+IoDeleteDevice
+IoCreateDevice
+"VeriSign Time Stamping Services CA0
++VeriSign Time Stamping Services Signer - G20
+http://ocsp.verisign.com0
+"http://crl.verisign.com/tss-ca.crl0
+"VeriSign Time Stamping Services CA0
+http://ocsp.verisign.com0
+0http://crl.verisign.com/ThawteTimestampingCA.crl0
+2Terms of use at https://www.verisign.com/rpa (c)041.0,
+https://www.verisign.com/rpa01
+ http://crl.verisign.com/pca3.crl0
+2Terms of use at https://www.verisign.com/rpa (c)041.0,
+5Digital ID Class 3 - Microsoft Software Validation v21
+/http://CSC3-2004-crl.verisign.com/CSC3-2004.crl0D
+https://www.verisign.com/rpa0
+http://ocsp.verisign.com0?
+3http://CSC3-2004-aia.verisign.com/CSC3-2004-aia.cer0
+Dhttp://crl.microsoft.com/pki/crl/products/MicrosoftCodeVerifRoot.crl0
+2Terms of use at https://www.verisign.com/rpa (c)041.0,
+,http://www.highrez.co.uk/downloads/inpout32/0
+"VeriSign Time Stamping Services CA
+!This program cannot be run in DOS mode.
+e:\WinDDK\3790.1830\src\hwInterfaceDrv\objfre_wnet_AMD64\amd64\inpoutx64.pdb
+IoDeleteDevice
+IoCreateDevice
+"VeriSign Time Stamping Services CA0
++VeriSign Time Stamping Services Signer - G20
+http://ocsp.verisign.com0
+"http://crl.verisign.com/tss-ca.crl0
+"VeriSign Time Stamping Services CA0
+http://ocsp.verisign.com0
+0http://crl.verisign.com/ThawteTimestampingCA.crl0
+2Terms of use at https://www.verisign.com/rpa (c)041.0,
+https://www.verisign.com/rpa01
+ http://crl.verisign.com/pca3.crl0
+2Terms of use at https://www.verisign.com/rpa (c)041.0,
+5Digital ID Class 3 - Microsoft Software Validation v21
+/http://CSC3-2004-crl.verisign.com/CSC3-2004.crl0D
+https://www.verisign.com/rpa0
+http://ocsp.verisign.com0?
+3http://CSC3-2004-aia.verisign.com/CSC3-2004-aia.cer0
+Dhttp://crl.microsoft.com/pki/crl/products/MicrosoftCodeVerifRoot.crl0
+2Terms of use at https://www.verisign.com/rpa (c)041.0,
+,http://www.highrez.co.uk/downloads/inpout32/0
+"VeriSign Time Stamping Services CA
+'Symantec Time Stamping Services CA - G20
+http://ocsp.thawte.com0
+.http://crl.thawte.com/ThawteTimestampingCA.crl0
+'Symantec Time Stamping Services CA - G20
++Symantec Time Stamping Services Signer - G40
+http://ts-ocsp.ws.symantec.com07
++http://ts-aia.ws.symantec.com/tss-ca-g2.cer0<
++http://ts-crl.ws.symantec.com/tss-ca-g2.crl0(
+"http://ocsp2.globalsign.com/rootr306
+%http://crl.globalsign.com/root-r3.crl0b
+&https://www.globalsign.com/repository/0
+Bhttp://secure.globalsign.com/cacert/gsextendcodesignsha2g3ocsp.crt0>
+2http://ocsp2.globalsign.com/gsextendcodesignsha2g30U
+&https://www.globalsign.com/repository/0
+4http://crl.globalsign.com/gsextendcodesignsha2g3.crl0
+'Symantec Time Stamping Services CA - G2
+=== SmIoDriver.sys ===
+!This program cannot be run in DOS mode.
+D:\ToolSrc\SMBUS_Test\SmIoDriver\x64\Release\SmIoDriver.pdb
+Enter I2CReadByte Function
+SMBus Command = 0x%x
+SMBus Reading Data = 0x%x
+Enter I2CWriteByte Function
+SMBus Writeing Data = 0x%x
+Enter I2CReadWord Function
+Enter I2CWriteWord Function
+SMBus Writing Data = 0x%x
+Enter I2CReadBlock Function
+SMBus Reading block Data = 0x%x
+SMBus Reading the first block Data = 0x%x
+Enter I2CWriteBlock Function
+SMBus Writeing block Data = 0x%x
+Enter IsSMBusNonBusy Function
+Checking SMBus busy time out
+Enter IsSMBusCommandFinish Function
+SMBus wating for Finish time out
+Enter IsSMBusByteDone Function
+SMBus wating for DS time out
+Enter I2CEnable Function
+Enter SMBusHostEnable Function
+------------ Called IOCTL_COMMAND_BUFFERED -------------
+SMIO_PORT_READ_BYTE
+SMIO_PORT_WRITE_BYTE
+SMIO_PORT_READ_WORD
+SMIO_PORT_WRITE_WORD
+SMIO_PORT_READ_DWORD
+SMIO_PORT_WRITE_DWORD
+SMIO_I2C_READ_BYTE
+SMIO_I2C_WRITE_BYTE
+SMIO_I2C_READ_WORD
+SMIO_I2C_WRITE_WORD
+SMIO_I2C_READ_BLOCK
+SMIO_I2C_WRITE_BLOCK
+ERROR: unrecognized IOCTL %x
+Enter GetSMBusBaseAddr Function
+SMBus Base Address = 0x%x
+Couldn't create the device object
+IoCreateDevice
+IoDeleteDevice
+chttp://www.microsoft.com/pkiops/crl/Microsoft%20Windows%20Third%20Party%20Component%20CA%202012.crl0
+ehttp://www.microsoft.com/pkiops/certs/Microsoft%20Windows%20Third%20Party%20Component%20CA%202012.crt0
+Ehttp://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z
+>http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt0
+(https://www.microsoft.com/en-us/windows 0
+Microsoft Time-Stamp Service
+Microsoft Time-Stamp Service0
+Ehttp://crl.microsoft.com/pki/crl/products/MicTimStaPCA_2010-07-01.crl0Z
+>http://www.microsoft.com/pki/certs/MicTimStaPCA_2010-07-01.crt0
+Ehttp://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z
+>http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt0
+1http://www.microsoft.com/PKI/docs/CPS/default.htm0@
+Microsoft Time-Stamp Service

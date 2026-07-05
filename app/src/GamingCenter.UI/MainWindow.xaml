@@ -1,0 +1,18 @@
+<Window x:Class="GamingCenter.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Gaming Center" Height="500" Width="900"
+        Background="#0d1117"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize" MinWidth="700" MinHeight="500">
+    <Grid Margin="24">
+        <Border Background="#161b22" BorderBrush="#30363d" BorderThickness="1" CornerRadius="8" Padding="18">
+            <StackPanel>
+                <TextBlock Text="GAMING CENTER" Foreground="#e6edf3" FontSize="16" FontWeight="Bold"/>
+                <TextBlock Text="Se você está vendo esta janela, o WPF carregou corretamente." Foreground="#b0b8c1" Margin="0,0,0,10"/>
+                <Button Content="Test button" Background="#6c5ce7" Foreground="#e6edf3" Padding="8,4" Click="OnTestClick"/>
+                <TextBlock x:Name="StatusLine" Text="Ready" Foreground="#6bff8a" Margin="0,10,0,0"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

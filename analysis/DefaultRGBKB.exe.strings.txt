@@ -1,0 +1,941 @@
+!This program cannot be run in DOS mode.
+.text
+`.rsrc
+@.reloc
+,Brg
+p	o=
+*Z~G
+ bX(
+-$rX
+.(+)
++}r.
+BSJB
+v4.0.30319
+#Strings
+#GUID
+#Blob
+-)Q)Q
+ :	c
+ #	j
+ #	x
+ T#J
+EC_KBID_101
+MEZone_2nd_101
+IEnumerable`1
+Reserved1
+fun1
+EC_KBID_102
+MEZone_2nd_102
+Microsoft.Win32
+ToInt32
+Reserved2
+fun2
+Reserved3
+fun3
+ToUInt64
+Reserved4
+fun4
+m_SupportByte5
+fun5
+UInt16
+fun6
+fun7
+fun8
+fun9
+<Module>
+EFFECT_AURORA
+HIDP_STATUS_INVALID_PREPARSED_DATA
+HIDP_DATA
+SAVE_LIGHTING_EFFECT_DATA
+m_LM_EC_RGB
+m_LM_ITE_RGB
+m_ILM_RGBKB
+DefaultRGBKB
+WMIEC
+ITE_SPEC
+EFFECT_TYPE_MUSIC
+EFFECT_MUSIC
+EFFECT_STATIC
+OriginPC
+InitAudioC
+GENERIC_READ
+FILE_SHARE_READ
+FILE_FLAG_OVERLAPPED
+HIDP_STATUS_BUTTON_NOT_PRESSED
+HIDP_STATUS_NOT_IMPLEMENTED
+MS_RESERVED
+get_GUID
+HIDP_STATUS_INCOMPATIBLE_REPORT_ID
+m_Project_ID
+HidP_InitializeReportForID
+VendorID
+ProductID
+RGBKB_EventID
+ReportID
+reportID
+USAGE_PAGE_ME_2ND
+HIDP_STATUS_USAGE_NOT_FOUND
+HIDP_STATUS_DATA_INDEX_NOT_FOUND
+DIGCF_DEVICEINTERFACE
+TRACE
+EFFECT_USERMODE
+EFFECT_MARQUEE
+USAGE
+HIDP_STATUS_VALUE_OUT_OF_RANGE
+HIDP_STATUS_DATA_INDEX_OUT_OF_RANGE
+EFFECT_RIPPLE
+cheatRGB_2ndME
+HIDP_STATUS_INVALID_REPORT_TYPE
+HIDP_REPORT_TYPE
+EFFECT_TYPE_PICTURE
+EC_RGBKBBKL_LEVEL_UPDATE
+GENERIC_WRITE
+FILE_SHARE_WRITE
+EC_PROJECT_ID_BYTE
+EC_AP_OEM_BYTE
+NV_NOT_SAVE
+RGBKB_NV_SAVE
+EFFECT_WAVE
+EFFECT_REACTIVE
+EFFECT_BREATHING
+OPEN_EXISTING
+HID_Set_Picture_12H
+HID_Set_Color_14H
+HID_Set_RowIndex_16H
+HID_Set_Effect_Type_08H
+HID_Get_Effect_Type_88H
+EFFECT_FLASH
+HIDP_STATUS_INVALID_REPORT_LENGTH
+EFFECT_STACK
+EFFECT_SPARK
+FATAL
+LOG_LEVEL
+HIDP_STATUS_BUFFER_TOO_SMALL
+ILM_RGBKB_GetEffectALL
+ILM_RGBKB_SetEffectALL
+LM_SetEffectALL
+HIDP_STATUS_NULL
+EC_KBID_101M
+EC_KBID_102M
+WMIReadECRAM
+WMIWriteECRAM
+Event_LM
+RGB_LED_NUM
+EC_PROJECT_GIxCN
+EC_PROJECT_GJxCN
+EC_PROJECT_GKxCN
+EC_PROJECT_GIxKN
+EC_PROJECT_GJxKN
+EFFECT_NEON
+HIDP_STATUS_I8042_TRANS_UNKNOWN
+EFFECT_UNKNOWN
+EFFECT_RIPPLEO
+System.IO
+STOPMONITORAUDIO
+STARTMONITORAUDIO
+EFFECT_NOMO
+RippleO
+EFFECT_TYPE_AP
+EFFECT_RAINDROP
+ThrowExceptionForHR
+HIDP_STATUS_INTERNAL_ERROR
+HIDD_ATTRIBUTES
+HIDP_STATUS_BAD_LOG_PHY_VALUES
+HIDP_STATUS_SUCCESS
+OPEN_ALWAYS
+RGB_S
+EC_PROJECT_GK7CN_S
+EFFECT_IMPACT
+INIT
+DIGCF_PRESENT
+USAGE_PAGE_ME_1ST
+HIDP_STATUS_REPORT_DOES_NOT_EXIST
+m_IAEV
+EFFECT_TYPE_FW
+EFFECT_RAINBOW
+EFFECT_TYPE_ROW
+EFFECT_MIX
+EC_PROJECT_GK5CN_X
+HIDP_STATUS_IS_VALUE_ARRAY
+HIDP_STATUS_NOT_VALUE_ARRAY
+EC_PROJECT_LEGANCY
+EC_PROJECT_GK7CPCS_GK5CQ7Z
+value__
+Reserved2a
+Aurora
+Save_Lighting_Color_Data
+Save_Lighting_Effect_Data
+RGBKB_Event_Data
+HidD_FreePreparsedData
+HidD_GetPreparsedData
+preparsedData
+DeviceInterfaceData
+oInterfaceData
+lpDeviceInterfaceDetailData
+oDetailData
+nDeviceInfoData
+lpDeviceInfoData
+lpData
+HidP_GetData
+HidP_SetData
+PropertyData
+m_save_lighting_data
+m_ap_effect_data
+event_data
+layout_colordata
+Reserved2b
+mscorlib
+Reserved2c
+Exec
+System.Collections.Generic
+Music
+Sync
+Reserved2d
+RegistryValueRead
+lenRead
+bufferRead
+buuferRead
+RegistryKeyRead
+Thread
+dllToLoad
+ILM_RGBKB_SetSpeed
+layoutSpeed
+save_speed
+layout_speed
+Interlocked
+OnKeyPressed
+Enable_EC_OnkeyPressed
+Disable_EC_OnkeyPressed
+m_enableOnkeyPressed
+bSaved
+add_EventArrived
+Reserved
+Synchronized
+gHid
+fw_effect_id
+event_id
+HidD_GetHidGuid
+InterfaceClassGuid
+BitField
+lenCmd
+bufferCmd
+ReadToEnd
+RegistryValueKind
+valuekind
+InvokeMethod
+method
+Reserved2e
+enalbe
+oInterface
+m_HIDDevice
+IMMDevice
+hDevice
+OemService
+defaultInstance
+CustomCode
+RGBKB_Mode
+DLL_SetMusicMode
+Set_ITE_Effect_Type_StaticMode
+nShareMode
+Set_ITE_Effect_Type_ApMode
+Set_ITE_Effect_Type_UserMode
+Set_ITE_Effect_Type_FwMode
+scancode
+layout_mode
+query_mode
+Marquee
+m_UsagePage
+LinkUsagePage
+GetUsagePage
+usagePage
+LinkUsage
+get_Message
+HidP_Range
+IsStringRange
+IsDesignatorRange
+IsRange
+HidP_NotRange
+CompareExchange
+Mechenike
+EndInvoke
+BeginInvoke
+Set_Welcome_Effect_Enable
+m_bEnable
+enable
+Enumerable
+IDisposable
+m_Handle
+SafeFileHandle
+RuntimeTypeHandle
+CloseHandle
+NullHandle
+GetTypeFromHandle
+Single
+CreateFile
+hFile
+role
+Console
+Ripple
+hModule
+set_WindowStyle
+ProcessWindowStyle
+set_FileName
+procedureName
+m_logName
+strName
+get_DirectoryName
+Contorl_LED_Welcome
+m_Volume
+get_Volume
+set_Volume
+IAudioEndpointVolume
+WriteLine
+Combine
+None
+cheatRGB_4Zone
+USAGE_PAGE_4Zone
+SingleZone
+FourZone
+ManagementScope
+RGBKB_Type
+m_EC_KB_Type
+m_ITE_KB_Type
+m_KB_Type
+ILM_RGBKB_GetRGBKeyboardType
+ComInterfaceType
+ValueType
+reportType
+m_effect_type
+System.Core
+HidP_Feature
+WriteFeature
+HidD_GetFeature
+HidD_SetFeature
+get_Culture
+set_Culture
+resourceCulture
+ApplicationSettingsBase
+Dispose
+Speed_update
+Brightness_update
+Effect_update
+MulticastDelegate
+lpTemplate
+EditorBrowsableState
+Activate
+Delete
+RegistryValueWrite
+pbMute
+UnMute
+GetMute
+SetMute
+STAThreadAttribute
+CompilerGeneratedAttribute
+GuidAttribute
+GeneratedCodeAttribute
+DebuggerNonUserCodeAttribute
+DebuggableAttribute
+EditorBrowsableAttribute
+ComVisibleAttribute
+AssemblyTitleAttribute
+InterfaceTypeAttribute
+AssemblyTrademarkAttribute
+TargetFrameworkAttribute
+AssemblyFileVersionAttribute
+AssemblyConfigurationAttribute
+AssemblyDescriptionAttribute
+ThemeInfoAttribute
+UnmanagedFunctionPointerAttribute
+CompilationRelaxationsAttribute
+AssemblyProductAttribute
+AssemblyCopyrightAttribute
+AssemblyCompanyAttribute
+RuntimeCompatibilityAttribute
+set_UseShellExecute
+IsAbsolute
+ToByte
+get_Value
+Get_ITE_Light_Value
+Translate_ITE_SpeedValue
+InvalidHandleValue
+Translate_ITE_DirectionValue
+GetValue
+SetValue
+Translate_ITE_LightValue
+Translate_Layout_LightValue
+RawValue
+setvalue
+defaultvalue
+Save
+Wave
+layout_save
+RegistryHive
+Reactive
+Remove
+DefaultRGBKB.exe
+nDeviceInterfaceDetailDataSize
+ReadSize
+nRequiredSize
+m_FeatureSize
+BitSize
+Finalize
+SizeOf
+Contorl_LED_Off
+Welcome_off
+Lighting_off
+System.Threading
+Breathing
+Gaming
+System.Runtime.Versioning
+ToString
+HidD_GetSerialNumberString
+HidD_GetManufacturerString
+HidD_GetProductString
+Lighting
+LM_SetPowerSaving
+EnableLog
+strLog
+Flash
+bRefresh
+GetDevicePath
+dataLength
+usageLength
+FeatureReportByteLength
+InputReportByteLength
+OutputReportByteLength
+reportBufferLength
+bufferLength
+valueCapsLength
+buttonCapsLength
+reportLength
+finalObj
+AsyncCallback
+callback
+Stack
+Light_Lock
+m_light_lock
+OemSvcHook
+Spark
+PresentationFramework
+AP_Effect_Task
+m_ap_effect_task
+AllocHGlobal
+FreeHGlobal
+Marshal
+Normal
+UsbHidModel
+OemServiceModel
+LightingModel
+System.ComponentModel
+pfLevel
+ILM_RGBKB_SaveLightingLevel
+LM_SaveLightingLevel
+LM_GetLightingLevel
+LM_SetLightingLevel
+log_level
+light_level
+SetupDiGetDeviceInterfaceDetail
+kernel32.dll
+hid.dll
+setupapi.dll
+OemServiceWinApp.dll
+HasNull
+MechrevoComl
+Control
+control
+FileStream
+nParam
+get_Item
+set_Item
+System
+WMIWriteBiosRom
+Enum
+EC_bitOnKeyPressOn
+resourceMan
+Boolean
+envet_data_len
+UsageMin
+StringMin
+LogicalMin
+PhysicalMin
+DesignatorMin
+DataIndexMin
+Main
+Welcome_on
+Lighting_on
+Neon
+m_bitLiteon
+ILM_RGBKB_GetFirmwareVersion
+LM_GetFirmwareVersion
+Application
+get_Location
+ResourceDictionaryLocation
+System.Configuration
+System.Globalization
+Action
+System.Reflection
+PropertyDataCollection
+LinkCollection
+linkCollection
+RGBKB_Direction
+ILM_RGBKB_SetDirection
+layoutDirection
+save_direction
+layout_direction
+CallingConvention
+ManagementException
+RGBKB_Solution
+m_KB_Solution
+UpDown
+Shutdown
+UnKnown
+Unknown
+FileInfo
+CultureInfo
+get_StartInfo
+set_StartInfo
+ProcessStartInfo
+m_hAudio
+m_delStopMonitorAudio
+m_pStopMonitorAudio
+m_delStartMonitorAudio
+m_pStartMonitorAudio
+Zero
+Mechrevo
+DownUp
+Sleep
+Raindrop
+Set_ITE_Effect_Type_ApMode_Stop
+m_ap_effect_task_stop
+add_Startup
+Application_Startup
+UnitsExp
+System.Linq
+Illegear
+Char
+GetMasterVolumeLevelScalar
+SetMasterVolumeLevelScalar
+bCircular
+isCircular
+Addr
+VersionNumber
+StreamReader
+TextReader
+StringBuilder
+LM_ScanCode_EventHander
+m_LED_Vender
+sender
+ColorBuffer
+colorBuffer
+lpReportBuffer
+buffer
+m_HIDManager
+LM_Manager
+get_ResourceManager
+ManagementEventWatcher
+watcher
+ScanCode_Hnadler
+RGBKB_Event_Handler
+EventArrivedEventHandler
+StartupEventHandler
+add_m_Layout_Event_handler
+remove_m_Layout_Event_handler
+event_handler
+System.CodeDom.Compiler
+StreamWriter
+TextWriter
+GetDelegateForFunctionPointer
+LightMaster
+get_Muter
+set_Muter
+ILM_RGBKB_GetPower
+ILM_RGBKB_SetPower
+LM_SetPower
+WKDColor
+RGBKB_Color
+ILM_RGBKB_SetColor
+LM_SetColor
+save_layout_color
+IMMDeviceEnumerator
+strEnumerator
+.ctor
+.cctor
+Destructor
+IntPtr
+IsAlias
+System.Diagnostics
+HIDNativeMethods
+SetupDiEnumDeviceInterfaces
+NumberFeatureDataIndices
+NumberInputDataIndices
+NumberOutputDataIndices
+System.Runtime.InteropServices
+System.Runtime.CompilerServices
+System.Resources
+DefaultRGBKB.Properties.Resources.resources
+DebuggingModes
+NumberLinkCollectionNodes
+HidP_SetUsages
+GamingCenter.Properties
+get_SystemProperties
+Microsoft.Win32.SafeHandles
+GetSubKeyNames
+nAttributes
+HidD_GetAttributes
+attributes
+nCreationFlags
+Settings
+get_Args
+EventArrivedEventArgs
+StartupEventArgs
+reportBufferLengths
+ColorBlocks
+System.Threading.Tasks
+activationParams
+InvokeMethodOptions
+ObjectGetOptions
+HidP_Value_Caps
+HidP_Button_Caps
+HidCaps
+NumberFeatureValueCaps
+HidP_GetValueCaps
+NumberInputValueCaps
+NumberOutputValueCaps
+valueCaps
+NumberFeatureButtonCaps
+HidP_GetButtonCaps
+NumberInputButtonCaps
+NumberOutputButtonCaps
+buttonCaps
+oCaps
+HidP_GetCaps
+GetMethodParameters
+gClass
+FileAccess
+nAccess
+Process
+layout_brightness
+GetProcAddress
+ILM_RGBKB_GetBrighntess
+ILM_RGBKB_SetBrighntess
+Units
+set_Arguments
+get_Status
+TaskStatus
+RGBKB_PowerStatus
+powerStatus
+m_bInitStatus
+SetupDiGetClassDevs
+System.Windows
+Concat
+Format
+Impact
+RGBKB_Effect
+Set_Welcome_Effect
+Set_Lighting_Effect
+ILM_RGBKB_GetEffect
+LM_GetEffect
+ILM_RGBKB_SetEffect
+timeoutEffect
+layoutEffect
+save_effect
+current_effect
+layout_effect
+ManagementBaseObject
+hObject
+MMDeviceEnumeratorComObject
+ManagementObject
+object
+Project
+lpDeviceInfoSet
+hInfoSet
+lpInfoSet
+RightLeft
+bLight
+layoutLight
+LeftRight
+ite_light
+save_light
+layout_light
+m_bitEverlight
+ILM_RGBKB_Init
+LM_Init
+m_Init
+LM_DeInit
+Deinit
+WaitForExit
+Contorl_LED_Default
+get_Default
+IAsyncResult
+result
+System.Management
+InitializeComponent
+hParent
+get_Current
+LMScanCodeEvent
+WMIHandleEvent
+EndWMIRecieveEvent
+StartWMIReceiveEvent
+get_NewEvent
+GetDefaultAudioEndpoint
+endpoint
+ReportCount
+Start
+Convert
+HidD_SetOutputReport
+report
+MEZone_1st
+dataList
+usageList
+SetupDiDestroyDeviceInfoList
+timeout
+HidP_Input
+HidP_Output
+get_StandardOutput
+set_RedirectStandardOutput
+System.Text
+AppendText
+pguidEventContext
+RegistryView
+Rainbow
+dataFlow
+UsageMax
+StringMax
+LogicalMax
+PhysicalMax
+DesignatorMax
+DataIndexMax
+DataIndex
+StringIndex
+nIndex
+ColorIndex
+DesignatorIndex
+Translate_ITE_EffectIndex
+Translate_LM_EffectIndex
+RowIndex
+clsCtx
+Array
+CreateSubKey
+OpenSubKey
+TreeKey
+OpenBaseKey
+RegistryKey
+get_Assembly
+GetExecutingAssembly
+Copy
+LoadLibrary
+FreeLibrary
+WqlEventQuery
+set_WorkingDirectory
+URegistry
+op_Equality
+op_Inequality
+Utility
+lpSecurity
+Empty
+(@~)4O
+					
+WrapNonExceptionThrows
+DefaultRGBKB
+Copyright 
+  2018
+1.2.2.6
+.NETFramework,Version=v4.6.1
+FrameworkDisplayName
+.NET Framework 4.6.1#
+PresentationBuildTasks
+4.0.0.0
+3System.Resources.Tools.StronglyTypedResourceBuilder
+15.0.0.0
+KMicrosoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator
+15.5.0.0
+$5CDF2C82-841E-4546-9722-0CF74078229A
+$D666063F-1587-4E43-81F1-B948E807363F
+$A95664D2-9614-4F35-A746-DE8DB63617E6
+$BCDE0395-E52F-467C-8E3D-C4579291692E
+lSystem.Resources.ResourceReader, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089#System.Resources.RuntimeResourceSet
+PADPADP
+RSDS&
+D:\Max\Source\GamingCenter\GamingCenterALL_1.2.2.6\GamingCenterALL\DefaultRGBKB\obj\Release\DefaultRGBKB.pdb
+_CorExeMain
+mscoree.dll
+<?xml version="1.0" encoding="utf-8"?>
+<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
+  <assemblyIdentity version="1.0.0.0" name="MyApplication.app"/>
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
+    <security>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!-- UAC 
+             
+ Windows 
+             requestedExecutionLevel 
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+            
+ requestedExecutionLevel 
+            
+            
+        -->
+        <requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <application>
+      <!-- 
+           Windows 
+Windows 
+           
+      <!-- Windows Vista -->
+      <!--<supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}" />-->
+      <!-- Windows 7 -->
+      <!--<supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />-->
+      <!-- Windows 8 -->
+      <!--<supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />-->
+      <!-- Windows 8.1 -->
+      <!--<supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />-->
+      <!-- Windows 10 -->
+      <!--<supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />-->
+    </application>
+  </compatibility>
+  <!-- 
+ DPI 
+Windows 
+ DPI 
+       
+Windows Presentation Foundation (WPF) 
+ DPI
+       
+ .NET Framework 4.6 
+ Windows Form 
+       
+ app.config 
+ 'EnableWindowsFormsHighDpiAutoResizing' 
+ 'true'
+  <!--
+  <application xmlns="urn:schemas-microsoft-com:asm.v3">
+    <windowsSettings>
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true</dpiAware>
+    </windowsSettings>
+  </application>
+  -->
+  <!-- 
+ Windows 
+ (Windows XP 
+) -->
+  <!--
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity
+          type="win32"
+          name="Microsoft.Windows.Common-Controls"
+          version="6.0.0.0"
+          processorArchitecture="*"
+          publicKeyToken="6595b64144ccf1df"
+          language="*"
+        />
+    </dependentAssembly>
+  </dependency>
+  -->
+</assembly>
+>0<0
+0!0	
+Western Cape1
+Durbanville1
+Thawte1
+Thawte Certification1
+Thawte Timestamping CA0
+121221000000Z
+201230235959Z0^1
+Symantec Corporation100.
+'Symantec Time Stamping Services CA - G20
+"W*o
+]jxdE
+`F~T
+&0$0"
+http://ocsp.thawte.com0
+80604
+.http://crl.thawte.com/ThawteTimestampingCA.crl0
+TimeStamp-2048-10
+y@b%
+Symantec Corporation100.
+'Symantec Time Stamping Services CA - G20
+121018000000Z
+201229235959Z0b1
+Symantec Corporation1402
++Symantec Time Stamping Services Signer - G40
+2oNW
+a;EQ
+g0e0*
+http://ts-ocsp.ws.symantec.com07
++http://ts-aia.ws.symantec.com/tss-ca-g2.cer0<
+50301
++http://ts-crl.ws.symantec.com/tss-ca-g2.crl0(
+TimeStamp-2048-20
+b07x
+,&c3
+\vnO^
+EFAn
+y3+.{
+>"hcS
+0L1 0
+GlobalSign Root CA - R31
+GlobalSign1
+GlobalSign0
+160615000000Z
+240615000000Z0n1
+GlobalSign nv-sa1D0B
+;GlobalSign Extended Validation CodeSigning CA - SHA256 - G30
+QAY3yd
+bI({
+,X,*o5-
+2000.
+"http://ocsp2.globalsign.com/rootr306
+/0-0+
+%http://crl.globalsign.com/root-r3.crl0b
+[0Y0
+_0402
+&https://www.globalsign.com/repository/0
+J1 ~O]
+GlobalSign nv-sa1D0B
+;GlobalSign Extended Validation CodeSigning CA - SHA256 - G30
+171106020537Z
+200218083812Z0
+Private Organization1
+245775721
+TAIPEI1
+TAIPEI1503
+,2F., NO.240, SEC. 1, NEIHU RD., NEIHU DIST.,1 0
+Uniwill Technology Inc.1 0
+Uniwill Technology Inc.0
+0g>a
+,yHk
+`.p	
+0 ?B
+Bhttp://secure.globalsign.com/cacert/gsextendcodesignsha2g3ocsp.crt0>
+2http://ocsp2.globalsign.com/gsextendcodesignsha2g30U
+N0L0A
+0402
+&https://www.globalsign.com/repository/0
+>0<0:
+4http://crl.globalsign.com/gsextendcodesignsha2g3.crl0
+<=0l
+,X,*o5-
+>[Rz
+0~0n1
+GlobalSign nv-sa1D0B
+;GlobalSign Extended Validation CodeSigning CA - SHA256 - G3
+X	"67
+fF&D
+!#Sn
+cLbSt
+d3|(
+,8q{o
+	N<E#"
+0r0^1
+Symantec Corporation100.
+'Symantec Time Stamping Services CA - G2
+181105101247Z0#
+^c#N-
+~N2/

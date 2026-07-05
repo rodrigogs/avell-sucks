@@ -1,0 +1,702 @@
+{
+    "Timestamp":  "2026-07-03T20:04:31.0166428-03:00",
+    "ComputerName":  "RODRIGO-AVELL",
+    "Processes":  [
+                      {
+                          "ProcessId":  4060,
+                          "ParentProcessId":  1412,
+                          "Name":  "svchost.exe",
+                          "ExecutablePath":  "C:\\WINDOWS\\System32\\svchost.exe",
+                          "CommandLine":  "C:\\WINDOWS\\System32\\svchost.exe -k netsvcs -p -s SharedAccess",
+                          "CreationDate":  "\/Date(1782338612095)\/"
+                      },
+                      {
+                          "ProcessId":  4700,
+                          "ParentProcessId":  1412,
+                          "Name":  "OneApp.IGCC.WinService.exe",
+                          "ExecutablePath":  "C:\\WINDOWS\\System32\\DriverStore\\FileRepository\\igcc_dch.inf_amd64_401fde8782680631\\OneApp.IGCC.WinService.exe",
+                          "CommandLine":  "C:\\WINDOWS\\System32\\DriverStore\\FileRepository\\igcc_dch.inf_amd64_401fde8782680631\\OneApp.IGCC.WinService.exe",
+                          "CreationDate":  "\/Date(1782338612682)\/"
+                      },
+                      {
+                          "ProcessId":  4732,
+                          "ParentProcessId":  1412,
+                          "Name":  "XtuService.exe",
+                          "ExecutablePath":  "C:\\Program Files\\OEM\\GamingCenter\\XtuService.exe",
+                          "CommandLine":  "\"C:\\Program Files\\OEM\\GamingCenter\\XtuService.exe\"",
+                          "CreationDate":  "\/Date(1782338612687)\/"
+                      },
+                      {
+                          "ProcessId":  4800,
+                          "ParentProcessId":  1412,
+                          "Name":  "LaunchServGM.exe",
+                          "ExecutablePath":  "C:\\Program Files\\OEM\\GamingCenter\\LaunchServGM.exe",
+                          "CommandLine":  "\"C:\\Program Files\\OEM\\GamingCenter\\LaunchServGM.exe\"",
+                          "CreationDate":  "\/Date(1782338612703)\/"
+                      },
+                      {
+                          "ProcessId":  10752,
+                          "ParentProcessId":  6708,
+                          "Name":  "OSDTpDetect.exe",
+                          "ExecutablePath":  "C:\\Program Files\\OEM\\GamingCenter\\OSDTpDetect.exe",
+                          "CommandLine":  "\"C:\\Program Files\\OEM\\GamingCenter\\OSDTpDetect.exe\" ",
+                          "CreationDate":  "\/Date(1782338731832)\/"
+                      },
+                      {
+                          "ProcessId":  7164,
+                          "ParentProcessId":  6708,
+                          "Name":  "OOBEI2CTpOnOffDetect.exe",
+                          "ExecutablePath":  "C:\\Program Files\\OEM\\GamingCenter\\OOBE\\OOBEI2CTpOnOffDetect.exe",
+                          "CommandLine":  "\"C:\\Program Files\\OEM\\GamingCenter\\OOBE\\OOBEI2CTpOnOffDetect.exe\" ",
+                          "CreationDate":  "\/Date(1782338733481)\/"
+                      },
+                      {
+                          "ProcessId":  3736,
+                          "ParentProcessId":  6708,
+                          "Name":  "GamingCenter.exe",
+                          "ExecutablePath":  "C:\\Program Files\\OEM\\GamingCenter\\GamingCenter.exe",
+                          "CommandLine":  "\"C:\\Program Files\\OEM\\GamingCenter\\GamingCenter.exe\" ",
+                          "CreationDate":  "\/Date(1782340204370)\/"
+                      },
+                      {
+                          "ProcessId":  10668,
+                          "ParentProcessId":  6708,
+                          "Name":  "GamingCenterTray.exe",
+                          "ExecutablePath":  "C:\\Program Files\\OEM\\GamingCenter\\GamingCenterTray.exe",
+                          "CommandLine":  "\"C:\\Program Files\\OEM\\GamingCenter\\GamingCenterTray.exe\" ",
+                          "CreationDate":  "\/Date(1782340321648)\/"
+                      },
+                      {
+                          "ProcessId":  9584,
+                          "ParentProcessId":  1596,
+                          "Name":  "dllhost.exe",
+                          "ExecutablePath":  "C:\\WINDOWS\\system32\\DllHost.exe",
+                          "CommandLine":  "\"C:\\WINDOWS\\system32\\DllHost.exe\" /Processid:{CA6CC9F1-867A-481E-951E-A28C5E4F01EA}",
+                          "CreationDate":  "\/Date(1782340595046)\/"
+                      },
+                      {
+                          "ProcessId":  9016,
+                          "ParentProcessId":  1596,
+                          "Name":  "SystemSettings.exe",
+                          "ExecutablePath":  "C:\\Windows\\ImmersiveControlPanel\\SystemSettings.exe",
+                          "CommandLine":  "\"C:\\Windows\\ImmersiveControlPanel\\SystemSettings.exe\" -ServerName:microsoft.windows.immersivecontrolpanel",
+                          "CreationDate":  "\/Date(1782500534170)\/"
+                      },
+                      {
+                          "ProcessId":  14792,
+                          "ParentProcessId":  6072,
+                          "Name":  "codex.exe",
+                          "ExecutablePath":  "C:\\Program Files\\WindowsApps\\OpenAI.Codex_26.623.9142.0_x64__2p2nqsd0c76g0\\app\\resources\\codex.exe",
+                          "CommandLine":  "\"C:\\Program Files\\WindowsApps\\OpenAI.Codex_26.623.9142.0_x64__2p2nqsd0c76g0\\app\\resources\\codex.exe\" app-server --analytics-default-enabled",
+                          "CreationDate":  "\/Date(1782874536771)\/"
+                      },
+                      {
+                          "ProcessId":  3596,
+                          "ParentProcessId":  9552,
+                          "Name":  "winlogon.exe",
+                          "ExecutablePath":  "C:\\WINDOWS\\system32\\winlogon.exe",
+                          "CommandLine":  "winlogon.exe {F481F242-CC6E-4305-A811-206ADF0D0000}",
+                          "CreationDate":  "\/Date(1783052421950)\/"
+                      },
+                      {
+                          "ProcessId":  8912,
+                          "ParentProcessId":  1412,
+                          "Name":  "tailscaled.exe",
+                          "ExecutablePath":  "C:\\Program Files\\Tailscale\\tailscaled.exe",
+                          "CommandLine":  "\"C:\\Program Files\\Tailscale\\tailscaled.exe\"",
+                          "CreationDate":  "\/Date(1783100648699)\/"
+                      },
+                      {
+                          "ProcessId":  9384,
+                          "ParentProcessId":  8912,
+                          "Name":  "tailscaled.exe",
+                          "ExecutablePath":  "C:\\Program Files\\Tailscale\\tailscaled.exe",
+                          "CommandLine":  "\"C:\\Program Files\\Tailscale\\tailscaled.exe\" /subproc de8316cdfeffbe007809a19049f9b5e4f254ae31f7e52836e31bf06cb0302683",
+                          "CreationDate":  "\/Date(1783100649113)\/"
+                      },
+                      {
+                          "ProcessId":  17704,
+                          "ParentProcessId":  13568,
+                          "Name":  "powershell.exe",
+                          "ExecutablePath":  "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                          "CommandLine":  "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \\\\wsl.localhost\\Ubuntu-24.04\\home\\rodrigo\\gaming-center-re\\scripts\\inventory-gaming-center.ps1",
+                          "CreationDate":  "\/Date(1783119861273)\/"
+                      }
+                  ],
+    "Services":  [
+                     {
+                         "Name":  "AssignedAccessManagerSvc",
+                         "DisplayName":  "Serviáo AssignedAccessManager",
+                         "State":  "Stopped",
+                         "StartMode":  "Manual",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\system32\\svchost.exe -k AssignedAccessManagerSvc",
+                         "Description":  "O Serviáo AssignedAccessManager d† suporte Ö experiància de quiosque no Windows."
+                     },
+                     {
+                         "Name":  "GameInputSvc",
+                         "DisplayName":  "GameInput Service",
+                         "State":  "Stopped",
+                         "StartMode":  "Manual",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\System32\\GameInputSvc.exe",
+                         "Description":  "Enables keyboards, mice, gamepads, and other input devices to be used with the GameInput API."
+                     },
+                     {
+                         "Name":  "GamingCenter",
+                         "DisplayName":  "GamingCenter Service",
+                         "State":  "Running",
+                         "StartMode":  "Auto",
+                         "ProcessId":  4800,
+                         "PathName":  "C:\\Program Files\\OEM\\GamingCenter\\LaunchServGM.exe",
+                         "Description":  null
+                     },
+                     {
+                         "Name":  "igccservice",
+                         "DisplayName":  "Intel(R) Graphics Command Center Service",
+                         "State":  "Running",
+                         "StartMode":  "Auto",
+                         "ProcessId":  4700,
+                         "PathName":  "C:\\WINDOWS\\System32\\DriverStore\\FileRepository\\igcc_dch.inf_amd64_401fde8782680631\\OneApp.IGCC.WinService.exe",
+                         "Description":  "Service for Intel(R) Graphics Command Center"
+                     },
+                     {
+                         "Name":  "igfxCUIService2.0.0.0",
+                         "DisplayName":  "Intel(R) HD Graphics Control Panel Service",
+                         "State":  "Running",
+                         "StartMode":  "Auto",
+                         "ProcessId":  3496,
+                         "PathName":  "C:\\WINDOWS\\System32\\DriverStore\\FileRepository\\cui_dch.inf_amd64_5207db0559876a61\\igfxCUIService.exe",
+                         "Description":  "Service for Intel(R) HD Graphics Control Panel"
+                     },
+                     {
+                         "Name":  "MsKeyboardFilter",
+                         "DisplayName":  "Filtro de Teclado da Microsoft",
+                         "State":  "Stopped",
+                         "StartMode":  "Disabled",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\system32\\svchost.exe -k netsvcs -p",
+                         "Description":  "Controla filtragem e mapeamento de pressionamento de tecla"
+                     },
+                     {
+                         "Name":  "NgcCtnrSvc",
+                         "DisplayName":  "Contàiner do Microsoft Passport",
+                         "State":  "Running",
+                         "StartMode":  "Manual",
+                         "ProcessId":  17172,
+                         "PathName":  "C:\\WINDOWS\\system32\\svchost.exe -k LocalServiceNetworkRestricted -p",
+                         "Description":  "Gerencia as chaves de identidade do usu†rio local usadas para a autenticaá∆o em provedores de identidade, alÇm de cart‰es inteligentes virtuais do TPM. Se esse serviáo estiver desabilitado, as chaves de identidade do usu†rio local e os cart‰es inteligentes virtuais n∆o estar∆o acess°veis. ê recomend†vel n∆o reconfigurar esse serviáo."
+                     },
+                     {
+                         "Name":  "Power",
+                         "DisplayName":  "Desligar",
+                         "State":  "Running",
+                         "StartMode":  "Auto",
+                         "ProcessId":  1596,
+                         "PathName":  "C:\\WINDOWS\\system32\\svchost.exe -k DcomLaunch -p",
+                         "Description":  "Gerencia a pol°tica de energia e a entrega de notificaá∆o de pol°tica de energia."
+                     },
+                     {
+                         "Name":  "RemoteAccess",
+                         "DisplayName":  "Roteamento e Acesso Remoto",
+                         "State":  "Stopped",
+                         "StartMode":  "Disabled",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\System32\\svchost.exe -k netsvcs",
+                         "Description":  "Oferece serviáos de roteamento a empresas em ambientes de rede local e de longa distÉncia."
+                     },
+                     {
+                         "Name":  "SEMgrSvc",
+                         "DisplayName":  "Gerenciador de NFC/SE e Pagamentos",
+                         "State":  "Stopped",
+                         "StartMode":  "Manual",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\system32\\svchost.exe -k LocalService -p",
+                         "Description":  "Gerencia pagamentos e elementos seguros baseados em comunicaá∆o a curta distÉncia (NFC)."
+                     },
+                     {
+                         "Name":  "SharedAccess",
+                         "DisplayName":  "ICS (Compartilhamento de Conex∆o com a Internet)",
+                         "State":  "Running",
+                         "StartMode":  "Manual",
+                         "ProcessId":  4060,
+                         "PathName":  "C:\\WINDOWS\\System32\\svchost.exe -k netsvcs -p",
+                         "Description":  "Fornece serviáos de convers∆o de endereáo de rede, endereáamento, resoluá∆o de nomes e/ou prevená∆o contra invas∆o para redes domÇsticas ou de pequena empresa."
+                     },
+                     {
+                         "Name":  "shpamsvc",
+                         "DisplayName":  "Shared PC Account Manager",
+                         "State":  "Stopped",
+                         "StartMode":  "Disabled",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\System32\\svchost.exe -k netsvcsRedirectionGuard -p",
+                         "Description":  "Manages profiles and accounts on a SharedPC configured device"
+                     },
+                     {
+                         "Name":  "vmicshutdown",
+                         "DisplayName":  "Serviáo de Desligamento de Convidado do Hyper-V",
+                         "State":  "Stopped",
+                         "StartMode":  "Manual",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\system32\\svchost.exe -k LocalSystemNetworkRestrictedRedirectionGuard -p",
+                         "Description":  "Fornece um mecanismo de desligamento do sistema operacional desta m†quina virtual por meio das interfaces de gerenciamento no computador f°sico."
+                     },
+                     {
+                         "Name":  "vmicvmsession",
+                         "DisplayName":  "Serviáo Direto do Hyper-V PowerShell",
+                         "State":  "Stopped",
+                         "StartMode":  "Manual",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\system32\\svchost.exe -k LocalSystemNetworkRestrictedRedirectionGuard -p",
+                         "Description":  "Fornece um mecanismo para gerenciar m†quinas virtuais com o PowerShell por meio de sess∆o VM sem uma rede virtual."
+                     },
+                     {
+                         "Name":  "wercplsupport",
+                         "DisplayName":  "Suporte do Painel de Controle Relat¢rios de problemas",
+                         "State":  "Stopped",
+                         "StartMode":  "Manual",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\System32\\svchost.exe -k netsvcs -p",
+                         "Description":  "Este serviáo oferece suporte para a exibiá∆o, o envio e a exclus∆o de relat¢rios de problemas no n°vel do sistema do painel de controle Relat¢rios de problemas."
+                     },
+                     {
+                         "Name":  "WpcMonSvc",
+                         "DisplayName":  "Controles dos Pais",
+                         "State":  "Stopped",
+                         "StartMode":  "Manual",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\system32\\svchost.exe -k LocalService",
+                         "Description":  "Imp‰e controles dos pais para contas de crianáa no Windows. Se este serviáo for interrompido ou desabilitado, os controles dos pais n∆o poder∆o ser impostos."
+                     },
+                     {
+                         "Name":  "XblGameSave",
+                         "DisplayName":  "Salvar Jogos no Xbox Live",
+                         "State":  "Stopped",
+                         "StartMode":  "Manual",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\system32\\svchost.exe -k netsvcs -p",
+                         "Description":  "Esse serviáo sincroniza dados salvos para a opá∆o salvar jogos habilitados no Xbox Live.  Se o serviáo for interrompido, os dados de jogo salvos n∆o ser∆o carregados ou baixados diretamente do Xbox Live."
+                     },
+                     {
+                         "Name":  "XboxGipSvc",
+                         "DisplayName":  "Xbox Accessory Management Service",
+                         "State":  "Stopped",
+                         "StartMode":  "Manual",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\system32\\svchost.exe -k netsvcs -p",
+                         "Description":  "This service manages connected Xbox Accessories."
+                     },
+                     {
+                         "Name":  "XTU3SERVICE",
+                         "DisplayName":  "Intel(R) Extreme Tuning Utility Service",
+                         "State":  "Running",
+                         "StartMode":  "Auto",
+                         "ProcessId":  4732,
+                         "PathName":  "\"C:\\Program Files\\OEM\\GamingCenter\\XtuService.exe\"",
+                         "Description":  null
+                     },
+                     {
+                         "Name":  "BcastDVRUserService_1007de",
+                         "DisplayName":  "Serviáo de Usu†rio do GameDVR e Transmiss∆o_1007de",
+                         "State":  "Stopped",
+                         "StartMode":  "Manual",
+                         "ProcessId":  0,
+                         "PathName":  "C:\\WINDOWS\\system32\\svchost.exe -k BcastDVRUserService",
+                         "Description":  "Este serviáo de usu†rio Ç usado para Gravaá‰es de Jogos e Transmiss‰es Ao Vivo"
+                     },
+                     {
+                         "Name":  "Tailscale",
+                         "DisplayName":  "Tailscale",
+                         "State":  "Running",
+                         "StartMode":  "Auto",
+                         "ProcessId":  8912,
+                         "PathName":  "\"C:\\Program Files\\Tailscale\\tailscaled.exe\"",
+                         "Description":  "Connects this computer to others on the Tailscale network."
+                     }
+                 ],
+    "StartupCommands":  [
+                            {
+                                "Name":  "GamingCenter",
+                                "Command":  "C:\\Program Files\\OEM\\GamingCenter\\LaunchCtrlGM.exe -R",
+                                "Location":  "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+                                "User":  "Public"
+                            },
+                            {
+                                "Name":  "OSDTpDetect.exe",
+                                "Command":  "C:\\Program Files\\OEM\\GamingCenter\\OSDTpDetect.exe",
+                                "Location":  "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+                                "User":  "Public"
+                            },
+                            {
+                                "Name":  "OOBEI2CTpOnOffDetect.exe",
+                                "Command":  "C:\\Program Files\\OEM\\GamingCenter\\OOBE\\OOBEI2CTpOnOffDetect.exe",
+                                "Location":  "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+                                "User":  "Public"
+                            }
+                        ],
+    "Listeners":  [
+                      {
+                          "Proto":  "TCP",
+                          "LocalAddress":  "fd7a:115c:a1e0::4d34:2161",
+                          "LocalPort":  53363,
+                          "PID":  9384,
+                          "Process":  "tailscaled",
+                          "Path":  "C:\\Program Files\\Tailscale\\tailscaled.exe"
+                      },
+                      {
+                          "Proto":  "TCP",
+                          "LocalAddress":  "fd7a:115c:a1e0::4d34:2161",
+                          "LocalPort":  443,
+                          "PID":  9384,
+                          "Process":  "tailscaled",
+                          "Path":  "C:\\Program Files\\Tailscale\\tailscaled.exe"
+                      },
+                      {
+                          "Proto":  "TCP",
+                          "LocalAddress":  "100.85.33.96",
+                          "LocalPort":  49650,
+                          "PID":  9384,
+                          "Process":  "tailscaled",
+                          "Path":  "C:\\Program Files\\Tailscale\\tailscaled.exe"
+                      },
+                      {
+                          "Proto":  "TCP",
+                          "LocalAddress":  "100.85.33.96",
+                          "LocalPort":  443,
+                          "PID":  9384,
+                          "Process":  "tailscaled",
+                          "Path":  "C:\\Program Files\\Tailscale\\tailscaled.exe"
+                      }
+                  ],
+    "Drivers":  [
+                    {
+                        "Name":  "1394ohci",
+                        "DisplayName":  "1394 OHCI Compliant Host Controller",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\1394ohci.sys",
+                        "Description":  "1394 OHCI Compliant Host Controller"
+                    },
+                    {
+                        "Name":  "AcpiPmi",
+                        "DisplayName":  "Driver Medidor de Energia ACPI",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\DriverStore\\FileRepository\\acpipmi.inf_amd64_3ced06eb61dcc792\\acpipmi.sys",
+                        "Description":  "Driver Medidor de Energia ACPI"
+                    },
+                    {
+                        "Name":  "amdi2c",
+                        "DisplayName":  "Serviáo de Controlador AMD I2C",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\amdi2c.sys",
+                        "Description":  "Serviáo de Controlador AMD I2C"
+                    },
+                    {
+                        "Name":  "buttonconverter",
+                        "DisplayName":  "Serviáo para dispositivos de Controle de Dispositivo Port†til",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\buttonconverter.sys",
+                        "Description":  "Serviáo para dispositivos de Controle de Dispositivo Port†til"
+                    },
+                    {
+                        "Name":  "CAD",
+                        "DisplayName":  "Driver de Arbitragem de Carregamento",
+                        "State":  "Running",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\CAD.sys",
+                        "Description":  "Driver de Arbitragem de Carregamento"
+                    },
+                    {
+                        "Name":  "CmBatt",
+                        "DisplayName":  "Driver de Bateria do MÇtodo de Controle ACPI da Microsoft",
+                        "State":  "Running",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\CmBatt.sys",
+                        "Description":  "Driver de Bateria do MÇtodo de Controle ACPI da Microsoft"
+                    },
+                    {
+                        "Name":  "fdc",
+                        "DisplayName":  "Driver de controlador de disquete",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\fdc.sys",
+                        "Description":  "Driver de controlador de disquete"
+                    },
+                    {
+                        "Name":  "gameflt",
+                        "DisplayName":  "gameflt",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\DriverStore\\FileRepository\\gameflt.inf_amd64_152b7ad8bf20bdc5\\gameflt.sys",
+                        "Description":  "gameflt"
+                    },
+                    {
+                        "Name":  "hvsocketcontrol",
+                        "DisplayName":  "hvsocketcontrol",
+                        "State":  "Running",
+                        "StartMode":  "System",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\hvsocketcontrol.sys",
+                        "Description":  "hvsocketcontrol"
+                    },
+                    {
+                        "Name":  "I3CHost",
+                        "DisplayName":  "Serviáo de Controlador de Host I3C",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\DriverStore\\FileRepository\\i3chost.inf_amd64_c392a79f9867ca26\\i3chost.sys",
+                        "Description":  "Serviáo de Controlador de Host I3C"
+                    },
+                    {
+                        "Name":  "i8042prt",
+                        "DisplayName":  "i8042 Keyboard and PS/2 Mouse Port Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\i8042prt.sys",
+                        "Description":  "i8042 Keyboard and PS/2 Mouse Port Driver"
+                    },
+                    {
+                        "Name":  "iagpio",
+                        "DisplayName":  "Driver do Controlador Intel Serial IO GPIO",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\iagpio.sys",
+                        "Description":  "Driver do Controlador Intel Serial IO GPIO"
+                    },
+                    {
+                        "Name":  "iai2c",
+                        "DisplayName":  "Controlador Host Intel(R) Serial IO I2C",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\iai2c.sys",
+                        "Description":  "Controlador Host Intel(R) Serial IO I2C"
+                    },
+                    {
+                        "Name":  "iaLPSSi_GPIO",
+                        "DisplayName":  "Driver de Controlador Intel(R) Serial IO GPIO",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\iaLPSSi_GPIO.sys",
+                        "Description":  "Driver de Controlador Intel(R) Serial IO GPIO"
+                    },
+                    {
+                        "Name":  "iaLPSSi_I2C",
+                        "DisplayName":  "Intel(R) Serial IO I2C Controller Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\iaLPSSi_I2C.sys",
+                        "Description":  "Intel(R) Serial IO I2C Controller Driver"
+                    },
+                    {
+                        "Name":  "iaStorAC",
+                        "DisplayName":  "Intel(R) Chipset SATA/PCIe RST Premium Controller",
+                        "State":  "Running",
+                        "StartMode":  "Boot",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\iaStorAC.sys",
+                        "Description":  "Intel(R) Chipset SATA/PCIe RST Premium Controller"
+                    },
+                    {
+                        "Name":  "iaStorAVC",
+                        "DisplayName":  "Controlador Intel Chipset SATA RAID",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\iaStorAVC.sys",
+                        "Description":  "Controlador Intel Chipset SATA RAID"
+                    },
+                    {
+                        "Name":  "iaStorV",
+                        "DisplayName":  "Intel RAID Controller Windows 7",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\iaStorV.sys",
+                        "Description":  "Intel RAID Controller Windows 7"
+                    },
+                    {
+                        "Name":  "intelpep",
+                        "DisplayName":  "Driver Intel(R) Power Engine Plug-in",
+                        "State":  "Running",
+                        "StartMode":  "Boot",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\intelpep.sys",
+                        "Description":  "Driver Intel(R) Power Engine Plug-in"
+                    },
+                    {
+                        "Name":  "kbdhid",
+                        "DisplayName":  "Keyboard HID Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\kbdhid.sys",
+                        "Description":  "Keyboard HID Driver"
+                    },
+                    {
+                        "Name":  "mausbhost",
+                        "DisplayName":  "Driver do Controlador MA USB Host",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\mausbhost.sys",
+                        "Description":  "Driver do Controlador MA USB Host"
+                    },
+                    {
+                        "Name":  "MsSecCore",
+                        "DisplayName":  "Driver de Inicializaá∆o Principal de Seguranáa da Microsoft",
+                        "State":  "Running",
+                        "StartMode":  "Boot",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\msseccore.sys",
+                        "Description":  "Driver de Inicializaá∆o Principal de Seguranáa da Microsoft"
+                    },
+                    {
+                        "Name":  "pvscsi",
+                        "DisplayName":  "pvscsi Storage Controller Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\pvscsii.sys",
+                        "Description":  "pvscsi Storage Controller Driver"
+                    },
+                    {
+                        "Name":  "RasAcd",
+                        "DisplayName":  "Remote Access Auto Connection Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\DRIVERS\\rasacd.sys",
+                        "Description":  "Remote Access Auto Connection Driver"
+                    },
+                    {
+                        "Name":  "UfxChipidea",
+                        "DisplayName":  "Controlador USB Chipidea",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\DriverStore\\FileRepository\\ufxchipidea.inf_amd64_6e8bb2ed82835828\\UfxChipidea.sys",
+                        "Description":  "Controlador USB Chipidea"
+                    },
+                    {
+                        "Name":  "ufxsynopsys",
+                        "DisplayName":  "Controlador USB Synopsys",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\ufxsynopsys.sys",
+                        "Description":  "Controlador USB Synopsys"
+                    },
+                    {
+                        "Name":  "usbccgp",
+                        "DisplayName":  "Microsoft USB Generic Parent Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\usbccgp.sys",
+                        "Description":  "Microsoft USB Generic Parent Driver"
+                    },
+                    {
+                        "Name":  "usbehci",
+                        "DisplayName":  "Microsoft USB 2.0 Enhanced Host Controller Miniport Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\usbehci.sys",
+                        "Description":  "Microsoft USB 2.0 Enhanced Host Controller Miniport Driver"
+                    },
+                    {
+                        "Name":  "usbohci",
+                        "DisplayName":  "Microsoft USB Open Host Controller Miniport Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\usbohci.sys",
+                        "Description":  "Microsoft USB Open Host Controller Miniport Driver"
+                    },
+                    {
+                        "Name":  "usbuhci",
+                        "DisplayName":  "Microsoft USB Universal Host Controller Miniport Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\usbuhci.sys",
+                        "Description":  "Microsoft USB Universal Host Controller Miniport Driver"
+                    },
+                    {
+                        "Name":  "USBXHCI",
+                        "DisplayName":  "Controlador Host Compat°vel com USB xHCI",
+                        "State":  "Running",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\USBXHCI.SYS",
+                        "Description":  "Controlador Host Compat°vel com USB xHCI"
+                    },
+                    {
+                        "Name":  "VSTXRAID",
+                        "DisplayName":  "VIA StorX Storage Controller Windows Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\vstxraid.sys",
+                        "Description":  "VIA StorX Storage Controller Windows Driver"
+                    },
+                    {
+                        "Name":  "WinAccelCx0101",
+                        "DisplayName":  "Microsoft Accelerator Class Extension Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual",
+                        "PathName":  "C:\\WINDOWS\\system32\\drivers\\WinAccelCx.sys",
+                        "Description":  "Microsoft Accelerator Class Extension Driver"
+                    }
+                ],
+    "InstalledPrograms":  [
+                              {
+                                  "DisplayName":  "RstDowngradeGuard",
+                                  "DisplayVersion":  "18.0.0.0",
+                                  "Publisher":  "Intel Corporation",
+                                  "InstallLocation":  "",
+                                  "InstallSource":  "C:\\Users\\rdp\\AppData\\Local\\Temp\\yiki3faw.4k1.2fccdff6\\",
+                                  "UninstallString":  "MsiExec.exe /I{13C2A26E-7AD4-4D82-BB4F-DEA6E871B958}",
+                                  "QuietUninstallString":  null,
+                                  "PSPath":  "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{13C2A26E-7AD4-4D82-BB4F-DEA6E871B958}"
+                              },
+                              {
+                                  "DisplayName":  "PowerShell 7-x64",
+                                  "DisplayVersion":  "7.5.5.0",
+                                  "Publisher":  "Microsoft Corporation",
+                                  "InstallLocation":  "",
+                                  "InstallSource":  "C:\\ProgramData\\Package Cache\\{634F4903-28DC-4BA6-A39F-4B3E394D4E36}v7.5.5.0\\",
+                                  "UninstallString":  "MsiExec.exe /X{634F4903-28DC-4BA6-A39F-4B3E394D4E36}",
+                                  "QuietUninstallString":  null,
+                                  "PSPath":  "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{634F4903-28DC-4BA6-A39F-4B3E394D4E36}"
+                              },
+                              {
+                                  "DisplayName":  "OptaneDowngradeGuard",
+                                  "DisplayVersion":  "18.0.0.0",
+                                  "Publisher":  "Intel Corporation",
+                                  "InstallLocation":  "",
+                                  "InstallSource":  "C:\\Users\\rdp\\AppData\\Local\\Temp\\yiki3faw.4k1.2fccdff6\\",
+                                  "UninstallString":  "MsiExec.exe /I{86B0E6C1-32E0-42CC-BC4F-BF3C0730CECB}",
+                                  "QuietUninstallString":  null,
+                                  "PSPath":  "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{86B0E6C1-32E0-42CC-BC4F-BF3C0730CECB}"
+                              },
+                              {
+                                  "DisplayName":  "GamingCenter",
+                                  "DisplayVersion":  "1.2.3.3",
+                                  "Publisher":  "OEM",
+                                  "InstallLocation":  "C:\\Program Files\\OEM\\GamingCenter\\",
+                                  "InstallSource":  null,
+                                  "UninstallString":  "\"C:\\Program Files\\OEM\\GamingCenter\\unins000.exe\"",
+                                  "QuietUninstallString":  "\"C:\\Program Files\\OEM\\GamingCenter\\unins000.exe\" /SILENT",
+                                  "PSPath":  "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{B62409AB-421C-4004-BDFA-2CE25BDC9EFF}_is1"
+                              },
+                              {
+                                  "DisplayName":  "Microsoft.NET.Sdk.MacCatalyst.Manifest-10.0.100 (x64)",
+                                  "DisplayVersion":  "26.0.11017",
+                                  "Publisher":  "Microsoft Corporation",
+                                  "InstallLocation":  "",
+                                  "InstallSource":  "C:\\ProgramData\\Package Cache\\{D9695A82-3EA3-4B0D-8F41-766C60E3FA52}v26.0.11017\\",
+                                  "UninstallString":  "MsiExec.exe /X{D9695A82-3EA3-4B0D-8F41-766C60E3FA52}",
+                                  "QuietUninstallString":  null,
+                                  "PSPath":  "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{D9695A82-3EA3-4B0D-8F41-766C60E3FA52}"
+                              },
+                              {
+                                  "DisplayName":  "PowerShell 7.5.5.0-x64",
+                                  "DisplayVersion":  "7.5.5.0",
+                                  "Publisher":  "Microsoft Corporation",
+                                  "InstallLocation":  null,
+                                  "InstallSource":  null,
+                                  "UninstallString":  "\"C:\\ProgramData\\Package Cache\\{cac8e818-d8ea-4633-a39f-8604cb101a19}\\PowerShell-7.5.5-win-x64.exe\"  /uninstall",
+                                  "QuietUninstallString":  "\"C:\\ProgramData\\Package Cache\\{cac8e818-d8ea-4633-a39f-8604cb101a19}\\PowerShell-7.5.5-win-x64.exe\" /uninstall /quiet",
+                                  "PSPath":  "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{cac8e818-d8ea-4633-a39f-8604cb101a19}"
+                              }
+                          ],
+    "Windows":  [
+
+                ]
+}
