@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Gaming Center" Height="500" Width="900"
         Background="#0d1117"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="Manual"
         ResizeMode="CanResize" MinWidth="700" MinHeight="500">
     <Grid Margin="24">
         <Border Background="#161b22" BorderBrush="#30363d" BorderThickness="1" CornerRadius="8" Padding="18">
