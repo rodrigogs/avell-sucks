@@ -10,6 +10,7 @@ public sealed class HardwareMonitor : IDisposable
 {
     private readonly Computer _computer;
     private readonly UpdateVisitor _visitor = new();
+    private readonly CpuThermalZone _cpuThermal = new();
 
     public HardwareMonitor()
     {
@@ -129,7 +130,10 @@ public sealed class HardwareMonitor : IDisposable
             // CPU — this platform exposes load only; temp/clock/power may be null.
             CpuLoadTotal = Val(cpu, SensorType.Load, "CPU Total"),
             CpuLoadMax = Val(cpu, SensorType.Load, "CPU Core Max"),
-            CpuTempC = Val(cpu, SensorType.Temperature, "CPU Package", "Core (Tctl/Tdie)", "Core Max", "CPU Cores"),
+            // Prefer the library sensor; fall back to the OEM's Thermal Zone
+            // counter (the source that matches the original Gaming Center).
+            CpuTempC = Val(cpu, SensorType.Temperature, "CPU Package", "Core (Tctl/Tdie)", "Core Max", "CPU Cores")
+                       ?? _cpuThermal.ReadCelsius(),
             CpuClockMhz = First(cpu, SensorType.Clock, n => n.Contains("Core", StringComparison.OrdinalIgnoreCase)),
             CpuPowerW = Val(cpu, SensorType.Power, "CPU Package", "Package"),
             CpuVoltage = First(cpu, SensorType.Voltage, n => n.Contains("Core", StringComparison.OrdinalIgnoreCase)),
@@ -165,6 +169,7 @@ public sealed class HardwareMonitor : IDisposable
 
     public void Dispose()
     {
+        _cpuThermal.Dispose();
         _computer.Close();
     }
 }
