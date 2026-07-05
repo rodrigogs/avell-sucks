@@ -96,7 +96,7 @@
             </Grid.RowDefinitions>
 
             <!-- Top bar -->
-            <Grid Grid.Row="0" Margin="28,22,28,10">
+            <Grid Grid.Row="0" Margin="24,16,24,8">
                 <StackPanel>
                     <TextBlock x:Name="TabTitle" Text="Dashboard" Style="{StaticResource H1}"/>
                     <TextBlock x:Name="TabSubtitle" Text="Live telemetry from EC, WMI and onboard sensors"
@@ -115,7 +115,7 @@
             </Grid>
 
             <!-- Active tab host -->
-            <ContentControl x:Name="TabHost" Grid.Row="1" Margin="28,8,28,24"/>
+            <ContentControl x:Name="TabHost" Grid.Row="1" Margin="24,6,24,16"/>
         </Grid>
     </Grid>
 </Window>

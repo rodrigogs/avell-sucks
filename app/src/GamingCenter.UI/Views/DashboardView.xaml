@@ -6,14 +6,14 @@
         <StackPanel>
 
             <!-- ===== CPU + GPU tiles ===== -->
-            <Grid Margin="0,0,0,16">
+            <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- CPU tile -->
-                <Border Grid.Column="0" Style="{StaticResource Panel}" Margin="0,0,8,0">
+                <Border Grid.Column="0" Style="{StaticResource PanelTight}" Margin="0,0,5,0">
                     <StackPanel>
                         <DockPanel>
                             <TextBlock Text="CPU" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
@@ -21,22 +21,22 @@
                                        DockPanel.Dock="Right" HorizontalAlignment="Right"
                                        FontFamily="{StaticResource MonoFont}"/>
                         </DockPanel>
-                        <ctl:LoadTempGauge x:Name="CpuGauge" Height="168" Margin="0,8,0,0" Kind="Cpu"/>
-                        <UniformGrid Columns="3" Margin="0,14,0,0">
+                        <ctl:LoadTempGauge x:Name="CpuGauge" Height="132" Margin="0,4,0,0" Kind="Cpu"/>
+                        <UniformGrid Columns="3" Margin="0,8,0,0">
                             <StackPanel>
                                 <TextBlock Text="CLOCK" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="CpuClock" Text="—" Style="{StaticResource Mono}" FontSize="15"
+                                <TextBlock x:Name="CpuClock" Text="—" Style="{StaticResource Mono}" FontSize="14"
                                            HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
                             </StackPanel>
                             <StackPanel>
                                 <TextBlock Text="POWER" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="CpuPower" Text="—" Style="{StaticResource Mono}" FontSize="15"
+                                <TextBlock x:Name="CpuPower" Text="—" Style="{StaticResource Mono}" FontSize="14"
                                            HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
                             </StackPanel>
                             <StackPanel>
                                 <TextBlock Text="STATUS" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                                <Border x:Name="CpuStatusPill" CornerRadius="{StaticResource RadiusPill}" Padding="9,3"
-                                        Margin="0,2,0,0" HorizontalAlignment="Center" Background="{StaticResource Surface2}">
+                                <Border x:Name="CpuStatusPill" CornerRadius="{StaticResource RadiusPill}" Padding="9,2"
+                                        Margin="0,1,0,0" HorizontalAlignment="Center" Background="{StaticResource Surface2}">
                                     <TextBlock x:Name="CpuStatus" Text="—" FontSize="11" FontWeight="SemiBold"
                                                Foreground="{StaticResource Ink2}"/>
                                 </Border>
@@ -46,7 +46,7 @@
                 </Border>
 
                 <!-- GPU tile -->
-                <Border Grid.Column="1" Style="{StaticResource Panel}" Margin="8,0,0,0">
+                <Border Grid.Column="1" Style="{StaticResource PanelTight}" Margin="5,0,0,0">
                     <StackPanel>
                         <DockPanel>
                             <TextBlock Text="GPU" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
@@ -54,21 +54,21 @@
                                        DockPanel.Dock="Right" HorizontalAlignment="Right"
                                        FontFamily="{StaticResource MonoFont}"/>
                         </DockPanel>
-                        <ctl:LoadTempGauge x:Name="GpuGauge" Height="168" Margin="0,8,0,0" Kind="Gpu"/>
-                        <UniformGrid Columns="3" Margin="0,14,0,0">
+                        <ctl:LoadTempGauge x:Name="GpuGauge" Height="132" Margin="0,4,0,0" Kind="Gpu"/>
+                        <UniformGrid Columns="3" Margin="0,8,0,0">
                             <StackPanel>
                                 <TextBlock Text="CLOCK" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="GpuClock" Text="—" Style="{StaticResource Mono}" FontSize="15"
+                                <TextBlock x:Name="GpuClock" Text="—" Style="{StaticResource Mono}" FontSize="14"
                                            HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
                             </StackPanel>
                             <StackPanel>
                                 <TextBlock Text="POWER" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="GpuPower" Text="—" Style="{StaticResource Mono}" FontSize="15"
+                                <TextBlock x:Name="GpuPower" Text="—" Style="{StaticResource Mono}" FontSize="14"
                                            HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
                             </StackPanel>
                             <StackPanel>
                                 <TextBlock Text="HOT SPOT" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="GpuHotSpot" Text="—" Style="{StaticResource Mono}" FontSize="15"
+                                <TextBlock x:Name="GpuHotSpot" Text="—" Style="{StaticResource Mono}" FontSize="14"
                                            HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
                             </StackPanel>
                         </UniformGrid>
@@ -77,7 +77,7 @@
             </Grid>
 
             <!-- ===== Temperature trend ===== -->
-            <Border Style="{StaticResource Panel}" Margin="0,0,0,16">
+            <Border Style="{StaticResource PanelTight}" Margin="0,0,0,10">
                 <StackPanel>
                     <DockPanel>
                         <TextBlock Text="TEMPERATURE · 60s" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
@@ -88,55 +88,55 @@
                             <TextBlock Text="GPU" Margin="5,0,0,0" Style="{StaticResource Caption}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </DockPanel>
-                    <ctl:TempTrend x:Name="Trend" Height="140" Margin="0,10,0,0"/>
+                    <ctl:TempTrend x:Name="Trend" Height="96" Margin="0,8,0,0"/>
                 </StackPanel>
             </Border>
 
             <!-- ===== Memory: 3 independent domains ===== -->
-            <Grid Margin="0,0,0,16">
+            <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Style="{StaticResource Panel}" Margin="0,0,6,0">
+                <Border Grid.Column="0" Style="{StaticResource PanelTight}" Margin="0,0,5,0">
                     <StackPanel>
                         <DockPanel>
                             <TextBlock Text="RAM" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
                             <TextBlock x:Name="RamPct" Text="—" DockPanel.Dock="Right" HorizontalAlignment="Right"
                                        Style="{StaticResource Mono}" Foreground="{StaticResource Ink}"/>
                         </DockPanel>
-                        <ctl:CapacityBar x:Name="RamBar" Height="10" Margin="0,10,0,0" WarnAt="0.8" CriticalAt="0.95"/>
+                        <ctl:CapacityBar x:Name="RamBar" Height="9" Margin="0,7,0,0" WarnAt="0.8" CriticalAt="0.95"/>
                         <TextBlock x:Name="RamText" Text="—" Style="{StaticResource Caption}"
-                                   FontFamily="{StaticResource MonoFont}" Margin="0,6,0,0"/>
+                                   FontFamily="{StaticResource MonoFont}" Margin="0,4,0,0"/>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="1" Style="{StaticResource Panel}" Margin="6,0,6,0">
+                <Border Grid.Column="1" Style="{StaticResource PanelTight}" Margin="5,0,5,0">
                     <StackPanel>
                         <DockPanel>
                             <TextBlock Text="COMMIT" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
                             <TextBlock x:Name="SwapPct" Text="—" DockPanel.Dock="Right" HorizontalAlignment="Right"
                                        Style="{StaticResource Mono}" Foreground="{StaticResource Ink}"/>
                         </DockPanel>
-                        <ctl:CapacityBar x:Name="SwapBar" Height="10" Margin="0,10,0,0" WarnAt="0.85" CriticalAt="0.95" TickAt="0.9"/>
+                        <ctl:CapacityBar x:Name="SwapBar" Height="9" Margin="0,7,0,0" WarnAt="0.85" CriticalAt="0.95" TickAt="0.9"/>
                         <TextBlock x:Name="SwapText" Text="—" Style="{StaticResource Caption}"
-                                   FontFamily="{StaticResource MonoFont}" Margin="0,6,0,0"/>
+                                   FontFamily="{StaticResource MonoFont}" Margin="0,4,0,0"/>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="2" Style="{StaticResource Panel}" Margin="6,0,0,0">
+                <Border Grid.Column="2" Style="{StaticResource PanelTight}" Margin="5,0,0,0">
                     <StackPanel>
                         <DockPanel>
                             <TextBlock Text="VRAM" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
                             <TextBlock x:Name="VramPct" Text="—" DockPanel.Dock="Right" HorizontalAlignment="Right"
                                        Style="{StaticResource Mono}" Foreground="{StaticResource Ink}"/>
                         </DockPanel>
-                        <ctl:CapacityBar x:Name="VramBar" Height="10" Margin="0,10,0,0" WarnAt="0.8" CriticalAt="0.95"
+                        <ctl:CapacityBar x:Name="VramBar" Height="9" Margin="0,7,0,0" WarnAt="0.8" CriticalAt="0.95"
                                          SecondaryIsSpillover="True"/>
                         <TextBlock x:Name="VramText" Text="—" Style="{StaticResource Caption}"
-                                   FontFamily="{StaticResource MonoFont}" Margin="0,6,0,0"/>
+                                   FontFamily="{StaticResource MonoFont}" Margin="0,4,0,0"/>
                     </StackPanel>
                 </Border>
             </Grid>
@@ -149,22 +149,22 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Cooling -->
-                <Border Grid.Column="0" Style="{StaticResource Panel}" Margin="0,0,8,0">
+                <Border Grid.Column="0" Style="{StaticResource PanelTight}" Margin="0,0,5,0">
                     <DockPanel>
-                        <StackPanel DockPanel.Dock="Left">
+                        <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">
                             <TextBlock Text="COOLING" Style="{StaticResource SectionLabel}"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" VerticalAlignment="Bottom">
-                                <TextBlock x:Name="FanDuty" Text="—" Style="{StaticResource MonoDisplay}" FontSize="30"
+                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0" VerticalAlignment="Bottom">
+                                <TextBlock x:Name="FanDuty" Text="—" Style="{StaticResource MonoDisplay}" FontSize="26"
                                            Foreground="{StaticResource Cyan}"/>
                                 <TextBlock x:Name="FanDutyUnit" Text="" Style="{StaticResource Caption}" VerticalAlignment="Bottom"
-                                           Margin="6,0,0,6"/>
+                                           Margin="6,0,0,5"/>
                             </StackPanel>
                             <TextBlock x:Name="FanNote" Text="Fan duty from EC · no tachometer (RPM) on this platform"
-                                       Style="{StaticResource Caption}" Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="260"/>
+                                       Style="{StaticResource Caption}" Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="240"/>
                         </StackPanel>
                         <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <TextBlock Text="ACTIVE MODE" Style="{StaticResource Caption}" HorizontalAlignment="Right"/>
-                            <Border x:Name="ModePill" CornerRadius="{StaticResource RadiusPill}" Padding="14,6" Margin="0,4,0,0"
+                            <Border x:Name="ModePill" CornerRadius="{StaticResource RadiusPill}" Padding="13,5" Margin="0,4,0,0"
                                     Background="{StaticResource MagentaTint}">
                                 <TextBlock x:Name="FanMode" Text="—" FontWeight="SemiBold" Foreground="{StaticResource Magenta}"/>
                             </Border>
@@ -173,10 +173,10 @@
                 </Border>
 
                 <!-- Network -->
-                <Border Grid.Column="1" Style="{StaticResource Panel}" Margin="8,0,0,0">
-                    <StackPanel>
+                <Border Grid.Column="1" Style="{StaticResource PanelTight}" Margin="5,0,0,0">
+                    <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="NETWORK" Style="{StaticResource SectionLabel}"/>
-                        <Grid Margin="0,10,0,0">
+                        <Grid Margin="0,6,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -187,8 +187,8 @@
                                                Foreground="{StaticResource Cyan}" VerticalAlignment="Center"/>
                                     <TextBlock Text="DOWN" Style="{StaticResource Caption}" Margin="5,0,0,0" VerticalAlignment="Center"/>
                                 </StackPanel>
-                                <TextBlock x:Name="NetDown" Text="—" Style="{StaticResource Mono}" FontSize="16"
-                                           Foreground="{StaticResource Ink}" Margin="0,2,0,0"/>
+                                <TextBlock x:Name="NetDown" Text="—" Style="{StaticResource Mono}" FontSize="15"
+                                           Foreground="{StaticResource Ink}" Margin="0,1,0,0"/>
                             </StackPanel>
                             <StackPanel Grid.Column="1">
                                 <StackPanel Orientation="Horizontal">
@@ -196,8 +196,8 @@
                                                Foreground="{StaticResource Magenta}" VerticalAlignment="Center"/>
                                     <TextBlock Text="UP" Style="{StaticResource Caption}" Margin="5,0,0,0" VerticalAlignment="Center"/>
                                 </StackPanel>
-                                <TextBlock x:Name="NetUp" Text="—" Style="{StaticResource Mono}" FontSize="16"
-                                           Foreground="{StaticResource Ink}" Margin="0,2,0,0"/>
+                                <TextBlock x:Name="NetUp" Text="—" Style="{StaticResource Mono}" FontSize="15"
+                                           Foreground="{StaticResource Ink}" Margin="0,1,0,0"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
@@ -205,10 +205,10 @@
             </Grid>
 
             <!-- Degraded-sensor notice -->
-            <Border x:Name="SensorNotice" Style="{StaticResource Panel}" Visibility="Collapsed" Margin="0,16,0,0"
+            <Border x:Name="SensorNotice" Style="{StaticResource PanelTight}" Visibility="Collapsed" Margin="0,10,0,0"
                     Background="{StaticResource WarnTint}" BorderBrush="{StaticResource Warn}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                    <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="15"
                                Foreground="{StaticResource Warn}" VerticalAlignment="Center"/>
                     <TextBlock x:Name="SensorNoticeText" Margin="10,0,0,0" VerticalAlignment="Center"
                                Foreground="{StaticResource Ink}" TextWrapping="Wrap"/>

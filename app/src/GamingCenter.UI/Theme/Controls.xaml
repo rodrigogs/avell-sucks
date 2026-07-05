@@ -20,6 +20,11 @@
         <Setter Property="Background" Value="{StaticResource Surface2}"/>
     </Style>
 
+    <!-- Compact panel — denser padding for data-dense dashboards -->
+    <Style x:Key="PanelTight" TargetType="Border" BasedOn="{StaticResource Panel}">
+        <Setter Property="Padding" Value="13"/>
+    </Style>
+
     <!-- ===== Focus ring (2px cyan) ===== -->
     <Style x:Key="FocusVisual">
         <Setter Property="Control.Template">
