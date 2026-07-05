@@ -1,0 +1,12 @@
+bin/
+obj/
+*.user
+.vs/
+.scaffold/
+*.log
+launch.log
+launch-ui.log
+screenshot*.png
+TestResults/
+[Bb]in/
+[Oo]bj/
