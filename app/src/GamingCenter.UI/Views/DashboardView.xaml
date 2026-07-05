@@ -141,18 +141,19 @@
                 </Border>
             </Grid>
 
-            <!-- ===== Fan ===== -->
+            <!-- ===== Fan / cooling ===== -->
             <Border Style="{StaticResource Panel}">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left">
                         <TextBlock Text="COOLING" Style="{StaticResource SectionLabel}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                            <TextBlock x:Name="FanRpm" Text="—" Style="{StaticResource MonoDisplay}" FontSize="30"
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" VerticalAlignment="Bottom">
+                            <TextBlock x:Name="FanDuty" Text="—" Style="{StaticResource MonoDisplay}" FontSize="30"
                                        Foreground="{StaticResource Cyan}"/>
-                            <TextBlock Text="rpm" Style="{StaticResource Caption}" VerticalAlignment="Bottom"
+                            <TextBlock x:Name="FanDutyUnit" Text="" Style="{StaticResource Caption}" VerticalAlignment="Bottom"
                                        Margin="6,0,0,6"/>
                         </StackPanel>
-                        <TextBlock x:Name="FanNote" Text="" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        <TextBlock x:Name="FanNote" Text="Fan duty from EC · this platform reports no tachometer (RPM)"
+                                   Style="{StaticResource Caption}" Margin="0,2,0,0"/>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
                         <TextBlock Text="ACTIVE MODE" Style="{StaticResource Caption}" HorizontalAlignment="Right"/>

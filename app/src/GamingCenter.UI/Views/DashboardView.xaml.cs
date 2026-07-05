@@ -32,13 +32,15 @@ public partial class DashboardView : UserControl
         try { _monitor = new HardwareMonitor(); }
         catch { ShowNotice("Sensor access needs elevation — live telemetry is unavailable in this session."); }
 
-        // Active fan mode (from EC via the fan service).
+        // Active fan mode (from EC via the fan service). This platform has no
+        // tachometer, so we show mode + duty (from the custom curve) — never RPM.
         try
         {
-            var mode = await _fan.GetModeAsync();
-            FanMode.Text = FriendlyMode(mode ?? "auto");
+            var mode = await _fan.GetModeAsync() ?? "auto";
+            FanMode.Text = FriendlyMode(mode);
+            await ShowFanDuty(mode);
         }
-        catch { FanMode.Text = "—"; }
+        catch { FanMode.Text = "—"; FanDuty.Text = "—"; }
 
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _timer.Tick += (_, _) => Poll();
@@ -93,21 +95,9 @@ public partial class DashboardView : UserControl
         }
         else { VramPct.Text = "—"; VramText.Text = "n/a"; }
 
-        // ---- Fan ----
-        if (t.FanRpm is double rpm)
-        {
-            FanRpm.Text = $"{rpm:0}";
-            FanNote.Text = "";
-        }
-        else
-        {
-            FanRpm.Text = "—";
-            FanNote.Text = "RPM not exposed by sensors (EC-only)";
-        }
-
         // Honest note when the CPU can't report temperature on this platform.
-        if (t.CpuTempC is null && !_noticeShown)
-            ShowNotice("This CPU doesn't expose temperature, clocks or power through the sensor library — those read “n/a”. Load, GPU and memory are live.");
+        if (t.CpuTempC is null && t.CpuClockMhz is null && t.CpuPowerW is null && !_noticeShown)
+            ShowNotice("This CPU reports load and temperature only; clock and package power aren't exposed on this platform and read “n/a”.");
     }
 
     // ---- Derived status chip ----
@@ -154,6 +144,39 @@ public partial class DashboardView : UserControl
         var m when m.StartsWith("l") => m.ToUpperInvariant(),
         _ => mode,
     };
+
+    /// <summary>
+    /// Shows fan duty (PWM %) — the honest number this platform exposes — instead
+    /// of a tachometer RPM, which neither this app nor the OEM can read here.
+    /// </summary>
+    private async System.Threading.Tasks.Task ShowFanDuty(string mode)
+    {
+        switch (mode.ToLowerInvariant())
+        {
+            case "auto":
+                FanDuty.Text = "Auto";
+                FanDutyUnit.Text = "";
+                FanNote.Text = "Firmware-controlled · no tachometer (RPM) on this platform";
+                return;
+            case "boost":
+                FanDuty.Text = "100";
+                FanDutyUnit.Text = "% duty";
+                FanNote.Text = "Max cooling · no tachometer (RPM) on this platform";
+                return;
+        }
+
+        // Custom / L1–L5: report the highest curve PWM as duty (0–140 → %).
+        try
+        {
+            var curve = await _fan.GetCurveAsync();
+            int maxPwm = 0;
+            foreach (var p in curve) maxPwm = Math.Max(maxPwm, p.Pwm);
+            FanDuty.Text = $"{(int)Math.Round(maxPwm / 140.0 * 100)}";
+            FanDutyUnit.Text = "% duty";
+            FanNote.Text = "Custom curve peak · no tachometer (RPM) on this platform";
+        }
+        catch { FanDuty.Text = "—"; FanDutyUnit.Text = ""; }
+    }
 
     private void ShowNotice(string message)
     {
