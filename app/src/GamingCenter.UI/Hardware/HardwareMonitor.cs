@@ -62,6 +62,107 @@ public sealed class HardwareMonitor : IDisposable
         }
     }
 
+    /// <summary>
+    /// Builds structured, dashboard-ready telemetry with precise sensor
+    /// selection (matched against the real machine's sensor names, not guessed).
+    /// Fields stay null when the platform doesn't expose them.
+    /// </summary>
+    public Telemetry GetTelemetry()
+    {
+        var cpu = new List<ISensor>();
+        var mem = new List<ISensor>();
+        var virt = new List<ISensor>();
+        ISensor[]? discreteGpu = null;
+        int discreteScore = -1;
+
+        foreach (var hw in _computer.Hardware)
+        {
+            hw.Update();
+            foreach (var sub in hw.SubHardware) sub.Update();
+
+            switch (hw.HardwareType)
+            {
+                case HardwareType.Cpu:
+                    cpu.AddRange(hw.Sensors);
+                    break;
+
+                case HardwareType.GpuNvidia:
+                case HardwareType.GpuAmd:
+                case HardwareType.GpuIntel:
+                    // Prefer the discrete GPU: rank by whether it reports a core
+                    // temperature and dedicated VRAM (integrated GPUs usually don't).
+                    int score =
+                        (hw.Sensors.Any(s => s.SensorType == SensorType.Temperature) ? 2 : 0) +
+                        (hw.HardwareType == HardwareType.GpuNvidia || hw.HardwareType == HardwareType.GpuAmd ? 1 : 0);
+                    if (score > discreteScore)
+                    {
+                        discreteScore = score;
+                        discreteGpu = hw.Sensors.ToArray();
+                        _discreteGpuName = hw.Name;
+                    }
+                    break;
+
+                case HardwareType.Memory:
+                    // The library exposes two memory hardware nodes: physical
+                    // ("Total Memory") and commit ("Virtual Memory").
+                    if (hw.Name.Contains("Virtual", StringComparison.OrdinalIgnoreCase))
+                        virt.AddRange(hw.Sensors);
+                    else
+                        mem.AddRange(hw.Sensors);
+                    break;
+            }
+        }
+
+        double? Val(IEnumerable<ISensor> src, SensorType type, params string[] names) =>
+            src.FirstOrDefault(s => s.SensorType == type && s.Value is not null &&
+                                    names.Any(n => string.Equals(s.Name, n, StringComparison.OrdinalIgnoreCase)))
+               ?.Value is float v ? Math.Round(v, 1) : null;
+
+        double? First(IEnumerable<ISensor> src, SensorType type, Func<string, bool> match) =>
+            src.FirstOrDefault(s => s.SensorType == type && s.Value is not null && match(s.Name))
+               ?.Value is float v ? Math.Round(v, 1) : null;
+
+        var gpu = discreteGpu ?? Array.Empty<ISensor>();
+
+        return new Telemetry
+        {
+            // CPU — this platform exposes load only; temp/clock/power may be null.
+            CpuLoadTotal = Val(cpu, SensorType.Load, "CPU Total"),
+            CpuLoadMax = Val(cpu, SensorType.Load, "CPU Core Max"),
+            CpuTempC = Val(cpu, SensorType.Temperature, "CPU Package", "Core (Tctl/Tdie)", "Core Max", "CPU Cores"),
+            CpuClockMhz = First(cpu, SensorType.Clock, n => n.Contains("Core", StringComparison.OrdinalIgnoreCase)),
+            CpuPowerW = Val(cpu, SensorType.Power, "CPU Package", "Package"),
+            CpuVoltage = First(cpu, SensorType.Voltage, n => n.Contains("Core", StringComparison.OrdinalIgnoreCase)),
+
+            // GPU — discrete card reports the full set.
+            GpuName = _discreteGpuName,
+            GpuLoad = Val(gpu, SensorType.Load, "GPU Core"),
+            GpuTempC = Val(gpu, SensorType.Temperature, "GPU Core"),
+            GpuHotSpotC = Val(gpu, SensorType.Temperature, "GPU Hot Spot"),
+            GpuClockMhz = Val(gpu, SensorType.Clock, "GPU Core"),
+            GpuMemClockMhz = Val(gpu, SensorType.Clock, "GPU Memory"),
+            GpuPowerW = Val(gpu, SensorType.Power, "GPU Package"),
+            GpuVramUsedMb = Val(gpu, SensorType.SmallData, "GPU Memory Used", "D3D Dedicated Memory Used"),
+            GpuVramTotalMb = Val(gpu, SensorType.SmallData, "GPU Memory Total"),
+
+            // Memory — physical vs commit/swap, kept distinct.
+            RamUsedGb = Val(mem, SensorType.Data, "Memory Used"),
+            RamTotalGb = Sum(Val(mem, SensorType.Data, "Memory Used"), Val(mem, SensorType.Data, "Memory Available")),
+            RamLoad = Val(mem, SensorType.Load, "Memory"),
+            SwapUsedGb = Val(virt, SensorType.Data, "Memory Used"),
+            SwapTotalGb = Sum(Val(virt, SensorType.Data, "Memory Used"), Val(virt, SensorType.Data, "Memory Available")),
+            SwapLoad = Val(virt, SensorType.Load, "Memory"),
+
+            // Fan — LHM reports none on this Avell; EC is the real source (wired separately).
+            FanRpm = First(cpu.Concat(gpu), SensorType.Fan, _ => true),
+        };
+    }
+
+    private string? _discreteGpuName;
+
+    private static double? Sum(double? a, double? b) =>
+        a is null && b is null ? null : Math.Round((a ?? 0) + (b ?? 0), 1);
+
     public void Dispose()
     {
         _computer.Close();
