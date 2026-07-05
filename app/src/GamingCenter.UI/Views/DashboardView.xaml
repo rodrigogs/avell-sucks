@@ -22,15 +22,12 @@
                                        FontFamily="{StaticResource MonoFont}"/>
                         </DockPanel>
                         <ctl:LoadTempGauge x:Name="CpuGauge" Height="132" Margin="0,4,0,0" Kind="Cpu"/>
-                        <UniformGrid Columns="3" Margin="0,8,0,0">
+                        <!-- CPU package power isn't exposed on this platform (no MSR driver), so it's
+                             omitted rather than shown as a dead "—". Clock + derived status only. -->
+                        <UniformGrid Columns="2" Margin="0,8,0,0">
                             <StackPanel>
                                 <TextBlock Text="CLOCK" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
                                 <TextBlock x:Name="CpuClock" Text="—" Style="{StaticResource Mono}" FontSize="14"
-                                           HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
-                            </StackPanel>
-                            <StackPanel>
-                                <TextBlock Text="POWER" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="CpuPower" Text="—" Style="{StaticResource Mono}" FontSize="14"
                                            HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
                             </StackPanel>
                             <StackPanel>

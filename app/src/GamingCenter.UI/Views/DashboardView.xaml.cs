@@ -74,7 +74,6 @@ public partial class DashboardView : UserControl
         CpuGauge.Load = t.CpuLoadTotal ?? 0;
         CpuGauge.TempC = t.CpuTempC; // null → gauge shows load-only center + "temp n/a"
         CpuClock.Text = Mhz(t.CpuClockMhz);
-        CpuPower.Text = Watts(t.CpuPowerW);
         SetStatus(CpuStatusPill, CpuStatus, DeriveCpuStatus(t));
 
         // ---- GPU tile ----
@@ -97,7 +96,10 @@ public partial class DashboardView : UserControl
             double frac = Math.Clamp(vu / vt, 0, 1);
             VramBar.Fraction = frac;
             VramPct.Text = $"{frac * 100:0}%";
-            VramText.Text = $"{vu / 1024.0:0.0} / {vt / 1024.0:0.0} GB";
+            // Show MB below 1 GB so light idle use (e.g. 113 MB) doesn't read as "0.0 GB".
+            VramText.Text = vu < 1024
+                ? $"{vu:0} MB / {vt / 1024.0:0.0} GB"
+                : $"{vu / 1024.0:0.0} / {vt / 1024.0:0.0} GB";
         }
         else { VramPct.Text = "—"; VramText.Text = "n/a"; }
 
