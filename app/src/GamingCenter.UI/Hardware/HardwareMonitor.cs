@@ -114,10 +114,19 @@ public sealed class HardwareMonitor : IDisposable
             }
         }
 
-        double? Val(IEnumerable<ISensor> src, SensorType type, params string[] names) =>
-            src.FirstOrDefault(s => s.SensorType == type && s.Value is not null &&
-                                    names.Any(n => string.Equals(s.Name, n, StringComparison.OrdinalIgnoreCase)))
-               ?.Value is float v ? Math.Round(v, 1) : null;
+        // Match names in the given priority order (not sensor order): the first
+        // listed name that has a live sensor wins. Prevents a low-priority match
+        // (e.g. per-process D3D VRAM) from shadowing the intended sensor.
+        double? Val(IEnumerable<ISensor> src, SensorType type, params string[] names)
+        {
+            var pool = src.Where(s => s.SensorType == type && s.Value is not null).ToArray();
+            foreach (var n in names)
+            {
+                var hit = pool.FirstOrDefault(s => string.Equals(s.Name, n, StringComparison.OrdinalIgnoreCase));
+                if (hit?.Value is float v) return Math.Round(v, 1);
+            }
+            return null;
+        }
 
         double? First(IEnumerable<ISensor> src, SensorType type, Func<string, bool> match) =>
             src.FirstOrDefault(s => s.SensorType == type && s.Value is not null && match(s.Name))
@@ -147,8 +156,11 @@ public sealed class HardwareMonitor : IDisposable
             GpuClockMhz = Val(gpu, SensorType.Clock, "GPU Core"),
             GpuMemClockMhz = Val(gpu, SensorType.Clock, "GPU Memory"),
             GpuPowerW = Val(gpu, SensorType.Power, "GPU Package"),
+            // Adapter-wide "GPU Memory Used" is the right headline (total VRAM in
+            // use); per-process D3D Dedicated reads ~0 for our own idle app.
             GpuVramUsedMb = Val(gpu, SensorType.SmallData, "GPU Memory Used", "D3D Dedicated Memory Used"),
-            GpuVramTotalMb = Val(gpu, SensorType.SmallData, "GPU Memory Total"),
+            GpuVramTotalMb = Val(gpu, SensorType.SmallData, "GPU Memory Total")
+                             ?? Sum(Val(gpu, SensorType.SmallData, "GPU Memory Used"), Val(gpu, SensorType.SmallData, "GPU Memory Free")),
 
             // Memory — physical vs commit/swap, kept distinct.
             RamUsedGb = Val(mem, SensorType.Data, "Memory Used"),
