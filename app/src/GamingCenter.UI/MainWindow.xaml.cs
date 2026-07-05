@@ -44,8 +44,6 @@ public partial class MainWindow : Window
         if (WindowState == WindowState.Minimized)
         {
             Hide();
-            Tray.ShowBalloonTip("Gaming Center", "Still running in the tray.",
-                Hardcodet.Wpf.TaskbarNotification.BalloonIcon.None);
         }
     }
 
