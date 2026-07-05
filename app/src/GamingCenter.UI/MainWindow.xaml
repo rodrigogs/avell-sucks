@@ -21,7 +21,7 @@
         <!-- System tray -->
         <tb:TaskbarIcon x:Name="Tray"
                         ToolTipText="Gaming Center"
-                        IconSource="app.ico"
+                        IconSource="pack://application:,,,/app.ico"
                         TrayMouseDoubleClick="OnTrayDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
