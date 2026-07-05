@@ -1,12 +1,14 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using GamingCenter.UI.Startup;
 using GamingCenter.UI.Views;
 
 namespace GamingCenter.UI;
 
 public partial class MainWindow : Window
 {
+    private bool _reallyClosing;
     private readonly DashboardView _dashboard = new();
     private readonly FanView _fan = new();
     private readonly RgbView _rgb = new();
@@ -30,6 +32,60 @@ public partial class MainWindow : Window
             _ => null,
         };
         if (initial is not null) initial.IsChecked = true;
+
+        AutoStartItem.IsChecked = AutoStart.IsEnabled();
+    }
+
+    // ===== System tray =====
+
+    private void OnWindowStateChanged(object? sender, EventArgs e)
+    {
+        // Minimize hides to tray instead of the taskbar.
+        if (WindowState == WindowState.Minimized)
+        {
+            Hide();
+            Tray.ShowBalloonTip("Gaming Center", "Still running in the tray.",
+                Hardcodet.Wpf.TaskbarNotification.BalloonIcon.None);
+        }
+    }
+
+    private void RestoreFromTray()
+    {
+        Show();
+        WindowState = WindowState.Normal;
+        Activate();
+        Topmost = true;
+        Topmost = false;
+    }
+
+    private void OnTrayDoubleClick(object sender, RoutedEventArgs e) => RestoreFromTray();
+    private void OnTrayOpen(object sender, RoutedEventArgs e) => RestoreFromTray();
+
+    private void OnToggleAutoStart(object sender, RoutedEventArgs e)
+    {
+        bool enable = AutoStartItem.IsChecked;
+        AutoStart.Set(enable);
+        // Reflect the real state in case the registry write failed.
+        AutoStartItem.IsChecked = AutoStart.IsEnabled();
+    }
+
+    private void OnTrayExit(object sender, RoutedEventArgs e)
+    {
+        _reallyClosing = true;
+        Application.Current.Shutdown();
+    }
+
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        // The window close button minimizes to tray; real exit is the tray menu.
+        if (!_reallyClosing)
+        {
+            e.Cancel = true;
+            WindowState = WindowState.Minimized;
+            return;
+        }
+        Tray.Dispose();
+        base.OnClosing(e);
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
