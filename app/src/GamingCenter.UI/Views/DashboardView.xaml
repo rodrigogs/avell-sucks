@@ -141,29 +141,68 @@
                 </Border>
             </Grid>
 
-            <!-- ===== Fan / cooling ===== -->
-            <Border Style="{StaticResource Panel}">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Left">
-                        <TextBlock Text="COOLING" Style="{StaticResource SectionLabel}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" VerticalAlignment="Bottom">
-                            <TextBlock x:Name="FanDuty" Text="—" Style="{StaticResource MonoDisplay}" FontSize="30"
-                                       Foreground="{StaticResource Cyan}"/>
-                            <TextBlock x:Name="FanDutyUnit" Text="" Style="{StaticResource Caption}" VerticalAlignment="Bottom"
-                                       Margin="6,0,0,6"/>
+            <!-- ===== Cooling + Network ===== -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Cooling -->
+                <Border Grid.Column="0" Style="{StaticResource Panel}" Margin="0,0,8,0">
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Left">
+                            <TextBlock Text="COOLING" Style="{StaticResource SectionLabel}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" VerticalAlignment="Bottom">
+                                <TextBlock x:Name="FanDuty" Text="—" Style="{StaticResource MonoDisplay}" FontSize="30"
+                                           Foreground="{StaticResource Cyan}"/>
+                                <TextBlock x:Name="FanDutyUnit" Text="" Style="{StaticResource Caption}" VerticalAlignment="Bottom"
+                                           Margin="6,0,0,6"/>
+                            </StackPanel>
+                            <TextBlock x:Name="FanNote" Text="Fan duty from EC · no tachometer (RPM) on this platform"
+                                       Style="{StaticResource Caption}" Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="260"/>
                         </StackPanel>
-                        <TextBlock x:Name="FanNote" Text="Fan duty from EC · this platform reports no tachometer (RPM)"
-                                   Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="ACTIVE MODE" Style="{StaticResource Caption}" HorizontalAlignment="Right"/>
+                            <Border x:Name="ModePill" CornerRadius="{StaticResource RadiusPill}" Padding="14,6" Margin="0,4,0,0"
+                                    Background="{StaticResource MagentaTint}">
+                                <TextBlock x:Name="FanMode" Text="—" FontWeight="SemiBold" Foreground="{StaticResource Magenta}"/>
+                            </Border>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+                <!-- Network -->
+                <Border Grid.Column="1" Style="{StaticResource Panel}" Margin="8,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="NETWORK" Style="{StaticResource SectionLabel}"/>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE74B;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                               Foreground="{StaticResource Cyan}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="DOWN" Style="{StaticResource Caption}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <TextBlock x:Name="NetDown" Text="—" Style="{StaticResource Mono}" FontSize="16"
+                                           Foreground="{StaticResource Ink}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE74A;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                               Foreground="{StaticResource Magenta}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="UP" Style="{StaticResource Caption}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <TextBlock x:Name="NetUp" Text="—" Style="{StaticResource Mono}" FontSize="16"
+                                           Foreground="{StaticResource Ink}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
-                    <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <TextBlock Text="ACTIVE MODE" Style="{StaticResource Caption}" HorizontalAlignment="Right"/>
-                        <Border x:Name="ModePill" CornerRadius="{StaticResource RadiusPill}" Padding="14,6" Margin="0,4,0,0"
-                                Background="{StaticResource MagentaTint}">
-                            <TextBlock x:Name="FanMode" Text="—" FontWeight="SemiBold" Foreground="{StaticResource Magenta}"/>
-                        </Border>
-                    </StackPanel>
-                </DockPanel>
-            </Border>
+                </Border>
+            </Grid>
 
             <!-- Degraded-sensor notice -->
             <Border x:Name="SensorNotice" Style="{StaticResource Panel}" Visibility="Collapsed" Margin="0,16,0,0"
