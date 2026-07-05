@@ -31,9 +31,10 @@ public partial class App : Application
         // Diagnostic: dump every hardware sensor and exit. Used to match sensor
         // names precisely against the real machine (GC_DUMP_SENSORS=<path>).
         var dumpPath = Environment.GetEnvironmentVariable("GC_DUMP_SENSORS");
+        Log($"startup: GC_DUMP_SENSORS={dumpPath ?? "(unset)"}");
         if (!string.IsNullOrWhiteSpace(dumpPath))
         {
-            try { GamingCenter.UI.Hardware.SensorDump.Write(dumpPath); }
+            try { GamingCenter.UI.Hardware.SensorDump.Write(dumpPath); Log($"sensor dump written: {dumpPath}"); }
             catch (Exception ex) { Log($"sensor dump failed: {ex}"); }
             Shutdown();
             return;
