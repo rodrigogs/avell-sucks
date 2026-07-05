@@ -26,7 +26,7 @@
                         <ctl:HsvPicker x:Name="Picker" Height="180" Margin="0,10,0,0"/>
                         <DockPanel Margin="0,12,0,0">
                             <Border DockPanel.Dock="Left" Width="34" Height="34" CornerRadius="{StaticResource RadiusSm}"
-                                    x:Name="Swatch" Background="#FFFF2E88" BorderBrush="{StaticResource Hairline}" BorderThickness="1"/>
+                                    x:Name="Swatch" Background="{StaticResource Magenta}" BorderBrush="{StaticResource Hairline}" BorderThickness="1"/>
                             <TextBox x:Name="HexInput" Style="{StaticResource MonoInput}" Margin="10,0,0,0"
                                      Text="#FF2E88" VerticalContentAlignment="Center"
                                      KeyDown="OnHexKey" LostFocus="OnHexCommit"/>

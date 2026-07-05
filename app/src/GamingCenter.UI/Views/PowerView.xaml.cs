@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using GamingCenter.UI.Controls;
 using GamingCenter.UI.Services;
 
 namespace GamingCenter.UI.Views;
@@ -11,8 +12,9 @@ public partial class PowerView : UserControl
     private readonly IPowerService _power = new LocalPowerService();
     private bool _loading;
 
-    private static readonly Brush CyanBrush = new SolidColorBrush(Color.FromRgb(0x22, 0xD3, 0xEE));
-    private static readonly Brush DangerBrush = new SolidColorBrush(Color.FromRgb(0xF5, 0x48, 0x4A));
+    // Brand tokens (single source in Brand), matching Palette Cyan/Danger.
+    private static readonly Brush CyanBrush = Brand.Frozen(Brand.Cyan);
+    private static readonly Brush DangerBrush = Brand.Frozen(Brand.Danger);
 
     public PowerView()
     {

@@ -21,13 +21,11 @@ public sealed class TempTrend : FrameworkElement
     private readonly List<double?> _cpu = new();
     private readonly List<double?> _gpu = new();
 
-    private static readonly Color CpuColor = Color.FromRgb(0xFF, 0x2E, 0x97); // identity
-    private static readonly Color GpuColor = Color.FromRgb(0x22, 0xD3, 0xEE);
-    private static readonly Brush Ink3 = Frozen(Color.FromRgb(0x7C, 0x6A, 0xA6));
+    private static readonly Color CpuColor = Brand.Magenta; // identity
+    private static readonly Color GpuColor = Brand.Cyan;
+    private static readonly Brush Ink3 = Brand.Frozen(Brand.Ink3);
     private static readonly Typeface MonoFace = new(new FontFamily("Cascadia Code, Consolas, monospace"),
         FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
-
-    private static Brush Frozen(Color c) { var b = new SolidColorBrush(c); b.Freeze(); return b; }
 
     /// <summary>Append one sample per series (null = sensor unavailable that tick; drawn as a gap).</summary>
     public void Push(double? cpuTemp, double? gpuTemp)
@@ -57,7 +55,7 @@ public sealed class TempTrend : FrameworkElement
         foreach (var g in new[] { 30, 50, 70, 90 })
         {
             double y = YtoPix(g);
-            dc.DrawLine(new Pen(Frozen(Color.FromArgb(0x30, 0x3A, 0x21, 0x60)), 1),
+            dc.DrawLine(new Pen(Brand.Frozen(Color.FromArgb(0x30, 0x3A, 0x21, 0x60)), 1),
                 new Point(plot.Left, y), new Point(plot.Right, y));
             var ft = new FormattedText($"{g}", CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
                 MonoFace, 9.5, Ink3, VisualTreeHelper.GetDpi(this).PixelsPerDip);

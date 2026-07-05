@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -50,11 +49,10 @@ public sealed class LoadTempGauge : FrameworkElement
     public ThermalKind Kind { get => (ThermalKind)GetValue(KindProperty); set => SetValue(KindProperty, value); }
     private double RenderLoad { get => (double)GetValue(RenderLoadProperty); set => SetValue(RenderLoadProperty, value); }
 
-    private static readonly Brush TrackBrush = Frozen(Color.FromRgb(0x24, 0x10, 0x41));
-    private static readonly Brush Ink3 = Frozen(Color.FromRgb(0x7C, 0x6A, 0xA6));
+    private static readonly Brush TrackBrush = Brand.Frozen(Color.FromRgb(0x24, 0x10, 0x41));
+    private static readonly Brush Ink3 = Brand.Frozen(Color.FromRgb(0x7C, 0x6A, 0xA6));
     private static readonly FontFamily MonoFamily = new("Cascadia Code, Consolas, monospace");
     private static readonly FontFamily UiFamily = new("Segoe UI, sans-serif");
-    private static Brush Frozen(Color c) { var b = new SolidColorBrush(c); b.Freeze(); return b; }
 
     public LoadTempGauge()
     {
@@ -151,7 +149,7 @@ public sealed class LoadTempGauge : FrameworkElement
         {
             _big.Text = $"{RenderLoad:0}";
             _big.FontSize = s * 0.27;
-            _big.Foreground = Frozen(Color.FromRgb(0xF3, 0xEC, 0xFF));
+            _big.Foreground = Brand.Frozen(Color.FromRgb(0xF3, 0xEC, 0xFF));
             _glow.Color = Thermal.Cold;
             _glow.BlurRadius = 8;
             _glow.Opacity = 0.35;
@@ -183,7 +181,7 @@ public sealed class LoadTempGauge : FrameworkElement
         if (load > 0.001)
         {
             var grad = new LinearGradientBrush(
-                Color.FromRgb(0xFF, 0x2E, 0x97), Color.FromRgb(0x22, 0xD3, 0xEE),
+                Brand.Magenta, Brand.Cyan,
                 new Point(0, 0), new Point(1, 1));
             grad.Freeze();
             DrawArc(dc, center, radius, StartAngle, SweepAngle * load,

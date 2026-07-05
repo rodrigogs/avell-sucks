@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using GamingCenter.Core.Rgb;
-using GamingCenter.UI.Controls;
 using GamingCenter.UI.Services;
 
 namespace GamingCenter.UI.Views;
