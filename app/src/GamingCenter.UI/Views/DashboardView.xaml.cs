@@ -14,6 +14,7 @@ public partial class DashboardView : UserControl
     private HardwareMonitor? _monitor;
     private DispatcherTimer? _timer;
     private readonly IFanService _fan = new LocalFanService();
+    private readonly NetworkMeter _net = new();
     private bool _noticeShown;
 
     private static readonly Brush Ink2 = new SolidColorBrush(Color.FromRgb(0xB6, 0xA0, 0xE0));
@@ -58,6 +59,11 @@ public partial class DashboardView : UserControl
 
     private void Poll()
     {
+        // Network throughput is independent of the sensor library.
+        _net.Sample();
+        NetDown.Text = NetworkMeter.FormatBitsPerSec(_net.DownBytesPerSec);
+        NetUp.Text = NetworkMeter.FormatBitsPerSec(_net.UpBytesPerSec);
+
         if (_monitor is null) { Trend.Push(null, null); return; }
 
         Telemetry t;
