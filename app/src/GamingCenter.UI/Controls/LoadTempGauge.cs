@@ -1,21 +1,33 @@
 using System;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 
 namespace GamingCenter.UI.Controls;
 
 /// <summary>
 /// The dashboard hero: a radial LOAD gauge (arc, brand gradient, never tinted
-/// by severity — 100% load is healthy) with the TEMPERATURE readout in the
-/// hollow center, whose color = thermal band and whose glow blooms with heat.
-/// Two facts, one focal object, zero redundancy (research spec §2).
+/// by severity) with the TEMPERATURE readout in the hollow center, whose color
+/// = thermal band and whose glow blooms with heat via a real DropShadowEffect
+/// (BlurRadius 8→28, Opacity .5→.9). Critical band adds a slow pulse. When the
+/// platform exposes no temperature, the center shows load % + "temp n/a".
+/// (Research spec §1–2.)
 /// </summary>
 public sealed class LoadTempGauge : FrameworkElement
 {
     private const double StartAngle = 135;
     private const double SweepAngle = 270;
+
+    // Child visuals hosted for crisp text + a real glow effect.
+    private readonly TextBlock _big;      // temp value, or load number when no temp
+    private readonly TextBlock _sub;      // "NN% load" / "% load"
+    private readonly TextBlock _tiny;     // "temp n/a" hint (no-temp mode only)
+    private readonly StackPanel _stack;
+    private readonly DropShadowEffect _glow;
+    private readonly VisualCollection _children;
 
     public static readonly DependencyProperty LoadProperty = DependencyProperty.Register(
         nameof(Load), typeof(double), typeof(LoadTempGauge),
@@ -23,50 +35,140 @@ public sealed class LoadTempGauge : FrameworkElement
 
     public static readonly DependencyProperty TempCProperty = DependencyProperty.Register(
         nameof(TempC), typeof(double?), typeof(LoadTempGauge),
-        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnContentChanged));
 
     public static readonly DependencyProperty KindProperty = DependencyProperty.Register(
         nameof(Kind), typeof(ThermalKind), typeof(LoadTempGauge),
-        new FrameworkPropertyMetadata(ThermalKind.Cpu, FrameworkPropertyMetadataOptions.AffectsRender));
+        new FrameworkPropertyMetadata(ThermalKind.Cpu, FrameworkPropertyMetadataOptions.AffectsRender, OnContentChanged));
 
     private static readonly DependencyProperty RenderLoadProperty = DependencyProperty.Register(
         nameof(RenderLoad), typeof(double), typeof(LoadTempGauge),
-        new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+        new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender, OnContentChanged));
 
     public double Load { get => (double)GetValue(LoadProperty); set => SetValue(LoadProperty, value); }
-    /// <summary>Temperature in °C, or null when the platform doesn't expose it.</summary>
     public double? TempC { get => (double?)GetValue(TempCProperty); set => SetValue(TempCProperty, value); }
     public ThermalKind Kind { get => (ThermalKind)GetValue(KindProperty); set => SetValue(KindProperty, value); }
     private double RenderLoad { get => (double)GetValue(RenderLoadProperty); set => SetValue(RenderLoadProperty, value); }
 
     private static readonly Brush TrackBrush = Frozen(Color.FromRgb(0x24, 0x10, 0x41));
     private static readonly Brush Ink3 = Frozen(Color.FromRgb(0x7C, 0x6A, 0xA6));
-    private static readonly Typeface MonoFace = new(new FontFamily("Cascadia Code, Consolas, monospace"),
-        FontStyles.Normal, FontWeights.SemiBold, FontStretches.Normal);
-    private static readonly Typeface UiFace = new(new FontFamily("Segoe UI, sans-serif"),
-        FontStyles.Normal, FontWeights.Medium, FontStretches.Normal);
-
+    private static readonly FontFamily MonoFamily = new("Cascadia Code, Consolas, monospace");
+    private static readonly FontFamily UiFamily = new("Segoe UI, sans-serif");
     private static Brush Frozen(Color c) { var b = new SolidColorBrush(c); b.Freeze(); return b; }
+
+    public LoadTempGauge()
+    {
+        _glow = new DropShadowEffect { ShadowDepth = 0, BlurRadius = 12, Opacity = 0.6, Color = Thermal.Cold };
+        _big = new TextBlock
+        {
+            FontFamily = MonoFamily, FontWeight = FontWeights.SemiBold,
+            HorizontalAlignment = HorizontalAlignment.Center, Effect = _glow
+        };
+        _sub = new TextBlock
+        {
+            FontFamily = UiFamily, Foreground = Ink3,
+            HorizontalAlignment = HorizontalAlignment.Center
+        };
+        _tiny = new TextBlock
+        {
+            FontFamily = UiFamily, Foreground = Ink3, Visibility = Visibility.Collapsed,
+            HorizontalAlignment = HorizontalAlignment.Center
+        };
+        _stack = new StackPanel { HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+        _stack.Children.Add(_big);
+        _stack.Children.Add(_sub);
+        _stack.Children.Add(_tiny);
+        _children = new VisualCollection(this) { _stack };
+    }
+
+    protected override int VisualChildrenCount => _children.Count;
+    protected override Visual GetVisualChild(int index) => _children[index];
+
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        _stack.Measure(availableSize);
+        return availableSize;
+    }
+
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+        UpdateContent(finalSize);
+        _stack.Arrange(new Rect(finalSize));
+        return finalSize;
+    }
 
     private static void OnLoadChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var g = (LoadTempGauge)d;
         double target = Math.Clamp((double)e.NewValue, 0, 100);
         if (MotionPrefs.ReducedMotion) { g.RenderLoad = target; return; }
-        var anim = new DoubleAnimation
+        g.BeginAnimation(RenderLoadProperty, new DoubleAnimation
         {
-            To = target,
-            Duration = TimeSpan.FromMilliseconds(220),
+            To = target, Duration = TimeSpan.FromMilliseconds(220),
             EasingFunction = new QuarticEase { EasingMode = EasingMode.EaseOut }
-        };
-        g.BeginAnimation(RenderLoadProperty, anim);
+        });
+    }
+
+    private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        => ((LoadTempGauge)d).UpdateContent(new Size(((LoadTempGauge)d).ActualWidth, ((LoadTempGauge)d).ActualHeight));
+
+    private ThermalBand _lastBand = (ThermalBand)(-1);
+
+    private void UpdateContent(Size size)
+    {
+        double s = Math.Min(size.Width, size.Height);
+        if (s <= 0) return;
+
+        if (TempC is double t)
+        {
+            var band = Thermal.BandFor(t, Kind);
+            var color = Thermal.ColorFor(band);
+            _big.Text = $"{t:0}°";
+            _big.FontSize = s * 0.27;
+            _big.Foreground = new SolidColorBrush(color);
+            _glow.Color = color;
+            _glow.BlurRadius = Thermal.GlowBlur(t);
+            _glow.Opacity = Thermal.GlowOpacity(t);
+            _sub.Text = $"{RenderLoad:0}% load";
+            _sub.FontSize = s * 0.08;
+            _tiny.Visibility = Visibility.Collapsed;
+
+            // Critical band pulses; other bands are static.
+            if (band != _lastBand)
+            {
+                _lastBand = band;
+                if (band == ThermalBand.Critical && !MotionPrefs.ReducedMotion)
+                    _glow.BeginAnimation(DropShadowEffect.OpacityProperty, new DoubleAnimation
+                    {
+                        From = 0.5, To = 0.95, Duration = TimeSpan.FromSeconds(1.1),
+                        AutoReverse = true, RepeatBehavior = RepeatBehavior.Forever
+                    });
+                else
+                    _glow.BeginAnimation(DropShadowEffect.OpacityProperty, null);
+            }
+        }
+        else
+        {
+            _big.Text = $"{RenderLoad:0}";
+            _big.FontSize = s * 0.27;
+            _big.Foreground = Frozen(Color.FromRgb(0xF3, 0xEC, 0xFF));
+            _glow.Color = Thermal.Cold;
+            _glow.BlurRadius = 8;
+            _glow.Opacity = 0.35;
+            _glow.BeginAnimation(DropShadowEffect.OpacityProperty, null);
+            _sub.Text = "% load";
+            _sub.FontSize = s * 0.085;
+            _tiny.Text = "temp n/a";
+            _tiny.FontSize = s * 0.06;
+            _tiny.Visibility = Visibility.Visible;
+            _lastBand = (ThermalBand)(-1);
+        }
     }
 
     protected override void OnRender(DrawingContext dc)
     {
         double w = ActualWidth, h = ActualHeight;
         if (w <= 0 || h <= 0) return;
-
         double size = Math.Min(w, h);
         var center = new Point(w / 2, h / 2);
         double thickness = Math.Max(7, size * 0.09);
@@ -75,66 +177,21 @@ public sealed class LoadTempGauge : FrameworkElement
 
         double load = Math.Clamp(RenderLoad, 0, 100) / 100.0;
 
-        // Track.
         DrawArc(dc, center, radius, StartAngle, SweepAngle, new Pen(TrackBrush, thickness)
         { StartLineCap = PenLineCap.Round, EndLineCap = PenLineCap.Round });
 
-        // Load arc — brand gradient (magenta→cyan), never severity-tinted.
         if (load > 0.001)
         {
             var grad = new LinearGradientBrush(
                 Color.FromRgb(0xFF, 0x2E, 0x97), Color.FromRgb(0x22, 0xD3, 0xEE),
                 new Point(0, 0), new Point(1, 1));
             grad.Freeze();
-            var pen = new Pen(grad, thickness) { StartLineCap = PenLineCap.Round, EndLineCap = PenLineCap.Round };
-            DrawArc(dc, center, radius, StartAngle, SweepAngle * load, pen);
+            DrawArc(dc, center, radius, StartAngle, SweepAngle * load,
+                new Pen(grad, thickness) { StartLineCap = PenLineCap.Round, EndLineCap = PenLineCap.Round });
         }
 
-        double dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
-
-        // Center: temperature readout with heat-blooming glow, OR a load %
-        // fallback when temp isn't available on this platform.
-        if (TempC is double t)
-        {
-            var band = Thermal.BandFor(t, Kind);
-            var color = Thermal.ColorFor(band);
-            var brush = new SolidColorBrush(color); brush.Freeze();
-
-            var tempFt = new FormattedText($"{t:0}°", CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
-                MonoFace, size * 0.26, brush, dpi);
-            var pt = new Point(center.X - tempFt.Width / 2, center.Y - tempFt.Height * 0.62);
-
-            // Heat bloom: draw the glyph a few times with increasing blur-like
-            // offset alpha (OnRender can't apply Effect, so fake bloom via layered draws).
-            if (!MotionPrefs.ReducedMotion)
-            {
-                double heat = Thermal.Heat01(t);
-                byte a = (byte)(40 + heat * 90);
-                var glow = new SolidColorBrush(Color.FromArgb(a, color.R, color.G, color.B)); glow.Freeze();
-                var glowFt = new FormattedText($"{t:0}°", CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
-                    MonoFace, size * 0.26 * (1.0 + 0.04 + heat * 0.05), glow, dpi);
-                dc.DrawText(glowFt, new Point(center.X - glowFt.Width / 2, center.Y - glowFt.Height * 0.62));
-            }
-            dc.DrawText(tempFt, pt);
-
-            var lblFt = new FormattedText($"{Load:0}% load", CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
-                UiFace, size * 0.075, Ink3, dpi);
-            dc.DrawText(lblFt, new Point(center.X - lblFt.Width / 2, center.Y + tempFt.Height * 0.30));
-        }
-        else
-        {
-            // No temp sensor — center shows the load number instead.
-            var loadColor = new SolidColorBrush(Color.FromRgb(0xF3, 0xEC, 0xFF)); loadColor.Freeze();
-            var loadFt = new FormattedText($"{RenderLoad:0}", CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
-                MonoFace, size * 0.26, loadColor, dpi);
-            dc.DrawText(loadFt, new Point(center.X - loadFt.Width / 2, center.Y - loadFt.Height * 0.62));
-            var unitFt = new FormattedText("% load", CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
-                UiFace, size * 0.08, new SolidColorBrush(Color.FromRgb(0x22, 0xD3, 0xEE)), dpi);
-            dc.DrawText(unitFt, new Point(center.X - unitFt.Width / 2, center.Y + loadFt.Height * 0.22));
-            var noTemp = new FormattedText("temp n/a", CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
-                UiFace, size * 0.06, Ink3, dpi);
-            dc.DrawText(noTemp, new Point(center.X - noTemp.Width / 2, center.Y + loadFt.Height * 0.62));
-        }
+        // Keep the hosted readout in sync each render (RenderLoad animates).
+        UpdateContent(new Size(w, h));
     }
 
     private static void DrawArc(DrawingContext dc, Point c, double r, double startDeg, double sweepDeg, Pen pen)
