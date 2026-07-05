@@ -1,20 +1,27 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Win32;
 
 namespace GamingCenter.UI.Hardware;
 
 /// <summary>
-/// Reads CPU temperature the same way the OEM Gaming Center does — via the
-/// Windows "Thermal Zone Information / Temperature" performance counter
-/// (reported in Kelvin, converted to Celsius). This is the source that matches
-/// the original app's readout on this platform, where LibreHardwareMonitor
-/// exposes no CPU temperature sensor.
+/// Reads CPU metrics that LibreHardwareMonitor doesn't expose on this platform,
+/// using Windows performance counters + registry:
+/// - Temperature, the way the OEM Gaming Center does (Thermal Zone counter,
+///   Kelvin → Celsius).
+/// - Effective clock, the way Task Manager does (base clock × "% Processor
+///   Performance").
+/// Package power (RAPL) needs ring-0 MSR access and is not covered here.
 /// </summary>
 public sealed class CpuThermalZone : IDisposable
 {
     private PerformanceCounter? _counter;
     private bool _tried;
+
+    private PerformanceCounter? _perfPct;
+    private bool _triedClock;
+    private double _baseClockMhz;
 
     /// <summary>Current CPU temperature in °C, or null if the counter is unavailable.</summary>
     public double? ReadCelsius()
@@ -31,6 +38,46 @@ public sealed class CpuThermalZone : IDisposable
         catch
         {
             return null;
+        }
+    }
+
+    /// <summary>
+    /// Effective CPU clock in MHz: base clock scaled by the current performance
+    /// percentage (which exceeds 100% under turbo). Null if unavailable.
+    /// </summary>
+    public double? ReadClockMhz()
+    {
+        EnsureClock();
+        if (_perfPct is null || _baseClockMhz <= 0) return null;
+        try
+        {
+            double pct = _perfPct.NextValue();       // ~100 = base, >100 = turbo
+            double mhz = _baseClockMhz * pct / 100.0;
+            return mhz is > 100 and < 12000 ? Math.Round(mhz) : null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private void EnsureClock()
+    {
+        if (_triedClock) return;
+        _triedClock = true;
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey(
+                @"HARDWARE\DESCRIPTION\System\CentralProcessor\0");
+            if (key?.GetValue("~MHz") is int mhz) _baseClockMhz = mhz;
+
+            // "% Processor Performance" tracks the real frequency ratio incl. turbo.
+            _perfPct = new PerformanceCounter("Processor Information", "% Processor Performance", "_Total", readOnly: true);
+            _perfPct.NextValue(); // discard first (always 0)
+        }
+        catch
+        {
+            _perfPct = null;
         }
     }
 
@@ -64,5 +111,7 @@ public sealed class CpuThermalZone : IDisposable
     {
         _counter?.Dispose();
         _counter = null;
+        _perfPct?.Dispose();
+        _perfPct = null;
     }
 }

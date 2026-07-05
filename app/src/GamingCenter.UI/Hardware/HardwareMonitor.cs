@@ -134,7 +134,8 @@ public sealed class HardwareMonitor : IDisposable
             // counter (the source that matches the original Gaming Center).
             CpuTempC = Val(cpu, SensorType.Temperature, "CPU Package", "Core (Tctl/Tdie)", "Core Max", "CPU Cores")
                        ?? _cpuThermal.ReadCelsius(),
-            CpuClockMhz = First(cpu, SensorType.Clock, n => n.Contains("Core", StringComparison.OrdinalIgnoreCase)),
+            CpuClockMhz = First(cpu, SensorType.Clock, n => n.Contains("Core", StringComparison.OrdinalIgnoreCase))
+                          ?? _cpuThermal.ReadClockMhz(),
             CpuPowerW = Val(cpu, SensorType.Power, "CPU Package", "Package"),
             CpuVoltage = First(cpu, SensorType.Voltage, n => n.Contains("Core", StringComparison.OrdinalIgnoreCase)),
 
