@@ -1,9 +1,11 @@
 using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
+using GamingCenter.UI.Controls;
 using GamingCenter.UI.Hardware;
+using GamingCenter.UI.Services;
 
 namespace GamingCenter.UI.Views;
 
@@ -11,7 +13,10 @@ public partial class DashboardView : UserControl
 {
     private HardwareMonitor? _monitor;
     private DispatcherTimer? _timer;
-    private bool _sensorsDegraded;
+    private readonly IFanService _fan = new LocalFanService();
+    private bool _noticeShown;
+
+    private static readonly Brush Ink2 = new SolidColorBrush(Color.FromRgb(0xB6, 0xA0, 0xE0));
 
     public DashboardView()
     {
@@ -20,19 +25,20 @@ public partial class DashboardView : UserControl
         Unloaded += OnUnloaded;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private async void OnLoaded(object sender, RoutedEventArgs e)
     {
         if (_timer is not null) return;
 
+        try { _monitor = new HardwareMonitor(); }
+        catch { ShowNotice("Sensor access needs elevation — live telemetry is unavailable in this session."); }
+
+        // Active fan mode (from EC via the fan service).
         try
         {
-            _monitor = new HardwareMonitor();
+            var mode = await _fan.GetModeAsync();
+            FanMode.Text = FriendlyMode(mode ?? "auto");
         }
-        catch
-        {
-            _sensorsDegraded = true;
-            ShowNotice("Sensor access needs elevation. Live telemetry is unavailable in this session.");
-        }
+        catch { FanMode.Text = "—"; }
 
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _timer.Tick += (_, _) => Poll();
@@ -50,70 +56,108 @@ public partial class DashboardView : UserControl
 
     private void Poll()
     {
-        if (_monitor is null)
+        if (_monitor is null) { Trend.Push(null, null); return; }
+
+        Telemetry t;
+        try { t = _monitor.GetTelemetry(); }
+        catch { return; }
+
+        // ---- CPU tile ----
+        CpuGauge.Load = t.CpuLoadTotal ?? 0;
+        CpuGauge.TempC = t.CpuTempC; // null → gauge shows load-only center + "temp n/a"
+        CpuClock.Text = Mhz(t.CpuClockMhz);
+        CpuPower.Text = Watts(t.CpuPowerW);
+        SetStatus(CpuStatusPill, CpuStatus, DeriveCpuStatus(t));
+
+        // ---- GPU tile ----
+        GpuGauge.Load = t.GpuLoad ?? 0;
+        GpuGauge.TempC = t.GpuTempC;
+        GpuName.Text = t.GpuName ?? "—";
+        GpuClock.Text = Mhz(t.GpuClockMhz);
+        GpuPower.Text = Watts(t.GpuPowerW);
+        GpuHotSpot.Text = t.GpuHotSpotC is double hs ? $"{hs:0}°" : "—";
+
+        // ---- Trend (temperature only) ----
+        Trend.Push(t.CpuTempC, t.GpuTempC);
+
+        // ---- Memory: RAM / Commit / VRAM ----
+        SetCapacity(RamBar, RamPct, RamText, t.RamLoad, t.RamUsedGb, t.RamTotalGb, "GB");
+        SetCapacity(SwapBar, SwapPct, SwapText, t.SwapLoad, t.SwapUsedGb, t.SwapTotalGb, "GB");
+
+        if (t.GpuVramUsedMb is double vu && t.GpuVramTotalMb is double vt && vt > 0)
         {
-            // No sensor backend — keep the UI honest and readable with placeholder ticks.
-            return;
+            double frac = Math.Clamp(vu / vt, 0, 1);
+            VramBar.Fraction = frac;
+            VramPct.Text = $"{frac * 100:0}%";
+            VramText.Text = $"{vu / 1024.0:0.0} / {vt / 1024.0:0.0} GB";
+        }
+        else { VramPct.Text = "—"; VramText.Text = "n/a"; }
+
+        // ---- Fan ----
+        if (t.FanRpm is double rpm)
+        {
+            FanRpm.Text = $"{rpm:0}";
+            FanNote.Text = "";
+        }
+        else
+        {
+            FanRpm.Text = "—";
+            FanNote.Text = "RPM not exposed by sensors (EC-only)";
         }
 
-        try
-        {
-            _monitor.Update();
-            var snap = _monitor.GetSnapshot();
-
-            double? cpuTemp = FirstValue(snap, "Temperature", n => n.Contains("CPU") || n.Contains("Core") || n.Contains("Package"));
-            double? gpuTemp = FirstValue(snap, "Temperature", n => n.Contains("GPU"));
-            double? fanRpm = FirstValue(snap, "Fan", _ => true);
-            double? cpuLoad = FirstValue(snap, "Load", n => n.Contains("CPU") || n.Contains("Total"));
-            double? gpuLoad = FirstValue(snap, "Load", n => n.Contains("GPU") || n.Contains("Core"));
-            double? memUsed = FirstValue(snap, "Data", n => n.Contains("Memory Used"));
-            double? memAvail = FirstValue(snap, "Data", n => n.Contains("Memory Available"));
-
-            if (cpuTemp is { } ct) { CpuGauge.Value = ct; CpuTrend.Push(ct); }
-            if (gpuTemp is { } gt) { GpuGauge.Value = gt; GpuTrend.Push(gt); }
-            if (fanRpm is { } fr) FanGauge.Value = fr;
-
-            if (cpuLoad is { } cl) SetBar(CpuLoadBar, CpuLoadText, cl, 100, cl.ToString("0") + "%");
-            if (gpuLoad is { } gl) SetBar(GpuLoadBar, GpuLoadText, gl, 100, gl.ToString("0") + "%");
-
-            if (memUsed is { } mu && memAvail is { } ma && mu + ma > 0)
-            {
-                double total = mu + ma;
-                SetBar(MemBar, MemText, mu, total, $"{mu:0.0}/{total:0.0} GB");
-            }
-
-            bool anySensor = cpuTemp is not null || gpuTemp is not null || fanRpm is not null;
-            if (!anySensor && !_sensorsDegraded)
-            {
-                _sensorsDegraded = true;
-                ShowNotice("No CPU/GPU sensors reported. Run elevated for full ring-0 telemetry.");
-            }
-        }
-        catch
-        {
-            // Transient sensor read failure — leave last values in place.
-        }
+        // Honest note when the CPU can't report temperature on this platform.
+        if (t.CpuTempC is null && !_noticeShown)
+            ShowNotice("This CPU doesn't expose temperature, clocks or power through the sensor library — those read “n/a”. Load, GPU and memory are live.");
     }
 
-    private static double? FirstValue(HardwareSnapshot snap, string sensorType, Func<string, bool> nameMatch)
+    // ---- Derived status chip ----
+    private static (string text, Color color) DeriveCpuStatus(Telemetry t)
     {
-        var reading = snap.Sensors.FirstOrDefault(s =>
-            s.SensorType == sensorType && (nameMatch(s.Name) || nameMatch(s.Hardware)));
-        return reading?.Value;
+        double load = t.CpuLoadTotal ?? 0;
+        if (t.CpuTempC is double temp && Thermal.BandFor(temp, ThermalKind.Cpu) is ThermalBand.Hot or ThermalBand.Critical)
+            return ("Hot", Thermal.Hot);
+        if (load >= 90) return ("Maxed", Thermal.Warm);
+        if (load >= 40) return ("Active", Thermal.Cold);
+        return ("Idle", Color.FromRgb(0x7C, 0x6A, 0xA6));
     }
 
-    private void SetBar(System.Windows.Controls.Border bar, System.Windows.Controls.TextBlock text, double value, double max, string label)
+    private void SetStatus(Border pill, TextBlock label, (string text, Color color) s)
     {
-        text.Text = label;
-        if (bar.Parent is FrameworkElement track && track.ActualWidth > 0)
-        {
-            double frac = max <= 0 ? 0 : Math.Clamp(value / max, 0, 1);
-            bar.Width = track.ActualWidth * frac;
-        }
+        label.Text = s.text;
+        label.Foreground = new SolidColorBrush(s.color);
+        pill.Background = new SolidColorBrush(Color.FromArgb(0x26, s.color.R, s.color.G, s.color.B));
     }
+
+    private void SetCapacity(CapacityBar bar, TextBlock pct, TextBlock text,
+        double? loadPct, double? usedGb, double? totalGb, string unit)
+    {
+        if (loadPct is double p)
+        {
+            bar.Fraction = Math.Clamp(p / 100.0, 0, 1);
+            pct.Text = $"{p:0}%";
+        }
+        else { pct.Text = "—"; }
+
+        text.Text = usedGb is double u && totalGb is double tot
+            ? $"{u:0.0} / {tot:0.0} {unit}"
+            : "n/a";
+    }
+
+    private static string Mhz(double? v) => v is double d && d > 0 ? $"{d:0} MHz" : "—";
+    private static string Watts(double? v) => v is double d && d > 0 ? $"{d:0.0} W" : "—";
+
+    private static string FriendlyMode(string mode) => mode.ToLowerInvariant() switch
+    {
+        "boost" => "Boost",
+        "custom" => "Custom",
+        "auto" => "Auto",
+        var m when m.StartsWith("l") => m.ToUpperInvariant(),
+        _ => mode,
+    };
 
     private void ShowNotice(string message)
     {
+        _noticeShown = true;
         SensorNoticeText.Text = message;
         SensorNotice.Visibility = Visibility.Visible;
     }
