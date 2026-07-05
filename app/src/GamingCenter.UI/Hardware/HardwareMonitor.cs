@@ -75,6 +75,8 @@ public sealed class HardwareMonitor : IDisposable
         var virt = new List<ISensor>();
         ISensor[]? discreteGpu = null;
         int discreteScore = -1;
+        string? discreteGpuName = null;  // local, reset every call (no stale carry-over)
+        string? cpuName = null;
 
         foreach (var hw in _computer.Hardware)
         {
@@ -85,6 +87,7 @@ public sealed class HardwareMonitor : IDisposable
             {
                 case HardwareType.Cpu:
                     cpu.AddRange(hw.Sensors);
+                    cpuName ??= hw.Name;
                     break;
 
                 case HardwareType.GpuNvidia:
@@ -99,7 +102,7 @@ public sealed class HardwareMonitor : IDisposable
                     {
                         discreteScore = score;
                         discreteGpu = hw.Sensors.ToArray();
-                        _discreteGpuName = hw.Name;
+                        discreteGpuName = hw.Name;
                     }
                     break;
 
@@ -136,25 +139,21 @@ public sealed class HardwareMonitor : IDisposable
 
         return new Telemetry
         {
-            // CPU — this platform exposes load only; temp/clock/power may be null.
+            // CPU — this platform exposes load only via LHM; temp/clock come from
+            // the OEM's Thermal Zone + perf counters (matches the original app).
+            CpuName = cpuName,
             CpuLoadTotal = Val(cpu, SensorType.Load, "CPU Total"),
-            CpuLoadMax = Val(cpu, SensorType.Load, "CPU Core Max"),
-            // Prefer the library sensor; fall back to the OEM's Thermal Zone
-            // counter (the source that matches the original Gaming Center).
             CpuTempC = Val(cpu, SensorType.Temperature, "CPU Package", "Core (Tctl/Tdie)", "Core Max", "CPU Cores")
                        ?? _cpuThermal.ReadCelsius(),
             CpuClockMhz = First(cpu, SensorType.Clock, n => n.Contains("Core", StringComparison.OrdinalIgnoreCase))
                           ?? _cpuThermal.ReadClockMhz(),
-            CpuPowerW = Val(cpu, SensorType.Power, "CPU Package", "Package"),
-            CpuVoltage = First(cpu, SensorType.Voltage, n => n.Contains("Core", StringComparison.OrdinalIgnoreCase)),
 
-            // GPU — discrete card reports the full set.
-            GpuName = _discreteGpuName,
+            // GPU — discrete card reports the full set via NVAPI.
+            GpuName = discreteGpuName,
             GpuLoad = Val(gpu, SensorType.Load, "GPU Core"),
             GpuTempC = Val(gpu, SensorType.Temperature, "GPU Core"),
             GpuHotSpotC = Val(gpu, SensorType.Temperature, "GPU Hot Spot"),
             GpuClockMhz = Val(gpu, SensorType.Clock, "GPU Core"),
-            GpuMemClockMhz = Val(gpu, SensorType.Clock, "GPU Memory"),
             GpuPowerW = Val(gpu, SensorType.Power, "GPU Package"),
             // Adapter-wide "GPU Memory Used" is the right headline (total VRAM in
             // use); per-process D3D Dedicated reads ~0 for our own idle app.
@@ -169,13 +168,8 @@ public sealed class HardwareMonitor : IDisposable
             SwapUsedGb = Val(virt, SensorType.Data, "Memory Used"),
             SwapTotalGb = Sum(Val(virt, SensorType.Data, "Memory Used"), Val(virt, SensorType.Data, "Memory Available")),
             SwapLoad = Val(virt, SensorType.Load, "Memory"),
-
-            // Fan — LHM reports none on this Avell; EC is the real source (wired separately).
-            FanRpm = First(cpu.Concat(gpu), SensorType.Fan, _ => true),
         };
     }
-
-    private string? _discreteGpuName;
 
     private static double? Sum(double? a, double? b) =>
         a is null && b is null ? null : Math.Round((a ?? 0) + (b ?? 0), 1);

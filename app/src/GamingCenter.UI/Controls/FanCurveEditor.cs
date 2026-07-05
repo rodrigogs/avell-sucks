@@ -40,14 +40,12 @@ public sealed class FanCurveEditor : FrameworkElement
         }
     }
 
-    private static readonly Brush TrackBrush = Frozen(Color.FromRgb(0x25, 0x1D, 0x2E));
-    private static readonly Brush GridBrush = Frozen(Color.FromArgb(0x40, 0x3A, 0x2F, 0x47));
-    private static readonly Brush InkBrush = Frozen(Color.FromRgb(0xF2, 0xEE, 0xF6));
-    private static readonly Brush Ink3Brush = Frozen(Color.FromRgb(0x94, 0x8A, 0xA3));
+    private static readonly Brush TrackBrush = Brand.Frozen(Color.FromRgb(0x25, 0x1D, 0x2E));
+    private static readonly Brush GridBrush = Brand.Frozen(Color.FromArgb(0x40, 0x3A, 0x2F, 0x47));
+    private static readonly Brush InkBrush = Brand.Frozen(Color.FromRgb(0xF2, 0xEE, 0xF6));
+    private static readonly Brush Ink3Brush = Brand.Frozen(Color.FromRgb(0x94, 0x8A, 0xA3));
     private static readonly Typeface MonoFace = new(new FontFamily("Cascadia Code, Consolas, monospace"),
         FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
-
-    private static Brush Frozen(Color c) { var b = new SolidColorBrush(c); b.Freeze(); return b; }
 
     private Rect PlotRect => new(PadLeft, PadTop,
         Math.Max(1, ActualWidth - PadLeft - PadRight),
@@ -121,7 +119,7 @@ public sealed class FanCurveEditor : FrameworkElement
             for (int i = 1; i < pts.Length; i++) lctx.LineTo(pts[i], true, true);
         }
         line.Freeze();
-        var linePen = new Pen(Frozen(Color.FromRgb(0x22, 0xD3, 0xEE)), 2.5)
+        var linePen = new Pen(Brand.Frozen(Color.FromRgb(0x22, 0xD3, 0xEE)), 2.5)
         { LineJoin = PenLineJoin.Round };
         dc.DrawGeometry(null, linePen, line);
 
@@ -131,9 +129,9 @@ public sealed class FanCurveEditor : FrameworkElement
             var c = pts[i];
             bool active = i == _dragIndex;
             var nodeColor = Color.FromRgb(0xFF, 0x2E, 0x88);
-            dc.DrawEllipse(Frozen(Color.FromRgb(0x14, 0x10, 0x18)), new Pen(Frozen(nodeColor), 2.5),
+            dc.DrawEllipse(Brand.Frozen(Color.FromRgb(0x14, 0x10, 0x18)), new Pen(Brand.Frozen(nodeColor), 2.5),
                 c, NodeRadius + (active ? 2 : 0), NodeRadius + (active ? 2 : 0));
-            dc.DrawEllipse(Frozen(nodeColor), null, c, 2.5, 2.5);
+            dc.DrawEllipse(Brand.Frozen(nodeColor), null, c, 2.5, 2.5);
 
             // temp label on X axis
             var tempFt = new FormattedText($"{_points[i].TemperatureC}°", CultureInfo.InvariantCulture,

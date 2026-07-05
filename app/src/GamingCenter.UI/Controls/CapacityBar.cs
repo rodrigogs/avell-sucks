@@ -46,9 +46,8 @@ public sealed class CapacityBar : FrameworkElement
     public double TickAt { get => (double)GetValue(TickAtProperty); set => SetValue(TickAtProperty, value); }
     public bool SecondaryIsSpillover { get => (bool)GetValue(SecondaryIsSpilloverProperty); set => SetValue(SecondaryIsSpilloverProperty, value); }
 
-    private static readonly Brush Track = Frozen(Color.FromRgb(0x24, 0x10, 0x41));
-    private static readonly Brush Cache = Frozen(Color.FromRgb(0x6D, 0x4A, 0xA0)); // muted, reclaimable
-    private static Brush Frozen(Color c) { var b = new SolidColorBrush(c); b.Freeze(); return b; }
+    private static readonly Brush Track = Brand.Frozen(Color.FromRgb(0x24, 0x10, 0x41));
+    private static readonly Brush Cache = Brand.Frozen(Color.FromRgb(0x6D, 0x4A, 0xA0)); // muted, reclaimable
 
     protected override void OnRender(DrawingContext dc)
     {
@@ -64,12 +63,12 @@ public sealed class CapacityBar : FrameworkElement
 
         // Primary fill color per severity.
         Brush fill;
-        if (frac >= CriticalAt) fill = Solid(Thermal.Critical);
-        else if (frac >= WarnAt) fill = Solid(Thermal.Warm);
+        if (frac >= CriticalAt) fill = Brand.Frozen(Thermal.Critical);
+        else if (frac >= WarnAt) fill = Brand.Frozen(Thermal.Warm);
         else
         {
             var g = new LinearGradientBrush(
-                Color.FromRgb(0x22, 0xD3, 0xEE), Color.FromRgb(0xFF, 0x2E, 0x97),
+                Brand.Cyan, Brand.Magenta,
                 new Point(0, 0), new Point(1, 0));
             g.Freeze();
             fill = g;
@@ -87,7 +86,7 @@ public sealed class CapacityBar : FrameworkElement
             if (sec > 0.001)
             {
                 Brush secBrush = SecondaryIsSpillover
-                    ? Solid((frac + sec) >= CriticalAt ? Thermal.Critical : Thermal.Warm)
+                    ? Brand.Frozen((frac + sec) >= CriticalAt ? Thermal.Critical : Thermal.Warm)
                     : Cache;
                 dc.DrawRectangle(secBrush, null, new Rect(primW, 0, w * sec, h));
             }
@@ -98,10 +97,8 @@ public sealed class CapacityBar : FrameworkElement
         if (!double.IsNaN(TickAt))
         {
             double tx = w * Math.Clamp(TickAt, 0, 1);
-            var tick = new Pen(Frozen(Color.FromArgb(0xAA, 0xF3, 0xEC, 0xFF)), 1.5);
+            var tick = new Pen(Brand.Frozen(Color.FromArgb(0xAA, 0xF3, 0xEC, 0xFF)), 1.5);
             dc.DrawLine(tick, new Point(tx, 1), new Point(tx, h - 1));
         }
     }
-
-    private static Brush Solid(Color c) { var b = new SolidColorBrush(c); b.Freeze(); return b; }
 }
