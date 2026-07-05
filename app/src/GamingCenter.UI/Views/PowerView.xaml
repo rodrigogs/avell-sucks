@@ -1,0 +1,109 @@
+<UserControl x:Class="GamingCenter.UI.Views.PowerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctl="clr-namespace:GamingCenter.UI.Controls">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+
+            <!-- Danger banner: power limits are the sharp edge -->
+            <Border Style="{StaticResource Panel}" Margin="0,0,0,16"
+                    Background="{StaticResource DangerTint}" BorderBrush="{StaticResource Danger}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="17"
+                               Foreground="{StaticResource Danger}" VerticalAlignment="Center"/>
+                    <StackPanel Margin="12,0,0,0">
+                        <TextBlock Text="Power limits push the silicon" FontWeight="SemiBold"
+                                   Foreground="{StaticResource Ink}"/>
+                        <TextBlock Style="{StaticResource Caption}" Margin="0,2,0,0"
+                                   Text="These registers are reverse-engineered and speculative. High values raise heat and draw. Change in small steps."/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- PL1 -->
+            <Border Style="{StaticResource Panel}" Margin="0,0,0,14">
+                <StackPanel>
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Left">
+                            <TextBlock Text="PL1 · SUSTAINED" Style="{StaticResource SectionLabel}"/>
+                            <TextBlock Text="Long-term power ceiling" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                        <TextBlock x:Name="Pl1Value" DockPanel.Dock="Right" Text="45 W"
+                                   Style="{StaticResource MonoDisplay}" FontSize="26"
+                                   Foreground="{StaticResource Cyan}" VerticalAlignment="Center"/>
+                    </DockPanel>
+                    <Slider x:Name="Pl1Slider" Style="{StaticResource NeonSlider}" Minimum="15" Maximum="90"
+                            Value="45" Margin="0,10,0,0" ValueChanged="OnAnyChanged"/>
+                    <DockPanel Margin="2,4,0,0">
+                        <TextBlock Text="15 W" Style="{StaticResource Caption}" DockPanel.Dock="Left"/>
+                        <TextBlock Text="90 W" Style="{StaticResource Caption}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- PL2 -->
+            <Border Style="{StaticResource Panel}" Margin="0,0,0,14">
+                <StackPanel>
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Left">
+                            <TextBlock Text="PL2 · TURBO" Style="{StaticResource SectionLabel}"/>
+                            <TextBlock Text="Short burst power ceiling" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                        <TextBlock x:Name="Pl2Value" DockPanel.Dock="Right" Text="60 W"
+                                   Style="{StaticResource MonoDisplay}" FontSize="26"
+                                   Foreground="{StaticResource Cyan}" VerticalAlignment="Center"/>
+                    </DockPanel>
+                    <Slider x:Name="Pl2Slider" Style="{StaticResource NeonSlider}" Minimum="15" Maximum="120"
+                            Value="60" Margin="0,10,0,0" ValueChanged="OnAnyChanged"/>
+                    <DockPanel Margin="2,4,0,0">
+                        <TextBlock Text="15 W" Style="{StaticResource Caption}" DockPanel.Dock="Left"/>
+                        <TextBlock Text="120 W" Style="{StaticResource Caption}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Tau -->
+            <Border Style="{StaticResource Panel}">
+                <StackPanel>
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Left">
+                            <TextBlock Text="TAU · WINDOW" Style="{StaticResource SectionLabel}"/>
+                            <TextBlock Text="How long PL2 turbo is allowed" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                        <TextBlock x:Name="TauValue" DockPanel.Dock="Right" Text="28 s"
+                                   Style="{StaticResource MonoDisplay}" FontSize="26"
+                                   Foreground="{StaticResource Cyan}" VerticalAlignment="Center"/>
+                    </DockPanel>
+                    <Slider x:Name="TauSlider" Style="{StaticResource NeonSlider}" Minimum="1" Maximum="120"
+                            Value="28" Margin="0,10,0,0" ValueChanged="OnAnyChanged"/>
+                    <DockPanel Margin="2,4,0,0">
+                        <TextBlock Text="1 s" Style="{StaticResource Caption}" DockPanel.Dock="Left"/>
+                        <TextBlock Text="120 s" Style="{StaticResource Caption}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Actions -->
+            <DockPanel Margin="0,18,0,0">
+                <ctl:StateBadge x:Name="Badge" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                    <Button x:Name="ResetBtn" Content="Reset" Style="{StaticResource SecondaryButton}"
+                            Margin="0,0,10,0" Click="OnReset"/>
+                    <Button x:Name="ApplyBtn" Content="Apply limits" Style="{StaticResource DangerButton}"
+                            Click="OnApply"/>
+                </StackPanel>
+            </DockPanel>
+
+            <Border x:Name="GateNotice" Style="{StaticResource Panel}" Margin="0,16,0,0"
+                    Background="{StaticResource WarnTint}" BorderBrush="{StaticResource Warn}" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" FontSize="15"
+                               Foreground="{StaticResource Warn}" VerticalAlignment="Center"/>
+                    <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Ink}"
+                               Text="EC writes are disabled. Set GAMINGCENTER_ALLOW_EC_WRITES=1 to actuate; sliders preview only."/>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

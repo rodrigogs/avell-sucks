@@ -1,0 +1,124 @@
+<UserControl x:Class="GamingCenter.UI.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctl="clr-namespace:GamingCenter.UI.Controls"
+             xmlns:sk="clr-namespace:GamingCenter.UI.Controls">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+
+            <!-- Gauge cluster -->
+            <UniformGrid Columns="3" Margin="0,0,0,16">
+                <UniformGrid.Resources>
+                    <Style TargetType="Border" BasedOn="{StaticResource Panel}">
+                        <Setter Property="Margin" Value="0,0,16,16"/>
+                    </Style>
+                </UniformGrid.Resources>
+
+                <Border>
+                    <StackPanel>
+                        <TextBlock Text="CPU" Style="{StaticResource SectionLabel}"/>
+                        <ctl:RadialGauge x:Name="CpuGauge" Height="176" Margin="0,6,0,0"
+                                         Min="20" Max="100" Unit="°C" Label="package" ValueFormat="0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border>
+                    <StackPanel>
+                        <TextBlock Text="GPU" Style="{StaticResource SectionLabel}"/>
+                        <ctl:RadialGauge x:Name="GpuGauge" Height="176" Margin="0,6,0,0"
+                                         Min="20" Max="100" Unit="°C" Label="core" ValueFormat="0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border>
+                    <StackPanel>
+                        <TextBlock Text="FAN" Style="{StaticResource SectionLabel}"/>
+                        <ctl:RadialGauge x:Name="FanGauge" Height="176" Margin="0,6,0,0"
+                                         Min="0" Max="6000" Unit="rpm" Label="speed" ValueFormat="0"
+                                         UseTemperatureRamp="False" Accent="#22D3EE"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Trend + load row -->
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Temperature trend -->
+                <Border Grid.Column="0" Style="{StaticResource Panel}" Margin="0,0,16,0">
+                    <StackPanel>
+                        <DockPanel>
+                            <TextBlock Text="TEMPERATURE · 90s" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                                <Ellipse Width="8" Height="8" Fill="{StaticResource Magenta}" VerticalAlignment="Center"/>
+                                <TextBlock Text="CPU" Margin="5,0,14,0" Style="{StaticResource Caption}" VerticalAlignment="Center"/>
+                                <Ellipse Width="8" Height="8" Fill="{StaticResource Cyan}" VerticalAlignment="Center"/>
+                                <TextBlock Text="GPU" Margin="5,0,0,0" Style="{StaticResource Caption}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <Grid Height="150" Margin="0,10,0,0">
+                            <sk:Sparkline x:Name="CpuTrend" StrokeColor="#FF2E88"/>
+                            <sk:Sparkline x:Name="GpuTrend" StrokeColor="#22D3EE"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Load bars -->
+                <Border Grid.Column="1" Style="{StaticResource Panel}">
+                    <StackPanel>
+                        <TextBlock Text="LOAD" Style="{StaticResource SectionLabel}"/>
+                        <StackPanel Margin="0,12,0,0">
+                            <DockPanel Margin="0,0,0,4">
+                                <TextBlock Text="CPU" Style="{StaticResource FieldLabel}" DockPanel.Dock="Left"/>
+                                <TextBlock x:Name="CpuLoadText" Text="—" DockPanel.Dock="Right"
+                                           Style="{StaticResource Mono}" Foreground="{StaticResource Ink}"/>
+                            </DockPanel>
+                            <Border Height="8" CornerRadius="4" Background="{StaticResource Surface2}">
+                                <Border x:Name="CpuLoadBar" HorizontalAlignment="Left" CornerRadius="4"
+                                        Background="{StaticResource NeonAxisH}" Width="0"/>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Margin="0,16,0,0">
+                            <DockPanel Margin="0,0,0,4">
+                                <TextBlock Text="GPU" Style="{StaticResource FieldLabel}" DockPanel.Dock="Left"/>
+                                <TextBlock x:Name="GpuLoadText" Text="—" DockPanel.Dock="Right"
+                                           Style="{StaticResource Mono}" Foreground="{StaticResource Ink}"/>
+                            </DockPanel>
+                            <Border Height="8" CornerRadius="4" Background="{StaticResource Surface2}">
+                                <Border x:Name="GpuLoadBar" HorizontalAlignment="Left" CornerRadius="4"
+                                        Background="{StaticResource NeonAxisH}" Width="0"/>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Margin="0,16,0,0">
+                            <DockPanel Margin="0,0,0,4">
+                                <TextBlock Text="MEMORY" Style="{StaticResource FieldLabel}" DockPanel.Dock="Left"/>
+                                <TextBlock x:Name="MemText" Text="—" DockPanel.Dock="Right"
+                                           Style="{StaticResource Mono}" Foreground="{StaticResource Ink}"/>
+                            </DockPanel>
+                            <Border Height="8" CornerRadius="4" Background="{StaticResource Surface2}">
+                                <Border x:Name="MemBar" HorizontalAlignment="Left" CornerRadius="4"
+                                        Background="{StaticResource NeonAxisH}" Width="0"/>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Disconnected / sensor notice -->
+            <Border x:Name="SensorNotice" Style="{StaticResource Panel}" Visibility="Collapsed"
+                    Background="{StaticResource WarnTint}" BorderBrush="{StaticResource Warn}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                               Foreground="{StaticResource Warn}" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="SensorNoticeText" Margin="10,0,0,0" VerticalAlignment="Center"
+                               Foreground="{StaticResource Ink}"
+                               Text="Sensor access needs admin. Some readings may be unavailable."/>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
