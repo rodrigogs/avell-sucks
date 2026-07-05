@@ -19,6 +19,17 @@ public partial class MainWindow : Window
         // under the RDP session, parking the window off-screen.
         Loaded += OnLoaded;
         TabHost.Content = _dashboard;
+
+        // Optional deep-link to a tab for screenshot validation (GC_START_TAB=fan|rgb|power).
+        var startTab = Environment.GetEnvironmentVariable("GC_START_TAB")?.Trim().ToLowerInvariant();
+        RadioButton? initial = startTab switch
+        {
+            "fan" => NavFan,
+            "rgb" => NavRgb,
+            "power" => NavPower,
+            _ => null,
+        };
+        if (initial is not null) initial.IsChecked = true;
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
