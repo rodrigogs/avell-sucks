@@ -52,8 +52,10 @@ public partial class RgbView : UserControl
             nameof(FxRipple) => RgbEffectType.Ripple,
             _ => RgbEffectType.Static,
         };
-        Keyboard.Effect = _effect;
-        Badge.State = WriteState.Idle;
+        // Checked fires during InitializeComponent, before the other named
+        // elements exist — guard until the tree is up.
+        if (Keyboard is not null) Keyboard.EffectType = _effect;
+        if (Badge is not null) Badge.State = WriteState.Idle;
     }
 
     private void OnSpeedChecked(object sender, RoutedEventArgs e)
@@ -65,7 +67,7 @@ public partial class RgbView : UserControl
             nameof(SpeedFast) => RgbSpeed.Fast,
             _ => RgbSpeed.Normal,
         };
-        Badge.State = WriteState.Idle;
+        if (Badge is not null) Badge.State = WriteState.Idle;
     }
 
     private void OnBrightnessChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

@@ -36,6 +36,9 @@ public partial class PowerView : UserControl
 
     private void OnAnyChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
+        // ValueChanged fires during InitializeComponent (inline Value=) before
+        // later-declared elements exist — bail until the tree is up.
+        if (Pl1Value is null || Badge is null) return;
         UpdateReadouts();
         if (!_loading) Badge.State = WriteState.Idle;
     }
