@@ -13,6 +13,11 @@
         StateChanged="OnWindowStateChanged">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
         <!-- System tray -->
         <tb:TaskbarIcon x:Name="Tray"
                         ToolTipText="Gaming Center"
@@ -29,11 +34,6 @@
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
         <!-- ===== Nav rail ===== -->
         <Border Grid.Column="0" Width="212" Background="{StaticResource Surface}"
