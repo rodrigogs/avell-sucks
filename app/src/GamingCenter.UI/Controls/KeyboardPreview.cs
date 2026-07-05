@@ -16,8 +16,8 @@ public sealed class KeyboardPreview : FrameworkElement
     // Rough per-row key counts for a laptop layout — enough to read as a keyboard.
     private static readonly int[] Rows = { 14, 14, 13, 12, 8 };
 
-    public static readonly DependencyProperty EffectProperty = DependencyProperty.Register(
-        nameof(Effect), typeof(RgbEffectType), typeof(KeyboardPreview),
+    public static readonly DependencyProperty EffectTypeProperty = DependencyProperty.Register(
+        nameof(EffectType), typeof(RgbEffectType), typeof(KeyboardPreview),
         new FrameworkPropertyMetadata(RgbEffectType.Static, FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
@@ -33,10 +33,10 @@ public sealed class KeyboardPreview : FrameworkElement
         nameof(Phase), typeof(double), typeof(KeyboardPreview),
         new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
-    public RgbEffectType Effect
+    public RgbEffectType EffectType
     {
-        get => (RgbEffectType)GetValue(EffectProperty);
-        set { SetValue(EffectProperty, value); RestartAnimation(); }
+        get => (RgbEffectType)GetValue(EffectTypeProperty);
+        set { SetValue(EffectTypeProperty, value); RestartAnimation(); }
     }
     public Color Color { get => (Color)GetValue(ColorProperty); set => SetValue(ColorProperty, value); }
     public double Brightness { get => (double)GetValue(BrightnessProperty); set => SetValue(BrightnessProperty, value); }
@@ -51,9 +51,9 @@ public sealed class KeyboardPreview : FrameworkElement
     private void RestartAnimation()
     {
         BeginAnimation(PhaseProperty, null);
-        if (MotionPrefs.ReducedMotion || Effect == RgbEffectType.Static) { Phase = 0; return; }
+        if (MotionPrefs.ReducedMotion || EffectType == RgbEffectType.Static) { Phase = 0; return; }
 
-        double seconds = Effect switch
+        double seconds = EffectType switch
         {
             RgbEffectType.Breathing => 3.0,
             RgbEffectType.ColorCycle => 6.0,
@@ -108,7 +108,7 @@ public sealed class KeyboardPreview : FrameworkElement
     private Color KeyColor(double nx, double ny, double phase)
     {
         double b = Math.Clamp(Brightness, 0, 1);
-        switch (Effect)
+        switch (EffectType)
         {
             case RgbEffectType.Static:
                 return Scale(Color, b);
