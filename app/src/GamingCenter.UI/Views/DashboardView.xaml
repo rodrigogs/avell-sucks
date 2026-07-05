@@ -22,23 +22,13 @@
                                        FontFamily="{StaticResource MonoFont}"/>
                         </DockPanel>
                         <ctl:LoadTempGauge x:Name="CpuGauge" Height="132" Margin="0,4,0,0" Kind="Cpu"/>
-                        <!-- CPU package power isn't exposed on this platform (no MSR driver), so it's
-                             omitted rather than shown as a dead "—". Clock + derived status only. -->
-                        <UniformGrid Columns="2" Margin="0,8,0,0">
-                            <StackPanel>
-                                <TextBlock Text="CLOCK" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="CpuClock" Text="—" Style="{StaticResource Mono}" FontSize="14"
-                                           HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
-                            </StackPanel>
-                            <StackPanel>
-                                <TextBlock Text="STATUS" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                                <Border x:Name="CpuStatusPill" CornerRadius="{StaticResource RadiusPill}" Padding="9,2"
-                                        Margin="0,1,0,0" HorizontalAlignment="Center" Background="{StaticResource Surface2}">
-                                    <TextBlock x:Name="CpuStatus" Text="—" FontSize="11" FontWeight="SemiBold"
-                                               Foreground="{StaticResource Ink2}"/>
-                                </Border>
-                            </StackPanel>
-                        </UniformGrid>
+                        <!-- CPU exposes only load+temp (both in the gauge) and clock on this
+                             platform; no power/hot-spot. One clean readout, no status badge. -->
+                        <StackPanel Margin="0,8,0,0">
+                            <TextBlock Text="CLOCK" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="CpuClock" Text="—" Style="{StaticResource Mono}" FontSize="14"
+                                       HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 
@@ -72,22 +62,6 @@
                     </StackPanel>
                 </Border>
             </Grid>
-
-            <!-- ===== Temperature trend ===== -->
-            <Border Style="{StaticResource PanelTight}" Margin="0,0,0,10">
-                <StackPanel>
-                    <DockPanel>
-                        <TextBlock Text="TEMPERATURE · 60s" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
-                            <Ellipse Width="8" Height="8" Fill="{StaticResource Magenta}" VerticalAlignment="Center"/>
-                            <TextBlock Text="CPU" Margin="5,0,14,0" Style="{StaticResource Caption}" VerticalAlignment="Center"/>
-                            <Ellipse Width="8" Height="8" Fill="{StaticResource Cyan}" VerticalAlignment="Center"/>
-                            <TextBlock Text="GPU" Margin="5,0,0,0" Style="{StaticResource Caption}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </DockPanel>
-                    <ctl:TempTrend x:Name="Trend" Height="96" Margin="0,8,0,0"/>
-                </StackPanel>
-            </Border>
 
             <!-- ===== Memory: 3 independent domains ===== -->
             <Grid Margin="0,0,0,10">
@@ -145,20 +119,12 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Cooling -->
+                <!-- Cooling — active mode only (duty/RPM live on the Fan tab; no
+                     tachometer on this platform, so a big number here just echoed the mode). -->
                 <Border Grid.Column="0" Style="{StaticResource PanelTight}" Margin="0,0,5,0">
                     <DockPanel>
-                        <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">
-                            <TextBlock Text="COOLING" Style="{StaticResource SectionLabel}"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0" VerticalAlignment="Bottom">
-                                <TextBlock x:Name="FanDuty" Text="—" Style="{StaticResource MonoDisplay}" FontSize="26"
-                                           Foreground="{StaticResource Cyan}"/>
-                                <TextBlock x:Name="FanDutyUnit" Text="" Style="{StaticResource Caption}" VerticalAlignment="Bottom"
-                                           Margin="6,0,0,5"/>
-                            </StackPanel>
-                            <TextBlock x:Name="FanNote" Text="Fan duty from EC · no tachometer (RPM) on this platform"
-                                       Style="{StaticResource Caption}" Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="240"/>
-                        </StackPanel>
+                        <TextBlock Text="COOLING" Style="{StaticResource SectionLabel}"
+                                   DockPanel.Dock="Left" VerticalAlignment="Center"/>
                         <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <TextBlock Text="ACTIVE MODE" Style="{StaticResource Caption}" HorizontalAlignment="Right"/>
                             <Border x:Name="ModePill" CornerRadius="{StaticResource RadiusPill}" Padding="13,5" Margin="0,4,0,0"

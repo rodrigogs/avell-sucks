@@ -102,16 +102,6 @@
                     <TextBlock x:Name="TabSubtitle" Text="Live telemetry from EC, WMI and onboard sensors"
                                Style="{StaticResource Body}" Foreground="{StaticResource Ink3}" Margin="0,2,0,0"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
-                    <Border Style="{StaticResource PanelRaised}" Padding="12,7" CornerRadius="{StaticResource RadiusPill}">
-                        <StackPanel Orientation="Horizontal">
-                            <Ellipse x:Name="LiveDot" Width="7" Height="7" Fill="{StaticResource Cyan}" VerticalAlignment="Center"/>
-                            <TextBlock x:Name="LiveText" Text="live" Margin="7,0,0,0" FontSize="12"
-                                       FontFamily="{StaticResource MonoFont}" Foreground="{StaticResource Cyan}"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
             </Grid>
 
             <!-- Active tab host -->
