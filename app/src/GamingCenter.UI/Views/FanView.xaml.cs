@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
+using GamingCenter.UI.Hardware;
 using GamingCenter.UI.Services;
 
 namespace GamingCenter.UI.Views;
@@ -9,12 +11,15 @@ namespace GamingCenter.UI.Views;
 public partial class FanView : UserControl
 {
     private readonly IFanService _fan = new LocalFanService();
+    private HardwareMonitor? _monitor;
+    private DispatcherTimer? _trendTimer;
     private bool _loading;
 
     public FanView()
     {
         InitializeComponent();
         Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
         Curve.CurveChanged += (_, _) => Badge.State = WriteState.Idle;
     }
 
@@ -30,6 +35,35 @@ public partial class FanView : UserControl
         var curve = await _fan.GetCurveAsync();
         Curve.SetPoints(curve);
         _loading = false;
+
+        // Live temperature trend, to give thermal context while tuning the curve.
+        if (_trendTimer is null)
+        {
+            try { _monitor = new HardwareMonitor(); } catch { _monitor = null; }
+            _trendTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            _trendTimer.Tick += (_, _) => PushTrend();
+            _trendTimer.Start();
+            PushTrend();
+        }
+    }
+
+    private void OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        _trendTimer?.Stop();
+        _trendTimer = null;
+        _monitor?.Dispose();
+        _monitor = null;
+    }
+
+    private void PushTrend()
+    {
+        if (_monitor is null) { Trend.Push(null, null); return; }
+        try
+        {
+            var t = _monitor.GetTelemetry();
+            Trend.Push(t.CpuTempC, t.GpuTempC);
+        }
+        catch { /* transient sensor read */ }
     }
 
     private void SelectMode(string mode)
