@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using GamingCenter.UI.Hardware;
 using GamingCenter.UI.Startup;
 using GamingCenter.UI.Views;
 
@@ -9,14 +10,23 @@ namespace GamingCenter.UI;
 public partial class MainWindow : Window
 {
     private bool _reallyClosing;
-    private readonly DashboardView _dashboard = new();
-    private readonly FanView _fan = new();
+    private readonly SensorPump _pump = new();
+    private readonly DashboardView _dashboard;
+    private readonly FanView _fan;
     private readonly RgbView _rgb = new();
     private readonly PowerView _power = new();
 
     public MainWindow()
     {
         InitializeComponent();
+
+        // One sensor pump, shared by the views that need telemetry (Dashboard,
+        // Fan). It opens its ring-0 monitor lazily on the first Start() — after
+        // this window is shown — so constructing the views here stays cheap and
+        // doesn't block the message pump (that left the window unrendered).
+        _dashboard = new DashboardView(_pump);
+        _fan = new FanView(_pump);
+
         // Keep the on-screen placement fix: CenterScreen produced Top/Left=NaN
         // under the RDP session, parking the window off-screen.
         Loaded += OnLoaded;
@@ -83,6 +93,7 @@ public partial class MainWindow : Window
             return;
         }
         Tray.Dispose();
+        _pump.Dispose();
         base.OnClosing(e);
     }
 

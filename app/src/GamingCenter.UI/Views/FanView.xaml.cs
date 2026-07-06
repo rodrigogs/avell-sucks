@@ -10,11 +10,15 @@ namespace GamingCenter.UI.Views;
 public partial class FanView : UserControl
 {
     private readonly IFanService _fan = new LocalFanService();
-    private readonly SensorPump _pump = new();
+    private readonly SensorPump _pump;
     private bool _loading;
+    private bool _initialized;
 
-    public FanView()
+    // The pump is owned and disposed by MainWindow and shared with the Dashboard;
+    // this view only subscribes/unsubscribes around its own visibility.
+    public FanView(SensorPump pump)
     {
+        _pump = pump;
         InitializeComponent();
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
@@ -23,6 +27,13 @@ public partial class FanView : UserControl
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
+        // Live temperature trend, for thermal context while tuning the curve.
+        _pump.Tick += OnTelemetry;
+        _pump.Start();
+
+        if (_initialized) return;
+        _initialized = true;
+
         _loading = true;
         if (!_fan.WritesEnabled)
             GateNotice.Visibility = Visibility.Visible;
@@ -33,16 +44,12 @@ public partial class FanView : UserControl
         var curve = await _fan.GetCurveAsync();
         Curve.SetPoints(curve);
         _loading = false;
-
-        // Live temperature trend, for thermal context while tuning the curve.
-        _pump.Tick += OnTelemetry;
-        _pump.Start();
     }
 
     private void OnUnloaded(object sender, RoutedEventArgs e)
     {
+        // Stop receiving ticks while off-screen; the window owns disposal.
         _pump.Tick -= OnTelemetry;
-        _pump.Dispose();
     }
 
     private void OnTelemetry(Telemetry? t) => Trend.Push(t?.CpuTempC, t?.GpuTempC);
