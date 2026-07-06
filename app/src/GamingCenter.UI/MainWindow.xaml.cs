@@ -126,9 +126,9 @@ public partial class MainWindow : Window
 
         (UserControl view, string title, string subtitle) target = rb.Name switch
         {
-            nameof(NavFan) => (_fan, "Fan", "Performance modes and the custom temperature curve"),
+            nameof(NavFan) => (_fan, "Fan", "Fan modes and the custom temperature curve"),
             nameof(NavRgb) => (_rgb, "RGB", "Keyboard lighting — effects, color and zones"),
-            nameof(NavPower) => (_power, "Power", "CPU power limits — PL1 / PL2 / Tau"),
+            nameof(NavPower) => (_power, "Performance", "Power modes — Windows plan and CPU power envelope"),
             _ => (_dashboard, "Dashboard", "Live telemetry from EC, WMI and onboard sensors"),
         };
 

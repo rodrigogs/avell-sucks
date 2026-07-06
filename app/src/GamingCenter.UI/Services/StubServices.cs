@@ -53,20 +53,46 @@ public sealed class LocalFanService : IFanService
 
 public sealed class LocalPowerService : IPowerService
 {
-    private int _pl1 = 45, _pl2 = 60, _tau = 28;
+    // Per-mode CPU power-limit presets (watts). Shape mirrors the OEM's
+    // Gaming/Office defaults from the decompiled original; concrete values are
+    // sane defaults for a 45 W-class mobile CPU until the backend reads the
+    // silicon's real GetGamingPLDefaultValue()/GetOfficePLDefaultValue().
+    private static readonly IReadOnlyDictionary<PerformanceMode, PowerLimits> Presets =
+        new Dictionary<PerformanceMode, PowerLimits>
+        {
+            [PerformanceMode.Gaming]   = new(45, 90, 107),
+            [PerformanceMode.High]     = new(35, 64, 90),
+            [PerformanceMode.Balanced] = new(25, 45, 64),
+            [PerformanceMode.Saving]   = new(15, 25, 35),
+        };
+
+    private PerformanceMode _mode = PerformanceMode.Balanced;
+    private PowerLimits _limits = Presets[PerformanceMode.Balanced];
 
     public bool WritesEnabled => WriteGateInfo.EcWritesEnabled;
 
-    public ValueTask<PowerReading> GetAsync(CancellationToken ct = default)
-        => new(new PowerReading(_pl1, _pl2, _tau, Supported: true, Error: null));
+    public ValueTask<PowerState> GetAsync(CancellationToken ct = default)
+        => new(new PowerState(_mode, _limits, Supported: true, Error: null));
 
-    public ValueTask<ControlResult> SetAsync(int pl1, int pl2, int tau, CancellationToken ct = default)
+    public ValueTask<ControlResult> SetModeAsync(PerformanceMode mode, CancellationToken ct = default)
     {
         if (!WritesEnabled)
-            return new(ControlResult.Blocked("EC writes disabled (GAMINGCENTER_ALLOW_EC_WRITES=0)"));
-        _pl1 = pl1; _pl2 = pl2; _tau = tau;
+            return new(ControlResult.Blocked("Hardware writes disabled (GAMINGCENTER_ALLOW_EC_WRITES=0)"));
+        _mode = mode;
+        _limits = Presets[mode];
         return new(ControlResult.Ok());
     }
+
+    public ValueTask<ControlResult> SetLimitsAsync(PowerLimits limits, CancellationToken ct = default)
+    {
+        if (!WritesEnabled)
+            return new(ControlResult.Blocked("Hardware writes disabled (GAMINGCENTER_ALLOW_EC_WRITES=0)"));
+        _limits = limits;
+        return new(ControlResult.Ok());
+    }
+
+    /// <summary>The preset limits for a mode (for UI preview before applying).</summary>
+    public static PowerLimits PresetFor(PerformanceMode mode) => Presets[mode];
 }
 
 public sealed class LocalRgbService : IRgbService
