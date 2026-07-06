@@ -191,10 +191,12 @@ public sealed class FanCurveEditor : FrameworkElement
             dc.DrawText(pwmFt, new Point(c.X - pwmFt.Width / 2, c.Y - 22));
         }
 
-        // Live operating-point markers on top: where the machine is right now,
-        // and the fan speed the curve commands there.
-        DrawOperatingPoint(dc, r, LastSample(_gpuHist), GpuColor, labelAbove: true);
-        DrawOperatingPoint(dc, r, LastSample(_cpuHist), CpuColor, labelAbove: false);
+        // Live operating points: a thin guide from the axis to the curve + a
+        // glowing dot where the machine sits right now. The numeric readout lives
+        // in a fixed corner box (below) so two close sensors never overlap pills.
+        DrawOperatingGuide(dc, r, LastSample(_gpuHist), GpuColor);
+        DrawOperatingGuide(dc, r, LastSample(_cpuHist), CpuColor);
+        DrawLiveReadout(dc, r);
     }
 
     private void DrawTempBand(DrawingContext dc, Rect r, double t0, double t1, Color c)
@@ -204,35 +206,48 @@ public sealed class FanCurveEditor : FrameworkElement
         dc.DrawRectangle(b, null, new Rect(x0, r.Top, Math.Max(0, x1 - x0), r.Height));
     }
 
-    // Residency = fraction of the 60 s window spent in each 1 °C bin, drawn as
-    // translucent bottom-anchored columns. CPU and GPU overlaid; shared max so
-    // relative heights are honest. Reads as ambient density, not a second chart.
+    // Residency = how much of the 60 s window each sensor spent at each
+    // temperature, drawn as a low "carpet" hugging the X axis (never spikes that
+    // fight the curve). Height is gently compressed (sqrt) and capped low; each
+    // column fades upward via a vertical gradient so it reads as ambient density.
+    // A faint baseline tint marks every temperature the sensor visited, so a
+    // single stable temperature still reads as presence, not a lone bar.
     private void DrawResidency(DrawingContext dc, Rect r)
     {
-        var cpu = Bin(_cpuHist);
-        var gpu = Bin(_gpuHist);
+        DrawResidencySeries(dc, r, Bin(_gpuHist), GpuColor);
+        DrawResidencySeries(dc, r, Bin(_cpuHist), CpuColor);
+    }
+
+    private void DrawResidencySeries(DrawingContext dc, Rect r, int[] bins, Color color)
+    {
         int max = 0;
-        for (int i = 0; i < HistBins; i++) max = Math.Max(max, Math.Max(cpu[i], gpu[i]));
+        foreach (var b in bins) max = Math.Max(max, b);
         if (max == 0) return;
 
         double binW = r.Width / HistBins;
-        double maxH = r.Height * 0.55; // caps the layer so the curve always dominates
-        var cpuBrush = Brand.Frozen(Color.FromArgb(0x3A, CpuColor.R, CpuColor.G, CpuColor.B));
-        var gpuBrush = Brand.Frozen(Color.FromArgb(0x3A, GpuColor.R, GpuColor.G, GpuColor.B));
+        double capH = r.Height * 0.30; // low ceiling — a carpet, not a chart
 
         for (int i = 0; i < HistBins; i++)
         {
+            if (bins[i] == 0) continue;
             double x = r.Left + i * binW;
-            if (gpu[i] > 0)
+            // sqrt compresses the peak so a long-dwell bin doesn't tower; +baseline
+            // floor so a brief visit still shows.
+            double frac = Math.Sqrt(bins[i] / (double)max);
+            double h = capH * (0.18 + 0.82 * frac);
+
+            var col = new LinearGradientBrush
             {
-                double h = gpu[i] / (double)max * maxH;
-                dc.DrawRectangle(gpuBrush, null, new Rect(x, r.Bottom - h, binW, h));
-            }
-            if (cpu[i] > 0)
-            {
-                double h = cpu[i] / (double)max * maxH;
-                dc.DrawRectangle(cpuBrush, null, new Rect(x, r.Bottom - h, binW, h));
-            }
+                StartPoint = new Point(0, 1),
+                EndPoint = new Point(0, 0),
+                GradientStops =
+                {
+                    new GradientStop(Color.FromArgb(0x40, color.R, color.G, color.B), 0.0),
+                    new GradientStop(Color.FromArgb(0x00, color.R, color.G, color.B), 1.0),
+                }
+            };
+            col.Freeze();
+            dc.DrawRectangle(col, null, new Rect(x, r.Bottom - h, binW + 0.5, h));
         }
     }
 
@@ -257,7 +272,10 @@ public sealed class FanCurveEditor : FrameworkElement
         return null;
     }
 
-    private void DrawOperatingPoint(DrawingContext dc, Rect r, double? tempC, Color color, bool labelAbove)
+    // A thin dashed guide from the axis to the curve + a glowing dot at the live
+    // operating point. No text here — the numbers live in the fixed readout, so
+    // two sensors at nearby temperatures never overlap.
+    private void DrawOperatingGuide(DrawingContext dc, Rect r, double? tempC, Color color)
     {
         if (tempC is not double t) return;
 
@@ -266,27 +284,42 @@ public sealed class FanCurveEditor : FrameworkElement
         double y = r.Bottom - Math.Clamp(pwm / MaxPwm, 0, 1) * r.Height;
         var dot = new Point(x, y);
 
-        // Vertical guide from the axis up to the curve.
-        var guide = new Pen(Brand.Frozen(Color.FromArgb(0x99, color.R, color.G, color.B)), 1.5)
+        var guide = new Pen(Brand.Frozen(Color.FromArgb(0x77, color.R, color.G, color.B)), 1.5)
         { DashStyle = new DashStyle(new double[] { 3, 3 }, 0) };
         guide.Freeze();
-        dc.DrawLine(guide, new Point(x, r.Bottom), new Point(x, dot.Y));
+        dc.DrawLine(guide, new Point(x, r.Bottom), dot);
 
-        // Dot on the curve with a soft glow ring.
         dc.DrawEllipse(Brand.Frozen(Color.FromArgb(0x33, color.R, color.G, color.B)), null, dot, 8, 8);
         dc.DrawEllipse(Brand.Frozen(color), FrozenPen(Brand.Bg, 1.5), dot, 4.5, 4.5);
+    }
 
-        // Pill: the fan speed the curve commands at this temperature (the output).
-        int pct = (int)Math.Round(pwm / MaxPwm * 100);
-        var ft = Text($"{pct}%", 10.5, Brand.Frozen(color));
-        double pw = ft.Width + 12, ph = ft.Height + 5;
-        double py = labelAbove ? dot.Y - ph - 12 : dot.Y + 12;
-        py = Math.Clamp(py, r.Top + 2, r.Bottom - ph - 2);
-        double px = Math.Clamp(x - pw / 2, r.Left, r.Right - pw);
-        var pill = new Rect(px, py, pw, ph);
-        dc.DrawRoundedRectangle(Brand.Frozen(Color.FromArgb(0xE6, 0x1C, 0x16, 0x22)),
-            FrozenPen(color, 1), pill, 4, 4);
-        dc.DrawText(ft, new Point(pill.X + 6, pill.Y + 2.5));
+    // Consolidated live readout, top-left inside the plot: one row per active
+    // sensor — "CPU  57° → 41%" (current temp → fan % the curve commands). Fixed
+    // position, so it never collides with the curve, nodes, or the other sensor.
+    private void DrawLiveReadout(DrawingContext dc, Rect r)
+    {
+        var rows = new List<(string label, double t, Color c)>();
+        if (LastSample(_cpuHist) is double ct) rows.Add(("CPU", ct, CpuColor));
+        if (LastSample(_gpuHist) is double gt) rows.Add(("GPU", gt, GpuColor));
+        if (rows.Count == 0) return;
+
+        const double padX = 10, padY = 7, lineH = 17, boxW = 132;
+        double boxH = padY * 2 + lineH * rows.Count;
+        var box = new Rect(r.Left + 10, r.Top + 10, boxW, boxH);
+        dc.DrawRoundedRectangle(Brand.Frozen(Color.FromArgb(0xCC, 0x1C, 0x16, 0x22)),
+            FrozenPen(Color.FromArgb(0x40, 0x3A, 0x2F, 0x47), 1), box, 6, 6);
+
+        for (int i = 0; i < rows.Count; i++)
+        {
+            var (label, t, c) = rows[i];
+            int pct = (int)Math.Round(PwmAtTemp(t) / MaxPwm * 100);
+            double y = box.Top + padY + i * lineH;
+
+            dc.DrawEllipse(Brand.Frozen(c), null, new Point(box.Left + padX + 3, y + 7), 3, 3);
+            dc.DrawText(Text(label, 11, Ink3Brush), new Point(box.Left + padX + 12, y));
+            var val = Text($"{t:0}° → {pct}%", 11.5, Brand.Frozen(c));
+            dc.DrawText(val, new Point(box.Right - padX - val.Width, y - 0.5));
+        }
     }
 
     private FormattedText Text(string s, double size, Brush brush) =>
