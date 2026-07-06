@@ -27,11 +27,13 @@
                 </StackPanel>
             </Border>
 
-            <!-- Temperature trend (moved from the dashboard: thermal context for tuning the curve) -->
-            <Border Style="{StaticResource Panel}" Margin="0,0,0,16">
+            <!-- Thermal response: temp→PWM curve with the live thermal layer behind
+                 it (60 s residency histogram + current operating point). Temperature
+                 is the X axis, so the thermal layer aligns exactly with the curve. -->
+            <Border Style="{StaticResource Panel}">
                 <StackPanel>
                     <DockPanel>
-                        <TextBlock Text="TEMPERATURE · 60s" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
+                        <TextBlock Text="THERMAL RESPONSE" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
                             <Ellipse Width="8" Height="8" Fill="{StaticResource Magenta}" VerticalAlignment="Center"/>
                             <TextBlock Text="CPU" Margin="5,0,14,0" Style="{StaticResource Caption}" VerticalAlignment="Center"/>
@@ -39,19 +41,9 @@
                             <TextBlock Text="GPU" Margin="5,0,0,0" Style="{StaticResource Caption}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </DockPanel>
-                    <ctl:TempTrend x:Name="Trend" Height="120" Margin="0,10,0,0"/>
-                </StackPanel>
-            </Border>
-
-            <!-- Curve editor -->
-            <Border Style="{StaticResource Panel}">
-                <StackPanel>
-                    <DockPanel>
-                        <TextBlock Text="CUSTOM FAN CURVE" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
-                        <TextBlock Text="temperature → fan PWM" Style="{StaticResource Caption}"
-                                   DockPanel.Dock="Right" HorizontalAlignment="Right"/>
-                    </DockPanel>
-                    <ctl:FanCurveEditor x:Name="Curve" Height="240" Margin="0,12,0,0"/>
+                    <TextBlock Text="temperature → fan PWM · shaded = where the machine ran (last 60s)"
+                               Style="{StaticResource Caption}" Margin="0,3,0,0"/>
+                    <ctl:FanCurveEditor x:Name="Curve" Height="260" Margin="0,12,0,0"/>
                     <DockPanel Margin="0,16,0,0">
                         <ctl:StateBadge x:Name="Badge" DockPanel.Dock="Left" VerticalAlignment="Center"/>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">

@@ -52,7 +52,7 @@ public partial class FanView : UserControl
         _pump.Tick -= OnTelemetry;
     }
 
-    private void OnTelemetry(Telemetry? t) => Trend.Push(t?.CpuTempC, t?.GpuTempC);
+    private void OnTelemetry(Telemetry? t) => Curve.PushTemperature(t?.CpuTempC, t?.GpuTempC);
 
     private void SelectMode(string mode)
     {
