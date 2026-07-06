@@ -287,7 +287,9 @@ public partial class DashboardView : UserControl
         public void Update(DriveUsage d)
         {
             _bar.Fraction = d.UsedFraction;
-            _text.Text = $"{Bytes(d.FreeBytes)} free";
+            // used / total here; the tile header already carries total free, so the
+            // row complements it instead of repeating "free".
+            _text.Text = $"{Bytes(d.UsedBytes)} / {Bytes(d.TotalBytes)}";
         }
     }
 }
