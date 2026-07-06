@@ -64,7 +64,7 @@
                     <RadioButton x:Name="NavRgb" GroupName="nav" Style="{StaticResource NavItemStyle}"
                                  Tag="&#xE771;" Content="RGB" Checked="OnNavChecked"/>
                     <RadioButton x:Name="NavPower" GroupName="nav" Style="{StaticResource NavItemStyle}"
-                                 Tag="&#xE945;" Content="Power" Checked="OnNavChecked"/>
+                                 Tag="&#xEC4A;" Content="Performance" Checked="OnNavChecked"/>
                 </StackPanel>
 
                 <!-- Gateway status (bottom) -->

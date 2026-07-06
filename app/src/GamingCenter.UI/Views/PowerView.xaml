@@ -5,102 +5,123 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
 
-            <!-- Danger banner: power limits are the sharp edge -->
-            <Border Style="{StaticResource Panel}" Margin="0,0,0,16"
-                    Background="{StaticResource DangerTint}" BorderBrush="{StaticResource Danger}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="17"
-                               Foreground="{StaticResource Danger}" VerticalAlignment="Center"/>
-                    <StackPanel Margin="12,0,0,0">
-                        <TextBlock Text="Power limits push the silicon" FontWeight="SemiBold"
-                                   Foreground="{StaticResource Ink}"/>
-                        <TextBlock Style="{StaticResource Caption}" Margin="0,2,0,0"
-                                   Text="These registers are reverse-engineered and speculative. High values raise heat and draw. Change in small steps."/>
-                    </StackPanel>
+            <!-- Mode selector: four packages, hottest→coolest. Each activates a
+                 Windows power scheme AND a CPU power-limit preset (the two levers
+                 the OEM Gaming Center drove). Selection = one accent-bordered card. -->
+            <TextBlock Text="PERFORMANCE MODE" Style="{StaticResource SectionLabel}"/>
+            <TextBlock Text="Sets the Windows power plan and the CPU power envelope together"
+                       Style="{StaticResource Caption}" Margin="0,3,0,0"/>
+
+            <Grid Margin="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Cards are built as RadioButtons styled like tiles; click handler
+                     in code-behind carries the PerformanceMode via Tag. -->
+                <RadioButton x:Name="ModeGaming" Grid.Column="0" GroupName="perfmode" Tag="Gaming"
+                             Style="{StaticResource ModeCardStyle}" Margin="0,0,5,0" Checked="OnModeChecked"/>
+                <RadioButton x:Name="ModeHigh" Grid.Column="1" GroupName="perfmode" Tag="High"
+                             Style="{StaticResource ModeCardStyle}" Margin="5,0,5,0" Checked="OnModeChecked"/>
+                <RadioButton x:Name="ModeBalanced" Grid.Column="2" GroupName="perfmode" Tag="Balanced"
+                             Style="{StaticResource ModeCardStyle}" Margin="5,0,5,0" Checked="OnModeChecked"/>
+                <RadioButton x:Name="ModeSaving" Grid.Column="3" GroupName="perfmode" Tag="Saving"
+                             Style="{StaticResource ModeCardStyle}" Margin="5,0,0,0" Checked="OnModeChecked"/>
+            </Grid>
+
+            <!-- Envelope readout: the CPU power limits the active mode resolves to. -->
+            <Border Style="{StaticResource PanelTight}" Margin="0,14,0,0">
+                <StackPanel>
+                    <DockPanel>
+                        <TextBlock Text="CPU POWER ENVELOPE" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
+                        <TextBlock x:Name="EnvelopeMode" Text="—" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                   Style="{StaticResource Caption}"/>
+                    </DockPanel>
+                    <UniformGrid Columns="3" Margin="0,10,0,0">
+                        <StackPanel>
+                            <TextBlock Text="PL1 · SUSTAINED" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="Pl1Value" Text="—" Style="{StaticResource MonoDisplay}" FontSize="24"
+                                       HorizontalAlignment="Center" Foreground="{StaticResource Cyan}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="PL2 · TURBO" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="Pl2Value" Text="—" Style="{StaticResource MonoDisplay}" FontSize="24"
+                                       HorizontalAlignment="Center" Foreground="{StaticResource Cyan}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="PL4 · PEAK" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="Pl4Value" Text="—" Style="{StaticResource MonoDisplay}" FontSize="24"
+                                       HorizontalAlignment="Center" Foreground="{StaticResource Cyan}"/>
+                        </StackPanel>
+                    </UniformGrid>
                 </StackPanel>
             </Border>
 
-            <!-- PL1 -->
-            <Border Style="{StaticResource Panel}" Margin="0,0,0,14">
+            <!-- Advanced: manual CPU power limits for power users. Collapsed by
+                 default; toggled open. Editing here detaches from the preset. -->
+            <ToggleButton x:Name="AdvancedToggle" Style="{StaticResource DisclosureToggle}"
+                          Content="Advanced — tune power limits manually"
+                          Margin="0,14,0,0" Checked="OnAdvancedToggled" Unchecked="OnAdvancedToggled"/>
+
+            <Border x:Name="AdvancedPanel" Style="{StaticResource PanelTight}" Margin="0,10,0,0" Visibility="Collapsed">
                 <StackPanel>
-                    <DockPanel>
-                        <StackPanel DockPanel.Dock="Left">
-                            <TextBlock Text="PL1 · SUSTAINED" Style="{StaticResource SectionLabel}"/>
-                            <TextBlock Text="Long-term power ceiling" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                    <Border Background="{StaticResource DangerTint}" BorderBrush="{StaticResource Danger}"
+                            BorderThickness="1" CornerRadius="{StaticResource RadiusSm}" Padding="12,9" Margin="0,0,0,14">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="15"
+                                       Foreground="{StaticResource Danger}" VerticalAlignment="Center"/>
+                            <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Ink}"
+                                       Style="{StaticResource Caption}" TextWrapping="Wrap"
+                                       Text="Raising the power envelope increases heat and draw. Change in small steps."/>
                         </StackPanel>
-                        <TextBlock x:Name="Pl1Value" DockPanel.Dock="Right" Text="45 W"
-                                   Style="{StaticResource MonoDisplay}" FontSize="26"
-                                   Foreground="{StaticResource Cyan}" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <!-- PL1 -->
+                    <DockPanel>
+                        <TextBlock Text="PL1 · SUSTAINED" Style="{StaticResource FieldLabel}" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="Pl1Slider_Value" Text="—" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                   Style="{StaticResource Mono}" Foreground="{StaticResource Ink}"/>
                     </DockPanel>
                     <Slider x:Name="Pl1Slider" Style="{StaticResource NeonSlider}" Minimum="15" Maximum="90"
-                            Value="45" Margin="0,10,0,0" ValueChanged="OnAnyChanged"/>
-                    <DockPanel Margin="2,4,0,0">
-                        <TextBlock Text="15 W" Style="{StaticResource Caption}" DockPanel.Dock="Left"/>
-                        <TextBlock Text="90 W" Style="{StaticResource Caption}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
-                    </DockPanel>
-                </StackPanel>
-            </Border>
+                            Margin="0,6,0,14" ValueChanged="OnLimitChanged"/>
 
-            <!-- PL2 -->
-            <Border Style="{StaticResource Panel}" Margin="0,0,0,14">
-                <StackPanel>
+                    <!-- PL2 -->
                     <DockPanel>
-                        <StackPanel DockPanel.Dock="Left">
-                            <TextBlock Text="PL2 · TURBO" Style="{StaticResource SectionLabel}"/>
-                            <TextBlock Text="Short burst power ceiling" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
-                        </StackPanel>
-                        <TextBlock x:Name="Pl2Value" DockPanel.Dock="Right" Text="60 W"
-                                   Style="{StaticResource MonoDisplay}" FontSize="26"
-                                   Foreground="{StaticResource Cyan}" VerticalAlignment="Center"/>
+                        <TextBlock Text="PL2 · TURBO" Style="{StaticResource FieldLabel}" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="Pl2Slider_Value" Text="—" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                   Style="{StaticResource Mono}" Foreground="{StaticResource Ink}"/>
                     </DockPanel>
                     <Slider x:Name="Pl2Slider" Style="{StaticResource NeonSlider}" Minimum="15" Maximum="120"
-                            Value="60" Margin="0,10,0,0" ValueChanged="OnAnyChanged"/>
-                    <DockPanel Margin="2,4,0,0">
-                        <TextBlock Text="15 W" Style="{StaticResource Caption}" DockPanel.Dock="Left"/>
-                        <TextBlock Text="120 W" Style="{StaticResource Caption}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
-                    </DockPanel>
-                </StackPanel>
-            </Border>
+                            Margin="0,6,0,14" ValueChanged="OnLimitChanged"/>
 
-            <!-- Tau -->
-            <Border Style="{StaticResource Panel}">
-                <StackPanel>
+                    <!-- PL4 -->
                     <DockPanel>
-                        <StackPanel DockPanel.Dock="Left">
-                            <TextBlock Text="TAU · WINDOW" Style="{StaticResource SectionLabel}"/>
-                            <TextBlock Text="How long PL2 turbo is allowed" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
-                        </StackPanel>
-                        <TextBlock x:Name="TauValue" DockPanel.Dock="Right" Text="28 s"
-                                   Style="{StaticResource MonoDisplay}" FontSize="26"
-                                   Foreground="{StaticResource Cyan}" VerticalAlignment="Center"/>
+                        <TextBlock Text="PL4 · PEAK" Style="{StaticResource FieldLabel}" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="Pl4Slider_Value" Text="—" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                   Style="{StaticResource Mono}" Foreground="{StaticResource Ink}"/>
                     </DockPanel>
-                    <Slider x:Name="TauSlider" Style="{StaticResource NeonSlider}" Minimum="1" Maximum="120"
-                            Value="28" Margin="0,10,0,0" ValueChanged="OnAnyChanged"/>
-                    <DockPanel Margin="2,4,0,0">
-                        <TextBlock Text="1 s" Style="{StaticResource Caption}" DockPanel.Dock="Left"/>
-                        <TextBlock Text="120 s" Style="{StaticResource Caption}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
-                    </DockPanel>
+                    <Slider x:Name="Pl4Slider" Style="{StaticResource NeonSlider}" Minimum="15" Maximum="140"
+                            Margin="0,6,0,0" ValueChanged="OnLimitChanged"/>
                 </StackPanel>
             </Border>
 
             <!-- Actions -->
             <DockPanel Margin="0,18,0,0">
                 <ctl:StateBadge x:Name="Badge" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
-                    <Button x:Name="ResetBtn" Content="Reset" Style="{StaticResource SecondaryButton}"
-                            Margin="0,0,10,0" Click="OnReset"/>
-                    <Button x:Name="ApplyBtn" Content="Apply limits" Style="{StaticResource DangerButton}"
-                            Click="OnApply"/>
-                </StackPanel>
+                <Button x:Name="ApplyBtn" Content="Apply" Style="{StaticResource PrimaryButton}"
+                        DockPanel.Dock="Right" HorizontalAlignment="Right" Click="OnApply"/>
             </DockPanel>
 
-            <Border x:Name="GateNotice" Style="{StaticResource Panel}" Margin="0,16,0,0"
+            <Border x:Name="GateNotice" Style="{StaticResource PanelTight}" Margin="0,16,0,0"
                     Background="{StaticResource WarnTint}" BorderBrush="{StaticResource Warn}" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" FontSize="15"
                                Foreground="{StaticResource Warn}" VerticalAlignment="Center"/>
                     <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Ink}"
-                               Text="EC writes are disabled. Set GAMINGCENTER_ALLOW_EC_WRITES=1 to actuate; sliders preview only."/>
+                               Text="Hardware writes are disabled. Set GAMINGCENTER_ALLOW_EC_WRITES=1 to actuate; selection previews only."/>
                 </StackPanel>
             </Border>
 
