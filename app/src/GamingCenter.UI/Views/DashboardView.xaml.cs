@@ -1,6 +1,8 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using GamingCenter.UI.Controls;
 using GamingCenter.UI.Hardware;
 using GamingCenter.UI.Services;
 
@@ -31,10 +33,10 @@ public partial class DashboardView : UserControl
         {
             _started = true;
 
-            // Active fan mode (from EC via the fan service). Duty/RPM and the curve
-            // live on the Fan tab; the dashboard only echoes the current mode.
-            try { FanMode.Text = FriendlyMode(await _fan.GetModeAsync() ?? "auto"); }
-            catch { FanMode.Text = "—"; }
+            // Active fan profile (from EC via the fan service). Duty/RPM and the
+            // curve live on the Fan tab; the dashboard echoes the current profile.
+            try { ShowCooling(await _fan.GetModeAsync() ?? "auto"); }
+            catch { ShowCooling(null); }
         }
 
         // Idempotent: opens the ring-0 monitor on first call, no-ops afterwards.
@@ -107,14 +109,31 @@ public partial class DashboardView : UserControl
     private static string Mhz(double? v) => v is double d && d > 0 ? $"{d:0} MHz" : "—";
     private static string Watts(double? v) => v is double d && d > 0 ? $"{d:0.0} W" : "—";
 
-    private static string FriendlyMode(string mode) => mode.ToLowerInvariant() switch
+    // The active cooling profile as a status instrument: label + one-line meaning
+    // + an accent that tracks intensity (cyan = balanced, magenta = max cooling,
+    // violet = user/fixed). No pill — the tinted glyph carries the color.
+    private void ShowCooling(string? mode)
     {
-        "boost" => "Boost",
-        "custom" => "Custom",
-        "auto" => "Auto",
-        var m when m.StartsWith("l") => m.ToUpperInvariant(),
-        _ => mode,
-    };
+        var m = mode?.Trim().ToLowerInvariant();
+        (string label, string hint, Color accent) = m switch
+        {
+            "auto"   => ("Auto", "Balances noise and temperature", Brand.Cyan),
+            "boost"  => ("Boost", "Maximum cooling — fans run cold", Brand.Magenta),
+            "custom" => ("Custom", "Following your temperature curve", Brand.Violet),
+            not null when m.StartsWith("l") && m.Length <= 3
+                     => (m.ToUpperInvariant(), "Fixed fan level", Brand.Violet),
+            null     => ("—", "Fan mode unavailable", Brand.Ink3),
+            _        => (mode!, "Active fan profile", Brand.Cyan),
+        };
+
+        FanMode.Text = label;
+        CoolHint.Text = hint;
+
+        var accentBrush = Brand.Frozen(accent);
+        FanMode.Foreground = accentBrush;
+        CoolIcon.Foreground = accentBrush;
+        CoolIconBg.Background = Brand.Frozen(Color.FromArgb(0x26, accent.R, accent.G, accent.B));
+    }
 
     private void ShowNotice(string message)
     {

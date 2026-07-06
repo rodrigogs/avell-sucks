@@ -115,24 +115,33 @@
             <!-- ===== Cooling + Network ===== -->
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Cooling — active mode only (duty/RPM live on the Fan tab; no
-                     tachometer on this platform, so a big number here just echoed the mode). -->
+                <!-- Cooling — the active fan profile (duty/RPM live on the Fan tab; no
+                     tachometer on this platform). Read as a status instrument: a fan
+                     glyph in an accent-tinted tile + the mode name + a one-line meaning.
+                     Accent tracks intensity (cool→hot) so the profile is glanceable. -->
                 <Border Grid.Column="0" Style="{StaticResource PanelTight}" Margin="0,0,5,0">
-                    <DockPanel>
-                        <TextBlock Text="COOLING" Style="{StaticResource SectionLabel}"
-                                   DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                        <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <TextBlock Text="ACTIVE MODE" Style="{StaticResource Caption}" HorizontalAlignment="Right"/>
-                            <Border x:Name="ModePill" CornerRadius="{StaticResource RadiusPill}" Padding="13,5" Margin="0,4,0,0"
-                                    Background="{StaticResource MagentaTint}">
-                                <TextBlock x:Name="FanMode" Text="—" FontWeight="SemiBold" Foreground="{StaticResource Magenta}"/>
+                    <StackPanel>
+                        <TextBlock Text="COOLING" Style="{StaticResource SectionLabel}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,9,0,0">
+                            <Border x:Name="CoolIconBg" Width="40" Height="40" VerticalAlignment="Center"
+                                    CornerRadius="{StaticResource RadiusMd}" Background="{StaticResource CyanTint}">
+                                <TextBlock x:Name="CoolIcon" Text="&#xE9CA;" FontFamily="Segoe MDL2 Assets"
+                                           FontSize="18" Foreground="{StaticResource Cyan}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
+                            <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
+                                <TextBlock x:Name="FanMode" Text="—" FontFamily="{StaticResource UiFontDisplay}"
+                                           FontSize="{StaticResource FsH2}" FontWeight="SemiBold"
+                                           Foreground="{StaticResource Cyan}"/>
+                                <TextBlock x:Name="CoolHint" Text="—" Style="{StaticResource Caption}"
+                                           Margin="0,1,0,0" TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
                         </StackPanel>
-                    </DockPanel>
+                    </StackPanel>
                 </Border>
 
                 <!-- Network -->
