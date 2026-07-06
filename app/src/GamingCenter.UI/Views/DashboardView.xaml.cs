@@ -8,13 +8,16 @@ namespace GamingCenter.UI.Views;
 
 public partial class DashboardView : UserControl
 {
-    private readonly SensorPump _pump = new();
+    private readonly SensorPump _pump;
     private readonly IFanService _fan = new LocalFanService();
     private readonly NetworkMeter _net = new();
     private bool _started;
 
-    public DashboardView()
+    // The pump is owned and disposed by MainWindow and shared with the Fan view;
+    // this view only subscribes/unsubscribes around its own visibility.
+    public DashboardView(SensorPump pump)
     {
+        _pump = pump;
         InitializeComponent();
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
@@ -22,25 +25,29 @@ public partial class DashboardView : UserControl
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        if (_started) return;
-        _started = true;
+        _pump.Tick += OnTelemetry;
+
+        if (!_started)
+        {
+            _started = true;
+
+            // Active fan mode (from EC via the fan service). Duty/RPM and the curve
+            // live on the Fan tab; the dashboard only echoes the current mode.
+            try { FanMode.Text = FriendlyMode(await _fan.GetModeAsync() ?? "auto"); }
+            catch { FanMode.Text = "—"; }
+        }
+
+        // Idempotent: opens the ring-0 monitor on first call, no-ops afterwards.
+        _pump.Start();
 
         if (!_pump.SensorsAvailable)
             ShowNotice("Sensor access needs elevation — live telemetry is unavailable in this session.");
-
-        // Active fan mode (from EC via the fan service). Duty/RPM and the curve
-        // live on the Fan tab; the dashboard only echoes the current mode.
-        try { FanMode.Text = FriendlyMode(await _fan.GetModeAsync() ?? "auto"); }
-        catch { FanMode.Text = "—"; }
-
-        _pump.Tick += OnTelemetry;
-        _pump.Start();
     }
 
     private void OnUnloaded(object sender, RoutedEventArgs e)
     {
+        // Stop receiving ticks while off-screen; the window owns disposal.
         _pump.Tick -= OnTelemetry;
-        _pump.Dispose();
     }
 
     private void OnTelemetry(Telemetry? t)
