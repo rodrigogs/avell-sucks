@@ -159,7 +159,13 @@ public partial class PowerView : UserControl
 
     private void OnLimitChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
-        if (Pl1Slider_Value is null) return; // fires during InitializeComponent
+        // Slider raises ValueChanged as its Maximum is set during
+        // InitializeComponent — before sibling sliders/readouts exist. Bail until
+        // the whole set is up (all three sliders AND their readouts).
+        if (Pl1Slider is null || Pl2Slider is null || Pl4Slider is null
+            || Pl1Slider_Value is null || Pl2Slider_Value is null || Pl4Slider_Value is null)
+            return;
+
         UpdateSliderReadouts();
         if (_loading) return;
 
