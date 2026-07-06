@@ -63,9 +63,10 @@
                 </Border>
             </Grid>
 
-            <!-- ===== Memory: 3 independent domains ===== -->
+            <!-- ===== Capacity: RAM / Commit / VRAM (volatile) + Disk (storage) ===== -->
             <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -97,7 +98,7 @@
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="2" Style="{StaticResource PanelTight}" Margin="5,0,0,0">
+                <Border Grid.Column="2" Style="{StaticResource PanelTight}" Margin="5,0,5,0">
                     <StackPanel>
                         <DockPanel>
                             <TextBlock Text="VRAM" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
@@ -108,6 +109,20 @@
                                          SecondaryIsSpillover="True"/>
                         <TextBlock x:Name="VramText" Text="—" Style="{StaticResource Caption}"
                                    FontFamily="{StaticResource MonoFont}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Disk — storage capacity. Header shows total free (the "available"
+                     headline); each fixed drive is a color-tagged chip + a severity
+                     bar. Rows are built in code (drive count is dynamic). -->
+                <Border Grid.Column="3" Style="{StaticResource PanelTight}" Margin="5,0,0,0">
+                    <StackPanel>
+                        <DockPanel>
+                            <TextBlock Text="DISK" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
+                            <TextBlock x:Name="DiskFree" Text="—" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                       Style="{StaticResource Mono}" Foreground="{StaticResource Ink}"/>
+                        </DockPanel>
+                        <StackPanel x:Name="DiskRows" Margin="0,7,0,0"/>
                     </StackPanel>
                 </Border>
             </Grid>
