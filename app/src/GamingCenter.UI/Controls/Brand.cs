@@ -14,6 +14,7 @@ public static class Brand
     public static readonly Color Cyan = Color.FromRgb(0x22, 0xD3, 0xEE);
     public static readonly Color Violet = Color.FromRgb(0xA8, 0x55, 0xF7);
     public static readonly Color Danger = Color.FromRgb(0xF5, 0x48, 0x4A);
+    public static readonly Color Ok = Color.FromRgb(0x34, 0xE5, 0xA0); // == Palette OkColor
     public static readonly Color Track = Color.FromRgb(0x24, 0x10, 0x41);
     public static readonly Color Ink = Color.FromRgb(0xF3, 0xEC, 0xFF);
     public static readonly Color Ink3 = Color.FromRgb(0x7C, 0x6A, 0xA6);
