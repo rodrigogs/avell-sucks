@@ -22,13 +22,26 @@ public sealed class PowerStateMonitor : IDisposable
     /// <summary>Raised (UI thread) when the active power plan changed externally.</summary>
     public event Action<PerformanceMode>? ExternalModeChanged;
 
-    public PowerStateMonitor(double intervalSeconds = 1.5)
+    public PowerStateMonitor(double intervalSeconds = 3.0)
     {
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(intervalSeconds) };
         _timer.Tick += OnTick;
     }
 
     public void NoteLocalWrite(PerformanceMode mode) => _baseline = mode;
+
+    /// <summary>
+    /// Seed the baseline from the SAME source the tick uses (the active Windows
+    /// scheme), off the UI thread, so the first tick doesn't fire a spurious
+    /// "changed on device" for a plan that was already active at load. Call before
+    /// Start(). If the active scheme isn't one we map, leaves the baseline unset
+    /// and the first tick establishes it silently.
+    /// </summary>
+    public async System.Threading.Tasks.Task SeedBaselineAsync()
+    {
+        try { _baseline = await System.Threading.Tasks.Task.Run(() => WindowsPowerPlan.ActiveMode()).ConfigureAwait(true); }
+        catch { /* leave unset; first tick seeds silently */ }
+    }
 
     public void Start() { if (!_disposed) _timer.Start(); }
     public void Stop() => _timer.Stop();

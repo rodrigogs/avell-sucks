@@ -61,7 +61,9 @@ public sealed class WmiEcBackend : IEcBackend, IEcWriter, IAsyncDisposable
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var snapshot = await ReadSnapshotAsync([1873, 1858], cancellationToken).ConfigureAwait(false);
+        // Only the control byte (0x751) is needed to interpret the mode; the
+        // second address was read but never used. One WMI read per call.
+        var snapshot = await ReadSnapshotAsync([1873], cancellationToken).ConfigureAwait(false);
         var controlField = snapshot.Fields.FirstOrDefault(f => f.Address == 1873);
         if (controlField is not { Ok: true })
             return null;
@@ -133,26 +135,52 @@ public sealed class WmiEcBackend : IEcBackend, IEcWriter, IAsyncDisposable
 
     // --- WMI plumbing ---
 
+    // The resolved WMI object path, cached after the first lookup. Enumerating the
+    // class (ManagementObjectSearcher + .Get()) is expensive and was previously
+    // done on EVERY read/write — a full WMI query per EC byte, several times a
+    // second across the monitors. We resolve the instance path once, then build a
+    // lightweight ManagementObject directly from it (like the OEM, which hardcodes
+    // AcpiTest_MULong.InstanceName='ACPI\PNP0C14\1_1').
+    private static string? s_instancePath;
+    private static readonly object s_pathLock = new();
+
     private static ManagementObject GetInstance()
     {
-        using var searcher = new ManagementObjectSearcher(NamespacePath,
-            $"SELECT * FROM {ClassName}");
-        using var collection = searcher.Get();
+        var path = s_instancePath;
+        if (path is not null)
+            return new ManagementObject(NamespacePath, path, null);
 
-        ManagementObject? fallback = null;
-        foreach (ManagementObject instance in collection)
+        lock (s_pathLock)
         {
-            var name = instance["InstanceName"]?.ToString() ?? "";
-            if (name.Contains("PNP0C14", StringComparison.OrdinalIgnoreCase))
-                return instance;
-            fallback ??= instance;
+            if (s_instancePath is not null)
+                return new ManagementObject(NamespacePath, s_instancePath, null);
+
+            using var searcher = new ManagementObjectSearcher(NamespacePath,
+                $"SELECT * FROM {ClassName}");
+            using var collection = searcher.Get();
+
+            ManagementObject? fallback = null;
+            foreach (ManagementObject instance in collection)
+            {
+                var name = instance["InstanceName"]?.ToString() ?? "";
+                if (name.Contains("PNP0C14", StringComparison.OrdinalIgnoreCase))
+                {
+                    s_instancePath = $"{ClassName}.InstanceName=\"{name.Replace("\\", "\\\\")}\"";
+                    return instance;
+                }
+                fallback ??= instance;
+            }
+
+            if (fallback is not null)
+            {
+                var fname = fallback["InstanceName"]?.ToString() ?? "";
+                s_instancePath = $"{ClassName}.InstanceName=\"{fname.Replace("\\", "\\\\")}\"";
+                return fallback;
+            }
+
+            throw new InvalidOperationException(
+                $"No {ClassName} instances available in {NamespacePath}.");
         }
-
-        if (fallback is not null)
-            return fallback;
-
-        throw new InvalidOperationException(
-            $"No {ClassName} instances available in {NamespacePath}.");
     }
 
     private static ulong PackRead(int address) => ReadFlag | (uint)address;

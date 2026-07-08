@@ -25,12 +25,13 @@ public sealed class FanStateMonitor : IDisposable
     private readonly DispatcherTimer _timer;
     private string? _baseline;      // last mode we consider "ours" / already seen
     private bool _busy;             // guard against overlapping async ticks
+    private bool _suspended;        // true while a local write is settling
     private bool _disposed;
 
     /// <summary>Raised (on the UI thread) when the device's fan mode changed externally.</summary>
     public event Action<string>? ExternalModeChanged;
 
-    public FanStateMonitor(IEcBackend backend, double intervalSeconds = 1.5)
+    public FanStateMonitor(IEcBackend backend, double intervalSeconds = 2.5)
     {
         _backend = backend;
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(intervalSeconds) };
@@ -39,6 +40,17 @@ public sealed class FanStateMonitor : IDisposable
 
     /// <summary>Record a value we just wrote (or read) so the poll won't flag it as external.</summary>
     public void NoteLocalWrite(string mode) => _baseline = mode;
+
+    /// <summary>
+    /// Suspend external-change detection while a local write is settling. The EC
+    /// reads the OLD value for up to ~2s during a mode transition (esp. Boost
+    /// exit); without this the reconciler sees that stale value and yanks the UI
+    /// selection back — the "goes and comes back" flicker. Balanced by Resume.
+    /// </summary>
+    public void Suspend() => _suspended = true;
+
+    /// <summary>Resume detection, re-seeding the baseline to the settled value.</summary>
+    public void Resume(string mode) { _baseline = mode; _suspended = false; }
 
     public void Start()
     {
@@ -51,7 +63,7 @@ public sealed class FanStateMonitor : IDisposable
 
     private async void OnTick(object? sender, EventArgs e)
     {
-        if (_busy || _disposed) return;
+        if (_busy || _disposed || _suspended) return;
         _busy = true;
         try
         {
