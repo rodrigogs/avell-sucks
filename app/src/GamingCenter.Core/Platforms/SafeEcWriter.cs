@@ -94,6 +94,21 @@ public sealed class SafeEcWriter
         }
 
         // --- Verify read-back ---
+        // The immediate read-back can catch a TRANSIENT state: the EC/firmware may
+        // briefly set status bits in a control register (e.g. the fan-control byte
+        // 0x751 reads 0x51 = boost 0x40 + transient 0x11 right after the write, then
+        // settles to the exact value within ~½s — confirmed by hardware probe). So
+        // if the first read-back differs, settle briefly and re-read before treating
+        // it as a real mismatch. The OEM app doesn't verify at all; this keeps the
+        // safety (rollback on genuine failure) without false rollbacks on transients.
+        if (!after.Ok || after.Value != value)
+        {
+            await Task.Delay(350, cancellationToken).ConfigureAwait(false);
+            var recheck = await _reader.ReadSnapshotAsync([address], cancellationToken)
+                .ConfigureAwait(false);
+            after = recheck.Fields[0];
+        }
+
         if (!after.Ok || after.Value != value)
         {
             // Rollback to the pre-write value
