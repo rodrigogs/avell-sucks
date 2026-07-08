@@ -9,6 +9,8 @@
       <ApplicationManifest>app.manifest</ApplicationManifest>
       <ApplicationIcon>app.ico</ApplicationIcon>
       <SelfContained>true</SelfContained>
+      <!-- Neutral (embedded) Strings.resx are English; pt-BR ships as a satellite. -->
+      <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using AvellSucks.UI.Localization;
 using AvellSucks.UI.Services;
 
 namespace AvellSucks.UI.Controls;
@@ -91,11 +92,11 @@ public sealed class ToastHost : Grid
     private static (ToastSpec, string?) Resolve(WriteState state, string? label, string? message) => state switch
     {
         // Success headline is the caller's plain words; the check says "it worked".
-        WriteState.Verified => (new(GlyphOk, Blank(label, "Done"), Ok, Persist: false, Spin: false), null),
-        WriteState.Pending  => (new(GlyphSync, Blank(label, "Applying") + "…", Cyan, Persist: true, Spin: true), null),
-        WriteState.Failed   => (new(GlyphError, "Didn’t apply", Danger, Persist: true, Spin: false), message),
-        WriteState.Blocked  => (new(GlyphBlocked, "Writes are off", Warn, Persist: true, Spin: false), message),
-        _                   => (new(GlyphOk, Blank(label, "Ready"), Ink3, Persist: true, Spin: false), message),
+        WriteState.Verified => (new(GlyphOk, Blank(label, Loc.T("Toast.Done")), Ok, Persist: false, Spin: false), null),
+        WriteState.Pending  => (new(GlyphSync, Blank(label, Loc.T("Toast.Applying")) + "…", Cyan, Persist: true, Spin: true), null),
+        WriteState.Failed   => (new(GlyphError, Loc.T("Toast.Failed"), Danger, Persist: true, Spin: false), message),
+        WriteState.Blocked  => (new(GlyphBlocked, Loc.T("Toast.Blocked"), Warn, Persist: true, Spin: false), message),
+        _                   => (new(GlyphOk, Blank(label, Loc.T("Toast.Ready")), Ink3, Persist: true, Spin: false), message),
     };
 
     private static string Blank(string? s, string fallback) => string.IsNullOrWhiteSpace(s) ? fallback : s!;

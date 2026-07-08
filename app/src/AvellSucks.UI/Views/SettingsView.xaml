@@ -1,0 +1,76 @@
+<UserControl x:Class="AvellSucks.UI.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:AvellSucks.UI.Localization">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel MaxWidth="720" HorizontalAlignment="Left">
+
+            <!-- Language -->
+            <Border Style="{StaticResource Panel}">
+                <StackPanel>
+                    <TextBlock Text="{loc:Tr Settings.LanguageSection}" Style="{StaticResource SectionLabel}"/>
+                    <DockPanel Margin="0,12,0,0">
+                        <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Tr Settings.Language}" Style="{StaticResource FieldLabel}"/>
+                            <TextBlock Text="{loc:Tr Settings.Language.Hint}" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                        <Border Style="{StaticResource SegmentBar}" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton x:Name="LangSystem" GroupName="lang" Style="{StaticResource SegmentToggle}"
+                                             Content="{loc:Tr Settings.Language.System}" Checked="OnLanguageChecked"/>
+                                <RadioButton x:Name="LangEn" GroupName="lang" Style="{StaticResource SegmentToggle}"
+                                             Content="{loc:Tr Settings.Language.En}" Checked="OnLanguageChecked"/>
+                                <RadioButton x:Name="LangPt" GroupName="lang" Style="{StaticResource SegmentToggle}"
+                                             Content="{loc:Tr Settings.Language.Pt}" Checked="OnLanguageChecked"/>
+                            </StackPanel>
+                        </Border>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Startup -->
+            <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
+                <StackPanel>
+                    <TextBlock Text="{loc:Tr Settings.StartupSection}" Style="{StaticResource SectionLabel}"/>
+
+                    <DockPanel Margin="0,12,0,0">
+                        <ToggleButton x:Name="StartWithWindows" Style="{StaticResource NeonToggle}"
+                                      DockPanel.Dock="Right" Checked="OnStartWithWindows" Unchecked="OnStartWithWindows"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Tr Settings.StartWithWindows}" Style="{StaticResource FieldLabel}"/>
+                            <TextBlock Text="{loc:Tr Settings.StartWithWindows.Hint}" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <Rectangle Height="1" Fill="{StaticResource Hairline}" Margin="0,14,0,0"/>
+
+                    <DockPanel Margin="0,14,0,0">
+                        <ToggleButton x:Name="StartMinimized" Style="{StaticResource NeonToggle}"
+                                      DockPanel.Dock="Right" Checked="OnStartMinimized" Unchecked="OnStartMinimized"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Tr Settings.StartMinimized}" Style="{StaticResource FieldLabel}"/>
+                            <TextBlock Text="{loc:Tr Settings.StartMinimized.Hint}" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Window -->
+            <Border Style="{StaticResource Panel}" Margin="0,16,0,16">
+                <StackPanel>
+                    <TextBlock Text="{loc:Tr Settings.WindowSection}" Style="{StaticResource SectionLabel}"/>
+
+                    <DockPanel Margin="0,12,0,0">
+                        <ToggleButton x:Name="HideOnMinimize" Style="{StaticResource NeonToggle}"
+                                      DockPanel.Dock="Right" Checked="OnHideOnMinimize" Unchecked="OnHideOnMinimize"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Tr Settings.HideOnMinimize}" Style="{StaticResource FieldLabel}"/>
+                            <TextBlock Text="{loc:Tr Settings.HideOnMinimize.Hint}" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

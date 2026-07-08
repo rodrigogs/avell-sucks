@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using AvellSucks.UI.Controls;
 using AvellSucks.UI.Hardware;
+using AvellSucks.UI.Localization;
 using AvellSucks.UI.Services;
 
 namespace AvellSucks.UI.Views;
@@ -82,7 +83,7 @@ public partial class FanView : UserControl
         _loading = true;            // don't let SelectMode re-trigger a write
         SelectMode(mode);
         _loading = false;
-        Toaster.Show(WriteState.Verified, ModeLabel(mode) + " · changed on device");
+        Toaster.Show(WriteState.Verified, string.Format(Loc.T("Common.ChangedOnDevice"), ModeLabel(mode)));
     }
 
     private void OnTelemetry(Telemetry? t) => Curve.PushTemperature(t?.CpuTempC, t?.GpuTempC);
@@ -111,17 +112,17 @@ public partial class FanView : UserControl
 
         ModeHint.Text = mode switch
         {
-            "auto" => "Auto balances noise and temperature automatically.",
-            "boost" => "Boost runs the fans cold — maximum cooling, loudest.",
-            "custom" => "Custom follows the temperature curve below.",
-            _ => $"Fixed level {mode.ToUpperInvariant()} — a constant fan intensity step.",
+            "auto" => Loc.T("Fan.Hint.Auto"),
+            "boost" => Loc.T("Fan.Hint.Boost"),
+            "custom" => Loc.T("Fan.Hint.Custom"),
+            _ => string.Format(Loc.T("Fan.Hint.Fixed"), mode.ToUpperInvariant()),
         };
 
         _curveWrite.Cancel(); // a mode press supersedes a pending curve write
         _monitor?.Suspend();  // don't let the reconciler yank the selection while this settles
         Toaster.Show(WriteState.Pending, ModeLabel(mode));
         var result = await _fan.SetModeAsync(mode);
-        Toaster.Show(result.State, ModeLabel(mode) + " set", result.Error);
+        Toaster.Show(result.State, string.Format(Loc.T("Fan.ModeSet"), ModeLabel(mode)), result.Error);
         _monitor?.Resume(result.State == WriteState.Verified ? mode : (await _fan.GetModeAsync() ?? "auto"));
     }
 
@@ -136,9 +137,9 @@ public partial class FanView : UserControl
     private async void ApplyCurveNow()
     {
         _monitor?.Suspend(); // curve write flips mode to custom; let it settle
-        Toaster.Show(WriteState.Pending, "Fan curve");
+        Toaster.Show(WriteState.Pending, Loc.T("Fan.Curve"));
         var result = await _fan.SetCurveAsync(Curve.Points.ToArray());
-        Toaster.Show(result.State, "Fan curve applied", result.Error);
+        Toaster.Show(result.State, Loc.T("Fan.CurveApplied"), result.Error);
         if (result.State == WriteState.Verified && !_loading)
             SelectMode("custom");
         _monitor?.Resume(result.State == WriteState.Verified ? "custom" : (await _fan.GetModeAsync() ?? "auto"));
@@ -157,15 +158,15 @@ public partial class FanView : UserControl
         Toaster.Show(WriteState.Pending, ModeLabel("auto"));
         var result = await _fan.SetModeAsync("auto");
         if (result.State == WriteState.Verified) SelectMode("auto");
-        Toaster.Show(result.State, ModeLabel("auto") + " set", result.Error);
+        Toaster.Show(result.State, string.Format(Loc.T("Fan.ModeSet"), ModeLabel("auto")), result.Error);
         _monitor?.Resume(result.State == WriteState.Verified ? "auto" : (await _fan.GetModeAsync() ?? "auto"));
     }
 
     private static string ModeLabel(string mode) => mode switch
     {
-        "auto" => "Auto fan",
-        "boost" => "Boost fan",
-        "custom" => "Custom fan",
-        _ => $"Fan {mode.ToUpperInvariant()}",
+        "auto" => Loc.T("Fan.Label.Auto"),
+        "boost" => Loc.T("Fan.Label.Boost"),
+        "custom" => Loc.T("Fan.Label.Custom"),
+        _ => string.Format(Loc.T("Fan.Label.Fixed"), mode.ToUpperInvariant()),
     };
 }

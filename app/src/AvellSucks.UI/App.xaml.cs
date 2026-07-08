@@ -31,6 +31,11 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        // Apply the persisted UI language before any window is built, so the
+        // first paint is already in the right language (default: system culture,
+        // pt/pt-BR → PT, everything else → EN).
+        AvellSucks.UI.Settings.SettingsStore.Current.ApplyLanguage();
+
         // Diagnostic: dump every hardware sensor and exit. Used to match sensor
         // names precisely against the real machine (GC_DUMP_SENSORS=<path>).
         var dumpPath = Environment.GetEnvironmentVariable("GC_DUMP_SENSORS");
@@ -57,7 +62,18 @@ public partial class App : Application
 
         try
         {
-            new MainWindow().Show();
+            var window = new MainWindow();
+            if (AvellSucks.UI.Settings.SettingsStore.Current.Settings.StartMinimized)
+            {
+                // Start straight to the tray: show minimized, and OnWindowStateChanged
+                // hides to tray when HideOnMinimize is on (the default).
+                window.WindowState = WindowState.Minimized;
+                window.Show();
+            }
+            else
+            {
+                window.Show();
+            }
         }
         catch (Exception ex)
         {
@@ -74,6 +90,9 @@ public partial class App : Application
             Log($"selftest '{test}': fan service = {fan.GetType().Name}, writesEnabled={fan.WritesEnabled}");
             switch (test)
             {
+                case "i18n":
+                    RunI18nSelfTest();
+                    break;
                 case "fan-boost":
                     var r1 = fan.SetModeAsync("boost").AsTask().GetAwaiter().GetResult();
                     Log($"selftest fan-boost: State={r1.State} Verified={r1.Verified} Error={r1.Error ?? "none"}");
@@ -96,5 +115,26 @@ public partial class App : Application
             }
         }
         catch (Exception ex) { Log($"selftest '{test}' threw: {ex}"); }
+    }
+
+    // Headless localization check: resolves representative keys under both
+    // cultures through the real Loc provider, and confirms the system-culture
+    // default maps correctly. Verified from the log, no UI automation needed.
+    private static void RunI18nSelfTest()
+    {
+        string[] keys = { "Nav.Settings", "Nav.Fan", "Settings.HideOnMinimize", "Power.Saving.Tag", "Toast.Failed", "About.Tagline" };
+
+        var loc = AvellSucks.UI.Localization.Loc.Instance;
+        loc.Culture = new System.Globalization.CultureInfo("en");
+        foreach (var k in keys) Log($"i18n EN  {k} = [{loc[k]}]");
+        loc.Culture = new System.Globalization.CultureInfo("pt-BR");
+        foreach (var k in keys) Log($"i18n PT  {k} = [{loc[k]}]");
+
+        var sysDefault = AvellSucks.UI.Settings.SettingsStore.ResolveCulture(
+            AvellSucks.UI.Settings.LanguagePreference.System);
+        Log($"i18n InstalledUICulture={System.Globalization.CultureInfo.InstalledUICulture.Name} → System default resolves to {sysDefault.Name}");
+        Log($"i18n settings path check: StartMinimized={AvellSucks.UI.Settings.SettingsStore.Current.Settings.StartMinimized}, " +
+            $"HideOnMinimize={AvellSucks.UI.Settings.SettingsStore.Current.Settings.HideOnMinimize}, " +
+            $"Language={AvellSucks.UI.Settings.SettingsStore.Current.Settings.Language}");
     }
 }

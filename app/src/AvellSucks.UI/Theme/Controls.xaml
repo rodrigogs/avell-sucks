@@ -435,6 +435,48 @@
         </Setter>
     </Style>
 
+    <!-- ===== Toggle switch (settings on/off) ===== -->
+    <!-- A pill track + sliding knob. Off = hairline track / muted knob;
+         On = magenta track + glow, knob slides right. -->
+    <Style x:Key="NeonToggle" TargetType="ToggleButton">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Width" Value="46"/>
+        <Setter Property="Height" Value="26"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="track" CornerRadius="13" Background="{StaticResource Surface2}"
+                            BorderBrush="{StaticResource Hairline}" BorderThickness="1"
+                            SnapsToDevicePixels="True">
+                        <!-- Knob position is driven by its Margin (left when off,
+                             right when on); Margin targets cleanly from a trigger,
+                             unlike a nested named RenderTransform (MC4111). -->
+                        <Border x:Name="knob" Width="18" Height="18" CornerRadius="9"
+                                HorizontalAlignment="Left" Margin="4,0,0,0"
+                                Background="{StaticResource Ink3}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="track" Property="BorderBrush" Value="{StaticResource Ink3}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="track" Property="Background" Value="{StaticResource Magenta}"/>
+                            <Setter TargetName="track" Property="BorderBrush" Value="{StaticResource Magenta}"/>
+                            <Setter TargetName="track" Property="Effect" Value="{StaticResource GlowMagenta}"/>
+                            <Setter TargetName="knob" Property="Background" Value="#FF1A0410"/>
+                            <Setter TargetName="knob" Property="Margin" Value="24,0,0,0"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Default window-wide text color -->
     <Style TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>

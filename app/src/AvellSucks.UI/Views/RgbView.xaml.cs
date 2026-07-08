@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using AvellSucks.Core.Rgb;
 using AvellSucks.UI.Controls;
+using AvellSucks.UI.Localization;
 using AvellSucks.UI.Services;
 
 namespace AvellSucks.UI.Views;
@@ -125,8 +126,8 @@ public partial class RgbView : UserControl
             RgbDirection.LeftToRight,
             (byte)Math.Round(BrightnessSlider.Value));
 
-        Toaster.Show(WriteState.Pending, "Lighting");
+        Toaster.Show(WriteState.Pending, Loc.T("Rgb.Lighting"));
         var result = await _rgb.ApplyAsync(effect);
-        Toaster.Show(result.State, "Lighting applied", result.Error);
+        Toaster.Show(result.State, Loc.T("Rgb.LightingApplied"), result.Error);
     }
 }

@@ -2,6 +2,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using AvellSucks.UI.Hardware;
+using AvellSucks.UI.Localization;
+using AvellSucks.UI.Settings;
 using AvellSucks.UI.Startup;
 using AvellSucks.UI.Views;
 
@@ -12,6 +14,10 @@ public partial class MainWindow : Window
     private bool _reallyClosing;
     private readonly SensorPump _pump = new();
     private readonly DashboardView _dashboard;
+    // Resource keys for the active tab's top-bar title/subtitle, so a live
+    // language change can re-localize the header for whatever tab is showing.
+    private string _titleKey = "Nav.Dashboard";
+    private string _subKey = "Tab.Dashboard.Sub";
 
     // Fan/RGB/Performance are built on FIRST navigation, not at startup. Only the
     // Dashboard is shown initially; eagerly constructing the other three parsed
@@ -22,10 +28,12 @@ public partial class MainWindow : Window
     private RgbView? _rgb;
     private PowerView? _power;
     private AboutView? _about;
+    private SettingsView? _settings;
     private FanView Fan => _fan ??= new FanView(_pump);
     private RgbView Rgb => _rgb ??= new RgbView();
     private PowerView Power => _power ??= new PowerView();
     private AboutView About => _about ??= new AboutView();
+    private SettingsView SettingsTab => _settings ??= new SettingsView();
 
     public MainWindow()
     {
@@ -39,6 +47,10 @@ public partial class MainWindow : Window
         // under the RDP session, parking the window off-screen.
         Loaded += OnLoaded;
         TabHost.Content = _dashboard;
+        // The top-bar title/subtitle are set imperatively (not {loc:Tr} bindings),
+        // so re-localize them when the language changes at runtime.
+        Loc.Instance.PropertyChanged += (_, _) => RefreshHeader();
+        RefreshHeader();
 
         // Optional deep-link to a tab for screenshot validation (GC_START_TAB=fan|rgb|power).
         var startTab = Environment.GetEnvironmentVariable("GC_START_TAB")?.Trim().ToLowerInvariant();
@@ -47,6 +59,8 @@ public partial class MainWindow : Window
             "fan" => NavFan,
             "rgb" => NavRgb,
             "power" => NavPower,
+            "about" => NavAbout,
+            "settings" => NavSettings,
             _ => null,
         };
         if (initial is not null) initial.IsChecked = true;
@@ -58,8 +72,9 @@ public partial class MainWindow : Window
 
     private void OnWindowStateChanged(object? sender, EventArgs e)
     {
-        // Minimize hides to tray instead of the taskbar.
-        if (WindowState == WindowState.Minimized)
+        // Minimize hides to tray instead of the taskbar — unless the user opted
+        // out in Settings, in which case it minimizes to the taskbar as usual.
+        if (WindowState == WindowState.Minimized && SettingsStore.Current.Settings.HideOnMinimize)
         {
             Hide();
         }
@@ -81,8 +96,12 @@ public partial class MainWindow : Window
     {
         bool enable = AutoStartItem.IsChecked;
         AutoStart.Set(enable);
-        // Reflect the real state in case the registry write failed.
-        AutoStartItem.IsChecked = AutoStart.IsEnabled();
+        // Reflect the real state in case the registry write failed, and keep the
+        // persisted setting (and the Settings tab, next time it opens) in sync.
+        bool real = AutoStart.IsEnabled();
+        AutoStartItem.IsChecked = real;
+        SettingsStore.Current.Settings.StartWithWindows = real;
+        SettingsStore.Current.Save();
     }
 
     private void OnTrayExit(object sender, RoutedEventArgs e)
@@ -116,10 +135,15 @@ public partial class MainWindow : Window
             if (double.IsNaN(top) || double.IsInfinity(top)) top = wa.Top + 40;
             Left = left;
             Top = top;
-            WindowState = WindowState.Normal;
-            Topmost = true;
-            Activate();
-            Topmost = false;
+            // Don't force the window open when the user asked to start minimized
+            // (to the tray): centering is fine, but un-minimizing/activating isn't.
+            if (WindowState != WindowState.Minimized)
+            {
+                WindowState = WindowState.Normal;
+                Topmost = true;
+                Activate();
+                Topmost = false;
+            }
         }
         catch
         {
@@ -132,17 +156,25 @@ public partial class MainWindow : Window
     {
         if (TabHost is null || sender is not RadioButton rb) return;
 
-        (UserControl view, string title, string subtitle) target = rb.Name switch
+        (UserControl view, string titleKey, string subKey) target = rb.Name switch
         {
-            nameof(NavFan) => (Fan, "Fan", "Fan modes and the custom temperature curve"),
-            nameof(NavRgb) => (Rgb, "RGB", "Keyboard lighting — effects, color and zones"),
-            nameof(NavPower) => (Power, "Performance", "Power modes — Windows plan and CPU power envelope"),
-            nameof(NavAbout) => (About, "About", "What this is, and why it exists"),
-            _ => (_dashboard, "Dashboard", "Live telemetry from EC, WMI and onboard sensors"),
+            nameof(NavFan) => (Fan, "Nav.Fan", "Tab.Fan.Sub"),
+            nameof(NavRgb) => (Rgb, "Nav.Rgb", "Tab.Rgb.Sub"),
+            nameof(NavPower) => (Power, "Nav.Performance", "Tab.Power.Sub"),
+            nameof(NavAbout) => (About, "Nav.About", "Tab.About.Sub"),
+            nameof(NavSettings) => (SettingsTab, "Nav.Settings", "Tab.Settings.Sub"),
+            _ => (_dashboard, "Nav.Dashboard", "Tab.Dashboard.Sub"),
         };
 
         TabHost.Content = target.view;
-        TabTitle.Text = target.title;
-        TabSubtitle.Text = target.subtitle;
+        _titleKey = target.titleKey;
+        _subKey = target.subKey;
+        RefreshHeader();
+    }
+
+    private void RefreshHeader()
+    {
+        TabTitle.Text = Loc.T(_titleKey);
+        TabSubtitle.Text = Loc.T(_subKey);
     }
 }
