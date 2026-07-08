@@ -43,6 +43,18 @@ public partial class App : Application
             return;
         }
 
+        // Diagnostic: exercise the real fan-service write path headlessly and exit.
+        // GC_SELFTEST=fan-boost drives WmiFanService.SetModeAsync("boost") through
+        // the exact pipeline the UI uses (SafeEcWriter → EC), so the outcome can be
+        // verified from the audit log without any UI automation.
+        var selftest = Environment.GetEnvironmentVariable("GC_SELFTEST")?.Trim().ToLowerInvariant();
+        if (!string.IsNullOrWhiteSpace(selftest))
+        {
+            RunSelfTest(selftest);
+            Shutdown();
+            return;
+        }
+
         try
         {
             new MainWindow().Show();
@@ -52,5 +64,29 @@ public partial class App : Application
             Log($"FATAL in OnStartup: {ex}");
             throw;
         }
+    }
+
+    private static void RunSelfTest(string test)
+    {
+        try
+        {
+            var fan = GamingCenter.UI.Services.HardwareServices.CreateFanService();
+            Log($"selftest '{test}': fan service = {fan.GetType().Name}, writesEnabled={fan.WritesEnabled}");
+            switch (test)
+            {
+                case "fan-boost":
+                    var r1 = fan.SetModeAsync("boost").AsTask().GetAwaiter().GetResult();
+                    Log($"selftest fan-boost: State={r1.State} Verified={r1.Verified} Error={r1.Error ?? "none"}");
+                    var back = fan.GetModeAsync().AsTask().GetAwaiter().GetResult();
+                    Log($"selftest fan-boost: GetMode after = {back}");
+                    var r0 = fan.SetModeAsync("auto").AsTask().GetAwaiter().GetResult();
+                    Log($"selftest fan-boost: restore auto State={r0.State}");
+                    break;
+                default:
+                    Log($"selftest: unknown test '{test}'");
+                    break;
+            }
+        }
+        catch (Exception ex) { Log($"selftest '{test}' threw: {ex}"); }
     }
 }
