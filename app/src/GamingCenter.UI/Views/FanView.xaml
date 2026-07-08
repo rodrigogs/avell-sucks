@@ -44,14 +44,14 @@
                     <TextBlock Text="temperature → fan PWM · shaded = where the machine ran (last 60s)"
                                Style="{StaticResource Caption}" Margin="0,3,0,0"/>
                     <ctl:FanCurveEditor x:Name="Curve" Height="260" Margin="0,12,0,0"/>
-                    <DockPanel Margin="0,16,0,0">
-                        <ctl:StateBadge x:Name="Badge" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
-                            <Button x:Name="ResetBtn" Content="Reset" Style="{StaticResource SecondaryButton}"
-                                    Margin="0,0,10,0" Click="OnReset"/>
-                            <Button x:Name="ApplyBtn" Content="Apply curve" Style="{StaticResource PrimaryButton}"
-                                    Click="OnApplyCurve"/>
-                        </StackPanel>
+                    <!-- Live: dragging a point re-applies the curve on settle.
+                         "Reset to auto" is the one explicit escape hatch. -->
+                    <DockPanel Margin="0,14,0,0">
+                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center"
+                                   Style="{StaticResource Caption}"
+                                   Text="Changes apply as you edit."/>
+                        <Button x:Name="ResetBtn" Content="Reset to auto" Style="{StaticResource SecondaryButton}"
+                                DockPanel.Dock="Right" HorizontalAlignment="Right" Click="OnReset"/>
                     </DockPanel>
                 </StackPanel>
             </Border>
@@ -63,7 +63,7 @@
                     <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" FontSize="15"
                                Foreground="{StaticResource Warn}" VerticalAlignment="Center"/>
                     <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Ink}"
-                               Text="EC writes are disabled. Set GAMINGCENTER_ALLOW_EC_WRITES=1 to actuate hardware; controls preview only."/>
+                               Text="Preview only — hardware control is off. Run Gaming Center as administrator to actuate the fan (or unset GAMINGCENTER_ALLOW_EC_WRITES if you forced it off)."/>
                 </StackPanel>
             </Border>
 

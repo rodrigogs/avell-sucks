@@ -12,10 +12,43 @@ namespace GamingCenter.UI.Services;
 /// the UI run and be validated anywhere; swap for Core-backed implementations
 /// (WmiEcBackend / ITeRgbBackend) when wiring real hardware.
 /// </summary>
+/// <summary>
+/// Single policy for whether the UI may actuate hardware.
+///
+/// Rule: an elevated (Administrator) process may write BY DEFAULT — the app
+/// manifest is requireAdministrator precisely so it can drive the EC, so
+/// launching it IS the consent. The GAMINGCENTER_ALLOW_EC_WRITES env var is an
+/// optional override:
+///   • "0" / "false" / "no"  → force writes OFF (safe/demo mode, even elevated)
+///   • "1" / "true"          → force writes ON  (also lets a non-elevated dev
+///                              process opt in, matching the Server's behaviour)
+///   • unset                 → follow elevation (on when elevated, off otherwise)
+/// Writes remain protected downstream by the allowlist + read-back verify +
+/// rollback + audit, regardless of this gate.
+/// </summary>
 internal static class WriteGateInfo
 {
-    public static bool EcWritesEnabled =>
-        string.Equals(Environment.GetEnvironmentVariable("GAMINGCENTER_ALLOW_EC_WRITES"), "1", StringComparison.Ordinal);
+    public static bool EcWritesEnabled
+    {
+        get
+        {
+            var raw = Environment.GetEnvironmentVariable("GAMINGCENTER_ALLOW_EC_WRITES");
+            if (raw is "0" or "false" or "FALSE" or "False" or "no" or "NO") return false; // forced off
+            if (raw is "1" or "true" or "TRUE" or "True") return true;                       // forced on
+            return IsElevated();                                                             // default: follow elevation
+        }
+    }
+
+    private static bool IsElevated()
+    {
+        try
+        {
+            using var id = System.Security.Principal.WindowsIdentity.GetCurrent();
+            return new System.Security.Principal.WindowsPrincipal(id)
+                .IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
+        }
+        catch { return false; }
+    }
 }
 
 public sealed class LocalFanService : IFanService
@@ -93,6 +126,9 @@ public sealed class LocalPowerService : IPowerService
 
     /// <summary>The preset limits for a mode (for UI preview before applying).</summary>
     public static PowerLimits PresetFor(PerformanceMode mode) => Presets[mode];
+
+    public ValueTask<PowerLimits> GetPresetAsync(PerformanceMode mode, CancellationToken ct = default)
+        => new(Presets[mode]);
 }
 
 public sealed class LocalRgbService : IRgbService

@@ -31,13 +31,14 @@ public sealed class WmiEcBackend : IEcBackend, IEcWriter, IAsyncDisposable
     private const string ClassName = "AcpiTest_MULong";
     private const ulong ReadFlag = 0x100_0000_0000UL; // 2^40
 
-    // Reverse-engineered candidate power-limit EC addresses from GamingCenter.
-    // These are currently speculative; actual encoding/units are not yet
-    // confirmed via diffing and are tracked in TODO.
-    private const int ADDR_PL1_SETTING_VALUE = 1919; // 0x77F
-    private const int ADDR_PL2_SETTING_VALUE = 1920; // 0x780
-    private const int ADDR_PL4_SETTING_VALUE = 1921; // 0x781
-    private const int ADDR_MYFAN3_CPU_TAU = 1857;    // 0x741, reused Tao info path
+    // Power-limit EC addresses — CONFIRMED from the decompiled OEM GamingCenter
+    // (FanManagementPage2.SetPL1/2/4Value write WMIWriteECRAM(1923/1924/1925);
+    // GetGamingPLDefaultValue reads 1840/1841/1842, Office reads 1844/1845/1846).
+    // Byte watts. (Tau is NOT an EC register — the OEM sets it via Intel XTU
+    // `-id 66`, so it's out of scope for the EC backend.)
+    private const int ADDR_PL1_SETTING_VALUE = 1923; // 0x783
+    private const int ADDR_PL2_SETTING_VALUE = 1924; // 0x784
+    private const int ADDR_PL4_SETTING_VALUE = 1925; // 0x785
 
     public async ValueTask<EcSnapshot> ReadSnapshotAsync(
         IReadOnlyList<int> addresses, CancellationToken cancellationToken = default)
@@ -84,35 +85,33 @@ public sealed class WmiEcBackend : IEcBackend, IEcWriter, IAsyncDisposable
             Description: description);
     }
 
-    // TODO(power-profile): actual register semantics are not confirmed yet.
-    // Current implementation uses candidate addresses/units from TA
-    // input; replace this once the real encoding is validated.
+    /// <summary>
+    /// Reads the current CPU power limits from the confirmed EC registers
+    /// (0x783/0x784/0x785 = PL1/PL2/PL4, byte watts). TauSeconds is reported as 0
+    /// here because Tau lives in Intel XTU, not the EC.
+    /// </summary>
     public async ValueTask<PowerProfileState?> ReadPowerProfileAsync(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var addresses = new[] { ADDR_PL1_SETTING_VALUE, ADDR_PL2_SETTING_VALUE, ADDR_PL4_SETTING_VALUE, ADDR_MYFAN3_CPU_TAU };
+        var addresses = new[] { ADDR_PL1_SETTING_VALUE, ADDR_PL2_SETTING_VALUE, ADDR_PL4_SETTING_VALUE };
         var snapshot = await ReadSnapshotAsync(addresses, cancellationToken).ConfigureAwait(false);
 
         if (snapshot.Fields.Count < 3)
             return new PowerProfileState(DateTimeOffset.UtcNow, 0, 0, 0, false, "Incomplete power-register snapshot.");
 
-        var allOk = snapshot.Fields.Take(3).All(f => f.Ok);
-        if (!allOk)
+        if (!snapshot.Fields.All(f => f.Ok))
             return new PowerProfileState(DateTimeOffset.UtcNow, 0, 0, 0, true, "Partial read: some power registers returned errors.");
 
-        // Encoding is speculative; these fields are placeholder until confirmed.
-        // Previous observation from decompiled strings suggests addresses may
-        // map PL1/PL2/Tau in 0.1 W or 1 W units.
+        // Byte watts, confirmed against the OEM SetPL*Value write path.
         var pl1 = snapshot.Fields[0].Value;
         var pl2 = snapshot.Fields[1].Value;
-        var tau = snapshot.Fields[3].Value;
 
         return new PowerProfileState(
             Timestamp: snapshot.Timestamp,
             Pl1Watts: pl1,
             Pl2Watts: pl2,
-            TauSeconds: tau,
+            TauSeconds: 0, // Tau is an XTU setting, not an EC register.
             Supported: true,
             Error: null);
     }
@@ -158,8 +157,12 @@ public sealed class WmiEcBackend : IEcBackend, IEcWriter, IAsyncDisposable
 
     private static ulong PackRead(int address) => ReadFlag | (uint)address;
 
+    // Write encoding from the decompiled OEM WMIEC.WMIWriteECRAM:
+    //   Value <<= 16;  Data = Value + Addr;   // (value<<16) + addr, NO read flag.
+    // Including ReadFlag (2^40) here makes the EC ignore the write (read-back
+    // stays unchanged), so the write must NOT carry it.
     private static ulong PackWrite(int address, int value) =>
-        ((ulong)(uint)value << 16) | ReadFlag | (uint)address;
+        ((ulong)(uint)value << 16) + (uint)address;
 
     private static ulong? InvokeGetSet(ManagementObject instance, ulong data)
     {
