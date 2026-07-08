@@ -118,10 +118,11 @@ public partial class FanView : UserControl
         };
 
         _curveWrite.Cancel(); // a mode press supersedes a pending curve write
-        _monitor?.NoteLocalWrite(mode); // our own write — don't report it back as external
+        _monitor?.Suspend();  // don't let the reconciler yank the selection while this settles
         Toaster.Show(WriteState.Pending, ModeLabel(mode));
         var result = await _fan.SetModeAsync(mode);
         Toaster.Show(result.State, ModeLabel(mode) + " set", result.Error);
+        _monitor?.Resume(result.State == WriteState.Verified ? mode : (await _fan.GetModeAsync() ?? "auto"));
     }
 
     // Dragging a curve point re-applies the custom curve on settle.
@@ -134,12 +135,13 @@ public partial class FanView : UserControl
 
     private async void ApplyCurveNow()
     {
-        _monitor?.NoteLocalWrite("custom"); // curve write flips mode to custom
+        _monitor?.Suspend(); // curve write flips mode to custom; let it settle
         Toaster.Show(WriteState.Pending, "Fan curve");
         var result = await _fan.SetCurveAsync(Curve.Points.ToArray());
         Toaster.Show(result.State, "Fan curve applied", result.Error);
         if (result.State == WriteState.Verified && !_loading)
             SelectMode("custom");
+        _monitor?.Resume(result.State == WriteState.Verified ? "custom" : (await _fan.GetModeAsync() ?? "auto"));
     }
 
     // The one explicit escape hatch: hand the fan back to Auto.
@@ -151,11 +153,12 @@ public partial class FanView : UserControl
         Curve.SetPoints(curve);
         _loading = false;
 
-        _monitor?.NoteLocalWrite("auto");
+        _monitor?.Suspend();
         Toaster.Show(WriteState.Pending, ModeLabel("auto"));
         var result = await _fan.SetModeAsync("auto");
         if (result.State == WriteState.Verified) SelectMode("auto");
         Toaster.Show(result.State, ModeLabel("auto") + " set", result.Error);
+        _monitor?.Resume(result.State == WriteState.Verified ? "auto" : (await _fan.GetModeAsync() ?? "auto"));
     }
 
     private static string ModeLabel(string mode) => mode switch

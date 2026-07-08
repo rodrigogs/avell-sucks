@@ -130,7 +130,10 @@ public partial class PowerView : UserControl
         LoadSliders(state.Limits);
         _loading = false;
 
-        _monitor?.NoteLocalWrite(state.Mode); // seed baseline with current plan
+        // Seed the reconciler baseline from the ACTIVE SCHEME (same source the
+        // monitor polls) so it doesn't fire a spurious "changed on device" toast
+        // for the plan that was already active when the tab opened.
+        if (_monitor is not null) await _monitor.SeedBaselineAsync();
         _monitor?.Start();
         App.Trace($"PowerView loaded: monitor={( _monitor is null ? "NULL(stub)" : "active")} mode={state.Mode}");
     }
