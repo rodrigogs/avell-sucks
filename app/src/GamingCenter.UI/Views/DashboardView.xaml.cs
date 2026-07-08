@@ -15,13 +15,15 @@ public partial class DashboardView : UserControl
     private readonly IFanService _fan = HardwareServices.CreateFanService();
     private readonly NetworkMeter _net = new();
     private readonly DiskMeter _disk = new();
-    private bool _started;
 
     // Disk sampling is slow I/O (off-thread) and storage barely moves, so it runs
     // every Nth pump tick rather than every second. Guarded so overlapping
     // samples never pile up if a disk is briefly slow.
     private const int DiskEveryTicks = 10; // ~10 s at 1 Hz
+    private const int CoolEveryTicks = 3;  // re-read fan profile ~3 s (reflects external changes)
     private int _tick;
+    private bool _coolBusy;
+    private string? _lastCooling;
     private bool _diskBusy;
 
     // Per-drive identity color, assigned by enumeration order so each drive keeps
@@ -48,15 +50,13 @@ public partial class DashboardView : UserControl
     {
         _pump.Tick += OnTelemetry;
 
-        if (!_started)
-        {
-            _started = true;
-
-            // Active fan profile (from EC via the fan service). Duty/RPM and the
-            // curve live on the Fan tab; the dashboard echoes the current profile.
-            try { ShowCooling(await _fan.GetModeAsync() ?? "auto"); }
-            catch { ShowCooling(null); }
-        }
+        // Re-read the active fan profile on EVERY visit: the Fan tab may have
+        // changed the mode (or the OEM app / Fn key did) while this view was off
+        // screen. Reading here keeps the dashboard's cooling tile in sync when the
+        // user switches back. (EC read is cheap; done once per activation, not per
+        // telemetry tick.)
+        try { var m = await _fan.GetModeAsync() ?? "auto"; _lastCooling = m; ShowCooling(m); }
+        catch { ShowCooling(null); }
 
         // Idempotent: opens the ring-0 monitor on first call, no-ops afterwards.
         _pump.Start();
@@ -83,6 +83,10 @@ public partial class DashboardView : UserControl
 
         // Disk: slow off-thread sample every Nth tick (storage moves slowly).
         if (++_tick % DiskEveryTicks == 0) await SampleDiskAsync();
+
+        // Cooling profile: re-read a few seconds apart so a fan change made on the
+        // Fan tab, the OEM app, or the Fn key shows up live here too.
+        if (_tick % CoolEveryTicks == 0) await RefreshCoolingAsync();
 
         if (t is null) return;
 
@@ -158,6 +162,26 @@ public partial class DashboardView : UserControl
         FanMode.Foreground = accentBrush;
         CoolIcon.Foreground = accentBrush;
         CoolIconBg.Background = Brand.Frozen(Color.FromArgb(0x26, accent.R, accent.G, accent.B));
+    }
+
+    // Re-read the active fan profile and refresh the cooling tile. Overlap-guarded
+    // (the EC read is async); failures leave the last-known label untouched.
+    private async System.Threading.Tasks.Task RefreshCoolingAsync()
+    {
+        if (_coolBusy) return;
+        _coolBusy = true;
+        try
+        {
+            var mode = await _fan.GetModeAsync();
+            if (mode is not null && !string.Equals(mode, _lastCooling, System.StringComparison.OrdinalIgnoreCase))
+            {
+                _lastCooling = mode;
+                App.Trace($"Dashboard cooling refreshed → {mode}");
+                ShowCooling(mode);
+            }
+        }
+        catch { /* transient EC read error — keep prior label */ }
+        finally { _coolBusy = false; }
     }
 
     // Off-thread disk sample → UI update. Overlap-guarded so a slow disk can't
