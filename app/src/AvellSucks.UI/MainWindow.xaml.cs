@@ -21,9 +21,11 @@ public partial class MainWindow : Window
     private FanView? _fan;
     private RgbView? _rgb;
     private PowerView? _power;
+    private AboutView? _about;
     private FanView Fan => _fan ??= new FanView(_pump);
     private RgbView Rgb => _rgb ??= new RgbView();
     private PowerView Power => _power ??= new PowerView();
+    private AboutView About => _about ??= new AboutView();
 
     public MainWindow()
     {
@@ -135,6 +137,7 @@ public partial class MainWindow : Window
             nameof(NavFan) => (Fan, "Fan", "Fan modes and the custom temperature curve"),
             nameof(NavRgb) => (Rgb, "RGB", "Keyboard lighting — effects, color and zones"),
             nameof(NavPower) => (Power, "Performance", "Power modes — Windows plan and CPU power envelope"),
+            nameof(NavAbout) => (About, "About", "What this is, and why it exists"),
             _ => (_dashboard, "Dashboard", "Live telemetry from EC, WMI and onboard sensors"),
         };
 
