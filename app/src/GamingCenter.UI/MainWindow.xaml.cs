@@ -12,20 +12,26 @@ public partial class MainWindow : Window
     private bool _reallyClosing;
     private readonly SensorPump _pump = new();
     private readonly DashboardView _dashboard;
-    private readonly FanView _fan;
-    private readonly RgbView _rgb = new();
-    private readonly PowerView _power = new();
+
+    // Fan/RGB/Performance are built on FIRST navigation, not at startup. Only the
+    // Dashboard is shown initially; eagerly constructing the other three parsed
+    // their XAML and spun up their monitors + EC reads (PowerView.BuildModeCards
+    // fires 4 preset reads; FanView/PowerView create polling monitors) before the
+    // window even appeared. Lazy construction keeps first-open cheap.
+    private FanView? _fan;
+    private RgbView? _rgb;
+    private PowerView? _power;
+    private FanView Fan => _fan ??= new FanView(_pump);
+    private RgbView Rgb => _rgb ??= new RgbView();
+    private PowerView Power => _power ??= new PowerView();
 
     public MainWindow()
     {
         InitializeComponent();
 
         // One sensor pump, shared by the views that need telemetry (Dashboard,
-        // Fan). It opens its ring-0 monitor lazily on the first Start() — after
-        // this window is shown — so constructing the views here stays cheap and
-        // doesn't block the message pump (that left the window unrendered).
+        // Fan). It opens its ring-0 monitor off-thread on the first Start().
         _dashboard = new DashboardView(_pump);
-        _fan = new FanView(_pump);
 
         // Keep the on-screen placement fix: CenterScreen produced Top/Left=NaN
         // under the RDP session, parking the window off-screen.
@@ -126,9 +132,9 @@ public partial class MainWindow : Window
 
         (UserControl view, string title, string subtitle) target = rb.Name switch
         {
-            nameof(NavFan) => (_fan, "Fan", "Fan modes and the custom temperature curve"),
-            nameof(NavRgb) => (_rgb, "RGB", "Keyboard lighting — effects, color and zones"),
-            nameof(NavPower) => (_power, "Performance", "Power modes — Windows plan and CPU power envelope"),
+            nameof(NavFan) => (Fan, "Fan", "Fan modes and the custom temperature curve"),
+            nameof(NavRgb) => (Rgb, "RGB", "Keyboard lighting — effects, color and zones"),
+            nameof(NavPower) => (Power, "Performance", "Power modes — Windows plan and CPU power envelope"),
             _ => (_dashboard, "Dashboard", "Live telemetry from EC, WMI and onboard sensors"),
         };
 

@@ -14,13 +14,17 @@ public sealed class HardwareMonitor : IDisposable
 
     public HardwareMonitor()
     {
+        // Only the groups the telemetry actually reads (CPU/GPU/Memory). The
+        // dashboard never surfaces motherboard or controller sensors, and this
+        // platform exposes no fan tachometer — enabling those groups made every
+        // 1 Hz Update() poll hardware whose values are thrown away.
         _computer = new Computer
         {
             IsCpuEnabled = true,
             IsGpuEnabled = true,
             IsMemoryEnabled = true,
-            IsMotherboardEnabled = true,
-            IsControllerEnabled = true,
+            IsMotherboardEnabled = false,
+            IsControllerEnabled = false,
         };
         _computer.Open();
     }
