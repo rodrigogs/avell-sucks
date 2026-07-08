@@ -69,6 +69,14 @@ public interface IPowerService
     /// <summary>Advanced: write raw CPU power limits (watts). Gated behind EC writes.</summary>
     ValueTask<ControlResult> SetLimitsAsync(PowerLimits limits, CancellationToken ct = default);
 
+    /// <summary>
+    /// The PL preset a mode resolves to, for previewing on the cards BEFORE
+    /// selecting. Real backends return the machine's own default registers; the
+    /// stub returns its in-memory presets — so the UI never shows watts it won't
+    /// actually apply.
+    /// </summary>
+    ValueTask<PowerLimits> GetPresetAsync(PerformanceMode mode, CancellationToken ct = default);
+
     /// <summary>Whether hardware writes are enabled (GAMINGCENTER_ALLOW_EC_WRITES).</summary>
     bool WritesEnabled { get; }
 }

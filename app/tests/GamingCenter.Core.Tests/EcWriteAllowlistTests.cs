@@ -80,26 +80,34 @@ public class EcWriteAllowlistTests
     // ------------------------------------------------------------------
 
     [Fact]
-    public void Speculative_power_addresses_are_registered()
+    public void Power_limit_addresses_are_registered()
     {
         var al = new EcWriteAllowlist();
-        Assert.NotNull(al.GetRule(1919));
-        Assert.NotNull(al.GetRule(1920));
-        Assert.NotNull(al.GetRule(1921));
-        Assert.NotNull(al.GetRule(1857));
+        Assert.NotNull(al.GetRule(1923)); // 0x783 PL1
+        Assert.NotNull(al.GetRule(1924)); // 0x784 PL2
+        Assert.NotNull(al.GetRule(1925)); // 0x785 PL4
+    }
+
+    [Fact]
+    public void Old_speculative_power_addresses_are_gone()
+    {
+        var al = new EcWriteAllowlist();
+        Assert.Null(al.GetRule(1919)); // old 0x77F guess
+        Assert.Null(al.GetRule(1920));
+        Assert.Null(al.GetRule(1921));
+        Assert.Null(al.GetRule(1857)); // Tau is XTU, not an EC register
     }
 
     [Theory]
-    [InlineData(1919, 0,   true)]
-    [InlineData(1919, 128, true)]
-    [InlineData(1919, 255, true)]
-    [InlineData(1920, 0,   true)]
-    [InlineData(1920, 255, true)]
-    [InlineData(1921, 0,   true)]
-    [InlineData(1921, 255, true)]
-    [InlineData(1857, 0,   true)]
-    [InlineData(1857, 255, true)]
-    public void Speculative_power_entries_accept_full_byte_range(int addr, int value, bool expected)
+    [InlineData(1923, 0,   true)]
+    [InlineData(1923, 45,  true)]
+    [InlineData(1923, 254, true)]
+    [InlineData(1923, 255, false)] // raw byte capped at 254
+    [InlineData(1924, 90,  true)]
+    [InlineData(1924, 254, true)]
+    [InlineData(1925, 107, true)]
+    [InlineData(1925, 254, true)]
+    public void Power_limit_entries_accept_watt_byte_range(int addr, int value, bool expected)
     {
         var al = new EcWriteAllowlist();
         Assert.Equal(expected, al.IsAllowed(addr, value));

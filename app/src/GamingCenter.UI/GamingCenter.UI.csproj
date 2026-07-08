@@ -23,6 +23,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GamingCenter.Api\GamingCenter.Api.csproj" />
+    <!-- Real EC backend (WmiEcBackend) for the hardware-backed fan service. -->
+    <ProjectReference Include="..\GamingCenter.Core.Windows\GamingCenter.Core.Windows.csproj" />
   </ItemGroup>
 
 </Project>

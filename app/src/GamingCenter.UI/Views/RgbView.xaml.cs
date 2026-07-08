@@ -5,15 +5,18 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using GamingCenter.Core.Rgb;
+using GamingCenter.UI.Controls;
 using GamingCenter.UI.Services;
 
 namespace GamingCenter.UI.Views;
 
 public partial class RgbView : UserControl
 {
-    private readonly IRgbService _rgb = new LocalRgbService();
+    private readonly IRgbService _rgb = HardwareServices.CreateRgbService();
+    private readonly Debouncer _apply = new(450);
     private RgbEffectType _effect = RgbEffectType.Static;
     private RgbSpeed _speed = RgbSpeed.Normal;
+    private bool _loading = true;
 
     public RgbView()
     {
@@ -31,6 +34,7 @@ public partial class RgbView : UserControl
         var c = Color.FromRgb(0xFF, 0x2E, 0x88);
         Picker.SetColor(c);
         OnColor(c);
+        _loading = false; // initial paint done — user edits now actuate
     }
 
     private void OnColor(Color c)
@@ -38,6 +42,7 @@ public partial class RgbView : UserControl
         Swatch.Background = new SolidColorBrush(c);
         HexInput.Text = $"#{c.R:X2}{c.G:X2}{c.B:X2}";
         Keyboard.Color = c;
+        QueueApply(); // live: color change re-applies lighting
     }
 
     private void OnEffectChecked(object sender, RoutedEventArgs e)
@@ -54,7 +59,7 @@ public partial class RgbView : UserControl
         // Checked fires during InitializeComponent, before the other named
         // elements exist — guard until the tree is up.
         if (Keyboard is not null) Keyboard.EffectType = _effect;
-        if (Badge is not null) Badge.State = WriteState.Idle;
+        QueueApply();
     }
 
     private void OnSpeedChecked(object sender, RoutedEventArgs e)
@@ -66,12 +71,13 @@ public partial class RgbView : UserControl
             nameof(SpeedFast) => RgbSpeed.Fast,
             _ => RgbSpeed.Normal,
         };
-        if (Badge is not null) Badge.State = WriteState.Idle;
+        QueueApply();
     }
 
     private void OnBrightnessChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
         if (Keyboard is not null) Keyboard.Brightness = e.NewValue / 100.0;
+        QueueApply();
     }
 
     private void OnHexKey(object sender, KeyEventArgs e)
@@ -100,7 +106,15 @@ public partial class RgbView : UserControl
         }
     }
 
-    private async void OnApply(object sender, RoutedEventArgs e)
+    // Live: any lighting edit re-applies on settle (debounced). No Apply button.
+    private void QueueApply()
+    {
+        if (_loading || BrightnessSlider is null) return;
+        Toaster.Clear();
+        _apply.Trigger(ApplyLightingNow);
+    }
+
+    private async void ApplyLightingNow()
     {
         var c = Picker.SelectedColor;
         var effect = new RgbEffect(
@@ -111,10 +125,8 @@ public partial class RgbView : UserControl
             RgbDirection.LeftToRight,
             (byte)Math.Round(BrightnessSlider.Value));
 
-        Badge.State = WriteState.Pending;
-        Badge.Message = "";
+        Toaster.Show(WriteState.Pending, "Lighting");
         var result = await _rgb.ApplyAsync(effect);
-        Badge.State = result.State;
-        Badge.Message = result.Error ?? "";
+        Toaster.Show(result.State, "Lighting applied", result.Error);
     }
 }

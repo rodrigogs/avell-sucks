@@ -12,7 +12,7 @@ namespace GamingCenter.UI.Views;
 public partial class DashboardView : UserControl
 {
     private readonly SensorPump _pump;
-    private readonly IFanService _fan = new LocalFanService();
+    private readonly IFanService _fan = HardwareServices.CreateFanService();
     private readonly NetworkMeter _net = new();
     private readonly DiskMeter _disk = new();
     private bool _started;

@@ -17,6 +17,9 @@ public partial class App : Application
         catch { /* never let logging crash the app */ }
     }
 
+    /// <summary>Diagnostic log hook for the rest of the app (e.g. reconciler events).</summary>
+    public static void Trace(string message) => Log(message);
+
     public App()
     {
         DispatcherUnhandledException += (_, e) => Log($"DispatcherUnhandledException: {e.Exception}");

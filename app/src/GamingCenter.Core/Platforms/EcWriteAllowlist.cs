@@ -51,11 +51,14 @@ public sealed class EcWriteAllowlist
         new(1862, "ADDR_MYFAN2_L4_PWM — custom L4 PWM", Enumerable.Range(0, 0x8C + 1).ToArray()),
         new(1863, "ADDR_MYFAN2_L5_PWM — custom L5 PWM", Enumerable.Range(0, 0x8C + 1).ToArray()),
 
-        // Power-limit candidates: intentionally broad until validated.
-        new(1919, "ADDR_PL1_SETTING_VALUE — speculative PL1 power limit", Enumerable.Range(0, 256).ToArray()),
-        new(1920, "ADDR_PL2_SETTING_VALUE — speculative PL2 power limit", Enumerable.Range(0, 256).ToArray()),
-        new(1921, "ADDR_PL4_SETTING_VALUE — speculative PL4 power limit", Enumerable.Range(0, 256).ToArray()),
-        new(1857, "ADDR_MYFAN3_CPU_TAU — speculative Tau/time window", Enumerable.Range(0, 256).ToArray()),
+        // Power limits — CONFIRMED from the decompiled OEM GamingCenter
+        // (FanManagementPage2.SetPL1/2/4Value → WMIWriteECRAM(1923/1924/1925)).
+        // Byte watts (value & 0xFF). These replace the earlier speculative
+        // 0x77F..0x781 guesses. Capped at 254 W (raw byte) — the mode presets
+        // stay well under; the Advanced sliders clamp to safe ranges in the UI.
+        new(1923, "ADDR_PL1_SETTING_VALUE (0x783) — PL1 sustained (W)", Enumerable.Range(0, 255).ToArray()),
+        new(1924, "ADDR_PL2_SETTING_VALUE (0x784) — PL2 turbo (W)", Enumerable.Range(0, 255).ToArray()),
+        new(1925, "ADDR_PL4_SETTING_VALUE (0x785) — PL4 peak (W)", Enumerable.Range(0, 255).ToArray()),
     ];
 
     private readonly Dictionary<int, EcWriteRule> _rules;

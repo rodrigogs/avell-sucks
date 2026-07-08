@@ -9,15 +9,29 @@ namespace GamingCenter.UI.Views;
 
 public partial class PowerView : UserControl
 {
-    private readonly IPowerService _power = new LocalPowerService();
-    private bool _loading;
-    private bool _advancedDirty; // true once the user edits a slider away from the preset
+    private readonly IPowerService _power = HardwareServices.CreatePowerService();
+    private readonly Debouncer _limitWrite = new(450);
+    // Reconciler: reflects power-plan changes made outside our app. Only active
+    // when the real backend is live (elevated); null on the stub.
+    private readonly PowerStateMonitor? _monitor;
+    // Guard starts CLOSED and only opens at the end of OnLoaded, so nothing
+    // written during construction / XAML init / initial hydration actuates the
+    // EC. (A card auto-checking or a slider raising ValueChanged during
+    // InitializeComponent must NOT trigger a hardware write.)
+    private bool _loading = true;
 
     public PowerView()
     {
         InitializeComponent();
         BuildModeCards();
         Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
+
+        if (HardwareServices.IsRealBackendActive)
+        {
+            _monitor = new PowerStateMonitor();
+            _monitor.ExternalModeChanged += OnExternalModeChanged;
+        }
     }
 
     // ---- Mode metadata (name, one-line meaning, accent by intensity) ----
@@ -49,13 +63,15 @@ public partial class PowerView : UserControl
     };
 
     // Fill each card with name + tagline + its PL preset, so the trade-off is
-    // legible before selecting. Accent dot tracks intensity.
-    private void BuildModeCards()
+    // legible before selecting. Presets come from the ACTIVE service (real
+    // machine defaults when hardware-backed; stub presets otherwise) so the
+    // cards never advertise watts the app won't apply.
+    private async void BuildModeCards()
     {
         foreach (var m in new[] { PerformanceMode.Gaming, PerformanceMode.High, PerformanceMode.Balanced, PerformanceMode.Saving })
         {
             var meta = Meta(m);
-            var preset = LocalPowerService.PresetFor(m);
+            var preset = await _power.GetPresetAsync(m);
             var accent = Brand.Frozen(meta.Accent);
 
             var panel = new StackPanel();
@@ -113,16 +129,35 @@ public partial class PowerView : UserControl
         ShowEnvelope(state.Mode, state.Limits);
         LoadSliders(state.Limits);
         _loading = false;
+
+        _monitor?.NoteLocalWrite(state.Mode); // seed baseline with current plan
+        _monitor?.Start();
+        App.Trace($"PowerView loaded: monitor={( _monitor is null ? "NULL(stub)" : "active")} mode={state.Mode}");
     }
 
-    // ---- Mode selection ----
-    private void OnModeChecked(object sender, RoutedEventArgs e)
+    private void OnUnloaded(object sender, RoutedEventArgs e) => _monitor?.Stop();
+
+    // Active Windows power plan changed outside our app: reflect it without a
+    // self-authored write toast.
+    private async void OnExternalModeChanged(PerformanceMode mode)
+    {
+        App.Trace($"PowerStateMonitor: external power-plan change detected → {mode}");
+        _loading = true;
+        CardFor(mode).IsChecked = true;
+        var preset = await _power.GetPresetAsync(mode);
+        ShowEnvelope(mode, preset);
+        LoadSliders(preset);
+        _loading = false;
+        Toaster.Show(WriteState.Verified, Meta(mode).Name + " mode · changed on device");
+    }
+
+    // ---- Mode selection: actuates immediately (no Apply button) ----
+    private async void OnModeChecked(object sender, RoutedEventArgs e)
     {
         if (sender is not RadioButton rb) return;
         var mode = ModeOf(rb);
-        var preset = LocalPowerService.PresetFor(mode);
+        var preset = await _power.GetPresetAsync(mode);
 
-        _advancedDirty = false;
         ShowEnvelope(mode, preset);
 
         // Checked can fire during InitializeComponent before later elements exist.
@@ -133,7 +168,14 @@ public partial class PowerView : UserControl
             _loading = false;
         }
 
-        if (!_loading && Badge is not null) Badge.State = WriteState.Idle;
+        if (_loading) return; // initial selection during load — don't write
+        _limitWrite.Cancel(); // mode press supersedes a pending slider write
+        _monitor?.NoteLocalWrite(mode); // our own switch — not an external change
+
+        var label = Meta(mode).Name + " mode";
+        Toaster.Show(WriteState.Pending, label);
+        var result = await _power.SetModeAsync(mode);
+        Toaster.Show(result.State, label + " on", result.Error);
     }
 
     private void ShowEnvelope(PerformanceMode mode, PowerLimits limits)
@@ -169,10 +211,18 @@ public partial class PowerView : UserControl
         UpdateSliderReadouts();
         if (_loading) return;
 
-        // Manual edit detaches from the preset and feeds the live envelope.
-        _advancedDirty = true;
+        // Manual edit feeds the live envelope, then writes through on settle
+        // (debounced) — no Apply button.
         ShowEnvelope(CurrentMode(), CurrentLimits());
-        if (Badge is not null) Badge.State = WriteState.Idle;
+        Toaster.Clear();
+        _limitWrite.Trigger(ApplyLimitsNow);
+    }
+
+    private async void ApplyLimitsNow()
+    {
+        Toaster.Show(WriteState.Pending, "Power limits");
+        var result = await _power.SetLimitsAsync(CurrentLimits());
+        Toaster.Show(result.State, "Power limits set", result.Error);
     }
 
     private void UpdateSliderReadouts()
@@ -199,19 +249,4 @@ public partial class PowerView : UserControl
 
     private PowerLimits CurrentLimits() =>
         new((int)Pl1Slider.Value, (int)Pl2Slider.Value, (int)Pl4Slider.Value);
-
-    private async void OnApply(object sender, RoutedEventArgs e)
-    {
-        Badge.State = WriteState.Pending;
-        Badge.Message = "";
-
-        // Manual limits win when the user tuned them; otherwise apply the mode
-        // package (Windows scheme + preset).
-        var result = _advancedDirty
-            ? await _power.SetLimitsAsync(CurrentLimits())
-            : await _power.SetModeAsync(CurrentMode());
-
-        Badge.State = result.State;
-        Badge.Message = result.Error ?? "";
-    }
 }

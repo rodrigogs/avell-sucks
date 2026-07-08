@@ -64,12 +64,9 @@
                 </Border>
             </Grid>
 
-            <!-- Actions -->
-            <DockPanel Margin="0,18,0,0">
-                <ctl:StateBadge x:Name="Badge" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                <Button x:Name="ApplyBtn" Content="Apply lighting" Style="{StaticResource PrimaryButton}"
-                        DockPanel.Dock="Right" HorizontalAlignment="Right" Click="OnApply"/>
-            </DockPanel>
+            <!-- Live: color, effect, speed and brightness apply as you change them. -->
+            <TextBlock Style="{StaticResource Caption}" Margin="2,16,0,0"
+                       Text="Lighting applies as you change it."/>
 
             <Border x:Name="DeviceNotice" Style="{StaticResource Panel}" Margin="0,16,0,0"
                     Background="{StaticResource WarnTint}" BorderBrush="{StaticResource Warn}" Visibility="Collapsed">
