@@ -159,19 +159,28 @@ public partial class PowerView : UserControl
     {
         if (sender is not RadioButton rb) return;
         var mode = ModeOf(rb);
-        var preset = await _power.GetPresetAsync(mode);
 
+        // Capture the intent-to-write BEFORE any await. During load, OnLoaded sets
+        // _loading=true and checks a card (firing this handler); the first await
+        // below would yield, OnLoaded would set _loading=false, and on resume the
+        // "_loading" guard would wrongly read false → a spurious write + toast on
+        // simply opening the tab. Latch it up front so an await can't corrupt it.
+        var isUserAction = !_loading;
+
+        var preset = await _power.GetPresetAsync(mode);
         ShowEnvelope(mode, preset);
 
+        // Load the sliders to match, without their ValueChanged writing back.
         // Checked can fire during InitializeComponent before later elements exist.
         if (Pl1Slider is not null)
         {
+            var wasLoading = _loading;
             _loading = true;
             LoadSliders(preset);
-            _loading = false;
+            _loading = wasLoading;
         }
 
-        if (_loading) return; // initial selection during load — don't write
+        if (!isUserAction) return; // hydration selection — never write
         _limitWrite.Cancel(); // mode press supersedes a pending slider write
         _monitor?.NoteLocalWrite(mode); // our own switch — not an external change
 
