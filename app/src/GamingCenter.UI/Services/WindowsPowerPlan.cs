@@ -79,17 +79,36 @@ public sealed class WindowsPowerPlan
         return null;
     }
 
+    // GUID → mode, resolved once from the scheme list (schemes don't appear or
+    // vanish at runtime). The polled path then costs ONE powercfg call
+    // (/getactivescheme) per tick instead of two (it previously also ran /list
+    // every tick to map the GUID back to a name).
+    private static System.Collections.Generic.Dictionary<string, PerformanceMode>? s_guidToMode;
+    private static readonly object s_mapLock = new();
+
+    private static System.Collections.Generic.Dictionary<string, PerformanceMode> GuidMap()
+    {
+        var map = s_guidToMode;
+        if (map is not null) return map;
+        lock (s_mapLock)
+        {
+            if (s_guidToMode is not null) return s_guidToMode;
+            var built = new System.Collections.Generic.Dictionary<string, PerformanceMode>(StringComparer.OrdinalIgnoreCase);
+            foreach (var (guid, name) in ListSchemes())
+                foreach (var kv in ModeNames)
+                    if (kv.Value.Any(n => string.Equals(n, name, StringComparison.OrdinalIgnoreCase)))
+                        built.TryAdd(guid, kv.Key);
+            s_guidToMode = built;
+            return built;
+        }
+    }
+
     /// <summary>Which mode the active scheme corresponds to (best-effort), or null.</summary>
     public static PerformanceMode? ActiveMode()
     {
-        var active = ActiveSchemeGuid();
+        var active = ActiveSchemeGuid();               // one powercfg call
         if (active is null) return null;
-        var schemes = ListSchemes();
-        var name = schemes.FirstOrDefault(s => string.Equals(s.Guid, active, StringComparison.OrdinalIgnoreCase)).Name ?? "";
-        foreach (var kv in ModeNames)
-            if (kv.Value.Any(n => string.Equals(n, name, StringComparison.OrdinalIgnoreCase)))
-                return kv.Key;
-        return null;
+        return GuidMap().TryGetValue(active, out var m) ? m : null;
     }
 
     /// <summary>

@@ -136,21 +136,23 @@ public static class HardwareServices
                 s_backend = backend;
                 s_writer = writer;
 
-                // Probe the WMI EC once so we know NOW (not on first click) whether
-                // this process can actually reach the hardware. dotnet-run and
-                // un-elevated launches fail here with "Acesso negado".
-                try
+                // Diagnostic-only reachability probe — fire-and-forget OFF the
+                // calling thread. It used to block here with .GetResult(), and
+                // because CreateFanService() runs in a view field initializer
+                // during `new MainWindow()` (before .Show()), a cold root\WMI query
+                // (tens–hundreds of ms) delayed the window appearing. It only logs.
+                _ = System.Threading.Tasks.Task.Run(async () =>
                 {
-                    var probe = backend.ReadSnapshotAsync([1873]).AsTask().GetAwaiter().GetResult();
-                    var f = probe.Fields.Count > 0 ? probe.Fields[0] : null;
-                    App.Trace(f is { Ok: true }
-                        ? $"HardwareServices: REAL path OK — EC 0x751 read = {f.Value} (elevated & WMI reachable)."
-                        : $"HardwareServices: REAL path built but EC read FAILED — {f?.Error ?? "no field"}. Likely not elevated.");
-                }
-                catch (Exception ex)
-                {
-                    App.Trace($"HardwareServices: REAL path EC probe threw — {ex.Message}");
-                }
+                    try
+                    {
+                        var probe = await backend.ReadSnapshotAsync([1873]).ConfigureAwait(false);
+                        var f = probe.Fields.Count > 0 ? probe.Fields[0] : null;
+                        App.Trace(f is { Ok: true }
+                            ? $"HardwareServices: REAL path OK — EC 0x751 read = {f.Value} (elevated & WMI reachable)."
+                            : $"HardwareServices: REAL path built but EC read FAILED — {f?.Error ?? "no field"}. Likely not elevated.");
+                    }
+                    catch (Exception ex) { App.Trace($"HardwareServices: REAL path EC probe threw — {ex.Message}"); }
+                });
             }
             catch (Exception ex)
             {

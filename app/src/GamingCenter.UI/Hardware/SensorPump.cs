@@ -13,6 +13,7 @@ namespace GamingCenter.UI.Hardware;
 public sealed class SensorPump : IDisposable
 {
     private readonly DispatcherTimer _timer;
+    private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
     private HardwareMonitor? _monitor;
     private bool _opened;
     private bool _disposed;
@@ -45,8 +46,24 @@ public sealed class SensorPump : IDisposable
         if (!_opened)
         {
             _opened = true;
-            try { _monitor = new HardwareMonitor(); }
-            catch { _monitor = null; }
+            // Open the ring-0 monitor OFF the UI thread — LibreHardwareMonitor's
+            // Open() loads a kernel driver and enumerates all hardware (~0.5-2s,
+            // worst on first-ever launch). Doing it here on the dispatcher froze
+            // the just-shown window. Start ticking only once it's ready; the
+            // window paints immediately and telemetry fills in a beat later.
+            _ = System.Threading.Tasks.Task.Run(() =>
+            {
+                HardwareMonitor? m = null;
+                try { m = new HardwareMonitor(); } catch { m = null; }
+                _dispatcher.BeginInvoke(() =>
+                {
+                    if (_disposed) { m?.Dispose(); return; }
+                    _monitor = m;
+                    if (!_timer.IsEnabled) _timer.Start();
+                    Emit();
+                });
+            });
+            return;
         }
 
         if (!_timer.IsEnabled) _timer.Start();

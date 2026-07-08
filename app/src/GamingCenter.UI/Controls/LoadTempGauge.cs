@@ -163,6 +163,22 @@ public sealed class LoadTempGauge : FrameworkElement
         }
     }
 
+    // Frozen once — the value-arc gradient is a constant magenta→cyan.
+    private static readonly LinearGradientBrush s_arcGrad = CreateArcGrad();
+    private static LinearGradientBrush CreateArcGrad()
+    {
+        var g = new LinearGradientBrush(Brand.Magenta, Brand.Cyan, new Point(0, 0), new Point(1, 1));
+        g.Freeze();
+        return g;
+    }
+
+    // Pens depend only on stroke thickness (changes on resize, not per frame).
+    // Cache and rebuild only when thickness changes — OnRender ran ~60fps during
+    // the 220ms load animation and allocated two Pens + a brush every frame.
+    private double _penThickness = -1;
+    private Pen? _trackPen;
+    private Pen? _arcPen;
+
     protected override void OnRender(DrawingContext dc)
     {
         double w = ActualWidth, h = ActualHeight;
@@ -173,20 +189,20 @@ public sealed class LoadTempGauge : FrameworkElement
         double radius = size / 2 - thickness / 2 - 2;
         if (radius <= 0) return;
 
+        if (thickness != _penThickness || _trackPen is null || _arcPen is null)
+        {
+            _penThickness = thickness;
+            _trackPen = new Pen(TrackBrush, thickness) { StartLineCap = PenLineCap.Round, EndLineCap = PenLineCap.Round };
+            _trackPen.Freeze();
+            _arcPen = new Pen(s_arcGrad, thickness) { StartLineCap = PenLineCap.Round, EndLineCap = PenLineCap.Round };
+            _arcPen.Freeze();
+        }
+
         double load = Math.Clamp(RenderLoad, 0, 100) / 100.0;
 
-        DrawArc(dc, center, radius, StartAngle, SweepAngle, new Pen(TrackBrush, thickness)
-        { StartLineCap = PenLineCap.Round, EndLineCap = PenLineCap.Round });
-
+        DrawArc(dc, center, radius, StartAngle, SweepAngle, _trackPen);
         if (load > 0.001)
-        {
-            var grad = new LinearGradientBrush(
-                Brand.Magenta, Brand.Cyan,
-                new Point(0, 0), new Point(1, 1));
-            grad.Freeze();
-            DrawArc(dc, center, radius, StartAngle, SweepAngle * load,
-                new Pen(grad, thickness) { StartLineCap = PenLineCap.Round, EndLineCap = PenLineCap.Round });
-        }
+            DrawArc(dc, center, radius, StartAngle, SweepAngle * load, _arcPen);
 
         // Keep the hosted readout in sync each render (RenderLoad animates).
         UpdateContent(new Size(w, h));
