@@ -93,20 +93,36 @@ public sealed class SafeEcWriter
             throw;
         }
 
-        // --- Verify read-back ---
-        // The immediate read-back can catch a TRANSIENT state: the EC/firmware may
-        // briefly set status bits in a control register (e.g. the fan-control byte
-        // 0x751 reads 0x51 = boost 0x40 + transient 0x11 right after the write, then
-        // settles to the exact value within ~½s — confirmed by hardware probe). So
-        // if the first read-back differs, settle briefly and re-read before treating
-        // it as a real mismatch. The OEM app doesn't verify at all; this keeps the
-        // safety (rollback on genuine failure) without false rollbacks on transients.
-        if (!after.Ok || after.Value != value)
+        // --- Verify read-back, with settle + retry ---
+        // Two hardware realities on control registers (0x751 fan byte), both
+        // confirmed by probing this EC:
+        //   1) TRANSIENT bits: right after a write the byte may read back with
+        //      firmware status bits set (e.g. 0x51 = boost 0x40 + 0x11), settling
+        //      to the exact value within ~½s.
+        //   2) SWALLOWED first write: leaving Boost (0x40 → another mode) is
+        //      intermittently ignored on the first write and needs a second one —
+        //      the value never latches otherwise, even after seconds.
+        // So: if the read-back doesn't match, settle then RE-WRITE and re-read, up
+        // to a few attempts, before giving up and rolling back. A genuine
+        // rejection (value the EC refuses) still fails after the retries. The OEM
+        // app doesn't verify at all; this keeps the safety net without the
+        // false/incomplete failures the user hit ("try more than once").
+        // Backoff schedule (ms). Leaving Boost (0x40) is the slow case: the EC
+        // stays latched on 0x40 and ignores writes for up to ~1.5-2s before it
+        // accepts the next mode (probed on hardware). Re-write + wait with growing
+        // gaps until it takes, total budget ~2.7s, before giving up.
+        int[] backoffMs = [150, 300, 500, 800, 900];
+        foreach (var wait in backoffMs)
         {
-            await Task.Delay(350, cancellationToken).ConfigureAwait(false);
+            if (after.Ok && after.Value == value) break;
+            await Task.Delay(wait, cancellationToken).ConfigureAwait(false);
             var recheck = await _reader.ReadSnapshotAsync([address], cancellationToken)
                 .ConfigureAwait(false);
             after = recheck.Fields[0];
+            if (after.Ok && after.Value == value) break; // settled to the target
+            // Re-issue the write; the EC swallows writes while a prior transition
+            // (esp. Boost exit) is still settling.
+            after = await _writer.WriteAsync(address, value, cancellationToken).ConfigureAwait(false);
         }
 
         if (!after.Ok || after.Value != value)

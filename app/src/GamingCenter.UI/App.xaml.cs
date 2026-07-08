@@ -82,6 +82,14 @@ public partial class App : Application
                     var r0 = fan.SetModeAsync("auto").AsTask().GetAwaiter().GetResult();
                     Log($"selftest fan-boost: restore auto State={r0.State}");
                     break;
+                case "fan-transitions":
+                    // Reproduce the reported boost→custom failure through the real path.
+                    foreach (var seq in new[] { "boost", "custom", "auto", "custom", "boost", "auto" })
+                    {
+                        var r = fan.SetModeAsync(seq).AsTask().GetAwaiter().GetResult();
+                        Log($"selftest transition → {seq}: State={r.State} Error={r.Error ?? "none"}");
+                    }
+                    break;
                 default:
                     Log($"selftest: unknown test '{test}'");
                     break;
