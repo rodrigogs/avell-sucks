@@ -1,0 +1,72 @@
+<UserControl x:Class="AvellSucks.UI.Views.FanView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctl="clr-namespace:AvellSucks.UI.Controls">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+
+            <!-- Mode selector -->
+            <Border Style="{StaticResource Panel}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="PERFORMANCE MODE" Style="{StaticResource SectionLabel}"/>
+                    <Border Style="{StaticResource SegmentBar}" Margin="0,10,0,0" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" x:Name="ModeBar">
+                            <RadioButton x:Name="ModeAuto" GroupName="fanmode" Style="{StaticResource SegmentToggle}" Content="Auto" Checked="OnModeChecked"/>
+                            <RadioButton x:Name="ModeBoost" GroupName="fanmode" Style="{StaticResource SegmentToggle}" Content="Boost" Checked="OnModeChecked"/>
+                            <RadioButton x:Name="ModeCustom" GroupName="fanmode" Style="{StaticResource SegmentToggle}" Content="Custom" Checked="OnModeChecked"/>
+                            <Rectangle Width="1" Fill="{StaticResource Hairline}" Margin="6,6"/>
+                            <RadioButton x:Name="ModeL1" GroupName="fanmode" Style="{StaticResource SegmentToggle}" Content="L1" Checked="OnModeChecked"/>
+                            <RadioButton x:Name="ModeL2" GroupName="fanmode" Style="{StaticResource SegmentToggle}" Content="L2" Checked="OnModeChecked"/>
+                            <RadioButton x:Name="ModeL3" GroupName="fanmode" Style="{StaticResource SegmentToggle}" Content="L3" Checked="OnModeChecked"/>
+                            <RadioButton x:Name="ModeL4" GroupName="fanmode" Style="{StaticResource SegmentToggle}" Content="L4" Checked="OnModeChecked"/>
+                            <RadioButton x:Name="ModeL5" GroupName="fanmode" Style="{StaticResource SegmentToggle}" Content="L5" Checked="OnModeChecked"/>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock x:Name="ModeHint" Style="{StaticResource Caption}" Margin="2,10,0,0"
+                               Text="Auto balances noise and temps. Boost runs fans cold. Custom uses the curve below."/>
+                </StackPanel>
+            </Border>
+
+            <!-- Thermal response: temp→PWM curve with the live thermal layer behind
+                 it (60 s residency histogram + current operating point). Temperature
+                 is the X axis, so the thermal layer aligns exactly with the curve. -->
+            <Border Style="{StaticResource Panel}">
+                <StackPanel>
+                    <DockPanel>
+                        <TextBlock Text="THERMAL RESPONSE" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource Magenta}" VerticalAlignment="Center"/>
+                            <TextBlock Text="CPU" Margin="5,0,14,0" Style="{StaticResource Caption}" VerticalAlignment="Center"/>
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource Cyan}" VerticalAlignment="Center"/>
+                            <TextBlock Text="GPU" Margin="5,0,0,0" Style="{StaticResource Caption}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </DockPanel>
+                    <TextBlock Text="temperature → fan PWM · shaded = where the machine ran (last 60s)"
+                               Style="{StaticResource Caption}" Margin="0,3,0,0"/>
+                    <ctl:FanCurveEditor x:Name="Curve" Height="260" Margin="0,12,0,0"/>
+                    <!-- Live: dragging a point re-applies the curve on settle.
+                         "Reset to auto" is the one explicit escape hatch. -->
+                    <DockPanel Margin="0,14,0,0">
+                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center"
+                                   Style="{StaticResource Caption}"
+                                   Text="Changes apply as you edit."/>
+                        <Button x:Name="ResetBtn" Content="Reset to auto" Style="{StaticResource SecondaryButton}"
+                                DockPanel.Dock="Right" HorizontalAlignment="Right" Click="OnReset"/>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Write-gate notice -->
+            <Border x:Name="GateNotice" Style="{StaticResource Panel}" Margin="0,16,0,0"
+                    Background="{StaticResource WarnTint}" BorderBrush="{StaticResource Warn}" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" FontSize="15"
+                               Foreground="{StaticResource Warn}" VerticalAlignment="Center"/>
+                    <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Ink}"
+                               Text="Preview only — hardware control is off. Run Gaming Center as administrator to actuate the fan (or unset GAMINGCENTER_ALLOW_EC_WRITES if you forced it off)."/>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

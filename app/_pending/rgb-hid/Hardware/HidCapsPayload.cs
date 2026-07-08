@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 
-namespace GamingCenter.Core.Windows.Hardware;
+namespace AvellSucks.Core.Windows.Hardware;
 
 internal readonly struct HidCapsPayload
 {

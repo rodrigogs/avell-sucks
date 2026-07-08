@@ -1,6 +1,6 @@
-using GamingCenter.Core.Windows.Hardware;
+using AvellSucks.Core.Windows.Hardware;
 
-namespace GamingCenter.Core.Windows.Hardware;
+namespace AvellSucks.Core.Windows.Hardware;
 
 public interface IRGBHidDeviceStream : IAsyncDisposable
 {

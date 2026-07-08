@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using Microsoft.Win32.SafeHandles;
 
-namespace GamingCenter.Core.Windows.Interop;
+namespace AvellSucks.Core.Windows.Interop;
 
 internal static class HidNative
 {

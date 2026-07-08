@@ -1,0 +1,115 @@
+<Window x:Class="AvellSucks.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:ctl="clr-namespace:AvellSucks.UI.Controls"
+        Title="AvellSucks" Height="720" Width="1120"
+        WindowStartupLocation="Manual"
+        ResizeMode="CanResize" MinWidth="820" MinHeight="560"
+        Background="{StaticResource AppBackdrop}"
+        TextOptions.TextFormattingMode="Ideal"
+        UseLayoutRounding="True"
+        FontFamily="{StaticResource UiFont}"
+        StateChanged="OnWindowStateChanged">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- System tray -->
+        <tb:TaskbarIcon x:Name="Tray"
+                        ToolTipText="AvellSucks"
+                        IconSource="pack://application:,,,/app.ico"
+                        TrayMouseDoubleClick="OnTrayDoubleClick">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open AvellSucks" Click="OnTrayOpen"/>
+                    <Separator/>
+                    <MenuItem Header="Start with Windows" x:Name="AutoStartItem"
+                              IsCheckable="True" Click="OnToggleAutoStart"/>
+                    <Separator/>
+                    <MenuItem Header="Exit" Click="OnTrayExit"/>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+
+        <!-- ===== Nav rail ===== -->
+        <Border Grid.Column="0" Width="212" Background="{StaticResource Surface}"
+                BorderBrush="{StaticResource Hairline}" BorderThickness="0,0,1,0">
+            <DockPanel LastChildFill="False" Margin="14,20">
+
+                <!-- App mark -->
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="6,0,0,28">
+                    <Border Width="30" Height="30" CornerRadius="8" Background="{StaticResource NeonAxis}"
+                            Effect="{StaticResource GlowMagenta}">
+                        <TextBlock Text="&#xEC4A;" FontFamily="Segoe MDL2 Assets" FontSize="15"
+                                   Foreground="#FF16060F" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="AVELL" FontSize="13" FontWeight="Bold" Foreground="{StaticResource Ink}"
+                                   LineHeight="14" LineStackingStrategy="BlockLineHeight"/>
+                        <TextBlock Text="SUCKS" FontSize="13" FontWeight="Bold" Foreground="{StaticResource Magenta}"
+                                   LineHeight="14" LineStackingStrategy="BlockLineHeight"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Nav items -->
+                <StackPanel DockPanel.Dock="Top" x:Name="NavItems">
+                    <RadioButton x:Name="NavDashboard" GroupName="nav" Style="{StaticResource NavItemStyle}"
+                                 IsChecked="True" Tag="&#xE80F;" Content="Dashboard"
+                                 Checked="OnNavChecked"/>
+                    <RadioButton x:Name="NavFan" GroupName="nav" Style="{StaticResource NavItemStyle}"
+                                 Tag="&#xE9CA;" Content="Fan" Checked="OnNavChecked"/>
+                    <RadioButton x:Name="NavRgb" GroupName="nav" Style="{StaticResource NavItemStyle}"
+                                 Tag="&#xE771;" Content="RGB" Checked="OnNavChecked"/>
+                    <RadioButton x:Name="NavPower" GroupName="nav" Style="{StaticResource NavItemStyle}"
+                                 Tag="&#xEC4A;" Content="Performance" Checked="OnNavChecked"/>
+                </StackPanel>
+
+                <!-- Gateway status (bottom) -->
+                <Border DockPanel.Dock="Bottom" Style="{StaticResource PanelRaised}" Padding="12,10">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse x:Name="GatewayDot" Width="8" Height="8" Fill="{StaticResource Ok}"
+                                     VerticalAlignment="Center">
+                                <Ellipse.Effect>
+                                    <DropShadowEffect Color="{StaticResource OkColor}" BlurRadius="8" ShadowDepth="0" Opacity="0.8"/>
+                                </Ellipse.Effect>
+                            </Ellipse>
+                            <TextBlock x:Name="GatewayText" Text="Hardware online" Margin="8,0,0,0"
+                                       FontSize="12" Foreground="{StaticResource Ink2}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBlock x:Name="GatewaySub" Text="EC · WMI · HID" Style="{StaticResource Caption}"
+                                   FontFamily="{StaticResource MonoFont}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+            </DockPanel>
+        </Border>
+
+        <!-- ===== Content area ===== -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Top bar -->
+            <Grid Grid.Row="0" Margin="24,16,24,8">
+                <StackPanel>
+                    <TextBlock x:Name="TabTitle" Text="Dashboard" Style="{StaticResource H1}"/>
+                    <TextBlock x:Name="TabSubtitle" Text="Live telemetry from EC, WMI and onboard sensors"
+                               Style="{StaticResource Body}" Foreground="{StaticResource Ink3}" Margin="0,2,0,0"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Active tab host -->
+            <ContentControl x:Name="TabHost" Grid.Row="1" Margin="24,6,24,16"/>
+
+            <!-- Toast surface: spans the content rows, anchored bottom-right.
+                 Write-result feedback lives here, not inline next to Apply. -->
+            <ctl:ToastHost x:Name="Toast" Grid.Row="0" Grid.RowSpan="2"/>
+        </Grid>
+    </Grid>
+</Window>

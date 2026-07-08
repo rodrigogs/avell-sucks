@@ -1,8 +1,8 @@
-using GamingCenter.Core.Interop;
-using GamingCenter.Core.Rgb;
+using AvellSucks.Core.Interop;
+using AvellSucks.Core.Rgb;
 using Microsoft.Win32.SafeHandles;
 
-namespace GamingCenter.Core.Windows.Hardware;
+namespace AvellSucks.Core.Windows.Hardware;
 
 public sealed class ITEHidDeviceProvider : IHidDeviceProvider
 {
