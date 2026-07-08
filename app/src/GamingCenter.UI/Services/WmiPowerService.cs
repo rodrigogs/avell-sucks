@@ -32,6 +32,12 @@ public sealed class WmiPowerService : IPowerService
     private readonly SafeEcWriter _writer;
     private readonly WriteGate _gate;
 
+    // Preset defaults come from fixed EC registers (or the nominal fallback when
+    // they read 0). They don't change unless we write PL, so cache per mode —
+    // BuildModeCards + OnLoaded + OnModeChecked otherwise re-read the same
+    // registers a dozen+ times just to open the Performance tab.
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<PerformanceMode, PowerLimits> _presetCache = new();
+
     public WmiPowerService(IEcBackend backend, SafeEcWriter writer, WriteGate gate)
     {
         _backend = backend;
@@ -112,6 +118,7 @@ public sealed class WmiPowerService : IPowerService
             if (!last.Allowed || !last.Verified)
                 return new ControlResult(last.Allowed, last.Executed, last.Verified, last.Error);
         }
+        _presetCache.Clear(); // limits changed on the silicon — presets may have shifted
         return new ControlResult(last.Allowed, last.Executed, last.Verified, last.Error);
     }
 
@@ -121,6 +128,8 @@ public sealed class WmiPowerService : IPowerService
     // fall back to sane nominal presets rather than showing 0/0 W.
     public async ValueTask<PowerLimits> GetPresetAsync(PerformanceMode mode, CancellationToken ct = default)
     {
+        if (_presetCache.TryGetValue(mode, out var cached)) return cached;
+
         var isGaming = mode is PerformanceMode.Gaming or PerformanceMode.High;
         int[] addrs = isGaming
             ? [ADDR_GAMING_PL1, ADDR_GAMING_PL2, ADDR_GAMING_PL4]
@@ -133,10 +142,11 @@ public sealed class WmiPowerService : IPowerService
         var pl4 = readOk ? snap.Fields[2].Value : 0;
 
         // All-zero (or unreadable) → EC doesn't hold the limits on this board.
-        if (!readOk || (pl1 == 0 && pl2 == 0 && pl4 == 0))
-            return FallbackPreset(mode);
-
-        return new PowerLimits(pl1, pl2, pl4);
+        var preset = (!readOk || (pl1 == 0 && pl2 == 0 && pl4 == 0))
+            ? FallbackPreset(mode)
+            : new PowerLimits(pl1, pl2, pl4);
+        _presetCache[mode] = preset;
+        return preset;
     }
 
     private static PowerLimits FallbackPreset(PerformanceMode mode) => mode switch
