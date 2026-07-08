@@ -67,24 +67,31 @@ public sealed class WmiPowerService : IPowerService
 
     public async ValueTask<ControlResult> SetModeAsync(PerformanceMode mode, CancellationToken ct = default)
     {
-        // Two-layer package (matches the tab's promise): (1) activate the Windows
-        // power plan, (2) apply the CPU PL preset to the EC. The plan switch is the
-        // visible, verifiable lever; PL is best-effort on top.
+        // The mode's PRIMARY, verifiable lever is the Windows power plan — that's
+        // what actually switches on this machine (read back via powercfg). The CPU
+        // PL bytes are a best-effort second layer: on this board they live in Intel
+        // XTU/MSR (EC reads 0), so a PL write may not latch. We therefore anchor
+        // the reported outcome on the plan switch and NEVER claim success when it
+        // fails. PL is attempted quietly; its failure does not fake a green toast.
         var (planOk, planErr) = await WindowsPowerPlan.SetAsync(mode, ct).ConfigureAwait(false);
+        if (!planOk)
+            return ControlResult.Failed(planErr ?? "Could not switch the Windows power plan.");
 
+        // Best-effort PL preset write (audited); result intentionally not surfaced
+        // as the mode outcome — see above. Advanced sliders (SetLimitsAsync) report
+        // the PL truth directly, because there the user asked for PL specifically.
         var preset = await GetPresetAsync(mode, ct).ConfigureAwait(false);
-        var plResult = await WriteLimitsAsync(preset, $"ui:power/mode={mode}", ct).ConfigureAwait(false);
+        _ = await WriteLimitsAsync(preset, $"ui:power/mode={mode}", ct).ConfigureAwait(false);
 
-        // Success if the plan switched. PL may legitimately no-op (registers read
-        // 0 / DC), so a PL failure alone does not fail the mode when the plan took.
-        if (planOk)
-            return plResult.Verified ? plResult : ControlResult.Ok();
-        // Plan failed: surface it, but if PL still verified, report that truth.
-        return plResult.Verified
-            ? ControlResult.Ok()
-            : ControlResult.Failed(planErr ?? plResult.Error ?? "Could not apply performance mode.");
+        return ControlResult.Ok();
     }
 
+    /// <summary>
+    /// Advanced tuning: write raw CPU power limits. Reports the PL write truth
+    /// honestly — if the EC doesn't latch the value (limits managed by Intel XTU
+    /// on this board), the read-back verify fails and this surfaces as blocked,
+    /// not a fake success.
+    /// </summary>
     public ValueTask<ControlResult> SetLimitsAsync(PowerLimits limits, CancellationToken ct = default)
         => WriteLimitsAsync(limits, "ui:power/limits", ct);
 

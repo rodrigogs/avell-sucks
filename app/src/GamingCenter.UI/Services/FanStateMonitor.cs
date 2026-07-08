@@ -43,6 +43,7 @@ public sealed class FanStateMonitor : IDisposable
     public void Start()
     {
         if (_disposed) return;
+        GamingCenter.UI.App.Trace($"FanStateMonitor.Start (baseline={_baseline ?? "null"})");
         _timer.Start();
     }
 

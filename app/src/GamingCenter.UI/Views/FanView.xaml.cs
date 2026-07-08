@@ -40,26 +40,30 @@ public partial class FanView : UserControl
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
+        App.Trace($"FanView.OnLoaded (initialized={_initialized}, monitor={(_monitor is null ? "null" : "set")})");
         // Live temperature trend, for thermal context while tuning the curve.
         _pump.Tick += OnTelemetry;
         _pump.Start();
 
-        if (_initialized) return;
-        _initialized = true;
+        // One-time initial state load.
+        if (!_initialized)
+        {
+            _initialized = true;
+            _loading = true;
+            if (!_fan.WritesEnabled)
+                GateNotice.Visibility = Visibility.Visible;
 
-        _loading = true;
-        if (!_fan.WritesEnabled)
-            GateNotice.Visibility = Visibility.Visible;
+            var mode = await _fan.GetModeAsync();
+            SelectMode(mode ?? "auto");
+            _monitor?.NoteLocalWrite(mode ?? "auto"); // seed baseline with device state
+            var curve = await _fan.GetCurveAsync();
+            Curve.SetPoints(curve);
+            _loading = false;
+        }
 
-        var mode = await _fan.GetModeAsync();
-        SelectMode(mode ?? "auto");
-        _monitor?.NoteLocalWrite(mode ?? "auto"); // seed baseline with current device state
-
-        var curve = await _fan.GetCurveAsync();
-        Curve.SetPoints(curve);
-        _loading = false;
-
-        // Start reflecting external changes once the initial state is loaded.
+        // Reconciler must (re)start on EVERY view activation — OnUnloaded stops it
+        // on each tab switch, and this view instance is reused, so gating this
+        // behind _initialized would leave the monitor dead after the first visit.
         _monitor?.Start();
     }
 
