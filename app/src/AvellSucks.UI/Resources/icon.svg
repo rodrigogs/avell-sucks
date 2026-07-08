@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- brand neon axis: magenta -> violet -> cyan -->
+    <linearGradient id="arc" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0"   stop-color="#FF2E88"/>
+      <stop offset="0.5" stop-color="#A855F7"/>
+      <stop offset="1"   stop-color="#22D3EE"/>
+    </linearGradient>
+    <linearGradient id="needle" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#FF2E88"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="0.32" cy="0.26" r="0.9">
+      <stop offset="0"   stop-color="#211734"/>
+      <stop offset="0.6" stop-color="#141018"/>
+      <stop offset="1"   stop-color="#0E0A13"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- rounded-square app tile -->
+  <rect x="8" y="8" width="240" height="240" rx="52" fill="url(#bg)"/>
+  <rect x="8.5" y="8.5" width="239" height="239" rx="51.5" fill="none"
+        stroke="#3A2F47" stroke-opacity="0.6" stroke-width="1"/>
+
+  <g transform="translate(128,132)">
+    <!-- inert track arc (240° sweep, gap at bottom) -->
+    <path d="M -63 63 A 89 89 0 1 1 63 63" fill="none"
+          stroke="#2A2140" stroke-width="16" stroke-linecap="round"/>
+    <!-- charged value arc: rides ~75% of the sweep, glowing -->
+    <path d="M -63 63 A 89 89 0 1 1 78 -43" fill="none"
+          stroke="url(#arc)" stroke-width="16" stroke-linecap="round" filter="url(#glow)"/>
+
+    <!-- redline hub -->
+    <circle cx="0" cy="0" r="15" fill="#141018" stroke="url(#arc)" stroke-width="4"/>
+    <!-- needle at the hot end (points up-right, into the redline) -->
+    <g filter="url(#glow)">
+      <line x1="0" y1="0" x2="60" y2="-58" stroke="url(#needle)" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="0" cy="0" r="6" fill="#FF2E88"/>
+    </g>
+  </g>
+</svg>
