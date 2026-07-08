@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using AvellSucks.UI.Controls;
+using AvellSucks.UI.Localization;
 using AvellSucks.UI.Services;
 
 namespace AvellSucks.UI.Views;
@@ -32,6 +33,14 @@ public partial class PowerView : UserControl
             _monitor = new PowerStateMonitor();
             _monitor.ExternalModeChanged += OnExternalModeChanged;
         }
+
+        // Cards and the envelope label are set imperatively (not {loc:Tr}), so
+        // re-localize them when the language changes at runtime.
+        Loc.Instance.PropertyChanged += (_, _) =>
+        {
+            BuildModeCards();
+            if (EnvelopeMode is not null) EnvelopeMode.Text = Meta(CurrentMode()).Name;
+        };
     }
 
     // ---- Mode metadata (name, one-line meaning, accent by intensity) ----
@@ -39,10 +48,10 @@ public partial class PowerView : UserControl
 
     private static ModeMeta Meta(PerformanceMode m) => m switch
     {
-        PerformanceMode.Gaming   => new("Gaming", "Max performance, fans free", Brand.Magenta),
-        PerformanceMode.High     => new("High", "Strong, still balanced", Brand.Violet),
-        PerformanceMode.Balanced => new("Balanced", "Everyday default", Brand.Cyan),
-        PerformanceMode.Saving   => new("Saving", "Cool, quiet, long battery", Brand.Ok),
+        PerformanceMode.Gaming   => new(Loc.T("Power.Gaming"), Loc.T("Power.Gaming.Tag"), Brand.Magenta),
+        PerformanceMode.High     => new(Loc.T("Power.High"), Loc.T("Power.High.Tag"), Brand.Violet),
+        PerformanceMode.Balanced => new(Loc.T("Power.Balanced"), Loc.T("Power.Balanced.Tag"), Brand.Cyan),
+        PerformanceMode.Saving   => new(Loc.T("Power.Saving"), Loc.T("Power.Saving.Tag"), Brand.Ok),
         _ => new(m.ToString(), "", Brand.Cyan),
     };
 
@@ -109,7 +118,7 @@ public partial class PowerView : UserControl
             });
             panel.Children.Add(new TextBlock
             {
-                Text = "PL1 / PL2",
+                Text = Loc.T("Power.PlLabel"),
                 Style = (Style)Application.Current.FindResource("Caption"),
             });
 
@@ -151,7 +160,8 @@ public partial class PowerView : UserControl
         ShowEnvelope(mode, preset);
         LoadSliders(preset);
         _loading = false;
-        Toaster.Show(WriteState.Verified, Meta(mode).Name + " mode · changed on device");
+        Toaster.Show(WriteState.Verified,
+            string.Format(Loc.T("Common.ChangedOnDevice"), string.Format(Loc.T("Power.ModeName"), Meta(mode).Name)));
     }
 
     // ---- Mode selection: actuates immediately (no Apply button) ----
@@ -184,10 +194,10 @@ public partial class PowerView : UserControl
         _limitWrite.Cancel(); // mode press supersedes a pending slider write
         _monitor?.NoteLocalWrite(mode); // our own switch — not an external change
 
-        var label = Meta(mode).Name + " mode";
+        var label = string.Format(Loc.T("Power.ModeName"), Meta(mode).Name);
         Toaster.Show(WriteState.Pending, label);
         var result = await _power.SetModeAsync(mode);
-        Toaster.Show(result.State, label + " on", result.Error);
+        Toaster.Show(result.State, string.Format(Loc.T("Power.ModeOn"), Meta(mode).Name), result.Error);
     }
 
     private void ShowEnvelope(PerformanceMode mode, PowerLimits limits)
@@ -232,9 +242,9 @@ public partial class PowerView : UserControl
 
     private async void ApplyLimitsNow()
     {
-        Toaster.Show(WriteState.Pending, "Power limits");
+        Toaster.Show(WriteState.Pending, Loc.T("Power.Limits"));
         var result = await _power.SetLimitsAsync(CurrentLimits());
-        Toaster.Show(result.State, "Power limits set", result.Error);
+        Toaster.Show(result.State, Loc.T("Power.LimitsSet"), result.Error);
     }
 
     private void UpdateSliderReadouts()

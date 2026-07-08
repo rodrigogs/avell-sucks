@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using AvellSucks.UI.Controls;
 using AvellSucks.UI.Hardware;
+using AvellSucks.UI.Localization;
 using AvellSucks.UI.Services;
 
 namespace AvellSucks.UI.Views;
@@ -62,7 +63,7 @@ public partial class DashboardView : UserControl
         _pump.Start();
 
         if (!_pump.SensorsAvailable)
-            ShowNotice("Sensor access needs elevation — live telemetry is unavailable in this session.");
+            ShowNotice(Loc.T("Dash.SensorNotice"));
 
         // First disk snapshot right away (off-thread); refreshed on a slow cadence.
         await SampleDiskAsync();
@@ -117,7 +118,7 @@ public partial class DashboardView : UserControl
                 ? $"{vu:0} MB / {vt / 1024.0:0.0} GB"
                 : $"{vu / 1024.0:0.0} / {vt / 1024.0:0.0} GB";
         }
-        else { VramPct.Text = "—"; VramText.Text = "n/a"; }
+        else { VramPct.Text = "—"; VramText.Text = Loc.T("Dash.Na"); }
     }
 
     private static void SetCapacity(Controls.CapacityBar bar, TextBlock pct, TextBlock text,
@@ -132,7 +133,7 @@ public partial class DashboardView : UserControl
 
         text.Text = usedGb is double u && totalGb is double tot
             ? $"{u:0.0} / {tot:0.0} {unit}"
-            : "n/a";
+            : Loc.T("Dash.Na");
     }
 
     private static string Mhz(double? v) => v is double d && d > 0 ? $"{d:0} MHz" : "—";
@@ -146,13 +147,13 @@ public partial class DashboardView : UserControl
         var m = mode?.Trim().ToLowerInvariant();
         (string label, string hint, Color accent) = m switch
         {
-            "auto"   => ("Auto", "Balances noise and temperature", Brand.Cyan),
-            "boost"  => ("Boost", "Maximum cooling — fans run cold", Brand.Magenta),
-            "custom" => ("Custom", "Following your temperature curve", Brand.Violet),
+            "auto"   => (Loc.T("Common.Auto"), Loc.T("Cool.Auto.Hint"), Brand.Cyan),
+            "boost"  => (Loc.T("Common.Boost"), Loc.T("Cool.Boost.Hint"), Brand.Magenta),
+            "custom" => (Loc.T("Common.Custom"), Loc.T("Cool.Custom.Hint"), Brand.Violet),
             not null when m.StartsWith("l") && m.Length <= 3
-                     => (m.ToUpperInvariant(), "Fixed fan level", Brand.Violet),
-            null     => ("—", "Fan mode unavailable", Brand.Ink3),
-            _        => (mode!, "Active fan profile", Brand.Cyan),
+                     => (m.ToUpperInvariant(), Loc.T("Cool.Fixed.Hint"), Brand.Violet),
+            null     => ("—", Loc.T("Cool.None.Hint"), Brand.Ink3),
+            _        => (mode!, Loc.T("Cool.Other.Hint"), Brand.Cyan),
         };
 
         FanMode.Text = label;
@@ -203,14 +204,14 @@ public partial class DashboardView : UserControl
     {
         if (drives.Count == 0)
         {
-            DiskFree.Text = "n/a";
+            DiskFree.Text = Loc.T("Dash.Na");
             return;
         }
 
         // Header headline: total free across all fixed drives (the "available" ask).
         long totalFree = 0;
         foreach (var d in drives) totalFree += d.FreeBytes;
-        DiskFree.Text = $"{Bytes(totalFree)} free";
+        DiskFree.Text = string.Format(Loc.T("Dash.Free"), Bytes(totalFree));
 
         // Build/refresh one row per drive, keyed by name so rows are reused (no
         // flicker) and a drive that vanishes (USB unplug) is dropped.

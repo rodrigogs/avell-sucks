@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- ===== Navigation / tray ===== -->
+  <data name="Nav.Dashboard" xml:space="preserve"><value>Painel</value></data>
+  <data name="Nav.Fan" xml:space="preserve"><value>Ventoinha</value></data>
+  <data name="Nav.Rgb" xml:space="preserve"><value>RGB</value></data>
+  <data name="Nav.Performance" xml:space="preserve"><value>Desempenho</value></data>
+  <data name="Nav.About" xml:space="preserve"><value>Sobre</value></data>
+  <data name="Nav.Settings" xml:space="preserve"><value>Configurações</value></data>
+  <data name="Tray.Open" xml:space="preserve"><value>Abrir AvellSucks</value></data>
+  <data name="Tray.StartWithWindows" xml:space="preserve"><value>Iniciar com o Windows</value></data>
+  <data name="Tray.Exit" xml:space="preserve"><value>Sair</value></data>
+
+  <!-- ===== Tab subtitles ===== -->
+  <data name="Tab.Dashboard.Sub" xml:space="preserve"><value>Telemetria ao vivo do EC, WMI e sensores da placa</value></data>
+  <data name="Tab.Fan.Sub" xml:space="preserve"><value>Modos de ventoinha e a curva de temperatura personalizada</value></data>
+  <data name="Tab.Rgb.Sub" xml:space="preserve"><value>Iluminação do teclado: efeitos, cor e zonas</value></data>
+  <data name="Tab.Power.Sub" xml:space="preserve"><value>Modos de energia: plano do Windows e envelope de potência da CPU</value></data>
+  <data name="Tab.About.Sub" xml:space="preserve"><value>O que é isto, e por que existe</value></data>
+  <data name="Tab.Settings.Sub" xml:space="preserve"><value>Idioma, inicialização e comportamento da janela</value></data>
+
+  <!-- ===== Gateway status ===== -->
+  <data name="Gateway.Online" xml:space="preserve"><value>Hardware conectado</value></data>
+
+  <!-- ===== Shared ===== -->
+  <data name="Common.Auto" xml:space="preserve"><value>Auto</value></data>
+  <data name="Common.Boost" xml:space="preserve"><value>Boost</value></data>
+  <data name="Common.Custom" xml:space="preserve"><value>Personalizado</value></data>
+  <data name="Common.PerformanceMode" xml:space="preserve"><value>MODO DE DESEMPENHO</value></data>
+  <data name="Common.ChangedOnDevice" xml:space="preserve"><value>{0} · alterado no dispositivo</value></data>
+
+  <!-- ===== Dashboard ===== -->
+  <data name="Dash.Clock" xml:space="preserve"><value>CLOCK</value></data>
+  <data name="Dash.Power" xml:space="preserve"><value>POTÊNCIA</value></data>
+  <data name="Dash.HotSpot" xml:space="preserve"><value>HOT SPOT</value></data>
+  <data name="Dash.Cooling" xml:space="preserve"><value>REFRIGERAÇÃO</value></data>
+  <data name="Dash.Network" xml:space="preserve"><value>REDE</value></data>
+  <data name="Dash.Down" xml:space="preserve"><value>DOWNLOAD</value></data>
+  <data name="Dash.Up" xml:space="preserve"><value>UPLOAD</value></data>
+  <data name="Dash.Na" xml:space="preserve"><value>n/d</value></data>
+  <data name="Dash.Free" xml:space="preserve"><value>{0} livre</value></data>
+  <data name="Dash.SensorNotice" xml:space="preserve"><value>O acesso aos sensores precisa de elevação. A telemetria ao vivo não está disponível nesta sessão.</value></data>
+  <data name="Cool.Auto.Hint" xml:space="preserve"><value>Equilibra ruído e temperatura</value></data>
+  <data name="Cool.Boost.Hint" xml:space="preserve"><value>Refrigeração máxima, ventoinhas a todo vapor</value></data>
+  <data name="Cool.Custom.Hint" xml:space="preserve"><value>Seguindo sua curva de temperatura</value></data>
+  <data name="Cool.Fixed.Hint" xml:space="preserve"><value>Nível fixo de ventoinha</value></data>
+  <data name="Cool.None.Hint" xml:space="preserve"><value>Modo de ventoinha indisponível</value></data>
+  <data name="Cool.Other.Hint" xml:space="preserve"><value>Perfil de ventoinha ativo</value></data>
+
+  <!-- ===== Fan ===== -->
+  <data name="Fan.ThermalResponse" xml:space="preserve"><value>RESPOSTA TÉRMICA</value></data>
+  <data name="Fan.CurveCaption" xml:space="preserve"><value>temperatura → PWM da ventoinha · sombreado = onde a máquina operou (últimos 60s)</value></data>
+  <data name="Fan.ChangesApply" xml:space="preserve"><value>As alterações são aplicadas conforme você edita.</value></data>
+  <data name="Fan.ResetToAuto" xml:space="preserve"><value>Voltar para auto</value></data>
+  <data name="Fan.Gate" xml:space="preserve"><value>Somente pré-visualização: o controle de hardware está desligado. Execute o AvellSucks como administrador para acionar a ventoinha (ou remova GAMINGCENTER_ALLOW_EC_WRITES se você o forçou para off).</value></data>
+  <data name="Fan.Hint.Default" xml:space="preserve"><value>Auto equilibra ruído e temperatura. Boost deixa as ventoinhas geladas. Personalizado usa a curva abaixo.</value></data>
+  <data name="Fan.Hint.Auto" xml:space="preserve"><value>Auto equilibra ruído e temperatura automaticamente.</value></data>
+  <data name="Fan.Hint.Boost" xml:space="preserve"><value>Boost deixa as ventoinhas geladas: refrigeração máxima, mais barulhento.</value></data>
+  <data name="Fan.Hint.Custom" xml:space="preserve"><value>Personalizado segue a curva de temperatura abaixo.</value></data>
+  <data name="Fan.Hint.Fixed" xml:space="preserve"><value>Nível fixo {0}: uma intensidade de ventoinha constante.</value></data>
+  <data name="Fan.Label.Auto" xml:space="preserve"><value>Ventoinha auto</value></data>
+  <data name="Fan.Label.Boost" xml:space="preserve"><value>Ventoinha boost</value></data>
+  <data name="Fan.Label.Custom" xml:space="preserve"><value>Ventoinha personalizada</value></data>
+  <data name="Fan.Label.Fixed" xml:space="preserve"><value>Ventoinha {0}</value></data>
+  <data name="Fan.ModeSet" xml:space="preserve"><value>{0} aplicado</value></data>
+  <data name="Fan.Curve" xml:space="preserve"><value>Curva da ventoinha</value></data>
+  <data name="Fan.CurveApplied" xml:space="preserve"><value>Curva da ventoinha aplicada</value></data>
+
+  <!-- ===== Performance / power ===== -->
+  <data name="Power.Subtitle" xml:space="preserve"><value>Define o plano de energia do Windows e o envelope de potência da CPU juntos</value></data>
+  <data name="Power.Envelope" xml:space="preserve"><value>ENVELOPE DE POTÊNCIA DA CPU</value></data>
+  <data name="Power.Pl1" xml:space="preserve"><value>PL1 · SUSTENTADO</value></data>
+  <data name="Power.Pl2" xml:space="preserve"><value>PL2 · TURBO</value></data>
+  <data name="Power.Pl4" xml:space="preserve"><value>PL4 · PICO</value></data>
+  <data name="Power.PlLabel" xml:space="preserve"><value>PL1 / PL2</value></data>
+  <data name="Power.Advanced" xml:space="preserve"><value>Avançado: ajustar os limites de potência manualmente</value></data>
+  <data name="Power.AdvancedWarn" xml:space="preserve"><value>Aumentar o envelope de potência eleva o calor e o consumo. Mude em passos pequenos.</value></data>
+  <data name="Power.ChangesApply" xml:space="preserve"><value>As alterações são aplicadas imediatamente.</value></data>
+  <data name="Power.Gate" xml:space="preserve"><value>Somente pré-visualização: o controle de hardware está desligado. Execute o AvellSucks como administrador para acionar os limites de potência (ou remova GAMINGCENTER_ALLOW_EC_WRITES se você o forçou para off).</value></data>
+  <data name="Power.Gaming" xml:space="preserve"><value>Gaming</value></data>
+  <data name="Power.Gaming.Tag" xml:space="preserve"><value>Desempenho máximo, ventoinhas livres</value></data>
+  <data name="Power.High" xml:space="preserve"><value>Alto</value></data>
+  <data name="Power.High.Tag" xml:space="preserve"><value>Forte, ainda equilibrado</value></data>
+  <data name="Power.Balanced" xml:space="preserve"><value>Equilibrado</value></data>
+  <data name="Power.Balanced.Tag" xml:space="preserve"><value>Padrão do dia a dia</value></data>
+  <data name="Power.Saving" xml:space="preserve"><value>Economia</value></data>
+  <data name="Power.Saving.Tag" xml:space="preserve"><value>Frio, silencioso, bateria longa</value></data>
+  <data name="Power.ModeName" xml:space="preserve"><value>Modo {0}</value></data>
+  <data name="Power.ModeOn" xml:space="preserve"><value>Modo {0} ativado</value></data>
+  <data name="Power.Limits" xml:space="preserve"><value>Limites de potência</value></data>
+  <data name="Power.LimitsSet" xml:space="preserve"><value>Limites de potência aplicados</value></data>
+
+  <!-- ===== RGB ===== -->
+  <data name="Rgb.Preview" xml:space="preserve"><value>PRÉVIA</value></data>
+  <data name="Rgb.Color" xml:space="preserve"><value>COR</value></data>
+  <data name="Rgb.Effect" xml:space="preserve"><value>EFEITO</value></data>
+  <data name="Rgb.Brightness" xml:space="preserve"><value>BRILHO</value></data>
+  <data name="Rgb.Speed" xml:space="preserve"><value>VELOCIDADE</value></data>
+  <data name="Rgb.Fx.Static" xml:space="preserve"><value>Estático</value></data>
+  <data name="Rgb.Fx.Breathe" xml:space="preserve"><value>Pulsar</value></data>
+  <data name="Rgb.Fx.Cycle" xml:space="preserve"><value>Ciclo</value></data>
+  <data name="Rgb.Fx.Wave" xml:space="preserve"><value>Onda</value></data>
+  <data name="Rgb.Fx.Ripple" xml:space="preserve"><value>Ondulação</value></data>
+  <data name="Rgb.Speed.Slow" xml:space="preserve"><value>Lenta</value></data>
+  <data name="Rgb.Speed.Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Rgb.Speed.Fast" xml:space="preserve"><value>Rápida</value></data>
+  <data name="Rgb.ChangesApply" xml:space="preserve"><value>A iluminação é aplicada conforme você altera.</value></data>
+  <data name="Rgb.Device" xml:space="preserve"><value>Teclado RGB não detectado (ITE HID 0x0489/0xCE40). Somente pré-visualização: conecte o dispositivo para acionar.</value></data>
+  <data name="Rgb.Lighting" xml:space="preserve"><value>Iluminação</value></data>
+  <data name="Rgb.LightingApplied" xml:space="preserve"><value>Iluminação aplicada</value></data>
+
+  <!-- ===== Toasts (write feedback) ===== -->
+  <data name="Toast.Done" xml:space="preserve"><value>Pronto</value></data>
+  <data name="Toast.Applying" xml:space="preserve"><value>Aplicando</value></data>
+  <data name="Toast.Failed" xml:space="preserve"><value>Não aplicou</value></data>
+  <data name="Toast.Blocked" xml:space="preserve"><value>Escrita desligada</value></data>
+  <data name="Toast.Ready" xml:space="preserve"><value>Pronto</value></data>
+
+  <!-- ===== Settings ===== -->
+  <data name="Settings.LanguageSection" xml:space="preserve"><value>IDIOMA</value></data>
+  <data name="Settings.Language" xml:space="preserve"><value>Idioma da interface</value></data>
+  <data name="Settings.Language.Hint" xml:space="preserve"><value>Aplica na hora. Sua escolha fica salva.</value></data>
+  <data name="Settings.Language.System" xml:space="preserve"><value>Igual ao sistema</value></data>
+  <data name="Settings.Language.En" xml:space="preserve"><value>English</value></data>
+  <data name="Settings.Language.Pt" xml:space="preserve"><value>Português</value></data>
+  <data name="Settings.StartupSection" xml:space="preserve"><value>INICIALIZAÇÃO</value></data>
+  <data name="Settings.StartWithWindows" xml:space="preserve"><value>Iniciar com o Windows</value></data>
+  <data name="Settings.StartWithWindows.Hint" xml:space="preserve"><value>Abrir o AvellSucks quando você entrar no Windows.</value></data>
+  <data name="Settings.StartMinimized" xml:space="preserve"><value>Iniciar minimizado</value></data>
+  <data name="Settings.StartMinimized.Hint" xml:space="preserve"><value>Abrir direto na bandeja, sem mostrar a janela.</value></data>
+  <data name="Settings.WindowSection" xml:space="preserve"><value>JANELA</value></data>
+  <data name="Settings.HideOnMinimize" xml:space="preserve"><value>Esconder na bandeja ao minimizar</value></data>
+  <data name="Settings.HideOnMinimize.Hint" xml:space="preserve"><value>Minimizar manda a janela para a bandeja do sistema em vez da barra de tarefas.</value></data>
+
+  <!-- ===== About ===== -->
+  <data name="About.Tagline" xml:space="preserve"><value>O control center que este notebook devia ter vindo com.</value></data>
+  <data name="About.WhyTitle" xml:space="preserve"><value>POR QUE ISTO EXISTE</value></data>
+  <data name="About.Why.P1" xml:space="preserve"><value>Comprei um Avell top de linha em 2018. A curva da ventoinha, os modos de desempenho, a iluminação do teclado, tudo isso vivia dentro do app Gaming Center da Avell. Aí a Avell abandonou ele. Sem atualizações, sem correções, só um software morto que eu ainda precisava manter instalado pra controlar minha própria máquina.</value></data>
+  <data name="About.Why.P2" xml:space="preserve"><value>Então fiz engenharia reversa e escrevi o meu. O nome diz como me sinto por ter ficado com um software morto num hardware que paguei caro.</value></data>
+  <data name="About.Why.P3" xml:space="preserve"><value>Ele fala com o mesmo hardware que o app antigo falava: os mesmos registradores do EC, os mesmos planos de energia. A diferença é que ele é rápido, é meu, e fala a verdade. Se uma escrita no hardware não fixar, ele avisa em vez de fingir que funcionou.</value></data>
+  <data name="About.Why.P4" xml:space="preserve"><value>A aba RGB está incompleta, e tem um motivo. Com uns dois anos de uso, abri o notebook pra limpar e achei o conector da fita do teclado rachado e preso com um pedaço de fita. De fábrica. O teclado já estava morrendo e não tinha como consertar de verdade. A Avell não pôde ajudar, a garantia já tinha acabado, e não fez diferença o defeito ter sido deles desde o começo. Então o teclado desta máquina não funciona mais, o que significa que a iluminação RGB não pode ser testada. O código está aqui, o hardware não.</value></data>
+  <data name="About.HowTitle" xml:space="preserve"><value>COMO FUNCIONA</value></data>
+  <data name="About.How.P1" xml:space="preserve"><value>As configurações de ventoinha e energia vivem na memória do Embedded Controller. O app lê e escreve nela por um método WMI ACPI (AcpiTest_MULong), o mesmo caminho que o app antigo usava. Cada escrita é conferida contra uma allowlist, relida para confirmar que fixou, e revertida se não fixou. Tudo vai para um log de auditoria. Os modos de desempenho também trocam o plano de energia do Windows. As leituras de sensores atualizam cerca de uma vez por segundo, e se você mudar algo fora do app isso aparece aqui em poucos segundos.</value></data>
+  <data name="About.How.Tech" xml:space="preserve"><value>WPF, .NET 10. Engenharia reversa do app original mais muita cutucada ao vivo no hardware.</value></data>
+  <data name="About.ProjectTitle" xml:space="preserve"><value>PROJETO</value></data>
+  <data name="About.Repository" xml:space="preserve"><value>Repositório</value></data>
+  <data name="About.Hardware" xml:space="preserve"><value>Hardware</value></data>
+  <data name="About.HardwareValue" xml:space="preserve"><value>Notebook Avell, Intel e NVIDIA, Windows</value></data>
+  <data name="About.License" xml:space="preserve"><value>Licença</value></data>
+  <data name="About.LicenseValue" xml:space="preserve"><value>Pessoal, não oficial. Sem vínculo com a Avell.</value></data>
+</root>

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:ctl="clr-namespace:AvellSucks.UI.Controls"
+        xmlns:loc="clr-namespace:AvellSucks.UI.Localization"
         Title="AvellSucks" Height="720" Width="1120"
         WindowStartupLocation="Manual"
         ResizeMode="CanResize" MinWidth="820" MinHeight="560"
@@ -25,12 +26,12 @@
                         TrayMouseDoubleClick="OnTrayDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Open AvellSucks" Click="OnTrayOpen"/>
+                    <MenuItem Header="{loc:Tr Tray.Open}" Click="OnTrayOpen"/>
                     <Separator/>
-                    <MenuItem Header="Start with Windows" x:Name="AutoStartItem"
+                    <MenuItem Header="{loc:Tr Tray.StartWithWindows}" x:Name="AutoStartItem"
                               IsCheckable="True" Click="OnToggleAutoStart"/>
                     <Separator/>
-                    <MenuItem Header="Exit" Click="OnTrayExit"/>
+                    <MenuItem Header="{loc:Tr Tray.Exit}" Click="OnTrayExit"/>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
@@ -58,16 +59,18 @@
                 <!-- Nav items -->
                 <StackPanel DockPanel.Dock="Top" x:Name="NavItems">
                     <RadioButton x:Name="NavDashboard" GroupName="nav" Style="{StaticResource NavItemStyle}"
-                                 IsChecked="True" Tag="&#xE80F;" Content="Dashboard"
+                                 IsChecked="True" Tag="&#xE80F;" Content="{loc:Tr Nav.Dashboard}"
                                  Checked="OnNavChecked"/>
                     <RadioButton x:Name="NavFan" GroupName="nav" Style="{StaticResource NavItemStyle}"
-                                 Tag="&#xE9CA;" Content="Fan" Checked="OnNavChecked"/>
+                                 Tag="&#xE9CA;" Content="{loc:Tr Nav.Fan}" Checked="OnNavChecked"/>
                     <RadioButton x:Name="NavRgb" GroupName="nav" Style="{StaticResource NavItemStyle}"
-                                 Tag="&#xE771;" Content="RGB" Checked="OnNavChecked"/>
+                                 Tag="&#xE771;" Content="{loc:Tr Nav.Rgb}" Checked="OnNavChecked"/>
                     <RadioButton x:Name="NavPower" GroupName="nav" Style="{StaticResource NavItemStyle}"
-                                 Tag="&#xEC4A;" Content="Performance" Checked="OnNavChecked"/>
+                                 Tag="&#xEC4A;" Content="{loc:Tr Nav.Performance}" Checked="OnNavChecked"/>
                     <RadioButton x:Name="NavAbout" GroupName="nav" Style="{StaticResource NavItemStyle}"
-                                 Tag="&#xE946;" Content="About" Checked="OnNavChecked"/>
+                                 Tag="&#xE946;" Content="{loc:Tr Nav.About}" Checked="OnNavChecked"/>
+                    <RadioButton x:Name="NavSettings" GroupName="nav" Style="{StaticResource NavItemStyle}"
+                                 Tag="&#xE713;" Content="{loc:Tr Nav.Settings}" Checked="OnNavChecked"/>
                 </StackPanel>
 
                 <!-- Gateway status (bottom) -->
@@ -80,7 +83,7 @@
                                     <DropShadowEffect Color="{StaticResource OkColor}" BlurRadius="8" ShadowDepth="0" Opacity="0.8"/>
                                 </Ellipse.Effect>
                             </Ellipse>
-                            <TextBlock x:Name="GatewayText" Text="Hardware online" Margin="8,0,0,0"
+                            <TextBlock x:Name="GatewayText" Text="{loc:Tr Gateway.Online}" Margin="8,0,0,0"
                                        FontSize="12" Foreground="{StaticResource Ink2}" VerticalAlignment="Center"/>
                         </StackPanel>
                         <TextBlock x:Name="GatewaySub" Text="EC · WMI · HID" Style="{StaticResource Caption}"

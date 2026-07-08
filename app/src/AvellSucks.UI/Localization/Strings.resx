@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- ===== Navigation / tray ===== -->
+  <data name="Nav.Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Nav.Fan" xml:space="preserve"><value>Fan</value></data>
+  <data name="Nav.Rgb" xml:space="preserve"><value>RGB</value></data>
+  <data name="Nav.Performance" xml:space="preserve"><value>Performance</value></data>
+  <data name="Nav.About" xml:space="preserve"><value>About</value></data>
+  <data name="Nav.Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="Tray.Open" xml:space="preserve"><value>Open AvellSucks</value></data>
+  <data name="Tray.StartWithWindows" xml:space="preserve"><value>Start with Windows</value></data>
+  <data name="Tray.Exit" xml:space="preserve"><value>Exit</value></data>
+
+  <!-- ===== Tab subtitles ===== -->
+  <data name="Tab.Dashboard.Sub" xml:space="preserve"><value>Live telemetry from EC, WMI and onboard sensors</value></data>
+  <data name="Tab.Fan.Sub" xml:space="preserve"><value>Fan modes and the custom temperature curve</value></data>
+  <data name="Tab.Rgb.Sub" xml:space="preserve"><value>Keyboard lighting: effects, color and zones</value></data>
+  <data name="Tab.Power.Sub" xml:space="preserve"><value>Power modes: Windows plan and CPU power envelope</value></data>
+  <data name="Tab.About.Sub" xml:space="preserve"><value>What this is, and why it exists</value></data>
+  <data name="Tab.Settings.Sub" xml:space="preserve"><value>Language, startup and window behavior</value></data>
+
+  <!-- ===== Gateway status ===== -->
+  <data name="Gateway.Online" xml:space="preserve"><value>Hardware online</value></data>
+
+  <!-- ===== Shared ===== -->
+  <data name="Common.Auto" xml:space="preserve"><value>Auto</value></data>
+  <data name="Common.Boost" xml:space="preserve"><value>Boost</value></data>
+  <data name="Common.Custom" xml:space="preserve"><value>Custom</value></data>
+  <data name="Common.PerformanceMode" xml:space="preserve"><value>PERFORMANCE MODE</value></data>
+  <data name="Common.ChangedOnDevice" xml:space="preserve"><value>{0} · changed on device</value></data>
+
+  <!-- ===== Dashboard ===== -->
+  <data name="Dash.Clock" xml:space="preserve"><value>CLOCK</value></data>
+  <data name="Dash.Power" xml:space="preserve"><value>POWER</value></data>
+  <data name="Dash.HotSpot" xml:space="preserve"><value>HOT SPOT</value></data>
+  <data name="Dash.Cooling" xml:space="preserve"><value>COOLING</value></data>
+  <data name="Dash.Network" xml:space="preserve"><value>NETWORK</value></data>
+  <data name="Dash.Down" xml:space="preserve"><value>DOWN</value></data>
+  <data name="Dash.Up" xml:space="preserve"><value>UP</value></data>
+  <data name="Dash.Na" xml:space="preserve"><value>n/a</value></data>
+  <data name="Dash.Free" xml:space="preserve"><value>{0} free</value></data>
+  <data name="Dash.SensorNotice" xml:space="preserve"><value>Sensor access needs elevation. Live telemetry is unavailable in this session.</value></data>
+  <data name="Cool.Auto.Hint" xml:space="preserve"><value>Balances noise and temperature</value></data>
+  <data name="Cool.Boost.Hint" xml:space="preserve"><value>Maximum cooling, fans run cold</value></data>
+  <data name="Cool.Custom.Hint" xml:space="preserve"><value>Following your temperature curve</value></data>
+  <data name="Cool.Fixed.Hint" xml:space="preserve"><value>Fixed fan level</value></data>
+  <data name="Cool.None.Hint" xml:space="preserve"><value>Fan mode unavailable</value></data>
+  <data name="Cool.Other.Hint" xml:space="preserve"><value>Active fan profile</value></data>
+
+  <!-- ===== Fan ===== -->
+  <data name="Fan.ThermalResponse" xml:space="preserve"><value>THERMAL RESPONSE</value></data>
+  <data name="Fan.CurveCaption" xml:space="preserve"><value>temperature → fan PWM · shaded = where the machine ran (last 60s)</value></data>
+  <data name="Fan.ChangesApply" xml:space="preserve"><value>Changes apply as you edit.</value></data>
+  <data name="Fan.ResetToAuto" xml:space="preserve"><value>Reset to auto</value></data>
+  <data name="Fan.Gate" xml:space="preserve"><value>Preview only: hardware control is off. Run AvellSucks as administrator to actuate the fan (or unset GAMINGCENTER_ALLOW_EC_WRITES if you forced it off).</value></data>
+  <data name="Fan.Hint.Default" xml:space="preserve"><value>Auto balances noise and temps. Boost runs fans cold. Custom uses the curve below.</value></data>
+  <data name="Fan.Hint.Auto" xml:space="preserve"><value>Auto balances noise and temperature automatically.</value></data>
+  <data name="Fan.Hint.Boost" xml:space="preserve"><value>Boost runs the fans cold: maximum cooling, loudest.</value></data>
+  <data name="Fan.Hint.Custom" xml:space="preserve"><value>Custom follows the temperature curve below.</value></data>
+  <data name="Fan.Hint.Fixed" xml:space="preserve"><value>Fixed level {0}: a constant fan intensity step.</value></data>
+  <data name="Fan.Label.Auto" xml:space="preserve"><value>Auto fan</value></data>
+  <data name="Fan.Label.Boost" xml:space="preserve"><value>Boost fan</value></data>
+  <data name="Fan.Label.Custom" xml:space="preserve"><value>Custom fan</value></data>
+  <data name="Fan.Label.Fixed" xml:space="preserve"><value>Fan {0}</value></data>
+  <data name="Fan.ModeSet" xml:space="preserve"><value>{0} set</value></data>
+  <data name="Fan.Curve" xml:space="preserve"><value>Fan curve</value></data>
+  <data name="Fan.CurveApplied" xml:space="preserve"><value>Fan curve applied</value></data>
+
+  <!-- ===== Performance / power ===== -->
+  <data name="Power.Subtitle" xml:space="preserve"><value>Sets the Windows power plan and the CPU power envelope together</value></data>
+  <data name="Power.Envelope" xml:space="preserve"><value>CPU POWER ENVELOPE</value></data>
+  <data name="Power.Pl1" xml:space="preserve"><value>PL1 · SUSTAINED</value></data>
+  <data name="Power.Pl2" xml:space="preserve"><value>PL2 · TURBO</value></data>
+  <data name="Power.Pl4" xml:space="preserve"><value>PL4 · PEAK</value></data>
+  <data name="Power.PlLabel" xml:space="preserve"><value>PL1 / PL2</value></data>
+  <data name="Power.Advanced" xml:space="preserve"><value>Advanced: tune power limits manually</value></data>
+  <data name="Power.AdvancedWarn" xml:space="preserve"><value>Raising the power envelope increases heat and draw. Change in small steps.</value></data>
+  <data name="Power.ChangesApply" xml:space="preserve"><value>Changes apply immediately.</value></data>
+  <data name="Power.Gate" xml:space="preserve"><value>Preview only: hardware control is off. Run AvellSucks as administrator to actuate power limits (or unset GAMINGCENTER_ALLOW_EC_WRITES if you forced it off).</value></data>
+  <data name="Power.Gaming" xml:space="preserve"><value>Gaming</value></data>
+  <data name="Power.Gaming.Tag" xml:space="preserve"><value>Max performance, fans free</value></data>
+  <data name="Power.High" xml:space="preserve"><value>High</value></data>
+  <data name="Power.High.Tag" xml:space="preserve"><value>Strong, still balanced</value></data>
+  <data name="Power.Balanced" xml:space="preserve"><value>Balanced</value></data>
+  <data name="Power.Balanced.Tag" xml:space="preserve"><value>Everyday default</value></data>
+  <data name="Power.Saving" xml:space="preserve"><value>Saving</value></data>
+  <data name="Power.Saving.Tag" xml:space="preserve"><value>Cool, quiet, long battery</value></data>
+  <data name="Power.ModeName" xml:space="preserve"><value>{0} mode</value></data>
+  <data name="Power.ModeOn" xml:space="preserve"><value>{0} on</value></data>
+  <data name="Power.Limits" xml:space="preserve"><value>Power limits</value></data>
+  <data name="Power.LimitsSet" xml:space="preserve"><value>Power limits set</value></data>
+
+  <!-- ===== RGB ===== -->
+  <data name="Rgb.Preview" xml:space="preserve"><value>PREVIEW</value></data>
+  <data name="Rgb.Color" xml:space="preserve"><value>COLOR</value></data>
+  <data name="Rgb.Effect" xml:space="preserve"><value>EFFECT</value></data>
+  <data name="Rgb.Brightness" xml:space="preserve"><value>BRIGHTNESS</value></data>
+  <data name="Rgb.Speed" xml:space="preserve"><value>SPEED</value></data>
+  <data name="Rgb.Fx.Static" xml:space="preserve"><value>Static</value></data>
+  <data name="Rgb.Fx.Breathe" xml:space="preserve"><value>Breathe</value></data>
+  <data name="Rgb.Fx.Cycle" xml:space="preserve"><value>Cycle</value></data>
+  <data name="Rgb.Fx.Wave" xml:space="preserve"><value>Wave</value></data>
+  <data name="Rgb.Fx.Ripple" xml:space="preserve"><value>Ripple</value></data>
+  <data name="Rgb.Speed.Slow" xml:space="preserve"><value>Slow</value></data>
+  <data name="Rgb.Speed.Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Rgb.Speed.Fast" xml:space="preserve"><value>Fast</value></data>
+  <data name="Rgb.ChangesApply" xml:space="preserve"><value>Lighting applies as you change it.</value></data>
+  <data name="Rgb.Device" xml:space="preserve"><value>RGB keyboard not detected (ITE HID 0x0489/0xCE40). Preview only: connect the device to actuate.</value></data>
+  <data name="Rgb.Lighting" xml:space="preserve"><value>Lighting</value></data>
+  <data name="Rgb.LightingApplied" xml:space="preserve"><value>Lighting applied</value></data>
+
+  <!-- ===== Toasts (write feedback) ===== -->
+  <data name="Toast.Done" xml:space="preserve"><value>Done</value></data>
+  <data name="Toast.Applying" xml:space="preserve"><value>Applying</value></data>
+  <data name="Toast.Failed" xml:space="preserve"><value>Didn't apply</value></data>
+  <data name="Toast.Blocked" xml:space="preserve"><value>Writes are off</value></data>
+  <data name="Toast.Ready" xml:space="preserve"><value>Ready</value></data>
+
+  <!-- ===== Settings ===== -->
+  <data name="Settings.LanguageSection" xml:space="preserve"><value>LANGUAGE</value></data>
+  <data name="Settings.Language" xml:space="preserve"><value>Interface language</value></data>
+  <data name="Settings.Language.Hint" xml:space="preserve"><value>Applies immediately. Your choice is remembered.</value></data>
+  <data name="Settings.Language.System" xml:space="preserve"><value>Match system</value></data>
+  <data name="Settings.Language.En" xml:space="preserve"><value>English</value></data>
+  <data name="Settings.Language.Pt" xml:space="preserve"><value>Português</value></data>
+  <data name="Settings.StartupSection" xml:space="preserve"><value>STARTUP</value></data>
+  <data name="Settings.StartWithWindows" xml:space="preserve"><value>Start with Windows</value></data>
+  <data name="Settings.StartWithWindows.Hint" xml:space="preserve"><value>Launch AvellSucks when you sign in to Windows.</value></data>
+  <data name="Settings.StartMinimized" xml:space="preserve"><value>Start minimized</value></data>
+  <data name="Settings.StartMinimized.Hint" xml:space="preserve"><value>Open straight to the tray, without showing the window.</value></data>
+  <data name="Settings.WindowSection" xml:space="preserve"><value>WINDOW</value></data>
+  <data name="Settings.HideOnMinimize" xml:space="preserve"><value>Hide to tray on minimize</value></data>
+  <data name="Settings.HideOnMinimize.Hint" xml:space="preserve"><value>Minimizing sends the window to the system tray instead of the taskbar.</value></data>
+
+  <!-- ===== About ===== -->
+  <data name="About.Tagline" xml:space="preserve"><value>The control center this laptop should have shipped with.</value></data>
+  <data name="About.WhyTitle" xml:space="preserve"><value>WHY THIS EXISTS</value></data>
+  <data name="About.Why.P1" xml:space="preserve"><value>I bought a top-spec Avell laptop in 2018. The fan curve, the performance modes, the keyboard lighting, all of it lived inside Avell's Gaming Center app. Then Avell dropped it. No updates, no fixes, just abandonware that I still had to keep installed to control my own machine.</value></data>
+  <data name="About.Why.P2" xml:space="preserve"><value>So I reverse engineered it and wrote my own. The name says how I feel about being left with dead software on hardware I paid a lot for.</value></data>
+  <data name="About.Why.P3" xml:space="preserve"><value>It talks to the same hardware the old app did: the same EC registers, the same power plans. The difference is it's fast, it's mine, and it tells the truth. If a write to the hardware doesn't stick, it says so instead of pretending it worked.</value></data>
+  <data name="About.Why.P4" xml:space="preserve"><value>The RGB tab is unfinished, and there's a reason. Around two years in, I opened the laptop to clean it and found the keyboard ribbon connector cracked and held together with a piece of tape. From the factory. The keyboard was already dying and there was no real way to fix it. Avell couldn't help, the warranty was gone, and it didn't matter that the fault was theirs to begin with. So the keyboard on this machine no longer works, which means the RGB lighting cannot be tested. The code is here, the hardware is not.</value></data>
+  <data name="About.HowTitle" xml:space="preserve"><value>HOW IT WORKS</value></data>
+  <data name="About.How.P1" xml:space="preserve"><value>Fan and power settings live in the Embedded Controller's memory. The app reads and writes it through a WMI ACPI method (AcpiTest_MULong), the same path the old app used. Every write is checked against an allowlist, read back to confirm it landed, and rolled back if it didn't. All of it goes to an audit log. Performance modes also switch the machine's Windows power plan. Sensor readings refresh about once a second, and if you change something outside the app it shows up here within a couple of seconds.</value></data>
+  <data name="About.How.Tech" xml:space="preserve"><value>WPF, .NET 10. Reverse engineered from the OEM app plus a lot of live poking at the hardware.</value></data>
+  <data name="About.ProjectTitle" xml:space="preserve"><value>PROJECT</value></data>
+  <data name="About.Repository" xml:space="preserve"><value>Repository</value></data>
+  <data name="About.Hardware" xml:space="preserve"><value>Hardware</value></data>
+  <data name="About.HardwareValue" xml:space="preserve"><value>Avell laptop, Intel and NVIDIA, Windows</value></data>
+  <data name="About.License" xml:space="preserve"><value>License</value></data>
+  <data name="About.LicenseValue" xml:space="preserve"><value>Personal, unofficial. Not affiliated with Avell.</value></data>
+</root>
