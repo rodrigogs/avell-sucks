@@ -18,7 +18,7 @@
                                 <TextBlock Text="Avell" Style="{StaticResource H1}"/>
                                 <TextBlock Text="Sucks" Style="{StaticResource H1}" Foreground="{StaticResource Magenta}"/>
                             </StackPanel>
-                            <TextBlock Text="An unofficial control center for this machine — charged, precise, alive."
+                            <TextBlock Text="The control center this laptop should have shipped with."
                                        Style="{StaticResource Caption}" Margin="0,2,0,0"/>
                         </StackPanel>
                     </StackPanel>
@@ -30,11 +30,13 @@
                 <StackPanel>
                     <TextBlock Text="WHY THIS EXISTS" Style="{StaticResource SectionLabel}"/>
                     <TextBlock Style="{StaticResource Body}" Margin="0,10,0,0"
-                               Text="A top-of-the-line Avell gaming laptop, bought in 2018. Years later the OEM &#8220;Gaming Center&#8221; — the app that owned the fan curve, the performance modes, the keyboard lighting, the whole thermal and power personality of the machine — was discontinued and abandoned."/>
+                               Text="I bought a top-spec Avell laptop in 2018. The fan curve, the performance modes, the keyboard lighting, all of it lived inside Avell's Gaming Center app. Then Avell dropped it. No updates, no fixes, just abandonware that I still had to keep installed to control my own machine."/>
                     <TextBlock Style="{StaticResource Body}" Margin="0,10,0,0"
-                               Text="The choice was to live with dead, unmaintained bloatware sitting between me and my own silicon, or replace it. This is the replacement. The name is not subtle on purpose."/>
+                               Text="So I reverse engineered it and wrote my own. The name says how I feel about being left with dead software on hardware I paid a lot for."/>
                     <TextBlock Style="{StaticResource Body}" Margin="0,10,0,0"
-                               Text="AvellSucks does what the OEM app did — reads and writes the same Embedded Controller registers, switches the same Windows power plans — but modern, fast, and honest: it never lies about whether a hardware write actually landed."/>
+                               Text="It talks to the same hardware the old app did: the same EC registers, the same power plans. The difference is it's fast, it's mine, and it tells the truth. If a write to the hardware doesn't stick, it says so instead of pretending it worked."/>
+                    <TextBlock Style="{StaticResource Body}" Margin="0,14,0,0"
+                               Text="The RGB tab is unfinished, and there's a reason. Around two years in, I opened the laptop to clean it and found the keyboard ribbon connector cracked and held together with a piece of tape. From the factory. The keyboard was already dying and there was no real way to fix it. Avell couldn't help, the warranty was gone, and it didn't matter that the fault was theirs to begin with. So the keyboard on this machine no longer works, which means the RGB lighting cannot be tested. The code is here, the hardware is not."/>
                 </StackPanel>
             </Border>
 
@@ -43,9 +45,9 @@
                 <StackPanel>
                     <TextBlock Text="HOW IT WORKS" Style="{StaticResource SectionLabel}"/>
                     <TextBlock Style="{StaticResource Body}" Margin="0,10,0,0"
-                               Text="Fan and power state live in Embedded Controller RAM, reached over a WMI ACPI method (AcpiTest_MULong). Every write goes through a safe pipeline — allowlist, read-back verify, rollback on mismatch, and an audit log — so a blocked or failed write reads as blocked or failed, never faked. Performance modes also switch the machine's dedicated Windows power schemes. Telemetry streams from the onboard sensors ~1 Hz, and changes made outside the app are reflected here within seconds."/>
+                               Text="Fan and power settings live in the Embedded Controller's memory. The app reads and writes it through a WMI ACPI method (AcpiTest_MULong), the same path the old app used. Every write is checked against an allowlist, read back to confirm it landed, and rolled back if it didn't. All of it goes to an audit log. Performance modes also switch the machine's Windows power plan. Sensor readings refresh about once a second, and if you change something outside the app it shows up here within a couple of seconds."/>
                     <TextBlock Style="{StaticResource Caption}" FontFamily="{StaticResource MonoFont}" Margin="0,12,0,0"
-                               Text="WPF · .NET 10 · reverse-engineered from the OEM app + live hardware probing"/>
+                               Text="WPF, .NET 10. Reverse engineered from the OEM app plus a lot of live poking at the hardware."/>
                 </StackPanel>
             </Border>
 
@@ -63,7 +65,7 @@
                     </DockPanel>
                     <DockPanel Margin="0,8,0,0">
                         <TextBlock Text="Hardware" Style="{StaticResource FieldLabel}" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                        <TextBlock Text="Avell (RODRIGO-AVELL) · Intel + NVIDIA · Windows"
+                        <TextBlock Text="Avell laptop, Intel and NVIDIA, Windows"
                                    DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource Caption}"/>
                     </DockPanel>
                     <DockPanel Margin="0,8,0,0">

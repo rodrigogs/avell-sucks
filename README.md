@@ -27,14 +27,34 @@ landed.
 
 ---
 
+## The keyboard (why RGB is untested)
+
+There's a second reason this laptop left a sour taste, and it's why the RGB tab
+ships unfinished and unverified.
+
+Around two years into owning it, I opened the machine to clean it. Inside, the
+keyboard's ribbon connector was cracked and held together with a piece of tape.
+Not by me. From the factory. That's how it shipped.
+
+By then the keyboard was already failing, and there was no real way to fix it. I
+went to Avell. They had nothing to offer, the warranty had already expired, and
+it made no difference that the defect was theirs from day one.
+
+So the built-in keyboard on this machine no longer works. The RGB lighting code
+(ITE HID) is written and wired into the UI, but I can't test it against a
+keyboard that's dead. It stays behind an honest "unavailable" state until there's
+hardware to prove it on.
+
+---
+
 ## What it does
 
 - **Fan** — modes (auto, boost, custom, L1–L5) and a custom temperature→PWM
   curve. Applies live as you edit; no Apply button.
 - **Performance** — four modes (Gaming / High / Balanced / Saving) that switch
   the active **Windows power plan** and write the CPU power-limit bytes (PL1/PL2/PL4).
-- **RGB** — keyboard lighting surface (ITE HID). *Backend not wired yet — the
-  test unit's keyboard is dead; the UI and contract are in place.*
+- **RGB** — keyboard lighting surface (ITE HID). UI and contract are in place,
+  but the backend is unfinished and untested. See "The keyboard" below.
 - **Dashboard** — live CPU/GPU load, temps, clocks, memory, disk, network, and
   the active cooling profile, streamed ~1 Hz.
 - **Reactive** — changes made outside the app (the old OEM tool, the physical Fn
