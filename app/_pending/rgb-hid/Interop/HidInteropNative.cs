@@ -1,7 +1,7 @@
 // Thin interop wrapper around HID SetupAPI + HidD/HidP interop.
 using Microsoft.Win32.SafeHandles;
 
-namespace GamingCenter.Core.Windows.Interop;
+namespace AvellSucks.Core.Windows.Interop;
 
 internal static class HidInteropNative
 {

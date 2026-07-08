@@ -1,8 +1,8 @@
-using GamingCenter.Core.Interfaces;
-using GamingCenter.Core.Rgb;
-using GamingCenter.Core.Interop;
+using AvellSucks.Core.Interfaces;
+using AvellSucks.Core.Rgb;
+using AvellSucks.Core.Interop;
 
-namespace GamingCenter.Core.Hardware;
+namespace AvellSucks.Core.Hardware;
 
 public sealed class ITERGBBackend(HidInteropNative interop) : IRGBBackend, System.IAsyncDisposable
 {

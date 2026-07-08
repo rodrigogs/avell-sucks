@@ -1,7 +1,7 @@
-using GamingCenter.Core.Interop;
+using AvellSucks.Core.Interop;
 using Microsoft.Win32.SafeHandles;
 
-namespace GamingCenter.Core.Windows.Hardware;
+namespace AvellSucks.Core.Windows.Hardware;
 
 internal ref struct HidSession
 {

@@ -1,7 +1,7 @@
-using GamingCenter.Core.Rgb;
-using GamingCenter.Core.Windows.Interop;
+using AvellSucks.Core.Rgb;
+using AvellSucks.Core.Windows.Interop;
 
-namespace GamingCenter.Core.Windows.Hardware;
+namespace AvellSucks.Core.Windows.Hardware;
 
 public sealed class IteRgbProbe(ITEHidDeviceProvider provider)
 {

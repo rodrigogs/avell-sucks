@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+      <OutputType>WinExe</OutputType>
+      <TargetFramework>net10.0-windows</TargetFramework>
+      <Nullable>enable</Nullable>
+      <ImplicitUsings>enable</ImplicitUsings>
+      <UseWPF>true</UseWPF>
+      <ApplicationManifest>app.manifest</ApplicationManifest>
+      <ApplicationIcon>app.ico</ApplicationIcon>
+      <SelfContained>true</SelfContained>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.5-pre441" />
+    <PackageReference Include="H.NotifyIcon.Wpf" Version="2.2.0" />
+  </ItemGroup>
+
+  <!-- Bundle the app icon as a resource so the tray IconSource pack URI resolves. -->
+  <ItemGroup>
+    <Resource Include="app.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AvellSucks.Api\AvellSucks.Api.csproj" />
+    <!-- Real EC backend (WmiEcBackend) for the hardware-backed fan service. -->
+    <ProjectReference Include="..\AvellSucks.Core.Windows\AvellSucks.Core.Windows.csproj" />
+  </ItemGroup>
+
+</Project>

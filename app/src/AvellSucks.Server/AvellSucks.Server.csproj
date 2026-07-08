@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <SelfContained>true</SelfContained>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0-rc.2.*" />
+    <PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AvellSucks.Core\AvellSucks.Core.csproj" />
+    <ProjectReference Include="..\AvellSucks.Core.Windows\AvellSucks.Core.Windows.csproj" />
+    <ProjectReference Include="..\AvellSucks.Api\AvellSucks.Api.csproj" />
+  </ItemGroup>
+
+</Project>

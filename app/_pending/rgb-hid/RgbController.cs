@@ -1,7 +1,7 @@
-using GamingCenter.Core.Rgb;
+using AvellSucks.Core.Rgb;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GamingCenter.Api.Controllers;
+namespace AvellSucks.Api.Controllers;
 
 [ApiController]
 [Route("api/rgb")]
