@@ -1,8 +1,12 @@
-# OpenAPI-ish notes — GamingCenter local API
+# AvellSucks local API
+
+The **optional** loopback control server (`AvellSucks.Server`). The WPF app does
+not need it — it drives hardware in-process. Run the server only for
+automation/scripting.
 
 Base URL: `http://127.0.0.1:5055/`
 Secure alternative: `https://127.0.0.1:5055/` with `GAMINGCENTER_REQUIRE_HTTPS=1`.
-Documentation: `/swagger` and `/openapi/v1.json` are served when the app is built with `Microsoft.AspNetCore.OpenApi`.
+OpenAPI: `/openapi/v1.json` is served via `MapOpenApi()` (no Swagger UI).
 Events: text/event-stream at `/events`.
 
 ## Events
@@ -20,11 +24,13 @@ Health/branding.
 Response:
 ```http
 HTTP/1.1 200 OK
-X-Local-Api: true
+XLocalApi: True
 Content-Type: text/plain; charset=utf-8
 
-GamingCenter local API
+AvellSucks local API
 ```
+> Note: the middleware currently emits the header as `XLocalApi: True` (see
+> `Server/Program.cs`), not the more conventional `X-Local-Api: true`.
 
 ### `GET /api/system/snapshot`
 

@@ -34,8 +34,8 @@ Named-pipe gRPC is deferred until privileged/local-UI separation ships.
 
 ## Security Notes
 
-- Loopback enforcement via middleware (see `src/Server/EnforceLoopbackMiddleware.cs`).
-- Dev cert for HTTPS is expected during development; production may pin a cert or disable HTTPS if loopback binding itself is protected by OS ACLs.
+- Loopback enforcement via middleware (`src/AvellSucks.Server/Middleware/EnforceLoopbackMiddleware.cs`, wired by the `UseLoopbackOnly` extension; non-localhost → 403).
+- HTTPS is **off by default**; the server binds plain `http://127.0.0.1:5055`. HTTPS is opt-in via `GAMINGCENTER_REQUIRE_HTTPS=1` (dev cert / pinned cert), since loopback binding is already the primary protection.
 - Do not open additional ports without a corresponding ADR.
 
 ## Alternatives

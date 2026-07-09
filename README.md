@@ -217,12 +217,14 @@ name for compatibility with the server pipeline.)*
 **Perf note:** run from a **local disk** copy, not the WSL UNC path, loading
 assemblies over `\\wsl.localhost\...` adds ~9 s to startup.
 
-## Reverse-engineering artifacts
+## Documentation
 
-- `inventory.json`, `process-detail.json`, `ec-read-probe.json`: inventory + EC probes.
-- `analysis/*.strings.txt`: static string extraction.
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md): how the app is built (as shipped).
+- [`docs/reverse-engineering.md`](docs/reverse-engineering.md): the **validated** hardware knowledge — EC protocol, confirmed registers, fan map, power plans, and what was disproven.
+- [`docs/api.md`](docs/api.md): the optional loopback HTTP API.
+- [`docs/design/`](docs/design/): visual system + dashboard spec. [`docs/adr/`](docs/adr/): decision records. [`docs/runbooks/`](docs/runbooks/): the EC-write approval checklist.
+- [`docs/evidence/`](docs/evidence/): raw RE artifacts (inventory, EC probe, OEM string dumps). [`docs/archive/`](docs/archive/): the original RE logs + research dossiers.
 - `scripts/*.ps1`: reproducible Windows inventory/probe scripts.
-- `notes/`, `DESIGN.md` (reactive-architecture spec), RE + design notes.
 
 ## License
 

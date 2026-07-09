@@ -1,14 +1,19 @@
-# First fan-mode write: manual approval checklist
+# EC write approval checklist
 
-Before running the first EC write to address 0x751 (ADDR_MAFAN_CONTROL_BYTE),
-every item below must be checked off. This is a destructive operation on the
-embedded controller — errors can brick the machine or trigger thermal
-protection. Treat it as irreversible until proven otherwise.
+> **The first fan-mode write is done** — 0x751 writes are verified on hardware and
+> the read-back + rollback are now automated in `SafeEcWriter` (settle+retry). This
+> stays as the **template runbook for any future risky EC write** (a new register,
+> a wider value range), not a pending one-shot.
+
+Before the first EC write to a new address, every item below must be checked off.
+Writing the embedded controller is a destructive operation — errors can brick the
+machine or trigger thermal protection. Treat a new target as irreversible until
+proven otherwise.
 
 ## Preconditions
 
-- [ ] EC read-only probe has been run on the target machine and all
-      fan-control addresses (0x741..0x747, 0x751, 0x75D..0x768, 0x782)
+- [ ] EC read-only probe has been run on the target machine and the
+      fan-control addresses (0x743..0x747, 0x751, 0x75D..0x768, 0x782)
       return plausible values.
 - [ ] The OEM GamingCenter app is **fully closed** (GamingCenter.exe,
       GamingCenterTray.exe, LaunchServGM.exe) so it cannot race the EC.

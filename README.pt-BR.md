@@ -221,12 +221,14 @@ variável mantém o nome original por compatibilidade com o pipeline do servidor
 caminho UNC do WSL: carregar assemblies por `\\wsl.localhost\...` adiciona ~9 s ao
 tempo de inicialização.
 
-## Artefatos de engenharia reversa
+## Documentação
 
-- `inventory.json`, `process-detail.json`, `ec-read-probe.json`: inventário + sondagens do EC.
-- `analysis/*.strings.txt`: extração estática de strings.
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md): como o app é construído (como foi lançado).
+- [`docs/reverse-engineering.md`](docs/reverse-engineering.md): o conhecimento de hardware **validado** — protocolo do EC, registradores confirmados, mapa da ventoinha, planos de energia, e o que foi refutado.
+- [`docs/api.md`](docs/api.md): a API HTTP loopback opcional.
+- [`docs/design/`](docs/design/): sistema visual + spec do painel. [`docs/adr/`](docs/adr/): registros de decisão. [`docs/runbooks/`](docs/runbooks/): checklist de aprovação de escrita no EC.
+- [`docs/evidence/`](docs/evidence/): artefatos brutos de RE (inventário, sondagem do EC, dumps de strings do OEM). [`docs/archive/`](docs/archive/): os logs originais de RE + dossiês de pesquisa.
 - `scripts/*.ps1`: scripts reproduzíveis de inventário/sondagem no Windows.
-- `notes/`, `DESIGN.md` (spec da arquitetura reativa), notas de RE + design.
 
 ## Licença
 
