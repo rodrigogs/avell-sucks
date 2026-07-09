@@ -8,25 +8,24 @@ using System.Collections.Generic;
 namespace AvellSucks.Api.Controllers;
 
 /// <summary>
-/// Power limit control endpoints (PL1/PL2/Tau). Reads go through
+/// Power limit control endpoints (PL1/PL2/PL4). Reads go through
 /// <see cref="IEcBackend.ReadPowerProfileAsync"/>; writes go through
 /// <see cref="SafeEcWriter"/> and the EC write allowlist. Writes require the
 /// write gate to be open.
 /// </summary>
 /// <remarks>
-/// The current implementation exposes speculative candidate registers with
-/// permissive allowlist entries. Actual unit semantics and safe value ranges
-/// are not yet confirmed by real-hardware diffing. Treat these endpoints as
-/// experimental until validation is complete.
+/// Targets the confirmed OEM power-limit registers 0x783/0x784/0x785 (1923/1924/
+/// 1925), the same ones the read side and the EC write allowlist use, so a write
+/// actually lands. Tau (time window) is an Intel XTU/MSR setting, not an EC
+/// register (the EC reports it as 0), so it is not writable here.
 /// </remarks>
 [ApiController]
 [Route("api/power")]
 public sealed class PowerController : ControllerBase
 {
-    private const int ADDR_PL1_SETTING_VALUE = 1919; // 0x77F
-    private const int ADDR_PL2_SETTING_VALUE = 1920; // 0x780
-    private const int ADDR_PL4_SETTING_VALUE = 1921; // 0x781
-    private const int ADDR_MYFAN3_CPU_TAU = 1857;    // 0x741
+    private const int ADDR_PL1_SETTING_VALUE = 1923; // 0x783
+    private const int ADDR_PL2_SETTING_VALUE = 1924; // 0x784
+    private const int ADDR_PL4_SETTING_VALUE = 1925; // 0x785
 
     private readonly IEcBackend _backend;
     private readonly SafeEcWriter _writer;
@@ -103,17 +102,6 @@ public sealed class PowerController : ControllerBase
                 return StatusCode(StatusCodes.Status403Forbidden, PowerWriteResultDto.From(results));
         }
 
-        if (request.TauSeconds.HasValue)
-        {
-            var r = await _writer.TryWriteAsync(
-                ADDR_MYFAN3_CPU_TAU, request.TauSeconds.Value,
-                reason: "api:power/profile:tau", ct).ConfigureAwait(false);
-            results.Add(r);
-
-            if (!r.Allowed || !r.Verified)
-                return StatusCode(StatusCodes.Status403Forbidden, PowerWriteResultDto.From(results));
-        }
-
         return Ok(PowerWriteResultDto.From(results));
     }
 }
@@ -121,9 +109,9 @@ public sealed class PowerController : ControllerBase
 /// <summary>
 /// Request body for POST /api/power/profile.
 /// </summary>
-public sealed record SetPowerProfileRequest(int? Pl1, int? Pl2, int? Pl4, int? TauSeconds)
+public sealed record SetPowerProfileRequest(int? Pl1, int? Pl2, int? Pl4)
 {
-    public bool HasAnyChange() => Pl1 is not null || Pl2 is not null || Pl4 is not null || TauSeconds is not null;
+    public bool HasAnyChange() => Pl1 is not null || Pl2 is not null || Pl4 is not null;
 }
 
 public sealed record PowerWriteResultDto(bool Allowed, bool Executed, bool Verified, string? Error, IReadOnlyList<EcWriteResult> Results)

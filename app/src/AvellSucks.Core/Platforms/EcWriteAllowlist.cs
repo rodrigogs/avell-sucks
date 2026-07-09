@@ -33,13 +33,9 @@ public sealed class EcWriteAllowlist
     ///   0 = normal/auto, 64 = boost, 160 = custom-advanced,
     ///   129..133 = custom basic levels L1..L5.
     /// Addresses 1859..1863 (0x743..0x747) — PWM source bytes for custom levels.
-    /// Addresses 1919..1921 (0x77F..0x781) — speculative PL1/PL2/PL4 power-limit
-    /// setting bytes observed as VM-to-EC write candidates in older
-    /// AvellSucks tooling. These entries are **wide open (0..255)** on
-    /// purpose: the actual semantics and safe value ranges are not yet
-    /// confirmed by diffing on real hardware. Tighten explicitly once
-    /// validation is complete.
-    /// Address 1857 (0x741) — speculative Tau (time window) candidate.
+    /// Addresses 1923..1925 (0x783..0x785) — CONFIRMED PL1/PL2/PL4 power-limit
+    /// setting bytes (watts), from the decompiled OEM app. Wide (0..254 W) here;
+    /// the UI presets/sliders clamp to safe ranges.
     /// </remarks>
     public static readonly EcWriteRule[] FanControlRules =
     [
