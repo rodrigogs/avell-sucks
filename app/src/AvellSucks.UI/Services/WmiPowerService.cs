@@ -116,10 +116,10 @@ public sealed class WmiPowerService : IPowerService
         {
             last = await _writer.TryWriteAsync(addr, val, $"{reason}:0x{addr:X}={val}", ct).ConfigureAwait(false);
             if (!last.Allowed || !last.Verified)
-                return new ControlResult(last.Allowed, last.Executed, last.Verified, last.Error);
+                return ControlResult.From(last);
         }
         _presetCache.Clear(); // limits changed on the silicon — presets may have shifted
-        return new ControlResult(last.Allowed, last.Executed, last.Verified, last.Error);
+        return ControlResult.From(last);
     }
 
     // Preset = the machine's own default PL registers for the nearest hardware

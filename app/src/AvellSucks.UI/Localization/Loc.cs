@@ -47,4 +47,16 @@ public sealed class Loc : INotifyPropertyChanged
 
     /// <summary>Convenience for code-behind: translate a key now.</summary>
     public static string T(string key) => Instance[key];
+
+    /// <summary>
+    /// Run <paramref name="relocalize"/> now and again on every runtime culture
+    /// change. For views that set text imperatively (which drops the {loc:Tr}
+    /// binding) and need to re-localize on language switch. Intended for cached,
+    /// app-lifetime views, so it does not unsubscribe.
+    /// </summary>
+    public static void OnCultureChanged(Action relocalize)
+    {
+        relocalize();
+        Instance.PropertyChanged += (_, _) => relocalize();
+    }
 }

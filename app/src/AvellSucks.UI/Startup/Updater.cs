@@ -35,11 +35,9 @@ public sealed record UpdateCheck(UpdateStatus Status, string? LatestVersion = nu
 /// </summary>
 public static class Updater
 {
-    private const string Owner = "rodrigogs";
-    private const string Repo = "avell-sucks";
-    private const string AssetName = "AvellSucks-Setup.exe"; // must match the .iss OutputBaseFilename
-    private const string LatestReleaseUrl = $"https://api.github.com/repos/{Owner}/{Repo}/releases/latest";
-    private const string ReleasesPageUrl = $"https://github.com/{Owner}/{Repo}/releases";
+    private const string AssetName = AppInfo.SetupAssetName; // matches .iss OutputBaseFilename
+    private const string LatestReleaseUrl = AppInfo.LatestReleaseApiUrl;
+    private const string ReleasesPageUrl = AppInfo.ReleasesPageUrl;
 
     // GitHub REST requires a User-Agent; without one it returns 403.
     private static readonly HttpClient Http = CreateClient();

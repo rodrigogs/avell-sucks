@@ -6,7 +6,7 @@ namespace AvellSucks.UI.Views;
 
 public partial class AboutView : UserControl
 {
-    private const string RepoUrl = "https://github.com/rodrigogs/avell-sucks";
+    private const string RepoUrl = AppInfo.RepoUrl;
 
     public AboutView() => InitializeComponent();
 

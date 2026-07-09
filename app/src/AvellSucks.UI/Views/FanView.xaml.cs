@@ -40,9 +40,9 @@ public partial class FanView : UserControl
 
         // ModeHint is set imperatively (Text=) once a mode is picked, which drops
         // its {loc:Tr} binding. Re-apply it for the current mode on a live language
-        // change so it doesn't get stuck in the old language. FanView is a cached,
-        // app-lifetime view (MainWindow lazy prop), so no unsubscribe is needed.
-        Loc.Instance.PropertyChanged += (_, _) => RefreshModeHint();
+        // change so it doesn't get stuck in the old language. (RefreshModeHint is a
+        // no-op until a mode is selected, so the immediate call is harmless.)
+        Loc.OnCultureChanged(RefreshModeHint);
     }
 
     // The currently-selected fan mode, or "auto" as the neutral default.

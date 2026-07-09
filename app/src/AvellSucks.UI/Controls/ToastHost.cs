@@ -135,12 +135,12 @@ public sealed class ToastHost : Grid
         {
             _dismiss = dismiss;
 
-            Background = Frozen(Overlay);
+            Background = Brand.Frozen(Overlay);
             CornerRadius = new CornerRadius(12);
             BorderThickness = new Thickness(1);
             // Edge tinted toward the accent — reads on the dark surface without a
             // full neon border (no neon-on-neon).
-            BorderBrush = Frozen(Color.FromArgb(0x66, spec.Accent.R, spec.Accent.G, spec.Accent.B));
+            BorderBrush = Brand.Frozen(Color.FromArgb(0x66, spec.Accent.R, spec.Accent.G, spec.Accent.B));
             MinWidth = 220;
             MaxWidth = 420;
             SnapsToDevicePixels = true;
@@ -166,7 +166,7 @@ public sealed class ToastHost : Grid
             var chip = new Border
             {
                 Width = 30, Height = 30, CornerRadius = new CornerRadius(8),
-                Background = Frozen(Color.FromArgb(0x26, spec.Accent.R, spec.Accent.G, spec.Accent.B)),
+                Background = Brand.Frozen(Color.FromArgb(0x26, spec.Accent.R, spec.Accent.G, spec.Accent.B)),
                 VerticalAlignment = VerticalAlignment.Center,
             };
             var glyph = new TextBlock
@@ -174,7 +174,7 @@ public sealed class ToastHost : Grid
                 Text = spec.Glyph,
                 FontFamily = new FontFamily("Segoe MDL2 Assets"),
                 FontSize = 15,
-                Foreground = Frozen(spec.Accent),
+                Foreground = Brand.Frozen(spec.Accent),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
             };
@@ -195,7 +195,7 @@ public sealed class ToastHost : Grid
                 FontFamily = (FontFamily)Application.Current.FindResource("UiFont"),
                 FontSize = 14,
                 FontWeight = FontWeights.SemiBold,
-                Foreground = Frozen(Ink),
+                Foreground = Brand.Frozen(Ink),
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 VerticalAlignment = VerticalAlignment.Center,
             });
@@ -206,7 +206,7 @@ public sealed class ToastHost : Grid
                     Text = message,
                     FontFamily = (FontFamily)Application.Current.FindResource("UiFont"),
                     FontSize = 12,
-                    Foreground = Frozen(Ink2),
+                    Foreground = Brand.Frozen(Ink2),
                     TextWrapping = TextWrapping.Wrap,
                     Margin = new Thickness(0, 3, 0, 0),
                 });
@@ -221,13 +221,13 @@ public sealed class ToastHost : Grid
                     Text = GlyphClose,
                     FontFamily = new FontFamily("Segoe MDL2 Assets"),
                     FontSize = 11,
-                    Foreground = Frozen(Ink3),
+                    Foreground = Brand.Frozen(Ink3),
                     VerticalAlignment = VerticalAlignment.Center,
                     Margin = new Thickness(4, 0, 2, 0),
                     Padding = new Thickness(4),
                 };
-                close.MouseEnter += (_, _) => close.Foreground = Frozen(Ink);
-                close.MouseLeave += (_, _) => close.Foreground = Frozen(Ink3);
+                close.MouseEnter += (_, _) => close.Foreground = Brand.Frozen(Ink);
+                close.MouseLeave += (_, _) => close.Foreground = Brand.Frozen(Ink3);
                 Grid.SetColumn(close, 2);
                 row.Children.Add(close);
             }
@@ -239,7 +239,7 @@ public sealed class ToastHost : Grid
             {
                 var bar = new Border
                 {
-                    Background = Frozen(spec.Accent),
+                    Background = Brand.Frozen(spec.Accent),
                     Opacity = 0.85,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     RenderTransformOrigin = new Point(0, 0.5),
@@ -316,13 +316,6 @@ public sealed class ToastHost : Grid
             _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(AutoDismissMs) };
             _timer.Tick += (_, _) => { _timer?.Stop(); _dismiss(this); };
             _timer.Start();
-        }
-
-        private static Brush Frozen(Color c)
-        {
-            var b = new SolidColorBrush(c);
-            b.Freeze();
-            return b;
         }
     }
 }

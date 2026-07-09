@@ -58,7 +58,7 @@ public sealed class WmiFanService : IFanService
 
         var r = await _writer.TryWriteAsync(MAFanControl, value, $"ui:fan/mode={mode}", ct)
             .ConfigureAwait(false);
-        return ToControlResult(r);
+        return ControlResult.From(r);
     }
 
     public async ValueTask<IReadOnlyList<FanPoint>> GetCurveAsync(CancellationToken ct = default)
@@ -89,15 +89,11 @@ public sealed class WmiFanService : IFanService
                 s_curveAddresses[i], pwm,
                 $"ui:fan/curve:L{i + 1}={points[i].TemperatureC}C:{pwm}", ct)
                 .ConfigureAwait(false);
-            if (!r.Allowed || !r.Verified) return ToControlResult(r);
+            if (!r.Allowed || !r.Verified) return ControlResult.From(r);
         }
 
         var mode = await _writer.TryWriteAsync(MAFanControl, CustomFanMode, "ui:fan/curve:enable-custom", ct)
             .ConfigureAwait(false);
-        return ToControlResult(mode);
+        return ControlResult.From(mode);
     }
-
-    // EcWriteResult (Allowed/Executed/Verified/Error) → ControlResult, 1:1.
-    private static ControlResult ToControlResult(EcWriteResult r) =>
-        new(r.Allowed, r.Executed, r.Verified, r.Error);
 }
