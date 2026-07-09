@@ -14,8 +14,10 @@ public enum ThermalKind { Cpu, Gpu }
 
 public static class Thermal
 {
-    // Severity ramp — the only place green/amber/red appear.
-    public static readonly Color Cold = Color.FromRgb(0x22, 0xD3, 0xEE);     // cyan
+    // Severity ramp — the only place green/amber/red appear. Cold reuses the
+    // brand cyan; the warmer bands are thermal-specific and intentionally distinct
+    // from the brand accents.
+    public static readonly Color Cold = Brand.Cyan;                          // cyan
     public static readonly Color Normal = Color.FromRgb(0x35, 0xF0, 0xA0);   // green
     public static readonly Color Warm = Color.FromRgb(0xFB, 0xBF, 0x24);     // amber
     public static readonly Color Hot = Color.FromRgb(0xFF, 0x8A, 0x3D);      // orange

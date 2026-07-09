@@ -53,9 +53,9 @@ public sealed class EcWriteAllowlist
         // Byte watts (value & 0xFF). These replace the earlier speculative
         // 0x77F..0x781 guesses. Capped at 254 W (raw byte) — the mode presets
         // stay well under; the Advanced sliders clamp to safe ranges in the UI.
-        new(1923, "ADDR_PL1_SETTING_VALUE (0x783) — PL1 sustained (W)", Enumerable.Range(0, 255).ToArray()),
-        new(1924, "ADDR_PL2_SETTING_VALUE (0x784) — PL2 turbo (W)", Enumerable.Range(0, 255).ToArray()),
-        new(1925, "ADDR_PL4_SETTING_VALUE (0x785) — PL4 peak (W)", Enumerable.Range(0, 255).ToArray()),
+        new(PowerRegisters.Pl1, "ADDR_PL1_SETTING_VALUE (0x783) — PL1 sustained (W)", Enumerable.Range(0, PowerRegisters.MaxWatts + 1).ToArray()),
+        new(PowerRegisters.Pl2, "ADDR_PL2_SETTING_VALUE (0x784) — PL2 turbo (W)", Enumerable.Range(0, PowerRegisters.MaxWatts + 1).ToArray()),
+        new(PowerRegisters.Pl4, "ADDR_PL4_SETTING_VALUE (0x785) — PL4 peak (W)", Enumerable.Range(0, PowerRegisters.MaxWatts + 1).ToArray()),
     ];
 
     private readonly Dictionary<int, EcWriteRule> _rules;

@@ -24,10 +24,8 @@ namespace AvellSucks.UI.Services;
 /// </summary>
 public sealed class WmiPowerService : IPowerService
 {
-    private const int ADDR_PL1 = 1923, ADDR_PL2 = 1924, ADDR_PL4 = 1925;
-    private const int ADDR_GAMING_PL1 = 1840, ADDR_GAMING_PL2 = 1841, ADDR_GAMING_PL4 = 1842;
-    private const int ADDR_OFFICE_PL1 = 1844, ADDR_OFFICE_PL2 = 1845, ADDR_OFFICE_PL4 = 1846;
-
+    // All PL addresses come from the shared PowerRegisters source (see FanModeMap
+    // for the same pattern on the fan surface).
     private readonly IEcBackend _backend;
     private readonly SafeEcWriter _writer;
     private readonly WriteGate _gate;
@@ -49,7 +47,7 @@ public sealed class WmiPowerService : IPowerService
 
     public async ValueTask<PowerState> GetAsync(CancellationToken ct = default)
     {
-        var snap = await _backend.ReadSnapshotAsync([ADDR_PL1, ADDR_PL2, ADDR_PL4], ct).ConfigureAwait(false);
+        var snap = await _backend.ReadSnapshotAsync(PowerRegisters.Setting, ct).ConfigureAwait(false);
         var readOk = snap.Fields.All(f => f.Ok);
         var live = readOk
             ? new PowerLimits(snap.Fields[0].Value, snap.Fields[1].Value, snap.Fields[2].Value)
@@ -107,9 +105,9 @@ public sealed class WmiPowerService : IPowerService
         // already rolled the offending register back). Byte-clamped for safety.
         var writes = new[]
         {
-            (ADDR_PL1, Clamp(limits.Pl1Watts)),
-            (ADDR_PL2, Clamp(limits.Pl2Watts)),
-            (ADDR_PL4, Clamp(limits.Pl4Watts)),
+            (PowerRegisters.Pl1, Clamp(limits.Pl1Watts)),
+            (PowerRegisters.Pl2, Clamp(limits.Pl2Watts)),
+            (PowerRegisters.Pl4, Clamp(limits.Pl4Watts)),
         };
         EcWriteResult last = default!;
         foreach (var (addr, val) in writes)
@@ -131,9 +129,7 @@ public sealed class WmiPowerService : IPowerService
         if (_presetCache.TryGetValue(mode, out var cached)) return cached;
 
         var isGaming = mode is PerformanceMode.Gaming or PerformanceMode.High;
-        int[] addrs = isGaming
-            ? [ADDR_GAMING_PL1, ADDR_GAMING_PL2, ADDR_GAMING_PL4]
-            : [ADDR_OFFICE_PL1, ADDR_OFFICE_PL2, ADDR_OFFICE_PL4];
+        int[] addrs = isGaming ? PowerRegisters.GamingDefaults : PowerRegisters.OfficeDefaults;
 
         var snap = await _backend.ReadSnapshotAsync(addrs, ct).ConfigureAwait(false);
         var readOk = snap.Fields.All(f => f.Ok);
@@ -160,5 +156,5 @@ public sealed class WmiPowerService : IPowerService
         _ => PerformanceMode.Saving,
     };
 
-    private static int Clamp(int w) => Math.Clamp(w, 0, 254);
+    private static int Clamp(int w) => Math.Clamp(w, 0, PowerRegisters.MaxWatts);
 }

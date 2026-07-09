@@ -118,9 +118,6 @@ public sealed class LocalPowerService : IPowerService
         return new(ControlResult.Ok());
     }
 
-    /// <summary>The preset limits for a mode (for UI preview before applying).</summary>
-    public static PowerLimits PresetFor(PerformanceMode mode) => Presets[mode];
-
     public ValueTask<PowerLimits> GetPresetAsync(PerformanceMode mode, CancellationToken ct = default)
         => new(Presets[mode]);
 }

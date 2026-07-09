@@ -202,8 +202,7 @@ public sealed class FanCurveEditor : FrameworkElement
     private void DrawTempBand(DrawingContext dc, Rect r, double t0, double t1, Color c)
     {
         double x0 = TempToX(t0), x1 = TempToX(t1);
-        var b = new SolidColorBrush(c); b.Freeze();
-        dc.DrawRectangle(b, null, new Rect(x0, r.Top, Math.Max(0, x1 - x0), r.Height));
+        dc.DrawRectangle(Brand.Frozen(c), null, new Rect(x0, r.Top, Math.Max(0, x1 - x0), r.Height));
     }
 
     // Residency = how much of the 60 s window each sensor spent at each
