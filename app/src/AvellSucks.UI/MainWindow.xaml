@@ -56,7 +56,18 @@
                     </StackPanel>
                 </StackPanel>
 
-                <!-- Nav items -->
+                <!-- Meta items pinned to the rail footer: Settings + About. Declared
+                     with DockPanel.Dock=Bottom before the primary group so they hug
+                     the bottom edge (About lowest), the way apps group secondary
+                     navigation. Same GroupName so selection is exclusive across all. -->
+                <StackPanel DockPanel.Dock="Bottom">
+                    <RadioButton x:Name="NavSettings" GroupName="nav" Style="{StaticResource NavItemStyle}"
+                                 Tag="&#xE713;" Content="{loc:Tr Nav.Settings}" Checked="OnNavChecked"/>
+                    <RadioButton x:Name="NavAbout" GroupName="nav" Style="{StaticResource NavItemStyle}"
+                                 Tag="&#xE946;" Content="{loc:Tr Nav.About}" Checked="OnNavChecked"/>
+                </StackPanel>
+
+                <!-- Primary nav -->
                 <StackPanel DockPanel.Dock="Top" x:Name="NavItems">
                     <RadioButton x:Name="NavDashboard" GroupName="nav" Style="{StaticResource NavItemStyle}"
                                  IsChecked="True" Tag="&#xE80F;" Content="{loc:Tr Nav.Dashboard}"
@@ -67,29 +78,7 @@
                                  Tag="&#xE771;" Content="{loc:Tr Nav.Rgb}" Checked="OnNavChecked"/>
                     <RadioButton x:Name="NavPower" GroupName="nav" Style="{StaticResource NavItemStyle}"
                                  Tag="&#xEC4A;" Content="{loc:Tr Nav.Performance}" Checked="OnNavChecked"/>
-                    <RadioButton x:Name="NavAbout" GroupName="nav" Style="{StaticResource NavItemStyle}"
-                                 Tag="&#xE946;" Content="{loc:Tr Nav.About}" Checked="OnNavChecked"/>
-                    <RadioButton x:Name="NavSettings" GroupName="nav" Style="{StaticResource NavItemStyle}"
-                                 Tag="&#xE713;" Content="{loc:Tr Nav.Settings}" Checked="OnNavChecked"/>
                 </StackPanel>
-
-                <!-- Gateway status (bottom) -->
-                <Border DockPanel.Dock="Bottom" Style="{StaticResource PanelRaised}" Padding="12,10">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Ellipse x:Name="GatewayDot" Width="8" Height="8" Fill="{StaticResource Ok}"
-                                     VerticalAlignment="Center">
-                                <Ellipse.Effect>
-                                    <DropShadowEffect Color="{StaticResource OkColor}" BlurRadius="8" ShadowDepth="0" Opacity="0.8"/>
-                                </Ellipse.Effect>
-                            </Ellipse>
-                            <TextBlock x:Name="GatewayText" Text="{loc:Tr Gateway.Online}" Margin="8,0,0,0"
-                                       FontSize="12" Foreground="{StaticResource Ink2}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <TextBlock x:Name="GatewaySub" Text="EC · WMI · HID" Style="{StaticResource Caption}"
-                                   FontFamily="{StaticResource MonoFont}" Margin="0,4,0,0"/>
-                    </StackPanel>
-                </Border>
             </DockPanel>
         </Border>
 

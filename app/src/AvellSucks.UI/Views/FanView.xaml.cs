@@ -138,6 +138,15 @@ public partial class FanView : UserControl
             _ => ModeAuto,
         };
         if (rb is not null) rb.IsChecked = true;
+        UpdateResetVisibility();
+    }
+
+    // "Reset to auto" is only meaningful when the fan has diverged from auto;
+    // in auto the Auto chip already IS the state, so the button is redundant.
+    private void UpdateResetVisibility()
+    {
+        if (ResetBtn is null) return;
+        ResetBtn.Visibility = CurrentMode() == "auto" ? Visibility.Collapsed : Visibility.Visible;
     }
 
     // Selecting a mode actuates immediately — no Apply button.
@@ -147,6 +156,7 @@ public partial class FanView : UserControl
         string mode = rb.Name.Replace("Mode", "").ToLowerInvariant();
 
         ModeHint.Text = HintFor(mode);
+        UpdateResetVisibility();
 
         _curveWrite.Cancel(); // a mode press supersedes a pending curve write
         _monitor?.Suspend();  // don't let the reconciler yank the selection while this settles
