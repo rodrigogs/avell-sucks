@@ -23,10 +23,6 @@ namespace AvellSucks.Api.Controllers;
 [Route("api/power")]
 public sealed class PowerController : ControllerBase
 {
-    private const int ADDR_PL1_SETTING_VALUE = 1923; // 0x783
-    private const int ADDR_PL2_SETTING_VALUE = 1924; // 0x784
-    private const int ADDR_PL4_SETTING_VALUE = 1925; // 0x785
-
     private readonly IEcBackend _backend;
     private readonly SafeEcWriter _writer;
 
@@ -72,7 +68,7 @@ public sealed class PowerController : ControllerBase
         if (request.Pl1.HasValue)
         {
             var r = await _writer.TryWriteAsync(
-                ADDR_PL1_SETTING_VALUE, request.Pl1.Value,
+                PowerRegisters.Pl1, request.Pl1.Value,
                 reason: "api:power/profile:pl1", ct).ConfigureAwait(false);
             results.Add(r);
 
@@ -83,7 +79,7 @@ public sealed class PowerController : ControllerBase
         if (request.Pl2.HasValue)
         {
             var r = await _writer.TryWriteAsync(
-                ADDR_PL2_SETTING_VALUE, request.Pl2.Value,
+                PowerRegisters.Pl2, request.Pl2.Value,
                 reason: "api:power/profile:pl2", ct).ConfigureAwait(false);
             results.Add(r);
 
@@ -94,7 +90,7 @@ public sealed class PowerController : ControllerBase
         if (request.Pl4.HasValue)
         {
             var r = await _writer.TryWriteAsync(
-                ADDR_PL4_SETTING_VALUE, request.Pl4.Value,
+                PowerRegisters.Pl4, request.Pl4.Value,
                 reason: "api:power/profile:pl4", ct).ConfigureAwait(false);
             results.Add(r);
 

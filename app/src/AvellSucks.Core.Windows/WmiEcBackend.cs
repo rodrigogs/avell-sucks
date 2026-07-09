@@ -31,14 +31,10 @@ public sealed class WmiEcBackend : IEcBackend, IEcWriter, IAsyncDisposable
     private const string ClassName = "AcpiTest_MULong";
     private const ulong ReadFlag = 0x100_0000_0000UL; // 2^40
 
-    // Power-limit EC addresses — CONFIRMED from the decompiled OEM AvellSucks
-    // (FanManagementPage2.SetPL1/2/4Value write WMIWriteECRAM(1923/1924/1925);
-    // GetGamingPLDefaultValue reads 1840/1841/1842, Office reads 1844/1845/1846).
-    // Byte watts. (Tau is NOT an EC register — the OEM sets it via Intel XTU
+    // Power-limit EC addresses come from the shared PowerRegisters source so the
+    // backend, the WMI power service, the API controller and the write allowlist
+    // never disagree. (Tau is NOT an EC register — the OEM sets it via Intel XTU
     // `-id 66`, so it's out of scope for the EC backend.)
-    private const int ADDR_PL1_SETTING_VALUE = 1923; // 0x783
-    private const int ADDR_PL2_SETTING_VALUE = 1924; // 0x784
-    private const int ADDR_PL4_SETTING_VALUE = 1925; // 0x785
 
     public async ValueTask<EcSnapshot> ReadSnapshotAsync(
         IReadOnlyList<int> addresses, CancellationToken cancellationToken = default)
@@ -88,8 +84,7 @@ public sealed class WmiEcBackend : IEcBackend, IEcWriter, IAsyncDisposable
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var addresses = new[] { ADDR_PL1_SETTING_VALUE, ADDR_PL2_SETTING_VALUE, ADDR_PL4_SETTING_VALUE };
-        var snapshot = await ReadSnapshotAsync(addresses, cancellationToken).ConfigureAwait(false);
+        var snapshot = await ReadSnapshotAsync(PowerRegisters.Setting, cancellationToken).ConfigureAwait(false);
 
         if (snapshot.Fields.Count < 3)
             return new PowerProfileState(DateTimeOffset.UtcNow, 0, 0, 0, false, "Incomplete power-register snapshot.");

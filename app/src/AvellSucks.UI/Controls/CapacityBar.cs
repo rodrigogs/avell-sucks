@@ -46,8 +46,27 @@ public sealed class CapacityBar : FrameworkElement
     public double TickAt { get => (double)GetValue(TickAtProperty); set => SetValue(TickAtProperty, value); }
     public bool SecondaryIsSpillover { get => (bool)GetValue(SecondaryIsSpilloverProperty); set => SetValue(SecondaryIsSpilloverProperty, value); }
 
-    private static readonly Brush Track = Brand.Frozen(Color.FromRgb(0x24, 0x10, 0x41));
+    private static readonly Brush Track = Brand.Frozen(Brand.Track);
     private static readonly Brush Cache = Brand.Frozen(Color.FromRgb(0x6D, 0x4A, 0xA0)); // muted, reclaimable
+
+    // Healthy fill + threshold tick never change, so build them once instead of
+    // per render (matches LoadTempGauge's cached-gradient/-pen pattern).
+    private static readonly Brush HealthyFill = FrozenGradient(Brand.Cyan, Brand.Magenta);
+    private static readonly Pen TickPen = FrozenPen(Color.FromArgb(0xAA, 0xF3, 0xEC, 0xFF), 1.5);
+
+    private static Brush FrozenGradient(Color a, Color b)
+    {
+        var g = new LinearGradientBrush(a, b, new Point(0, 0), new Point(1, 0));
+        g.Freeze();
+        return g;
+    }
+
+    private static Pen FrozenPen(Color c, double thickness)
+    {
+        var p = new Pen(Brand.Frozen(c), thickness);
+        p.Freeze();
+        return p;
+    }
 
     protected override void OnRender(DrawingContext dc)
     {
@@ -65,14 +84,7 @@ public sealed class CapacityBar : FrameworkElement
         Brush fill;
         if (frac >= CriticalAt) fill = Brand.Frozen(Thermal.Critical);
         else if (frac >= WarnAt) fill = Brand.Frozen(Thermal.Warm);
-        else
-        {
-            var g = new LinearGradientBrush(
-                Brand.Cyan, Brand.Magenta,
-                new Point(0, 0), new Point(1, 0));
-            g.Freeze();
-            fill = g;
-        }
+        else fill = HealthyFill;
 
         if (primW > 0.5)
         {
@@ -97,8 +109,7 @@ public sealed class CapacityBar : FrameworkElement
         if (!double.IsNaN(TickAt))
         {
             double tx = w * Math.Clamp(TickAt, 0, 1);
-            var tick = new Pen(Brand.Frozen(Color.FromArgb(0xAA, 0xF3, 0xEC, 0xFF)), 1.5);
-            dc.DrawLine(tick, new Point(tx, 1), new Point(tx, h - 1));
+            dc.DrawLine(TickPen, new Point(tx, 1), new Point(tx, h - 1));
         }
     }
 }

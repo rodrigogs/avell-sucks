@@ -31,9 +31,7 @@ public partial class DashboardView : UserControl
     // a stable hue. Color is identity only — bar severity still carries fill.
     private static readonly Color[] DriveColors =
     {
-        Brand.Cyan, Brand.Violet, Brand.Magenta,
-        Color.FromRgb(0x34, 0xE5, 0xA0), // ok-green
-        Color.FromRgb(0xF4, 0xC0, 0x4A), // warn-amber
+        Brand.Cyan, Brand.Violet, Brand.Magenta, Brand.Ok, Brand.Warn,
     };
     private readonly Dictionary<string, DiskUsageRow> _diskRows = new();
 
@@ -219,7 +217,7 @@ public partial class DashboardView : UserControl
         // Header headline: total free across all fixed drives (the "available" ask).
         long totalFree = 0;
         foreach (var d in drives) totalFree += d.FreeBytes;
-        DiskFree.Text = string.Format(Loc.T("Dash.Free"), Bytes(totalFree));
+        DiskFree.Text = string.Format(Loc.T("Dash.Free"), DiskUsageRow.FormatBytes(totalFree));
 
         // Build/refresh one row per drive, keyed by name so rows are reused (no
         // flicker) and a drive that vanishes (USB unplug) is dropped.
@@ -249,13 +247,6 @@ public partial class DashboardView : UserControl
                 _diskRows.Remove(name);
             }
         }
-    }
-
-    private static string Bytes(long b)
-    {
-        const double G = 1024d * 1024 * 1024;
-        double gb = b / G;
-        return gb >= 1024 ? $"{gb / 1024:0.0} TB" : $"{gb:0} GB";
     }
 
     // Show the "sensors unavailable" notice only when the ring-0 monitor genuinely

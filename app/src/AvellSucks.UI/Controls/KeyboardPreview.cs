@@ -22,7 +22,7 @@ public sealed class KeyboardPreview : FrameworkElement
 
     public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
         nameof(Color), typeof(Color), typeof(KeyboardPreview),
-        new FrameworkPropertyMetadata(Color.FromRgb(0xFF, 0x2E, 0x88), FrameworkPropertyMetadataOptions.AffectsRender));
+        new FrameworkPropertyMetadata(Brand.Magenta, FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register(
         nameof(Brightness), typeof(double), typeof(KeyboardPreview),
@@ -42,10 +42,23 @@ public sealed class KeyboardPreview : FrameworkElement
     public double Brightness { get => (double)GetValue(BrightnessProperty); set => SetValue(BrightnessProperty, value); }
     private double Phase { get => (double)GetValue(PhaseProperty); set => SetValue(PhaseProperty, value); }
 
+    // Board backing + rim, built once (the keycaps recolor per render, the board
+    // never does). Backing == Brand.Bg so the preview sits on the same base as the
+    // rest of the UI.
+    private static readonly Brush s_boardFill = Brand.Frozen(Brand.Bg);
+    private static readonly Pen s_boardRim = FrozenPen(Color.FromArgb(0x50, 0x3A, 0x2F, 0x47), 1);
+
     public KeyboardPreview()
     {
         Loaded += (_, _) => RestartAnimation();
         Unloaded += (_, _) => BeginAnimation(PhaseProperty, null);
+    }
+
+    private static Pen FrozenPen(Color c, double thickness)
+    {
+        var p = new Pen(Brand.Frozen(c), thickness);
+        p.Freeze();
+        return p;
     }
 
     private void RestartAnimation()
@@ -74,9 +87,7 @@ public sealed class KeyboardPreview : FrameworkElement
         if (w <= 0 || h <= 0) return;
 
         // Board backing.
-        dc.DrawRoundedRectangle(new SolidColorBrush(Color.FromRgb(0x14, 0x10, 0x18)),
-            new Pen(new SolidColorBrush(Color.FromArgb(0x50, 0x3A, 0x2F, 0x47)), 1),
-            new Rect(0, 0, w, h), 10, 10);
+        dc.DrawRoundedRectangle(s_boardFill, s_boardRim, new Rect(0, 0, w, h), 10, 10);
 
         double pad = 14;
         double gap = 5;
