@@ -15,6 +15,10 @@ public partial class SettingsView : UserControl
 {
     private readonly AppSettings _settings = SettingsStore.Current.Settings;
     private bool _loading = true;
+    // Remembers the last update-status message as a (key, arg) pair so it can be
+    // re-localized when the language changes (the label's {loc:Tr} binding is
+    // replaced by a literal once we set .Text, so we recompute it ourselves).
+    private (string key, string? arg)? _lastUpdateStatus;
 
     public SettingsView()
     {
@@ -34,7 +38,13 @@ public partial class SettingsView : UserControl
         StartMinimized.IsChecked = _settings.StartMinimized;
         HideOnMinimize.IsChecked = _settings.HideOnMinimize;
 
-        VersionText.Text = string.Format(Loc.T("Settings.Version"), Updater.CurrentVersion().ToString(3));
+        RefreshUpdateTexts();
+
+        // The version line and the update-status line are set imperatively (their
+        // {loc:Tr} bindings get replaced by literals), so re-localize them when the
+        // language changes at runtime. This is a cached, app-lifetime view, so no
+        // unsubscribe is needed.
+        Loc.Instance.PropertyChanged += (_, _) => RefreshUpdateTexts();
 
         _loading = false;
 
@@ -91,41 +101,58 @@ public partial class SettingsView : UserControl
         SettingsStore.Current.Save();
     }
 
+    // Re-localize the version line and the last update-status message. Called on
+    // construction and on any runtime language change.
+    private void RefreshUpdateTexts()
+    {
+        VersionText.Text = string.Format(Loc.T("Settings.Version"), Updater.CurrentVersion().ToString(3));
+        if (_lastUpdateStatus is { } s)
+            UpdateStatusText.Text = s.arg is null ? Loc.T(s.key) : string.Format(Loc.T(s.key), s.arg);
+    }
+
+    // Set the update-status line and remember it (key + optional arg) so a later
+    // language switch can re-localize it.
+    private void SetUpdateStatus(string key, string? arg = null)
+    {
+        _lastUpdateStatus = (key, arg);
+        UpdateStatusText.Text = arg is null ? Loc.T(key) : string.Format(Loc.T(key), arg);
+    }
+
     // Manual "check for updates". Queries GitHub; if newer, downloads the installer
     // and relaunches it silently (the app exits so the installer can overwrite).
     private async void OnCheckUpdates(object sender, System.Windows.RoutedEventArgs e)
     {
         CheckUpdatesBtn.IsEnabled = false;
-        UpdateStatusText.Text = Loc.T("Settings.Updates.Checking");
+        SetUpdateStatus("Settings.Updates.Checking");
         try
         {
             var check = await Updater.CheckAsync();
             switch (check.Status)
             {
                 case UpdateStatus.UpToDate:
-                    UpdateStatusText.Text = Loc.T("Settings.Updates.UpToDate");
+                    SetUpdateStatus("Settings.Updates.UpToDate");
                     break;
                 case UpdateStatus.UpdateAvailable:
-                    UpdateStatusText.Text = string.Format(Loc.T("Settings.Updates.Downloading"), check.LatestVersion);
+                    SetUpdateStatus("Settings.Updates.Downloading", check.LatestVersion);
                     if (check.AssetUrl is not null)
                     {
                         // Applies and shuts the app down; if it returns, it failed.
                         var ok = await Updater.DownloadAndApplyAsync(check, () =>
                             System.Windows.Application.Current.Shutdown());
-                        if (!ok) UpdateStatusText.Text = Loc.T("Settings.Updates.Failed");
+                        if (!ok) SetUpdateStatus("Settings.Updates.Failed");
                     }
                     else
                     {
                         // Release exists but no installer asset — point at the page.
-                        UpdateStatusText.Text = string.Format(Loc.T("Settings.Updates.Available"), check.LatestVersion);
+                        SetUpdateStatus("Settings.Updates.Available", check.LatestVersion);
                         Updater.OpenReleasesPage();
                     }
                     break;
                 case UpdateStatus.NoConnection:
-                    UpdateStatusText.Text = Loc.T("Settings.Updates.NoConnection");
+                    SetUpdateStatus("Settings.Updates.NoConnection");
                     break;
                 default:
-                    UpdateStatusText.Text = Loc.T("Settings.Updates.Failed");
+                    SetUpdateStatus("Settings.Updates.Failed");
                     break;
             }
         }
