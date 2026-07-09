@@ -192,6 +192,18 @@
   <data name="Settings.WindowSection" xml:space="preserve"><value>WINDOW</value></data>
   <data name="Settings.HideOnMinimize" xml:space="preserve"><value>Hide to tray on minimize</value></data>
   <data name="Settings.HideOnMinimize.Hint" xml:space="preserve"><value>Minimizing sends the window to the system tray instead of the taskbar.</value></data>
+  <data name="Settings.UpdatesSection" xml:space="preserve"><value>UPDATES</value></data>
+  <data name="Settings.Version" xml:space="preserve"><value>Version {0}</value></data>
+  <data name="Settings.Updates.Hint" xml:space="preserve"><value>Check GitHub for a newer release and install it.</value></data>
+  <data name="Settings.CheckUpdates" xml:space="preserve"><value>Check for updates</value></data>
+  <data name="Settings.Updates.Checking" xml:space="preserve"><value>Checking…</value></data>
+  <data name="Settings.Updates.UpToDate" xml:space="preserve"><value>You're on the latest version.</value></data>
+  <data name="Settings.Updates.Downloading" xml:space="preserve"><value>Downloading {0}… the app will restart to finish.</value></data>
+  <data name="Settings.Updates.Available" xml:space="preserve"><value>Version {0} is available on GitHub.</value></data>
+  <data name="Settings.Updates.NoConnection" xml:space="preserve"><value>Couldn't reach GitHub. Check your connection.</value></data>
+  <data name="Settings.Updates.Failed" xml:space="preserve"><value>Update failed. Try again, or download it from GitHub.</value></data>
+  <data name="Update.Available.Title" xml:space="preserve"><value>Update available: {0}</value></data>
+  <data name="Update.Available.Hint" xml:space="preserve"><value>Open Settings to install it.</value></data>
 
   <!-- ===== About ===== -->
   <data name="About.Tagline" xml:space="preserve"><value>The control center this laptop should have shipped with.</value></data>

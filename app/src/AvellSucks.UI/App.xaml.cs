@@ -7,9 +7,9 @@ namespace AvellSucks.UI;
 
 public partial class App : Application
 {
-    // Crash log next to the executable so startup failures are diagnosable in the field.
-    private static readonly string LogPath =
-        Path.Combine(AppContext.BaseDirectory, "gamingcenter-ui.log");
+    // Per-machine writable log (see AppPaths): Program Files is read-only, so the
+    // trace log lives under %ProgramData%\AvellSucks and survives updates.
+    private static readonly string LogPath = AppPaths.LogFile;
 
     private static void Log(string message)
     {
@@ -79,12 +79,34 @@ public partial class App : Application
             {
                 window.Show();
             }
+
+            // Silent background update check. Only NOTIFIES (a toast pointing at
+            // Settings) — never auto-applies on launch, which would yank the app
+            // out from under the user. Failures/no-connection are ignored silently.
+            _ = CheckForUpdatesAsync();
         }
         catch (Exception ex)
         {
             Log($"FATAL in OnStartup: {ex}");
             throw;
         }
+    }
+
+    // Background update check on startup: notify via a toast if a newer release
+    // exists; the user applies it from Settings. Best-effort — swallow everything.
+    private static async System.Threading.Tasks.Task CheckForUpdatesAsync()
+    {
+        try
+        {
+            var check = await AvellSucks.UI.Startup.Updater.CheckAsync().ConfigureAwait(true);
+            if (check.Status == AvellSucks.UI.Startup.UpdateStatus.UpdateAvailable)
+            {
+                Current.Dispatcher.Invoke(() => AvellSucks.UI.Controls.Toaster.Info(
+                    string.Format(AvellSucks.UI.Localization.Loc.T("Update.Available.Title"), check.LatestVersion),
+                    AvellSucks.UI.Localization.Loc.T("Update.Available.Hint")));
+            }
+        }
+        catch (Exception ex) { Log($"startup update check failed (ignored): {ex.Message}"); }
     }
 
     private static void RunSelfTest(string test)

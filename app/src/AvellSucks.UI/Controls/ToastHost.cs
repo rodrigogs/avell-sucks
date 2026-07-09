@@ -79,6 +79,19 @@ public sealed class ToastHost : Grid
         card.PlayEnter();
     }
 
+    /// <summary>
+    /// Show a persistent informational toast (cyan, no spin) — not a write result.
+    /// Used e.g. by the startup update check to point the user at Settings.
+    /// </summary>
+    public void ShowInfo(string title, string? message)
+    {
+        if (_current is not null) { Children.Remove(_current); _current.Stop(); }
+        var card = new ToastCard(new ToastSpec(GlyphOk, title, Cyan, Persist: true, Spin: false), message, Dismiss);
+        _current = card;
+        Children.Add(card);
+        card.PlayEnter();
+    }
+
     /// <summary>Dismiss the current toast, if any (animated).</summary>
     public void Clear() => Dismiss(_current);
 
@@ -329,6 +342,9 @@ public static class Toaster
 
     /// <summary>Show or replace the active toast. <paramref name="label"/> is the plain success headline.</summary>
     public static void Show(WriteState state, string? label = null, string? message = null) => s_host?.Show(state, label, message);
+
+    /// <summary>Show a persistent informational toast (not a write result).</summary>
+    public static void Info(string title, string? message = null) => s_host?.ShowInfo(title, message);
 
     /// <summary>Dismiss the active toast.</summary>
     public static void Clear() => s_host?.Clear();
