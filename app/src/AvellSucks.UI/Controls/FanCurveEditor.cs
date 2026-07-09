@@ -40,6 +40,7 @@ public sealed class FanCurveEditor : FrameworkElement
         new(50, 40), new(60, 64), new(70, 90), new(80, 116), new(90, 140)
     };
     private int _dragIndex = -1;
+    private int _hoverIndex = -1;
 
     // Rolling temperature history for the residency layer (null = no sample).
     private readonly List<double?> _cpuHist = new();
@@ -77,20 +78,49 @@ public sealed class FanCurveEditor : FrameworkElement
     private static readonly Color GpuColor = Brand.Cyan;
     private static readonly Brush TrackBrush = Brand.Frozen(Brand.Track);
     private static readonly Brush GridBrush = Brand.Frozen(Color.FromArgb(0x40, 0x3A, 0x2F, 0x47));
+    private static readonly Brush GridBrushSoft = Brand.Frozen(Color.FromArgb(0x24, 0x3A, 0x2F, 0x47));
     private static readonly Brush InkBrush = Brand.Frozen(Brand.Ink);
     private static readonly Brush Ink3Brush = Brand.Frozen(Brand.Ink3);
+    // Dimmer than the node labels: the axis bounds (40°/100°) are context, not
+    // editable breakpoints, so they must read as quieter than the five nodes.
+    private static readonly Brush BoundBrush = Brand.Frozen(Color.FromArgb(0x88, Brand.Ink3.R, Brand.Ink3.G, Brand.Ink3.B));
     private static readonly Brush NodeFill = Brand.Frozen(Brand.Bg);
-    private static readonly Pen LinePen = FrozenPen(Brand.Cyan, 2.5, PenLineJoin.Round);
-    private static readonly Pen NodePen = FrozenPen(CpuColor, 2.5);
-    private static readonly Brush NodeDot = Brand.Frozen(CpuColor);
+
+    // The curve reads cool→hot along its own X axis (temperature): cyan at 40°,
+    // through violet, to magenta at 100° — the same neon axis as the rest of the
+    // app, and "danger legible" as the line climbs into the hot zone. The stroke
+    // and the fill under it share the gradient so the envelope reads as one body.
+    private static readonly GradientStopCollection CurveStops = new()
+    {
+        new GradientStop(Brand.Cyan, 0.0),
+        new GradientStop(Brand.Violet, 0.5),
+        new GradientStop(Brand.Magenta, 1.0),
+    };
+    private static readonly Pen LinePen = FrozenPen(
+        new LinearGradientBrush(CurveStops, new Point(0, 0), new Point(1, 0)), 2.5, PenLineJoin.Round);
+    private static readonly Brush CurveFill = FrozenBrush(new LinearGradientBrush(new GradientStopCollection
+    {
+        new GradientStop(Color.FromArgb(0x33, Brand.Cyan.R, Brand.Cyan.G, Brand.Cyan.B), 0.0),
+        new GradientStop(Color.FromArgb(0x33, Brand.Magenta.R, Brand.Magenta.G, Brand.Magenta.B), 1.0),
+    }, new Point(0, 0), new Point(1, 0)));
     private static readonly Typeface MonoFace = new(new FontFamily("Cascadia Code, Consolas, monospace"),
         FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
 
     private static Pen FrozenPen(Color c, double thickness, PenLineJoin join = PenLineJoin.Miter)
+        => FrozenPen(Brand.Frozen(c), thickness, join);
+
+    private static Pen FrozenPen(Brush b, double thickness, PenLineJoin join = PenLineJoin.Miter)
     {
-        var pen = new Pen(Brand.Frozen(c), thickness) { LineJoin = join };
+        if (b.CanFreeze && !b.IsFrozen) b.Freeze();
+        var pen = new Pen(b, thickness) { LineJoin = join };
         pen.Freeze();
         return pen;
+    }
+
+    private static Brush FrozenBrush(Brush b)
+    {
+        if (b.CanFreeze && !b.IsFrozen) b.Freeze();
+        return b;
     }
 
     private Rect PlotRect => new(PadLeft, PadTop,
@@ -138,6 +168,25 @@ public sealed class FanCurveEditor : FrameworkElement
         return _points[^1].Pwm;
     }
 
+    // Color on the cool→hot curve axis (cyan @40° → violet @70° → magenta @100°),
+    // matching the stroke gradient so a node's ring belongs to the line it sits on.
+    private static Color CurveColorAt(double tempC)
+    {
+        double f = Math.Clamp((tempC - TMin) / (TMax - TMin), 0, 1);
+        return f <= 0.5
+            ? Lerp(Brand.Cyan, Brand.Violet, f / 0.5)
+            : Lerp(Brand.Violet, Brand.Magenta, (f - 0.5) / 0.5);
+    }
+
+    private static Color Lerp(Color a, Color b, double f)
+    {
+        f = Math.Clamp(f, 0, 1);
+        return Color.FromRgb(
+            (byte)(a.R + (b.R - a.R) * f),
+            (byte)(a.G + (b.G - a.G) * f),
+            (byte)(a.B + (b.B - a.B) * f));
+    }
+
     protected override void OnRender(DrawingContext dc)
     {
         var r = PlotRect;
@@ -154,6 +203,26 @@ public sealed class FanCurveEditor : FrameworkElement
         // Thermal residency layer (the background "temperature" the user asked for).
         DrawResidency(dc, r);
 
+        // Vertical guides at each node's temperature breakpoint — soft, so you can
+        // read a node's PWM straight down to its °C label without a ruler.
+        var pts = _points.Select(ToScreen).ToArray();
+        var vGridPen = new Pen(GridBrushSoft, 1);
+        foreach (var p in pts)
+            dc.DrawLine(vGridPen, new Point(p.X, r.Top), new Point(p.X, r.Bottom));
+
+        // Axis bounds. The nodes only span 50–90 °C but the plot (and the live
+        // residency / operating point) runs the full 40–100 °C the sensors report,
+        // so mark the two ends — a quiet edge guide + a dimmed label — to make the
+        // extra range explicit rather than dead margin (a 46° idle GPU or a 98°
+        // spike lands here, outside the editable breakpoints).
+        foreach (var bound in new[] { TMin, TMax })
+        {
+            double bx = TempToX(bound);
+            dc.DrawLine(vGridPen, new Point(bx, r.Top), new Point(bx, r.Bottom));
+            var bft = Text($"{bound:0}°", 9.5, BoundBrush);
+            dc.DrawText(bft, new Point(bx - bft.Width / 2, r.Bottom + 6));
+        }
+
         // Horizontal gridlines + PWM% labels at 0/25/50/75/100.
         for (int i = 0; i <= 4; i++)
         {
@@ -163,8 +232,21 @@ public sealed class FanCurveEditor : FrameworkElement
             dc.DrawText(pctFt, new Point(r.Left - 26, y - pctFt.Height / 2));
         }
 
-        // Curve line (over the thermal layer).
-        var pts = _points.Select(ToScreen).ToArray();
+        // Filled envelope under the curve (cool→hot gradient, low alpha): the fan's
+        // output reads as a body of air moved, not just a wire. Clipped to the plot
+        // so the fade never bleeds past the axes.
+        var fill = new StreamGeometry();
+        using (var fctx = fill.Open())
+        {
+            fctx.BeginFigure(new Point(pts[0].X, r.Bottom), true, true);
+            fctx.LineTo(pts[0], true, true);
+            for (int i = 1; i < pts.Length; i++) fctx.LineTo(pts[i], true, true);
+            fctx.LineTo(new Point(pts[^1].X, r.Bottom), true, true);
+        }
+        fill.Freeze();
+        dc.DrawGeometry(CurveFill, null, fill);
+
+        // Curve line (over the thermal layer + its own fill).
         var line = new StreamGeometry();
         using (var lctx = line.Open())
         {
@@ -174,20 +256,34 @@ public sealed class FanCurveEditor : FrameworkElement
         line.Freeze();
         dc.DrawGeometry(null, LinePen, line);
 
-        // Nodes + labels.
+        // Nodes + labels. Each node takes its color from its spot on the cool→hot
+        // gradient, so it reads as part of the curve, not a separate magenta layer.
+        // States: default ring, hover halo, active (dragging) larger ring + glow.
         for (int i = 0; i < pts.Length; i++)
         {
             var c = pts[i];
             bool active = i == _dragIndex;
-            double rad = NodeRadius + (active ? 2 : 0);
-            dc.DrawEllipse(NodeFill, NodePen, c, rad, rad);
-            dc.DrawEllipse(NodeDot, null, c, 2.5, 2.5);
+            bool hover = i == _hoverIndex && !active;
+            var nodeColor = CurveColorAt(_points[i].TemperatureC);
+
+            if (active)
+                dc.DrawEllipse(Brand.Frozen(Color.FromArgb(0x33, nodeColor.R, nodeColor.G, nodeColor.B)),
+                    null, c, NodeRadius + 8, NodeRadius + 8);
+            else if (hover)
+                dc.DrawEllipse(Brand.Frozen(Color.FromArgb(0x22, nodeColor.R, nodeColor.G, nodeColor.B)),
+                    null, c, NodeRadius + 5, NodeRadius + 5);
+
+            double rad = NodeRadius + (active ? 2 : hover ? 1 : 0);
+            dc.DrawEllipse(NodeFill, FrozenPen(nodeColor, active ? 3 : 2.5), c, rad, rad);
+            dc.DrawEllipse(Brand.Frozen(nodeColor), null, c, 2.5, 2.5);
 
             var tempFt = Text($"{_points[i].TemperatureC}°", 10.5, Ink3Brush);
             dc.DrawText(tempFt, new Point(c.X - tempFt.Width / 2, r.Bottom + 6));
 
+            // The PWM% label lifts to full-ink and grows a touch on the active node,
+            // so the value you're setting is the one that stands out.
             int pwmPct = (int)Math.Round(_points[i].Pwm / (double)MaxPwm * 100);
-            var pwmFt = Text($"{pwmPct}%", 11, InkBrush);
+            var pwmFt = Text($"{pwmPct}%", active ? 12.5 : 11, active ? Brand.Frozen(nodeColor) : InkBrush);
             dc.DrawText(pwmFt, new Point(c.X - pwmFt.Width / 2, c.Y - 22));
         }
 
@@ -327,33 +423,60 @@ public sealed class FanCurveEditor : FrameworkElement
 
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
-        var pos = e.GetPosition(this);
-        var pts = _points.Select(ToScreen).ToArray();
-        for (int i = 0; i < pts.Length; i++)
+        int hit = HitTest(e.GetPosition(this));
+        if (hit >= 0)
         {
-            if ((pos - pts[i]).Length <= NodeRadius + 8)
-            {
-                _dragIndex = i;
-                CaptureMouse();
-                InvalidateVisual();
-                break;
-            }
+            _dragIndex = hit;
+            CaptureMouse();
+            InvalidateVisual();
         }
         base.OnMouseLeftButtonDown(e);
     }
 
     protected override void OnMouseMove(MouseEventArgs e)
     {
+        var pos = e.GetPosition(this);
+
         if (_dragIndex >= 0 && e.LeftButton == MouseButtonState.Pressed)
         {
-            var pos = e.GetPosition(this);
             int pwm = PwmFromY(pos.Y);
             var old = _points[_dragIndex];
             _points[_dragIndex] = old with { Pwm = pwm };
             InvalidateVisual();
             CurveChanged?.Invoke(this, EventArgs.Empty);
         }
+        else
+        {
+            // Hover feedback: which node the pointer is over drives the halo + the
+            // grab cursor, so a draggable node signals itself before you click.
+            int hit = HitTest(pos);
+            if (hit != _hoverIndex)
+            {
+                _hoverIndex = hit;
+                Cursor = hit >= 0 ? Cursors.SizeNS : Cursors.Arrow;
+                InvalidateVisual();
+            }
+        }
         base.OnMouseMove(e);
+    }
+
+    protected override void OnMouseLeave(MouseEventArgs e)
+    {
+        if (_hoverIndex != -1)
+        {
+            _hoverIndex = -1;
+            Cursor = Cursors.Arrow;
+            InvalidateVisual();
+        }
+        base.OnMouseLeave(e);
+    }
+
+    private int HitTest(Point pos)
+    {
+        var pts = _points.Select(ToScreen).ToArray();
+        for (int i = 0; i < pts.Length; i++)
+            if ((pos - pts[i]).Length <= NodeRadius + 8) return i;
+        return -1;
     }
 
     protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
