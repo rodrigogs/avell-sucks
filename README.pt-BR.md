@@ -41,11 +41,14 @@
 
 ## Por que isto existe
 
-Comprei um Avell top de linha em 2018. Anos depois, o "Gaming Center" da fabricante,
-o app que controla a curva da ventoinha, os modos de desempenho, a iluminação do
-teclado, toda a personalidade térmica e de energia da máquina, foi
+Comprei um Avell top de linha em 2018. Quando o Windows 11 ganhou a primeira
+grande atualização (a versão 22H2, lançada em **20 de setembro de 2022**, que a
+Microsoft manteve por meros **24 meses**), o "Gaming Center" da fabricante, o app
+que controla a curva da ventoinha, os modos de desempenho, a iluminação do
+teclado, toda a personalidade térmica e de energia da máquina, já estava
 **descontinuado e abandonado**: datado, pesado, sem manutenção, e ainda assim a
-única forma oficial de controlar o hardware do próprio notebook.
+única forma oficial de controlar o hardware do próprio notebook. Uns quatro anos
+de uso, e o software que rodava a minha máquina já estava morto.
 
 Então a escolha era conviver com um bloatware abandonado entre mim e meu próprio
 silício, ou substituir. Isto é a substituição. O nome não é sutil de propósito:
