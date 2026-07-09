@@ -255,7 +255,7 @@ public partial class DashboardView : UserControl
     {
         if (!sensorsAvailable)
         {
-            SensorNoticeText.Text = Loc.T("Dash.SensorNotice");
+            SensorNotice.Text = Loc.T("Dash.SensorNotice");
             SensorNotice.Visibility = Visibility.Visible;
         }
         else if (SensorNotice.Visibility != Visibility.Collapsed)

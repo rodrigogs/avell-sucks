@@ -12,7 +12,7 @@
                         <Border Width="44" Height="44" CornerRadius="10" Background="{StaticResource NeonAxis}"
                                 Effect="{StaticResource GlowMagenta}" VerticalAlignment="Center">
                             <TextBlock Text="&#xEC4A;" FontFamily="Segoe MDL2 Assets" FontSize="22"
-                                       Foreground="#FF16060F" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                       Foreground="{StaticResource OnNeon}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
@@ -58,7 +58,7 @@
                         <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
                                    FontFamily="{StaticResource MonoFont}" FontSize="12.5" Cursor="Hand"
                                    MouseLeftButtonUp="OnRepoClick">
-                            <Run Text="github.com/rodrigogs/avell-sucks" Foreground="#FF22D3EE"/>
+                            <Run Text="github.com/rodrigogs/avell-sucks" Foreground="{StaticResource Cyan}"/>
                         </TextBlock>
                     </DockPanel>
                     <DockPanel Margin="0,8,0,0">

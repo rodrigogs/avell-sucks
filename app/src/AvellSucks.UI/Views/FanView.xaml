@@ -59,17 +59,8 @@
             </Border>
 
             <!-- Write-gate notice -->
-            <Border x:Name="GateNotice" Style="{StaticResource Panel}" Margin="0,16,0,0"
-                    Background="{StaticResource WarnTint}" BorderBrush="{StaticResource Warn}" Visibility="Collapsed">
-                <!-- DockPanel (not horizontal StackPanel): the text child fills the
-                     bounded remaining width so TextWrapping actually engages. -->
-                <DockPanel>
-                    <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" FontSize="15" DockPanel.Dock="Left"
-                               Foreground="{StaticResource Warn}" VerticalAlignment="Top" Margin="0,1,0,0"/>
-                    <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Ink}"
-                               TextWrapping="Wrap" Text="{loc:Tr Fan.Gate}"/>
-                </DockPanel>
-            </Border>
+            <ctl:NoticeBanner x:Name="GateNotice" Margin="0,16,0,0" Visibility="Collapsed"
+                              Severity="Warn" Glyph="&#xE72E;" Text="{loc:Tr Fan.Gate}"/>
 
         </StackPanel>
     </ScrollViewer>
