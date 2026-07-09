@@ -17,7 +17,7 @@ public partial class FanView : UserControl
     // Reconciler: reflects fan-mode changes made outside our app (OEM app / Fn key).
     // Null when there's no real EC backend (writes off / stub) — nothing to poll.
     private readonly FanStateMonitor? _monitor;
-    private bool _loading;
+    private readonly LoadingGate _loading = new();
     private bool _initialized;
 
     // The pump is owned and disposed by MainWindow and shared with the Dashboard;
@@ -86,16 +86,17 @@ public partial class FanView : UserControl
         if (!_initialized)
         {
             _initialized = true;
-            _loading = true;
-            if (!_fan.WritesEnabled)
-                GateNotice.Visibility = Visibility.Visible;
+            using (_loading.Begin())
+            {
+                if (!_fan.WritesEnabled)
+                    GateNotice.Visibility = Visibility.Visible;
 
-            var mode = await _fan.GetModeAsync();
-            SelectMode(mode ?? "auto");
-            _monitor?.NoteLocalWrite(mode ?? "auto"); // seed baseline with device state
-            var curve = await _fan.GetCurveAsync();
-            Curve.SetPoints(curve);
-            _loading = false;
+                var mode = await _fan.GetModeAsync();
+                SelectMode(mode ?? "auto");
+                _monitor?.NoteLocalWrite(mode ?? "auto"); // seed baseline with device state
+                var curve = await _fan.GetCurveAsync();
+                Curve.SetPoints(curve);
+            }
         }
 
         // Reconciler must (re)start on EVERY view activation — OnUnloaded stops it
@@ -116,9 +117,8 @@ public partial class FanView : UserControl
     private void OnExternalModeChanged(string mode)
     {
         App.Trace($"FanStateMonitor: external mode change detected → {mode}");
-        _loading = true;            // don't let SelectMode re-trigger a write
-        SelectMode(mode);
-        _loading = false;
+        using (_loading.Begin())    // don't let SelectMode re-trigger a write
+            SelectMode(mode);
         Toaster.Show(WriteState.Verified, string.Format(Loc.T("Common.ChangedOnDevice"), ModeLabel(mode)));
     }
 
@@ -169,7 +169,7 @@ public partial class FanView : UserControl
     // Selecting a mode actuates immediately — no Apply button.
     private async void OnModeChecked(object sender, RoutedEventArgs e)
     {
-        if (_loading || sender is not RadioButton rb) return;
+        if (_loading.Active || sender is not RadioButton rb) return;
         string mode = rb.Name.Replace("Mode", "").ToLowerInvariant();
 
         ModeHint.Text = HintFor(mode);
@@ -184,7 +184,7 @@ public partial class FanView : UserControl
     // Dragging a curve point re-applies the custom curve on settle.
     private void OnCurveEdited(object? sender, EventArgs e)
     {
-        if (_loading) return;
+        if (_loading.Active) return;
         Toaster.Clear();
         _curveWrite.Trigger(ApplyCurveNow);
     }
@@ -195,7 +195,7 @@ public partial class FanView : UserControl
         var result = await WriteReconciledAsync(
             "custom", Loc.T("Fan.Curve"), Loc.T("Fan.CurveApplied"),
             () => _fan.SetCurveAsync(Curve.Points.ToArray()));
-        if (result.State == WriteState.Verified && !_loading)
+        if (result.State == WriteState.Verified && !_loading.Active)
             SelectMode("custom");
     }
 
@@ -203,10 +203,11 @@ public partial class FanView : UserControl
     private async void OnReset(object sender, RoutedEventArgs e)
     {
         _curveWrite.Cancel();
-        _loading = true;
-        var curve = await _fan.GetCurveAsync();
-        Curve.SetPoints(curve);
-        _loading = false;
+        using (_loading.Begin())
+        {
+            var curve = await _fan.GetCurveAsync();
+            Curve.SetPoints(curve);
+        }
 
         var result = await WriteReconciledAsync(
             "auto", ModeLabel("auto"), string.Format(Loc.T("Fan.ModeSet"), ModeLabel("auto")),

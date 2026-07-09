@@ -57,10 +57,11 @@ public sealed record FanPoint(int TemperatureC, int Pwm);
 public enum PerformanceMode { Gaming = 1, High = 2, Balanced = 3, Saving = 4 }
 
 /// <summary>
-/// Performance/energy control surface used by the Performance tab. Replaces the
-/// earlier PL1/PL2/Tau-slider "Power" tab, which mixed two orthogonal systems
-/// and used speculative EC addresses. A mode carries both a Windows power scheme
-/// and a CPU power-limit preset; Advanced exposes the raw limits for tuning.
+/// Performance/energy control surface used by the Performance tab. A mode carries
+/// both a Windows power scheme and a CPU power-limit preset (PL1/PL2/PL4 at the
+/// confirmed EC registers 0x783..0x785); Advanced exposes the raw limits for
+/// tuning. (Supersedes an earlier PL1/PL2/Tau "Power" tab that mixed two
+/// orthogonal systems and targeted the wrong, speculative EC addresses.)
 /// </summary>
 public interface IPowerService
 {

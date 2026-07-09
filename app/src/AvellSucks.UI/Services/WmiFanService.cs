@@ -18,8 +18,8 @@ namespace AvellSucks.UI.Services;
 /// Addresses are the confirmed fan surface (RE + ec-read-probe.json):
 ///   0x751 (1873) ADDR_MAFAN_CONTROL_BYTE — mode
 ///   0x743..0x747 (1859..1863) custom PWM levels L1..L5
-/// Power limits are NOT handled here (their EC encoding is still speculative);
-/// the Performance tab stays on the stub until validated.
+/// Power limits (PL1/PL2/PL4 at 0x783..0x785) are handled by WmiPowerService, not
+/// here — this service is fan-only.
 /// </summary>
 public sealed class WmiFanService : IFanService
 {

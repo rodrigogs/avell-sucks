@@ -1,45 +1,36 @@
 using System;
-using System.Windows.Threading;
+using System.Threading.Tasks;
 using AvellSucks.Core.Hardware;
 
 namespace AvellSucks.UI.Services;
 
 /// <summary>
-/// Reconciler that keeps the UI's idea of the fan mode in sync with the DEVICE —
-/// reflecting changes made OUTSIDE our app (the OEM Gaming Center, or the
-/// physical Fn fan key). DESIGN.md "Reactive Architecture Spec" §1(c): a periodic
-/// EC re-read that diffs against the last-known value and raises
-/// <see cref="ExternalModeChanged"/> when the device changed on its own.
-///
-/// Local writes call <see cref="NoteLocalWrite"/> so our own actuation is not
-/// reported back as an external change. Runs on a WPF <see cref="DispatcherTimer"/>
-/// (UI thread), so subscribers can touch controls directly.
-///
-/// This is the polling half. A WMI <c>AcpiTest_EventULong</c> watcher (push, fires
-/// on the hardware Q-key) is the low-latency trigger layered on top later; polling
-/// stays the authoritative reconciliation.
+/// Reconciler that keeps the UI's fan mode in sync with the DEVICE — reflecting
+/// changes made OUTSIDE our app (the OEM Gaming Center, or the physical Fn fan
+/// key). It re-reads the EC fan-control byte, maps it via <see cref="FanModeMap"/>,
+/// and raises <see cref="ExternalModeChanged"/> (case-insensitive diff) when the
+/// device changed on its own. See <see cref="StateReconciler{T}"/> for the shared
+/// timer/baseline/diff machinery.
 /// </summary>
-public sealed class FanStateMonitor : IDisposable
+public sealed class FanStateMonitor : StateReconciler<string>
 {
     private readonly IEcBackend _backend;
-    private readonly DispatcherTimer _timer;
-    private string? _baseline;      // last mode we consider "ours" / already seen
-    private bool _busy;             // guard against overlapping async ticks
-    private bool _suspended;        // true while a local write is settling
-    private bool _disposed;
 
-    /// <summary>Raised (on the UI thread) when the device's fan mode changed externally.</summary>
+    /// <summary>Raised (UI thread) when the device's fan mode changed externally.</summary>
     public event Action<string>? ExternalModeChanged;
 
     public FanStateMonitor(IEcBackend backend, double intervalSeconds = 2.5)
+        : base(intervalSeconds, StringComparer.OrdinalIgnoreCase)
     {
         _backend = backend;
-        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(intervalSeconds) };
-        _timer.Tick += OnTick;
+        ExternalChanged += m => ExternalModeChanged?.Invoke(m);
     }
 
-    /// <summary>Record a value we just wrote (or read) so the poll won't flag it as external.</summary>
-    public void NoteLocalWrite(string mode) => _baseline = mode;
+    protected override async Task<(bool ok, string value)> ReadCurrentAsync()
+    {
+        var fanMode = await _backend.InterpretFanModeAsync().ConfigureAwait(true);
+        return fanMode is null ? (false, "") : (true, FanModeMap.KeyFor(fanMode.RawValue));
+    }
 
     /// <summary>
     /// Suspend external-change detection while a local write is settling. The EC
@@ -47,54 +38,8 @@ public sealed class FanStateMonitor : IDisposable
     /// exit); without this the reconciler sees that stale value and yanks the UI
     /// selection back — the "goes and comes back" flicker. Balanced by Resume.
     /// </summary>
-    public void Suspend() => _suspended = true;
+    public void Suspend() => Suspended = true;
 
     /// <summary>Resume detection, re-seeding the baseline to the settled value.</summary>
-    public void Resume(string mode) { _baseline = mode; _suspended = false; }
-
-    public void Start()
-    {
-        if (_disposed) return;
-        AvellSucks.UI.App.Trace($"FanStateMonitor.Start (baseline={_baseline ?? "null"})");
-        _timer.Start();
-    }
-
-    public void Stop() => _timer.Stop();
-
-    private async void OnTick(object? sender, EventArgs e)
-    {
-        if (_busy || _disposed || _suspended) return;
-        _busy = true;
-        try
-        {
-            var fanMode = await _backend.InterpretFanModeAsync().ConfigureAwait(true);
-            if (fanMode is null) return; // unreadable; leave last state
-            var mode = FanModeMap.KeyFor(fanMode.RawValue);
-
-            // First reading establishes the baseline silently.
-            if (_baseline is null) { _baseline = mode; return; }
-
-            if (!string.Equals(mode, _baseline, StringComparison.OrdinalIgnoreCase))
-            {
-                _baseline = mode;
-                ExternalModeChanged?.Invoke(mode);
-            }
-        }
-        catch
-        {
-            // Transient WMI hiccup — skip this tick, try again next.
-        }
-        finally
-        {
-            _busy = false;
-        }
-    }
-
-    public void Dispose()
-    {
-        if (_disposed) return;
-        _disposed = true;
-        _timer.Stop();
-        _timer.Tick -= OnTick;
-    }
+    public void Resume(string mode) { SetBaseline(mode); Suspended = false; }
 }

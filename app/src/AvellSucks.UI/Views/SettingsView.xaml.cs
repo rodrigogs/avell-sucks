@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using AvellSucks.UI.Controls;
 using AvellSucks.UI.Localization;
 using AvellSucks.UI.Settings;
 using AvellSucks.UI.Startup;
@@ -14,7 +15,7 @@ namespace AvellSucks.UI.Views;
 public partial class SettingsView : UserControl
 {
     private readonly AppSettings _settings = SettingsStore.Current.Settings;
-    private bool _loading = true;
+    private readonly LoadingGate _loading = new(startActive: true);
     // Remembers the last update-status message as a (key, arg) pair so it can be
     // re-localized when the language changes (the label's {loc:Tr} binding is
     // replaced by a literal once we set .Text, so we recompute it ourselves).
@@ -43,7 +44,7 @@ public partial class SettingsView : UserControl
         // on every runtime language change.
         Loc.OnCultureChanged(RefreshUpdateTexts);
 
-        _loading = false;
+        _loading.End();
 
         // This view is cached and reused across tab switches, so the autostart
         // state can change elsewhere (the tray menu) after construction. Re-read
@@ -53,17 +54,14 @@ public partial class SettingsView : UserControl
         {
             bool real = AutoStart.IsEnabled();
             if (StartWithWindows.IsChecked != real)
-            {
-                _loading = true;
-                StartWithWindows.IsChecked = real;
-                _loading = false;
-            }
+                using (_loading.Begin())
+                    StartWithWindows.IsChecked = real;
         };
     }
 
     private void OnLanguageChecked(object sender, System.Windows.RoutedEventArgs e)
     {
-        if (_loading) return;
+        if (_loading.Active) return;
         _settings.Language =
             LangEn.IsChecked == true ? LanguagePreference.English :
             LangPt.IsChecked == true ? LanguagePreference.Portuguese :
@@ -74,26 +72,26 @@ public partial class SettingsView : UserControl
 
     private void OnStartWithWindows(object sender, System.Windows.RoutedEventArgs e)
     {
-        if (_loading) return;
+        if (_loading.Active) return;
         bool enable = StartWithWindows.IsChecked == true;
         AutoStart.Set(enable);
         // Reflect reality in case the registry write was denied.
         bool real = AutoStart.IsEnabled();
-        if (real != enable) { _loading = true; StartWithWindows.IsChecked = real; _loading = false; }
+        if (real != enable) using (_loading.Begin()) StartWithWindows.IsChecked = real;
         _settings.StartWithWindows = real;
         SettingsStore.Current.Save();
     }
 
     private void OnStartMinimized(object sender, System.Windows.RoutedEventArgs e)
     {
-        if (_loading) return;
+        if (_loading.Active) return;
         _settings.StartMinimized = StartMinimized.IsChecked == true;
         SettingsStore.Current.Save();
     }
 
     private void OnHideOnMinimize(object sender, System.Windows.RoutedEventArgs e)
     {
-        if (_loading) return;
+        if (_loading.Active) return;
         _settings.HideOnMinimize = HideOnMinimize.IsChecked == true;
         SettingsStore.Current.Save();
     }

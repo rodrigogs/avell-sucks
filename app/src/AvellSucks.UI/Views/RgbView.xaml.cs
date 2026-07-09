@@ -17,7 +17,7 @@ public partial class RgbView : UserControl
     private readonly Debouncer _apply = new(450);
     private RgbEffectType _effect = RgbEffectType.Static;
     private RgbSpeed _speed = RgbSpeed.Normal;
-    private bool _loading = true;
+    private readonly LoadingGate _loading = new(startActive: true);
 
     public RgbView()
     {
@@ -35,7 +35,7 @@ public partial class RgbView : UserControl
         var c = Color.FromRgb(0xFF, 0x2E, 0x88);
         Picker.SetColor(c);
         OnColor(c);
-        _loading = false; // initial paint done — user edits now actuate
+        _loading.End(); // initial paint done — user edits now actuate
     }
 
     private void OnColor(Color c)
@@ -110,7 +110,7 @@ public partial class RgbView : UserControl
     // Live: any lighting edit re-applies on settle (debounced). No Apply button.
     private void QueueApply()
     {
-        if (_loading || BrightnessSlider is null) return;
+        if (_loading.Active || BrightnessSlider is null) return;
         Toaster.Clear();
         _apply.Trigger(ApplyLightingNow);
     }
