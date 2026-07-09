@@ -128,7 +128,7 @@ public static class HardwareServices
             {
                 var backend = new WmiEcBackend();
                 var auditDir = Environment.GetEnvironmentVariable("GAMINGCENTER_AUDIT_DIR")
-                    ?? Path.Combine(AppContext.BaseDirectory, "audit");
+                    ?? AppPaths.AuditDir;
                 var audit = new JsonlAuditLog(Path.Combine(auditDir, "ec-write-audit.jsonl"));
                 var writer = new SafeEcWriter(gate, new EcWriteAllowlist(), backend, backend, audit);
 

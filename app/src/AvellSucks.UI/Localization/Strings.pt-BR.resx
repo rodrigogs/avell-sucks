@@ -192,6 +192,18 @@
   <data name="Settings.WindowSection" xml:space="preserve"><value>JANELA</value></data>
   <data name="Settings.HideOnMinimize" xml:space="preserve"><value>Esconder na bandeja ao minimizar</value></data>
   <data name="Settings.HideOnMinimize.Hint" xml:space="preserve"><value>Minimizar manda a janela para a bandeja do sistema em vez da barra de tarefas.</value></data>
+  <data name="Settings.UpdatesSection" xml:space="preserve"><value>ATUALIZAÇÕES</value></data>
+  <data name="Settings.Version" xml:space="preserve"><value>Versão {0}</value></data>
+  <data name="Settings.Updates.Hint" xml:space="preserve"><value>Procurar uma versão mais nova no GitHub e instalar.</value></data>
+  <data name="Settings.CheckUpdates" xml:space="preserve"><value>Procurar atualizações</value></data>
+  <data name="Settings.Updates.Checking" xml:space="preserve"><value>Procurando…</value></data>
+  <data name="Settings.Updates.UpToDate" xml:space="preserve"><value>Você está na versão mais recente.</value></data>
+  <data name="Settings.Updates.Downloading" xml:space="preserve"><value>Baixando {0}… o app vai reiniciar para concluir.</value></data>
+  <data name="Settings.Updates.Available" xml:space="preserve"><value>A versão {0} está disponível no GitHub.</value></data>
+  <data name="Settings.Updates.NoConnection" xml:space="preserve"><value>Não foi possível acessar o GitHub. Verifique sua conexão.</value></data>
+  <data name="Settings.Updates.Failed" xml:space="preserve"><value>A atualização falhou. Tente de novo, ou baixe do GitHub.</value></data>
+  <data name="Update.Available.Title" xml:space="preserve"><value>Atualização disponível: {0}</value></data>
+  <data name="Update.Available.Hint" xml:space="preserve"><value>Abra Configurações para instalar.</value></data>
 
   <!-- ===== About ===== -->
   <data name="About.Tagline" xml:space="preserve"><value>O control center que este notebook devia ter vindo com.</value></data>

@@ -9,13 +9,24 @@
       <ApplicationManifest>app.manifest</ApplicationManifest>
       <ApplicationIcon>app.ico</ApplicationIcon>
       <SelfContained>true</SelfContained>
+      <!-- Ship as AvellSucks.exe (brand), not AvellSucks.UI.exe. The exe name,
+           Start-menu shortcut, process name and the updater's relaunch target all
+           follow from this. -->
+      <AssemblyName>AvellSucks</AssemblyName>
       <!-- Neutral (embedded) Strings.resx are English; pt-BR ships as a satellite. -->
       <NeutralLanguage>en</NeutralLanguage>
+      <!-- Version. CI overrides all four from the git tag (-p:Version=…); the
+           in-app updater reads InformationalVersion to compare against the latest
+           GitHub release. 0.0.0 locally = "dev build, never newer than a release". -->
+      <Version>0.0.0</Version>
+      <FileVersion>0.0.0.0</FileVersion>
+      <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      <InformationalVersion>0.0.0</InformationalVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.5-pre441" />
-    <PackageReference Include="H.NotifyIcon.Wpf" Version="2.2.0" />
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.6" />
+    <PackageReference Include="H.NotifyIcon.Wpf" Version="2.4.1" />
   </ItemGroup>
 
   <!-- Bundle the app icon as a resource so the tray IconSource pack URI resolves. -->

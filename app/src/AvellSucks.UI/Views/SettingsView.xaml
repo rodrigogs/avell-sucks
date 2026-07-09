@@ -58,7 +58,7 @@
             </Border>
 
             <!-- Window -->
-            <Border Style="{StaticResource Panel}" Margin="0,16,0,16">
+            <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
                 <StackPanel>
                     <TextBlock Text="{loc:Tr Settings.WindowSection}" Style="{StaticResource SectionLabel}"/>
 
@@ -69,6 +69,23 @@
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Text="{loc:Tr Settings.HideOnMinimize}" Style="{StaticResource FieldLabel}"/>
                             <TextBlock Text="{loc:Tr Settings.HideOnMinimize.Hint}" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Updates -->
+            <Border Style="{StaticResource Panel}" Margin="0,16,0,16">
+                <StackPanel>
+                    <TextBlock Text="{loc:Tr Settings.UpdatesSection}" Style="{StaticResource SectionLabel}"/>
+                    <DockPanel Margin="0,12,0,0">
+                        <Button x:Name="CheckUpdatesBtn" DockPanel.Dock="Right" VerticalAlignment="Center"
+                                Style="{StaticResource SecondaryButton}"
+                                Content="{loc:Tr Settings.CheckUpdates}" Click="OnCheckUpdates"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock x:Name="VersionText" Style="{StaticResource FieldLabel}"/>
+                            <TextBlock x:Name="UpdateStatusText" Text="{loc:Tr Settings.Updates.Hint}"
+                                       Style="{StaticResource Caption}" Margin="0,2,0,0" TextWrapping="Wrap"/>
                         </StackPanel>
                     </DockPanel>
                 </StackPanel>

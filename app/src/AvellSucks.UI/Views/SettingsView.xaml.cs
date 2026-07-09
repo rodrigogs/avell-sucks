@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using AvellSucks.UI.Localization;
 using AvellSucks.UI.Settings;
 using AvellSucks.UI.Startup;
 
@@ -32,6 +33,8 @@ public partial class SettingsView : UserControl
         StartWithWindows.IsChecked = AutoStart.IsEnabled();
         StartMinimized.IsChecked = _settings.StartMinimized;
         HideOnMinimize.IsChecked = _settings.HideOnMinimize;
+
+        VersionText.Text = string.Format(Loc.T("Settings.Version"), Updater.CurrentVersion().ToString(3));
 
         _loading = false;
 
@@ -86,5 +89,49 @@ public partial class SettingsView : UserControl
         if (_loading) return;
         _settings.HideOnMinimize = HideOnMinimize.IsChecked == true;
         SettingsStore.Current.Save();
+    }
+
+    // Manual "check for updates". Queries GitHub; if newer, downloads the installer
+    // and relaunches it silently (the app exits so the installer can overwrite).
+    private async void OnCheckUpdates(object sender, System.Windows.RoutedEventArgs e)
+    {
+        CheckUpdatesBtn.IsEnabled = false;
+        UpdateStatusText.Text = Loc.T("Settings.Updates.Checking");
+        try
+        {
+            var check = await Updater.CheckAsync();
+            switch (check.Status)
+            {
+                case UpdateStatus.UpToDate:
+                    UpdateStatusText.Text = Loc.T("Settings.Updates.UpToDate");
+                    break;
+                case UpdateStatus.UpdateAvailable:
+                    UpdateStatusText.Text = string.Format(Loc.T("Settings.Updates.Downloading"), check.LatestVersion);
+                    if (check.AssetUrl is not null)
+                    {
+                        // Applies and shuts the app down; if it returns, it failed.
+                        var ok = await Updater.DownloadAndApplyAsync(check, () =>
+                            System.Windows.Application.Current.Shutdown());
+                        if (!ok) UpdateStatusText.Text = Loc.T("Settings.Updates.Failed");
+                    }
+                    else
+                    {
+                        // Release exists but no installer asset — point at the page.
+                        UpdateStatusText.Text = string.Format(Loc.T("Settings.Updates.Available"), check.LatestVersion);
+                        Updater.OpenReleasesPage();
+                    }
+                    break;
+                case UpdateStatus.NoConnection:
+                    UpdateStatusText.Text = Loc.T("Settings.Updates.NoConnection");
+                    break;
+                default:
+                    UpdateStatusText.Text = Loc.T("Settings.Updates.Failed");
+                    break;
+            }
+        }
+        finally
+        {
+            CheckUpdatesBtn.IsEnabled = true;
+        }
     }
 }
