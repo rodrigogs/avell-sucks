@@ -60,6 +60,12 @@ hardware to prove it on.
 - **Reactive** — changes made outside the app (the old OEM tool, the physical Fn
   fan key, another power-plan switcher) are reflected here within a couple of
   seconds. It mirrors the device; it never assumes its own last write is still true.
+- **Settings** — a Settings tab with a language selector, "start with Windows",
+  "start minimized", and "hide to tray on minimize". Preferences persist to
+  `%AppData%\AvellSucks\settings.json`.
+- **Languages** — English and Portuguese, switchable live from Settings (no
+  restart). The default follows your Windows display language: Portuguese for a
+  pt/pt-BR system, English otherwise. Change it and the choice is remembered.
 
 **Brand:** a cyberpunk performance instrument — *charged, precise, alive*. Neon
 magenta→cyan on deep violet-black. Confident, a little dangerous, honest above
@@ -114,7 +120,9 @@ leaving Boost).
 - `AvellSucks.Api` / `AvellSucks.Server` — optional local ASP.NET control API
   (loopback-only) exposing `/api/fan/*`, `/api/system/snapshot`, `/events` (SSE).
 - `AvellSucks.UI` — the WPF app (dark, cyberpunk), telemetry via
-  LibreHardwareMonitor, reactive reconcilers per tab.
+  LibreHardwareMonitor, reactive reconcilers per tab. Runtime localization
+  (`.resx` + a `Loc` provider and `{loc:Tr}` markup extension) switches language
+  live; user preferences persist as JSON under `%AppData%\AvellSucks`.
 
 ---
 

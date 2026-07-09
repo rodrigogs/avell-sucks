@@ -71,12 +71,13 @@
 
             <Border x:Name="DeviceNotice" Style="{StaticResource Panel}" Margin="0,16,0,0"
                     Background="{StaticResource WarnTint}" BorderBrush="{StaticResource Warn}" Visibility="Collapsed">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xE9CE;" FontFamily="Segoe MDL2 Assets" FontSize="15"
-                               Foreground="{StaticResource Warn}" VerticalAlignment="Center"/>
+                <!-- DockPanel so the wrapping notice text fills a bounded width. -->
+                <DockPanel>
+                    <TextBlock Text="&#xE9CE;" FontFamily="Segoe MDL2 Assets" FontSize="15" DockPanel.Dock="Left"
+                               Foreground="{StaticResource Warn}" VerticalAlignment="Top" Margin="0,1,0,0"/>
                     <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Ink}"
                                TextWrapping="Wrap" Text="{loc:Tr Rgb.Device}"/>
-                </StackPanel>
+                </DockPanel>
             </Border>
 
         </StackPanel>

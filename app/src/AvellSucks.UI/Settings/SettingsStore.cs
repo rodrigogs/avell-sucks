@@ -24,6 +24,11 @@ public sealed class SettingsStore
         TypeInfoResolver = SettingsJsonContext.Default,
     };
 
+    // The OS display language captured at process start, BEFORE Loc/ApplyLanguage
+    // mutates CurrentUICulture. Resolving System later must read this snapshot, not
+    // the (by then overwritten) live CurrentUICulture.
+    private static readonly CultureInfo OsUiCulture = CultureInfo.CurrentUICulture;
+
     public static SettingsStore Current { get; } = Load();
 
     public AppSettings Settings { get; private set; }
@@ -56,7 +61,12 @@ public sealed class SettingsStore
             Directory.CreateDirectory(Dir);
             File.WriteAllText(FilePath, JsonSerializer.Serialize(Settings, typeof(AppSettings), JsonOpts));
         }
-        catch { /* disk locked / permissions — keep running with in-memory settings */ }
+        catch (Exception ex)
+        {
+            // Disk locked / permissions — keep running with in-memory settings, but
+            // leave a trace so a silently-not-persisting setting is diagnosable.
+            App.Trace($"SettingsStore.Save failed: {ex.GetType().Name}: {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -74,8 +84,13 @@ public sealed class SettingsStore
     {
         try
         {
-            // pt, pt-BR, pt-PT … anything Portuguese → PT; everything else → EN.
-            return CultureInfo.InstalledUICulture.TwoLetterISOLanguageName
+            // Use the user's chosen Windows DISPLAY language captured at startup
+            // (OsUiCulture), not InstalledUICulture (the MUI base the OS was installed
+            // in, which a language-pack switch can't change) and not the live
+            // CurrentUICulture (which ApplyLanguage has since overwritten). A PT user
+            // on an EN-installed Avell should still default to PT. pt, pt-BR, pt-PT …
+            // all → PT; else → EN.
+            return OsUiCulture.TwoLetterISOLanguageName
                 .Equals("pt", StringComparison.OrdinalIgnoreCase);
         }
         catch { return false; }

@@ -35,6 +35,7 @@
 
                     <DockPanel Margin="0,12,0,0">
                         <ToggleButton x:Name="StartWithWindows" Style="{StaticResource NeonToggle}"
+                                      AutomationProperties.Name="{loc:Tr Settings.StartWithWindows}"
                                       DockPanel.Dock="Right" Checked="OnStartWithWindows" Unchecked="OnStartWithWindows"/>
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Text="{loc:Tr Settings.StartWithWindows}" Style="{StaticResource FieldLabel}"/>
@@ -46,6 +47,7 @@
 
                     <DockPanel Margin="0,14,0,0">
                         <ToggleButton x:Name="StartMinimized" Style="{StaticResource NeonToggle}"
+                                      AutomationProperties.Name="{loc:Tr Settings.StartMinimized}"
                                       DockPanel.Dock="Right" Checked="OnStartMinimized" Unchecked="OnStartMinimized"/>
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Text="{loc:Tr Settings.StartMinimized}" Style="{StaticResource FieldLabel}"/>
@@ -62,6 +64,7 @@
 
                     <DockPanel Margin="0,12,0,0">
                         <ToggleButton x:Name="HideOnMinimize" Style="{StaticResource NeonToggle}"
+                                      AutomationProperties.Name="{loc:Tr Settings.HideOnMinimize}"
                                       DockPanel.Dock="Right" Checked="OnHideOnMinimize" Unchecked="OnHideOnMinimize"/>
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Text="{loc:Tr Settings.HideOnMinimize}" Style="{StaticResource FieldLabel}"/>

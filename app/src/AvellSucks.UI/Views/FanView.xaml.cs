@@ -37,6 +37,42 @@ public partial class FanView : UserControl
             _monitor = new FanStateMonitor(backend);
             _monitor.ExternalModeChanged += OnExternalModeChanged;
         }
+
+        // ModeHint is set imperatively (Text=) once a mode is picked, which drops
+        // its {loc:Tr} binding. Re-apply it for the current mode on a live language
+        // change so it doesn't get stuck in the old language. FanView is a cached,
+        // app-lifetime view (MainWindow lazy prop), so no unsubscribe is needed.
+        Loc.Instance.PropertyChanged += (_, _) => RefreshModeHint();
+    }
+
+    // The currently-selected fan mode, or "auto" as the neutral default.
+    private string CurrentMode() =>
+        ModeBoost.IsChecked == true ? "boost" :
+        ModeCustom.IsChecked == true ? "custom" :
+        ModeL1.IsChecked == true ? "l1" :
+        ModeL2.IsChecked == true ? "l2" :
+        ModeL3.IsChecked == true ? "l3" :
+        ModeL4.IsChecked == true ? "l4" :
+        ModeL5.IsChecked == true ? "l5" : "auto";
+
+    private static string HintFor(string mode) => mode switch
+    {
+        "auto" => Loc.T("Fan.Hint.Auto"),
+        "boost" => Loc.T("Fan.Hint.Boost"),
+        "custom" => Loc.T("Fan.Hint.Custom"),
+        _ => string.Format(Loc.T("Fan.Hint.Fixed"), mode.ToUpperInvariant()),
+    };
+
+    // Re-localize the hint for whatever mode is selected. If no mode is checked yet
+    // (fresh load), leave the live {loc:Tr Fan.Hint.Default} binding intact.
+    private void RefreshModeHint()
+    {
+        if (ModeHint is null) return;
+        if (ModeAuto.IsChecked != true && ModeBoost.IsChecked != true && ModeCustom.IsChecked != true
+            && ModeL1.IsChecked != true && ModeL2.IsChecked != true && ModeL3.IsChecked != true
+            && ModeL4.IsChecked != true && ModeL5.IsChecked != true)
+            return;
+        ModeHint.Text = HintFor(CurrentMode());
     }
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
@@ -110,13 +146,7 @@ public partial class FanView : UserControl
         if (_loading || sender is not RadioButton rb) return;
         string mode = rb.Name.Replace("Mode", "").ToLowerInvariant();
 
-        ModeHint.Text = mode switch
-        {
-            "auto" => Loc.T("Fan.Hint.Auto"),
-            "boost" => Loc.T("Fan.Hint.Boost"),
-            "custom" => Loc.T("Fan.Hint.Custom"),
-            _ => string.Format(Loc.T("Fan.Hint.Fixed"), mode.ToUpperInvariant()),
-        };
+        ModeHint.Text = HintFor(mode);
 
         _curveWrite.Cancel(); // a mode press supersedes a pending curve write
         _monitor?.Suspend();  // don't let the reconciler yank the selection while this settles

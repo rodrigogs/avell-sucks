@@ -25,7 +25,7 @@
                         IconSource="pack://application:,,,/app.ico"
                         TrayMouseDoubleClick="OnTrayDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
-                <ContextMenu>
+                <ContextMenu Opened="OnTrayMenuOpened">
                     <MenuItem Header="{loc:Tr Tray.Open}" Click="OnTrayOpen"/>
                     <Separator/>
                     <MenuItem Header="{loc:Tr Tray.StartWithWindows}" x:Name="AutoStartItem"

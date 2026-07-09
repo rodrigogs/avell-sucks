@@ -65,10 +65,15 @@ public partial class App : Application
             var window = new MainWindow();
             if (AvellSucks.UI.Settings.SettingsStore.Current.Settings.StartMinimized)
             {
-                // Start straight to the tray: show minimized, and OnWindowStateChanged
-                // hides to tray when HideOnMinimize is on (the default).
+                // Start straight to the tray. Setting WindowState=Minimized before
+                // Show() does NOT raise StateChanged (the HWND isn't sourced yet), so
+                // relying on OnWindowStateChanged to hide would silently leave the
+                // window on the taskbar. Drive it explicitly here.
                 window.WindowState = WindowState.Minimized;
-                window.Show();
+                if (AvellSucks.UI.Settings.SettingsStore.Current.Settings.HideOnMinimize)
+                    window.StartHiddenInTray();
+                else
+                    window.Show();
             }
             else
             {

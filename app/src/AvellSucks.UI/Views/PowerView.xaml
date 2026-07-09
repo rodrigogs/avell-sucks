@@ -70,13 +70,14 @@
                 <StackPanel>
                     <Border Background="{StaticResource DangerTint}" BorderBrush="{StaticResource Danger}"
                             BorderThickness="1" CornerRadius="{StaticResource RadiusSm}" Padding="12,9" Margin="0,0,0,14">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="15"
-                                       Foreground="{StaticResource Danger}" VerticalAlignment="Center"/>
+                        <!-- DockPanel so the wrapping text fills a bounded width (see FanView). -->
+                        <DockPanel>
+                            <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="15" DockPanel.Dock="Left"
+                                       Foreground="{StaticResource Danger}" VerticalAlignment="Top" Margin="0,1,0,0"/>
                             <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Ink}"
                                        Style="{StaticResource Caption}" TextWrapping="Wrap"
                                        Text="{loc:Tr Power.AdvancedWarn}"/>
-                        </StackPanel>
+                        </DockPanel>
                     </Border>
 
                     <!-- PL1 -->
@@ -114,12 +115,13 @@
 
             <Border x:Name="GateNotice" Style="{StaticResource PanelTight}" Margin="0,16,0,0"
                     Background="{StaticResource WarnTint}" BorderBrush="{StaticResource Warn}" Visibility="Collapsed">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" FontSize="15"
-                               Foreground="{StaticResource Warn}" VerticalAlignment="Center"/>
+                <!-- DockPanel so the wrapping text fills a bounded width (see FanView). -->
+                <DockPanel>
+                    <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" FontSize="15" DockPanel.Dock="Left"
+                               Foreground="{StaticResource Warn}" VerticalAlignment="Top" Margin="0,1,0,0"/>
                     <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Ink}"
                                TextWrapping="Wrap" Text="{loc:Tr Power.Gate}"/>
-                </StackPanel>
+                </DockPanel>
             </Border>
 
         </StackPanel>

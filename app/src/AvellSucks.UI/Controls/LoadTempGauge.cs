@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
+using AvellSucks.UI.Localization;
 
 namespace AvellSucks.UI.Controls;
 
@@ -127,7 +128,7 @@ public sealed class LoadTempGauge : FrameworkElement
             _glow.Color = color;
             _glow.BlurRadius = Thermal.GlowBlur(t);
             _glow.Opacity = Thermal.GlowOpacity(t);
-            _sub.Text = $"{RenderLoad:0}% load";
+            _sub.Text = $"{RenderLoad:0}{Loc.T("Gauge.LoadSuffix")}";
             _sub.FontSize = s * 0.08;
             _tiny.Visibility = Visibility.Collapsed;
 
@@ -154,9 +155,9 @@ public sealed class LoadTempGauge : FrameworkElement
             _glow.BlurRadius = 8;
             _glow.Opacity = 0.35;
             _glow.BeginAnimation(DropShadowEffect.OpacityProperty, null);
-            _sub.Text = "% load";
+            _sub.Text = Loc.T("Gauge.LoadLabel");
             _sub.FontSize = s * 0.085;
-            _tiny.Text = "temp n/a";
+            _tiny.Text = Loc.T("Gauge.TempNa");
             _tiny.FontSize = s * 0.06;
             _tiny.Visibility = Visibility.Visible;
             _lastBand = (ThermalBand)(-1);
