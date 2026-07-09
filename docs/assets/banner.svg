@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="360" viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="arc" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF2E88"/>
+      <stop offset="0.5" stop-color="#A855F7"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+    <linearGradient id="needle" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#FF2E88"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="0.28" cy="0.22" r="1.0">
+      <stop offset="0" stop-color="#1B1230"/>
+      <stop offset="0.55" stop-color="#120C1B"/>
+      <stop offset="1" stop-color="#0B0710"/>
+    </radialGradient>
+    <linearGradient id="sucks" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF2E88"/>
+      <stop offset="1" stop-color="#A855F7"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- backdrop -->
+  <rect width="1200" height="360" fill="url(#bg)"/>
+
+  <!-- gauge mark -->
+  <g transform="translate(210,180) scale(1.05)">
+    <path d="M -63 63 A 89 89 0 1 1 63 63" fill="none" stroke="#2A2140" stroke-width="16" stroke-linecap="round"/>
+    <path d="M -63 63 A 89 89 0 1 1 78 -43" fill="none" stroke="url(#arc)" stroke-width="16" stroke-linecap="round" filter="url(#glow)"/>
+    <circle cx="0" cy="0" r="15" fill="#141018" stroke="url(#arc)" stroke-width="4"/>
+    <g filter="url(#glow)">
+      <line x1="0" y1="0" x2="60" y2="-58" stroke="url(#needle)" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="0" cy="0" r="6" fill="#FF2E88"/>
+    </g>
+  </g>
+
+  <!-- wordmark -->
+  <g font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-weight="800">
+    <text x="360" y="196" font-size="96" letter-spacing="-2">
+      <tspan fill="#F3ECFF">Avell</tspan><tspan fill="url(#sucks)">Sucks</tspan>
+    </text>
+    <text x="364" y="248" font-size="27" font-weight="500" letter-spacing="0.5" fill="#9C8FB4"
+          font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+      the control center this laptop should have shipped with
+    </text>
+  </g>
+</svg>

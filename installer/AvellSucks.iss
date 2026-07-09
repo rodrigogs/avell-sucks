@@ -59,6 +59,8 @@ MinVersion=10.0.19041
 WizardStyle=modern
 Compression=lzma2/max
 SolidCompression=yes
+; Brand the Setup.exe with the app icon (path relative to this .iss).
+SetupIconFile=..\app\src\AvellSucks.UI\app.ico
 
 ; The app is a tray app that ignores WM_CLOSE, so Inno's Restart Manager can't
 ; close it gracefully — we kill it ourselves in PrepareToInstall instead.
