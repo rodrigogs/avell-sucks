@@ -78,7 +78,7 @@ public sealed class FanController : ControllerBase
     /// Writes remain gated by GAMINGCENTER_ALLOW_EC_WRITES and the EC allowlist.
     /// </summary>
     [HttpPost("curve")]
-    public async Task<ActionResult<FanCurveWriteResultDto>> SetCurveAsync(
+    public async Task<ActionResult<BatchWriteResultDto>> SetCurveAsync(
         [FromBody] SetFanCurveRequest request,
         CancellationToken ct)
     {
@@ -96,9 +96,9 @@ public sealed class FanController : ControllerBase
             results.Add(result);
 
             if (!result.Allowed)
-                return StatusCode(StatusCodes.Status403Forbidden, FanCurveWriteResultDto.From(results));
+                return StatusCode(StatusCodes.Status403Forbidden, BatchWriteResultDto.From(results));
             if (!result.Verified)
-                return StatusCode(StatusCodes.Status500InternalServerError, FanCurveWriteResultDto.From(results));
+                return StatusCode(StatusCodes.Status500InternalServerError, BatchWriteResultDto.From(results));
         }
 
         var modeResult = await _writer.TryWriteAsync(
@@ -108,11 +108,11 @@ public sealed class FanController : ControllerBase
         results.Add(modeResult);
 
         if (!modeResult.Allowed)
-            return StatusCode(StatusCodes.Status403Forbidden, FanCurveWriteResultDto.From(results));
+            return StatusCode(StatusCodes.Status403Forbidden, BatchWriteResultDto.From(results));
         if (!modeResult.Verified)
-            return StatusCode(StatusCodes.Status500InternalServerError, FanCurveWriteResultDto.From(results));
+            return StatusCode(StatusCodes.Status500InternalServerError, BatchWriteResultDto.From(results));
 
-        return Ok(FanCurveWriteResultDto.From(results));
+        return Ok(BatchWriteResultDto.From(results));
     }
 
     private static bool TryValidateCurve(SetFanCurveRequest? request, out string error)
@@ -188,16 +188,4 @@ public sealed record FanCurveLevelDto(int TemperatureC, int Pwm, int Address);
 public sealed record FanCurveDto(IReadOnlyList<FanCurveLevelDto> Levels);
 
 public sealed record SetFanCurveRequest(IReadOnlyList<FanCurveLevelDto> Levels);
-
-public sealed record FanCurveWriteResultDto(bool Allowed, bool Executed, bool Verified, string? Error, IReadOnlyList<EcWriteResult> Results)
-{
-    public static FanCurveWriteResultDto From(IReadOnlyList<EcWriteResult> results)
-    {
-        var allowed = results.All(r => r.Allowed);
-        var executed = results.All(r => r.Executed);
-        var verified = results.All(r => r.Verified);
-        var error = results.LastOrDefault(r => !string.IsNullOrWhiteSpace(r.Error))?.Error;
-        return new FanCurveWriteResultDto(allowed, executed, verified, error, results);
-    }
-}
 

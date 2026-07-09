@@ -61,11 +61,11 @@ public sealed class PowerController : ControllerBase
     /// request body are updated; omitted fields remain unchanged.
     /// </summary>
     [HttpPost("profile")]
-    public async Task<ActionResult<PowerWriteResultDto>> SetProfileAsync(
+    public async Task<ActionResult<BatchWriteResultDto>> SetProfileAsync(
         [FromBody] SetPowerProfileRequest request, CancellationToken ct)
     {
         if (!request.HasAnyChange())
-            return Ok(PowerWriteResultDto.Empty);
+            return Ok(BatchWriteResultDto.Empty);
 
         var results = new List<EcWriteResult>();
 
@@ -77,7 +77,7 @@ public sealed class PowerController : ControllerBase
             results.Add(r);
 
             if (!r.Allowed || !r.Verified)
-                return StatusCode(StatusCodes.Status403Forbidden, PowerWriteResultDto.From(results));
+                return StatusCode(StatusCodes.Status403Forbidden, BatchWriteResultDto.From(results));
         }
 
         if (request.Pl2.HasValue)
@@ -88,7 +88,7 @@ public sealed class PowerController : ControllerBase
             results.Add(r);
 
             if (!r.Allowed || !r.Verified)
-                return StatusCode(StatusCodes.Status403Forbidden, PowerWriteResultDto.From(results));
+                return StatusCode(StatusCodes.Status403Forbidden, BatchWriteResultDto.From(results));
         }
 
         if (request.Pl4.HasValue)
@@ -99,10 +99,10 @@ public sealed class PowerController : ControllerBase
             results.Add(r);
 
             if (!r.Allowed || !r.Verified)
-                return StatusCode(StatusCodes.Status403Forbidden, PowerWriteResultDto.From(results));
+                return StatusCode(StatusCodes.Status403Forbidden, BatchWriteResultDto.From(results));
         }
 
-        return Ok(PowerWriteResultDto.From(results));
+        return Ok(BatchWriteResultDto.From(results));
     }
 }
 
@@ -112,18 +112,4 @@ public sealed class PowerController : ControllerBase
 public sealed record SetPowerProfileRequest(int? Pl1, int? Pl2, int? Pl4)
 {
     public bool HasAnyChange() => Pl1 is not null || Pl2 is not null || Pl4 is not null;
-}
-
-public sealed record PowerWriteResultDto(bool Allowed, bool Executed, bool Verified, string? Error, IReadOnlyList<EcWriteResult> Results)
-{
-    public static PowerWriteResultDto Empty { get; } = new(true, false, true, null, []);
-
-    public static PowerWriteResultDto From(IReadOnlyList<EcWriteResult> results)
-    {
-        var allowed = results.All(r => r.Allowed);
-        var executed = results.All(r => r.Executed);
-        var verified = results.All(r => r.Verified);
-        var error = results.LastOrDefault(r => !string.IsNullOrWhiteSpace(r.Error))?.Error;
-        return new PowerWriteResultDto(allowed, executed, verified, error, results);
-    }
 }

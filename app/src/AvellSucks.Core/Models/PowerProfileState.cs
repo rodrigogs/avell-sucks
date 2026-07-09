@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using AvellSucks.Core.Platforms;
-
 namespace AvellSucks.Core.Models;
 
 /// <summary>
@@ -14,26 +10,3 @@ public sealed record PowerProfileState(
     int TauSeconds,
     bool Supported,
     string? Error);
-
-/// <summary>
-/// Normalized write result for power-profile mutations.
-/// </summary>
-public sealed record PowerWriteResultDto(
-    bool Allowed,
-    bool Executed,
-    bool Verified,
-    string? Error,
-    IReadOnlyList<EcWriteResult> Results)
-{
-    public static PowerWriteResultDto Empty { get; } =
-        new(false, false, false, "nothing changed", []);
-
-    public static PowerWriteResultDto From(IReadOnlyList<EcWriteResult> results)
-    {
-        var allowed = results.Count == 0 || results.All(r => r.Allowed);
-        var executed = results.Count == 0 || results.All(r => r.Executed);
-        var verified = results.Count == 0 || results.All(r => r.Verified);
-        var error = results.LastOrDefault(r => !string.IsNullOrWhiteSpace(r.Error))?.Error;
-        return new PowerWriteResultDto(allowed, executed, verified, error, results);
-    }
-}

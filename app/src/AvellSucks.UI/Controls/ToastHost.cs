@@ -339,6 +339,24 @@ public static class Toaster
     /// <summary>Show a persistent informational toast (not a write result).</summary>
     public static void Info(string title, string? message = null) => s_host?.ShowInfo(title, message);
 
+    /// <summary>
+    /// Run a hardware write with the standard toast lifecycle: show a Pending
+    /// toast (<paramref name="pendingLabel"/>), await <paramref name="write"/>,
+    /// then show the outcome (Verified/Failed/Blocked) with
+    /// <paramref name="doneLabel"/> and the result's error. Returns the result so
+    /// callers can react (e.g. update selection). Collapses the
+    /// Show(Pending)/await/Show(result) triplet repeated across Fan/Power/RGB.
+    /// </summary>
+    public static async System.Threading.Tasks.ValueTask<AvellSucks.UI.Services.ControlResult> Apply(
+        string pendingLabel, string doneLabel,
+        System.Func<System.Threading.Tasks.ValueTask<AvellSucks.UI.Services.ControlResult>> write)
+    {
+        Show(AvellSucks.UI.Services.WriteState.Pending, pendingLabel);
+        var result = await write().ConfigureAwait(true);
+        Show(result.State, doneLabel, result.Error);
+        return result;
+    }
+
     /// <summary>Dismiss the active toast.</summary>
     public static void Clear() => s_host?.Clear();
 }

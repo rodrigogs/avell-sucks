@@ -55,7 +55,7 @@ return;
 
 static bool RequireHttps()
 {
-    var flag = Environment.GetEnvironmentVariable("GAMING_CENTER_REQUIRE_HTTPS");
+    var flag = Environment.GetEnvironmentVariable("GAMINGCENTER_REQUIRE_HTTPS");
     return string.Equals(flag, "1", StringComparison.OrdinalIgnoreCase) ||
            string.Equals(flag, "true", StringComparison.OrdinalIgnoreCase);
 }
