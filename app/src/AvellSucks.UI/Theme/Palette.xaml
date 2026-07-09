@@ -18,6 +18,9 @@
     <Color x:Key="InkColor">#FFF2EEF6</Color>
     <Color x:Key="Ink2Color">#FFC1B6CF</Color>
     <Color x:Key="Ink3Color">#FF948AA3</Color>
+    <!-- Near-black ink for text/glyphs sitting ON a neon surface (magenta fill,
+         neon gradient mark) — where light Ink would blow out. -->
+    <Color x:Key="OnNeonColor">#FF1A0410</Color>
 
     <!-- Neon accent axis -->
     <Color x:Key="MagentaColor">#FFFF2E88</Color>
@@ -46,6 +49,7 @@
     <SolidColorBrush x:Key="Ink" Color="{StaticResource InkColor}"/>
     <SolidColorBrush x:Key="Ink2" Color="{StaticResource Ink2Color}"/>
     <SolidColorBrush x:Key="Ink3" Color="{StaticResource Ink3Color}"/>
+    <SolidColorBrush x:Key="OnNeon" Color="{StaticResource OnNeonColor}"/>
 
     <SolidColorBrush x:Key="Magenta" Color="{StaticResource MagentaColor}"/>
     <SolidColorBrush x:Key="Cyan" Color="{StaticResource CyanColor}"/>

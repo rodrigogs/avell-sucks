@@ -40,7 +40,7 @@
 
     <!-- ===== Primary button — neon magenta fill ===== -->
     <Style x:Key="PrimaryButton" TargetType="Button">
-        <Setter Property="Foreground" Value="#FF1A0410"/>
+        <Setter Property="Foreground" Value="{StaticResource OnNeon}"/>
         <Setter Property="Background" Value="{StaticResource Magenta}"/>
         <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
         <Setter Property="FontSize" Value="{StaticResource FsBody}"/>
@@ -465,7 +465,7 @@
                             <Setter TargetName="track" Property="Background" Value="{StaticResource Magenta}"/>
                             <Setter TargetName="track" Property="BorderBrush" Value="{StaticResource Magenta}"/>
                             <Setter TargetName="track" Property="Effect" Value="{StaticResource GlowMagenta}"/>
-                            <Setter TargetName="knob" Property="Background" Value="#FF1A0410"/>
+                            <Setter TargetName="knob" Property="Background" Value="{StaticResource OnNeon}"/>
                             <Setter TargetName="knob" Property="Margin" Value="24,0,0,0"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">

@@ -32,7 +32,7 @@ public partial class RgbView : UserControl
         if (!_rgb.Available)
             DeviceNotice.Visibility = Visibility.Visible;
 
-        var c = Color.FromRgb(0xFF, 0x2E, 0x88);
+        var c = Brand.Magenta;
         Picker.SetColor(c);
         OnColor(c);
         _loading.End(); // initial paint done — user edits now actuate
