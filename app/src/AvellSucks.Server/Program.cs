@@ -30,7 +30,8 @@ builder.Services.AddSingleton<IWriteAuditLog>(_ =>
               ?? Path.Combine(
                   Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                   "AvellSucks");
-    return new JsonlWriteAuditLog(Path.Combine(dir, "ec-write-audit.jsonl"));
+    // Server: durable audit — let a write failure surface (swallowWriteErrors=false).
+    return new JsonlAuditLog(Path.Combine(dir, "ec-write-audit.jsonl"));
 });
 builder.Services.AddSingleton<SafeEcWriter>();
 
