@@ -14,26 +14,12 @@ namespace AvellSucks.Api.Controllers;
 [Route("api/fan")]
 public sealed class FanController : ControllerBase
 {
-    /// <summary>EC address 0x751 — ADDR_MAFAN_CONTROL_BYTE.</summary>
-    private const int MAFanControl = 1873;
-
-    private const int CustomFanMode = 160;
-    private const int MaxPwm = 0x8C;
-
-    private static readonly int[] s_curveAddresses = [1859, 1860, 1861, 1862, 1863];
-    private static readonly int[] s_defaultCurveTemps = [50, 60, 70, 80, 90];
-
-    private static readonly Dictionary<string, int> s_modes = new(StringComparer.OrdinalIgnoreCase)
-    {
-        ["auto"] = 0,       // normal/smart
-        ["boost"] = 64,     // fan boost/cold
-        ["custom"] = 160,   // advanced custom
-        ["L1"] = 129,
-        ["L2"] = 130,
-        ["L3"] = 131,
-        ["L4"] = 132,
-        ["L5"] = 133,
-    };
+    // Fan control surface — shared with the UI/reconciler/allowlist via FanModeMap.
+    private const int MAFanControl = FanModeMap.ControlByteAddress; // 0x751
+    private const int CustomFanMode = FanModeMap.CustomModeByte;
+    private const int MaxPwm = FanModeMap.MaxPwm;
+    private static readonly int[] s_curveAddresses = FanModeMap.CurveAddresses;
+    private static readonly int[] s_defaultCurveTemps = FanModeMap.DefaultCurveTemps;
 
     private readonly IEcBackend _backend;
     private readonly SafeEcWriter _writer;
@@ -174,7 +160,7 @@ public sealed class FanController : ControllerBase
         [FromBody] SetFanModeRequest request,
         CancellationToken ct)
     {
-        if (!s_modes.TryGetValue(request.Mode ?? "", out var value))
+        if (!FanModeMap.TryByteFor(request.Mode ?? "", out var value))
             return BadRequest(
                 $"Unknown mode '{request.Mode}'. Valid: auto, boost, custom, L1..L5");
 
