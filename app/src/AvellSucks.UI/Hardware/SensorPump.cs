@@ -17,6 +17,7 @@ public sealed class SensorPump : IDisposable
     private HardwareMonitor? _monitor;
     private bool _opened;
     private bool _disposed;
+    private bool _sampling; // reentrancy guard for the off-thread sample
 
     /// <summary>Fires on the UI thread every second with a fresh snapshot, or null if unavailable.</summary>
     public event Action<Telemetry?>? Tick;
@@ -70,15 +71,32 @@ public sealed class SensorPump : IDisposable
         Emit();
     }
 
+    // GetTelemetry() polls every hardware node (hw.Update()) via the ring-0
+    // driver — tens of ms — so it must NOT run on the DispatcherTimer's UI-thread
+    // Tick (that reintroduced the very stall the off-thread Open() avoids). Sample
+    // on a thread-pool thread, then marshal the immutable Telemetry back to the UI
+    // thread to raise Tick. Reentrancy-guarded so a slow sample can't pile up, and
+    // _disposed is re-checked after the await (Dispose→monitor.Dispose can race an
+    // in-flight Update).
     private void Emit()
     {
-        Telemetry? t = null;
-        if (_monitor is not null)
+        var monitor = _monitor;
+        if (monitor is null) { Tick?.Invoke(null); return; }
+        if (_sampling) return; // previous sample still running; skip this tick
+        _sampling = true;
+
+        _ = System.Threading.Tasks.Task.Run(() =>
         {
-            try { t = _monitor.GetTelemetry(); }
+            Telemetry? t = null;
+            try { t = monitor.GetTelemetry(); }
             catch { t = null; }
-        }
-        Tick?.Invoke(t);
+            _dispatcher.BeginInvoke(() =>
+            {
+                _sampling = false;
+                if (_disposed) return;
+                Tick?.Invoke(t);
+            });
+        });
     }
 
     public void Dispose()

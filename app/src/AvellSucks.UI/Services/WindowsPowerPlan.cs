@@ -143,9 +143,20 @@ public sealed class WindowsPowerPlan
                 UseShellExecute = false, CreateNoWindow = true,
             };
             using var p = Process.Start(psi)!;
-            var o = p.StandardOutput.ReadToEnd();
-            p.WaitForExit(5000);
-            return o;
+            // Drain both pipes asynchronously BEFORE waiting: a synchronous
+            // ReadToEnd() blocks until the child exits, which made the 5s timeout
+            // dead (it could never fire) and left stderr undrained (full-pipe
+            // deadlock risk). Read both, then bound the wait and kill on timeout.
+            var stdout = p.StandardOutput.ReadToEndAsync();
+            var stderr = p.StandardError.ReadToEndAsync();
+            if (!p.WaitForExit(5000))
+            {
+                try { p.Kill(entireProcessTree: true); } catch { /* already gone */ }
+            }
+            // Ensure the async pipe reads complete (they finish once the streams
+            // close, i.e. at/after exit or kill).
+            try { Task.WaitAll([stdout, stderr], 1000); } catch { /* best-effort */ }
+            return stdout.IsCompletedSuccessfully ? stdout.Result : "";
         }
         catch { return ""; }
     }
