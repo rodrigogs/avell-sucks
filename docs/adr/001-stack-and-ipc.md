@@ -1,8 +1,24 @@
 # ADR-001: Implementation Stack and IPC Model
 
-Status: Accepted  
+Status: **Amended** (originally Accepted 2026-07-03)  
 Date: 2026-07-03  
 Decider: Planner
+
+> **Superseded / amended by what shipped** — kept for the reasoning, not as truth.
+> The Tauri and CLI-daemon rejection rationale still holds; the Option-A specifics
+> below were revised during implementation. Current architecture:
+> [`../ARCHITECTURE.md`](../ARCHITECTURE.md).
+>
+> - **Frontend: WPF, not Avalonia** (`<UseWPF>true</UseWPF>`, net10.0-windows,
+>   WinExe). The cross-platform/Linux justification is moot — the app is
+>   Windows-only.
+> - **Hardware access is IN-PROCESS**, not owned by one API process. The WPF UI
+>   drives the EC directly via `AvellSucks.Core`/`.Core.Windows`; the "GUI never
+>   calls WMI/HID" rule was dropped.
+> - **API tier: ASP.NET MVC controllers, HTTP by default** (HTTPS opt-in via
+>   `GAMINGCENTER_REQUIRE_HTTPS=1`), on port **5055**. Not Minimal-API-over-HTTPS.
+> - **No auth, no Windows service.** Security is loopback-only enforcement (403 for
+>   non-localhost); the app runs elevated and writes go through `SafeEcWriter`.
 
 ## Context
 We need an MVP app to control gaming hardware on a Windows laptop: EC fan/RGB, lightbar, OEM service CLI, ITE HID RGB KB. The implementation must start from an existing reverse-engineering base and allow a later Linux portability split, because the EC/HID/oem-service layer is Windows-specific.

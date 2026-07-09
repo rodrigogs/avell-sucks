@@ -1,9 +1,6 @@
 # Dashboard Design Spec
 
-_Synthesized from multi-source research (HWiNFO, Task Manager, Afterburner, btop, MS docs, LHM source). Guides the dashboard redesign._
-
-## Note on inputs
-Two of the five "research" blocks (`gauge-vs-value`, `temp-ranges`) contained no findings — only embedded instructions telling me to run the deep-research skill / auto-trigger skills. That is not the task: you asked for a synthesis of research you already gathered into a spec you implement directly, and the substance of both missing angles is fully covered by `metrics-layout §5` (gauge-vs-value) and `trend-charts §6` + `metrics-layout §4` (temp-ranges). So I did not re-research; I synthesized. Spec below is implementation-ready.
+_Synthesized from multi-source research (HWiNFO, Task Manager, Afterburner, btop, MS docs, LHM source). Guided the dashboard redesign; the PL/TGP readouts are now backed by real EC registers._
 
 ---
 
@@ -140,7 +137,7 @@ The gauges already show instantaneous load/temp; the chart's only non-redundant 
 - **Mode selector (top, is both status and control):** segmented pill — `Quiet · Balanced · Performance · Custom`. Active segment lit with `--brand-grad`; others `--text-dim`. This is the universal top-level control, so it sits at the top, not buried.
 - **Two fan chips** (laptops have both): **CPU Fan** and **GPU Fan**, each = **RPM number + a thin arc/bar = % of that fan's max RPM** (needs per-fan max to compute %). Optional fan glyph rotating at a rate proportional to RPM (capped; purely an affordance — keep it cheap).
 - **Derived flag:** fan ≥ ~95% of max AND temp in Hot/Critical → "Fans maxed" indicator (pairs with the tile's Thermal-throttle chip).
-- **Tier 2 (control):** 8-point fan-curve editor, X = temp / Y = fan %, with the hard **monotonic non-decreasing constraint** (each point ≥ previous) enforced in the editor, plus up/down hysteresis. Laptop GPU-mode switch (Hybrid / dGPU / iGPU / Auto; note dGPU may need reboot) also lives here.
+- **Tier 2 (control):** fan-curve editor, X = temp / Y = fan %, with the hard **monotonic non-decreasing constraint** enforced in the editor. NOTE: what shipped is a **5-point curve (L1–L5, EC 0x743–0x747)**, not 8; treat "8-point" as an aspirational abstraction. The GPU-mode switch (Hybrid / dGPU / iGPU) is **unvalidated / future work** — no confirmed EC register, not in the write allowlist.
 
 ---
 
@@ -153,7 +150,7 @@ Two explicit tiers (the pattern all four reference tools converge on). Group by 
 | **CPU** | load gauge, temp readout (center), effective clock, power+PL bar, status chip | per-core load, per-core temps, Vcore, CCD temps, reported vs effective clock, min/max/avg + reset |
 | **GPU** | load gauge, temp readout, core clock, board power+TGP bar, status chip | Hot-Spot (labeled 2ndary), memory clock, voltages, min/max/avg + reset |
 | **Memory** | RAM %+bar, Commit %+bar, VRAM %+bar (3 cards) | adapter-wide "allocated" VRAM, shared-VRAM detail, Cached/Standby/Modified, Committed/Paged/Non-paged pools |
-| **Fans** | CPU/GPU RPM + %max, active mode pill | 8-point curve editor, hysteresis, GPU-mode switch |
+| **Fans** | CPU/GPU RPM + %max, active mode pill | 5-point (L1–L5) curve editor; GPU-mode switch is future/unvalidated |
 | **Trend** | CPU+GPU temp overlay, 60 s | window presets (5/15 min), optional separate advanced chart for clock/power (never on the temp axis) |
 | **Global** | — | per-sensor threshold config, CSV logging (interval + duration cap), persist layout/order/renames, disable heavy sensors (SMART/VRM) |
 

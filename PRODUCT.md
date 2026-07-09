@@ -10,12 +10,14 @@ Rodrigo — single power user on his own Avell gaming laptop (RODRIGO-AVELL, Win
 
 ## Product Purpose
 
-A safer, modern replacement for the Avell/OEM Gaming Center. Controls the laptop's hardware through a local ASP.NET Core API over EC/WMI and ITE HID:
+**AvellSucks** — a safer, modern replacement for the Avell/OEM Gaming Center. The
+shipped face is a WPF/.NET 10 app driving the hardware in-process over EC/WMI (an
+optional loopback ASP.NET API mirrors the same surface for automation):
 
 - **Fan / performance**: modes (auto, boost, custom, L1–L5) and a custom temp→PWM curve.
-- **Power limits**: PL1 / PL2 / Tau, gated behind an EC write allowlist + audit.
-- **RGB keyboard**: ITE HID (VID 0x0489 / PID 0xCE40) — static, breathing, color cycle, wave, ripple; brightness, direction, speed, per-zone color.
-- **Live telemetry**: CPU/GPU temps, fan RPM, memory, power draw streamed over SSE (`/events`).
+- **Power limits**: PL1 / PL2 / PL4 (EC 0x783/0x784/0x785), gated behind an EC write allowlist + audit.
+- **RGB keyboard**: ITE HID (VID 0x0489 / PID 0xCE40) — *planned/stubbed*. Effects (static, breathing, color cycle, wave, ripple), brightness, speed, per-zone color are designed and wired, but the backend is unfinished/untested because the laptop's keyboard is physically broken (see the README's keyboard note); it ships as a stub, parked in `app/_pending/rgb-hid/`.
+- **Live telemetry**: CPU/GPU temps, fan RPM, memory, power draw (also streamed over SSE at `/events` by the optional server).
 
 Success = it replaces the OEM app entirely: prettier, trustworthy, quick to actuate, and it never renders off-screen or hides a failed hardware write.
 
