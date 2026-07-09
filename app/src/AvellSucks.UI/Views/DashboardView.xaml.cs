@@ -60,10 +60,12 @@ public partial class DashboardView : UserControl
         catch { ShowCooling(null); }
 
         // Idempotent: opens the ring-0 monitor on first call, no-ops afterwards.
+        // The open runs OFF-thread, so SensorsAvailable is still false right here on
+        // first load — checking it now always (wrongly) fired the notice, which then
+        // never got hidden once the monitor opened a beat later and telemetry began
+        // flowing. The notice is instead evaluated per tick (see UpdateSensorNotice),
+        // which only runs after the open attempt has resolved.
         _pump.Start();
-
-        if (!_pump.SensorsAvailable)
-            ShowNotice(Loc.T("Dash.SensorNotice"));
 
         // First disk snapshot right away (off-thread); refreshed on a slow cadence.
         await SampleDiskAsync();
@@ -77,6 +79,12 @@ public partial class DashboardView : UserControl
 
     private async void OnTelemetry(Telemetry? t)
     {
+        // Reflect real sensor availability every tick (the monitor opens async, so
+        // this can only be judged once ticks are flowing). Shown only when the
+        // backend genuinely failed to open — a transient null sample with the
+        // monitor still open does NOT flip it on.
+        UpdateSensorNotice(_pump.SensorsAvailable);
+
         // Network throughput is independent of the sensor library.
         _net.Sample();
         NetDown.Text = NetworkMeter.FormatBitsPerSec(_net.DownBytesPerSec);
@@ -250,10 +258,19 @@ public partial class DashboardView : UserControl
         return gb >= 1024 ? $"{gb / 1024:0.0} TB" : $"{gb:0} GB";
     }
 
-    private void ShowNotice(string message)
+    // Show the "sensors unavailable" notice only when the ring-0 monitor genuinely
+    // failed to open (not elevated / driver blocked). Idempotent per tick.
+    private void UpdateSensorNotice(bool sensorsAvailable)
     {
-        SensorNoticeText.Text = message;
-        SensorNotice.Visibility = Visibility.Visible;
+        if (!sensorsAvailable)
+        {
+            SensorNoticeText.Text = Loc.T("Dash.SensorNotice");
+            SensorNotice.Visibility = Visibility.Visible;
+        }
+        else if (SensorNotice.Visibility != Visibility.Collapsed)
+        {
+            SensorNotice.Visibility = Visibility.Collapsed;
+        }
     }
 
     // One disk drive's row: a color chip (drive identity) + letter, a reused

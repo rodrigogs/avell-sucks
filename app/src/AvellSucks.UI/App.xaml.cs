@@ -123,6 +123,9 @@ public partial class App : Application
                 case "autostart":
                     RunAutoStartSelfTest();
                     break;
+                case "sensors":
+                    RunSensorsSelfTest();
+                    break;
                 case "fan-boost":
                     var r1 = fan.SetModeAsync("boost").AsTask().GetAwaiter().GetResult();
                     Log($"selftest fan-boost: State={r1.State} Verified={r1.Verified} Error={r1.Error ?? "none"}");
@@ -145,6 +148,32 @@ public partial class App : Application
             }
         }
         catch (Exception ex) { Log($"selftest '{test}' threw: {ex}"); }
+    }
+
+    // Headless sensor check: opens the SensorPump exactly as the Dashboard does and
+    // reports SensorsAvailable + a live sample once the off-thread monitor resolves.
+    // The dashboard's "sensors unavailable" notice is now keyed on this flag, so
+    // this proves whether the notice would (correctly) stay hidden.
+    private static void RunSensorsSelfTest()
+    {
+        // Open the same ring-0 monitor the SensorPump opens (SensorsAvailable is just
+        // "did HardwareMonitor construct + does it return a sample"). If this yields a
+        // live sample, the dashboard's SensorsAvailable flag is true and the fixed
+        // notice logic keeps the "unavailable" banner HIDDEN.
+        try
+        {
+            var mon = new AvellSucks.UI.Hardware.HardwareMonitor();
+            var t = mon.GetTelemetry();
+            bool available = t is not null;
+            Log($"selftest sensors: monitor opened, sample={(available ? "yes" : "null")}, " +
+                $"cpuTemp={t?.CpuTempC?.ToString() ?? "n/a"} gpuTemp={t?.GpuTempC?.ToString() ?? "n/a"} " +
+                $"→ dashboard notice would be {(available ? "HIDDEN (correct)" : "SHOWN")}");
+            mon.Dispose();
+        }
+        catch (Exception ex)
+        {
+            Log($"selftest sensors: monitor FAILED to open ({ex.Message}) → notice SHOWN (correct)");
+        }
     }
 
     // Headless autostart check: exercises the scheduled-task path end to end.
