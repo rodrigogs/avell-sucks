@@ -98,6 +98,9 @@ public partial class App : Application
                 case "i18n":
                     RunI18nSelfTest();
                     break;
+                case "autostart":
+                    RunAutoStartSelfTest();
+                    break;
                 case "fan-boost":
                     var r1 = fan.SetModeAsync("boost").AsTask().GetAwaiter().GetResult();
                     Log($"selftest fan-boost: State={r1.State} Verified={r1.Verified} Error={r1.Error ?? "none"}");
@@ -120,6 +123,32 @@ public partial class App : Application
             }
         }
         catch (Exception ex) { Log($"selftest '{test}' threw: {ex}"); }
+    }
+
+    // Headless autostart check: exercises the scheduled-task path end to end.
+    private static void RunAutoStartSelfTest()
+    {
+        var before = AvellSucks.UI.Startup.AutoStart.IsEnabled();
+        Log($"autostart: initial IsEnabled={before}");
+        AvellSucks.UI.Startup.AutoStart.Set(true);
+        var afterEnable = AvellSucks.UI.Startup.AutoStart.IsEnabled();
+        Log($"autostart: after Set(true) IsEnabled={afterEnable} (expect True)");
+        try
+        {
+            var psi = new System.Diagnostics.ProcessStartInfo("schtasks.exe",
+                "/Query /TN \"AvellSucks Autostart\" /XML")
+            { UseShellExecute = false, RedirectStandardOutput = true, CreateNoWindow = true };
+            using var q = System.Diagnostics.Process.Start(psi)!;
+            var xml = q.StandardOutput.ReadToEnd();
+            q.WaitForExit();
+            foreach (var marker in new[] { "<LogonTrigger>", "<RunLevel>HighestAvailable</RunLevel>", "<Command>" })
+                Log($"autostart: task XML contains {marker} = {xml.Contains(marker, StringComparison.OrdinalIgnoreCase)}");
+        }
+        catch (Exception ex) { Log($"autostart: XML inspect failed {ex.Message}"); }
+        AvellSucks.UI.Startup.AutoStart.Set(false);
+        var afterDisable = AvellSucks.UI.Startup.AutoStart.IsEnabled();
+        Log($"autostart: after Set(false) IsEnabled={afterDisable} (expect False)");
+        Log($"autostart: RESULT {(afterEnable && !afterDisable ? "PASS" : "FAIL")}");
     }
 
     // Headless localization check: resolves representative keys under both

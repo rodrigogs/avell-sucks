@@ -52,7 +52,8 @@
                                    Style="{StaticResource Caption}"
                                    Text="{loc:Tr Fan.ChangesApply}"/>
                         <Button x:Name="ResetBtn" Content="{loc:Tr Fan.ResetToAuto}" Style="{StaticResource SecondaryButton}"
-                                DockPanel.Dock="Right" HorizontalAlignment="Right" Click="OnReset"/>
+                                DockPanel.Dock="Right" HorizontalAlignment="Right" Click="OnReset"
+                                Visibility="Collapsed"/>
                     </DockPanel>
                 </StackPanel>
             </Border>

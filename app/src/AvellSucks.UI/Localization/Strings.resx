@@ -79,7 +79,6 @@
   <data name="Tab.Settings.Sub" xml:space="preserve"><value>Language, startup and window behavior</value></data>
 
   <!-- ===== Gateway status ===== -->
-  <data name="Gateway.Online" xml:space="preserve"><value>Hardware online</value></data>
 
   <!-- ===== Shared ===== -->
   <data name="Common.Auto" xml:space="preserve"><value>Auto</value></data>
