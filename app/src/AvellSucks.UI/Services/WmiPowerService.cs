@@ -149,13 +149,7 @@ public sealed class WmiPowerService : IPowerService
         return preset;
     }
 
-    private static PowerLimits FallbackPreset(PerformanceMode mode) => mode switch
-    {
-        PerformanceMode.Gaming => new(45, 90, 107),
-        PerformanceMode.High => new(35, 64, 90),
-        PerformanceMode.Balanced => new(25, 45, 64),
-        _ => new(15, 25, 35),
-    };
+    private static PowerLimits FallbackPreset(PerformanceMode mode) => PowerPresets.For(mode);
 
     // Best-effort classification of the current limits back to a mode label.
     private static PerformanceMode InferMode(PowerLimits l) => l.Pl1Watts switch

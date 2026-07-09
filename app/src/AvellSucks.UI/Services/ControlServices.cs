@@ -88,6 +88,28 @@ public interface IPowerService
 /// <summary>CPU power limits in watts (RAPL PL1 sustained, PL2 turbo, PL4 peak).</summary>
 public sealed record PowerLimits(int Pl1Watts, int Pl2Watts, int Pl4Watts);
 
+/// <summary>
+/// Default per-mode CPU power-limit presets (PL1/PL2/PL4 watts) for a 45 W-class
+/// mobile CPU. Single source shared by the stub service and the real service's
+/// fallback (used until the backend reads the silicon's actual Gaming/Office
+/// defaults). Sane, conservative values from the decompiled OEM app.
+/// </summary>
+public static class PowerPresets
+{
+    public static readonly IReadOnlyDictionary<PerformanceMode, PowerLimits> Default =
+        new Dictionary<PerformanceMode, PowerLimits>
+        {
+            [PerformanceMode.Gaming]   = new(45, 90, 107),
+            [PerformanceMode.High]     = new(35, 64, 90),
+            [PerformanceMode.Balanced] = new(25, 45, 64),
+            [PerformanceMode.Saving]   = new(15, 25, 35),
+        };
+
+    /// <summary>Preset for a mode, defaulting to Saving for anything unmapped.</summary>
+    public static PowerLimits For(PerformanceMode mode) =>
+        Default.TryGetValue(mode, out var p) ? p : Default[PerformanceMode.Saving];
+}
+
 /// <summary>A snapshot of the active mode and the limits it resolved to.</summary>
 public sealed record PowerState(PerformanceMode Mode, PowerLimits Limits, bool Supported, string? Error);
 

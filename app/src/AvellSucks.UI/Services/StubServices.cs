@@ -88,17 +88,10 @@ public sealed class LocalFanService : IFanService
 public sealed class LocalPowerService : IPowerService
 {
     // Per-mode CPU power-limit presets (watts). Shape mirrors the OEM's
-    // Gaming/Office defaults from the decompiled original; concrete values are
-    // sane defaults for a 45 W-class mobile CPU until the backend reads the
-    // silicon's real GetGamingPLDefaultValue()/GetOfficePLDefaultValue().
+    // Shared default presets (see PowerPresets); the real service uses the same
+    // table as its fallback until it reads the silicon's actual defaults.
     private static readonly IReadOnlyDictionary<PerformanceMode, PowerLimits> Presets =
-        new Dictionary<PerformanceMode, PowerLimits>
-        {
-            [PerformanceMode.Gaming]   = new(45, 90, 107),
-            [PerformanceMode.High]     = new(35, 64, 90),
-            [PerformanceMode.Balanced] = new(25, 45, 64),
-            [PerformanceMode.Saving]   = new(15, 25, 35),
-        };
+        PowerPresets.Default;
 
     private PerformanceMode _mode = PerformanceMode.Balanced;
     private PowerLimits _limits = Presets[PerformanceMode.Balanced];
