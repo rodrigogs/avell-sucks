@@ -9,5 +9,4 @@
   <Project Path="src/AvellSucks.UI/AvellSucks.UI.csproj" />
   <Project Path="tests/AvellSucks.Core.Tests/AvellSucks.Core.Tests.csproj" />
   <Project Path="tests/AvellSucks.Server.Tests/AvellSucks.Server.Tests.csproj" />
-  <Project Path="tests/AvellSucks.Core.Smoke/AvellSucks.Core.Smoke.csproj" />
 </Solution>

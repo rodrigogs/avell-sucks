@@ -35,8 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AvellSucks.Api\AvellSucks.Api.csproj" />
-    <!-- Real EC backend (WmiEcBackend) for the hardware-backed fan service. -->
+    <!-- Real EC backend (WmiEcBackend) for the hardware-backed fan service.
+         The UI drives hardware in-process via Core/Core.Windows; it does NOT use
+         AvellSucks.Api (that's the Server's web tier) — referencing it only
+         dragged the ASP.NET OpenApi packages into the shipped WPF binary. -->
     <ProjectReference Include="..\AvellSucks.Core.Windows\AvellSucks.Core.Windows.csproj" />
   </ItemGroup>
 

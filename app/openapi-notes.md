@@ -26,33 +26,6 @@ Content-Type: text/plain; charset=utf-8
 GamingCenter local API
 ```
 
-### `POST /api/hello`
-
-Human/script-facing automation surface.
-
-Request:
-```http
-POST /api/hello HTTP/1.1
-Host: 127.0.0.1:5055
-Content-Type: application/json
-
-{"name":"MVP"}
-```
-
-Responses:
-```http
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-  "message": "Hello, MVP!",
-  "requestedAt": "2026-07-03T20:00:00Z"
-}
-```
-
-Errors:
-- `415 Unsupported Media Type`: `Content-Type` is not `application/json`.
-
 ### `GET /api/system/snapshot`
 
 System snapshot for automation/scripts.

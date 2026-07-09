@@ -1,4 +1,3 @@
-using AvellSucks.Api.Services;
 using AvellSucks.Core;
 using AvellSucks.Core.Hardware;
 using AvellSucks.Core.Platforms;
@@ -34,9 +33,6 @@ builder.Services.AddSingleton<IWriteAuditLog>(_ =>
     return new JsonlWriteAuditLog(Path.Combine(dir, "ec-write-audit.jsonl"));
 });
 builder.Services.AddSingleton<SafeEcWriter>();
-
-// --- Hello API (demo) ---
-builder.Services.AddSingleton<DefaultHelloService>();
 
 var app = builder.Build();
 
