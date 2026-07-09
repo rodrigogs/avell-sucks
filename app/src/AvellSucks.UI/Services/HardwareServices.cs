@@ -1,41 +1,11 @@
 using System;
 using System.IO;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using AvellSucks.Core.Hardware;
 using AvellSucks.Core.Platforms;
 
 namespace AvellSucks.UI.Services;
-
-/// <summary>
-/// Append-only JSONL audit sink for EC writes, local to the UI (the Server has
-/// its own copy; the UI must not depend on the Server assembly). One JSON object
-/// per line; failures to write are swallowed so auditing never breaks a write.
-/// </summary>
-internal sealed class JsonlAuditLog : IWriteAuditLog
-{
-    private static readonly JsonSerializerOptions s_json = new() { WriteIndented = false };
-    private readonly string _path;
-    private readonly object _lock = new();
-
-    public JsonlAuditLog(string path)
-    {
-        _path = path;
-        try { Directory.CreateDirectory(Path.GetDirectoryName(path)!); } catch { /* best-effort */ }
-    }
-
-    public ValueTask RecordAsync(EcWriteResult result, CancellationToken cancellationToken = default)
-    {
-        try
-        {
-            var line = JsonSerializer.Serialize(result, s_json);
-            lock (_lock) { File.AppendAllText(_path, line + Environment.NewLine); }
-        }
-        catch { /* auditing must never break a write */ }
-        return ValueTask.CompletedTask;
-    }
-}
 
 /// <summary>
 /// Minimal composition root for the hardware service layer (pre-DI). Builds the
@@ -129,8 +99,9 @@ public static class HardwareServices
                 var backend = new WmiEcBackend();
                 var auditDir = Environment.GetEnvironmentVariable("GAMINGCENTER_AUDIT_DIR")
                     ?? AppPaths.AuditDir;
-                var audit = new JsonlAuditLog(Path.Combine(auditDir, "ec-write-audit.jsonl"));
-                var writer = new SafeEcWriter(gate, new EcWriteAllowlist(), backend, backend, audit);
+                // UI: swallow audit-write errors so logging can't break a hardware write.
+                var audit = new JsonlAuditLog(Path.Combine(auditDir, "ec-write-audit.jsonl"), swallowWriteErrors: true);
+                var writer = EcPipeline.BuildWriter(backend, backend, gate, audit);
 
                 s_gate = gate;
                 s_backend = backend;

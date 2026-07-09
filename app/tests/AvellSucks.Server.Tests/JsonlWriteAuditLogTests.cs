@@ -23,7 +23,7 @@ public class JsonlWriteAuditLogTests
         var path = Path.Combine(Path.GetTempPath(), $"gc-audit-{System.Guid.NewGuid():N}.jsonl");
         try
         {
-            var log = new JsonlWriteAuditLog(path);
+            var log = new JsonlAuditLog(path);
             await log.RecordAsync(SampleResult(allowed: true, address: 1873, value: 64));
 
             Assert.True(File.Exists(path));
@@ -48,7 +48,7 @@ public class JsonlWriteAuditLogTests
         var path = Path.Combine(Path.GetTempPath(), $"gc-audit-{System.Guid.NewGuid():N}.jsonl");
         try
         {
-            var log = new JsonlWriteAuditLog(path);
+            var log = new JsonlAuditLog(path);
             await log.RecordAsync(SampleResult(allowed: false, address: 0x999, value: 0));
             await log.RecordAsync(SampleResult(allowed: true, address: 1873, value: 64));
             await log.RecordAsync(SampleResult(allowed: false, address: 1860, value: 140));
@@ -79,7 +79,7 @@ public class JsonlWriteAuditLogTests
         var path = Path.Combine(dir, "nested", "audit.jsonl");
         try
         {
-            var log = new JsonlWriteAuditLog(path);
+            var log = new JsonlAuditLog(path);
             await log.RecordAsync(SampleResult(allowed: true, address: 1873, value: 0));
 
             Assert.True(File.Exists(path));
