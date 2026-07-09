@@ -99,6 +99,9 @@
   <data name="Dash.Na" xml:space="preserve"><value>n/a</value></data>
   <data name="Dash.Free" xml:space="preserve"><value>{0} free</value></data>
   <data name="Dash.SensorNotice" xml:space="preserve"><value>Sensor access needs elevation. Live telemetry is unavailable in this session.</value></data>
+  <data name="Gauge.LoadSuffix" xml:space="preserve"><value>% load</value></data>
+  <data name="Gauge.LoadLabel" xml:space="preserve"><value>% load</value></data>
+  <data name="Gauge.TempNa" xml:space="preserve"><value>temp n/a</value></data>
   <data name="Cool.Auto.Hint" xml:space="preserve"><value>Balances noise and temperature</value></data>
   <data name="Cool.Boost.Hint" xml:space="preserve"><value>Maximum cooling, fans run cold</value></data>
   <data name="Cool.Custom.Hint" xml:space="preserve"><value>Following your temperature curve</value></data>

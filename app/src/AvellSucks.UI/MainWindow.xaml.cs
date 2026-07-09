@@ -80,6 +80,20 @@ public partial class MainWindow : Window
         }
     }
 
+    /// <summary>
+    /// Bring the app up hidden in the tray at startup. WPF needs the window shown
+    /// once to realize its visual tree (which is what instantiates the tray icon
+    /// and runs OnLoaded); we keep it off the taskbar across that Show()/Hide() so
+    /// nothing flashes. Called only when StartMinimized + HideOnMinimize are set.
+    /// </summary>
+    public void StartHiddenInTray()
+    {
+        ShowInTaskbar = false;
+        Show();
+        Hide();
+        ShowInTaskbar = true; // future restores appear on the taskbar normally
+    }
+
     private void RestoreFromTray()
     {
         Show();
@@ -91,6 +105,11 @@ public partial class MainWindow : Window
 
     private void OnTrayDoubleClick(object sender, RoutedEventArgs e) => RestoreFromTray();
     private void OnTrayOpen(object sender, RoutedEventArgs e) => RestoreFromTray();
+
+    // Re-read the real autostart state each time the tray menu opens, so it never
+    // shows stale if the Settings tab changed it (or vice versa).
+    private void OnTrayMenuOpened(object sender, RoutedEventArgs e)
+        => AutoStartItem.IsChecked = AutoStart.IsEnabled();
 
     private void OnToggleAutoStart(object sender, RoutedEventArgs e)
     {

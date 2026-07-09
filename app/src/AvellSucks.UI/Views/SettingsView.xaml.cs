@@ -34,6 +34,21 @@ public partial class SettingsView : UserControl
         HideOnMinimize.IsChecked = _settings.HideOnMinimize;
 
         _loading = false;
+
+        // This view is cached and reused across tab switches, so the autostart
+        // state can change elsewhere (the tray menu) after construction. Re-read
+        // the real registry value each time the tab is shown so the toggle never
+        // goes stale.
+        Loaded += (_, _) =>
+        {
+            bool real = AutoStart.IsEnabled();
+            if (StartWithWindows.IsChecked != real)
+            {
+                _loading = true;
+                StartWithWindows.IsChecked = real;
+                _loading = false;
+            }
+        };
     }
 
     private void OnLanguageChecked(object sender, System.Windows.RoutedEventArgs e)
