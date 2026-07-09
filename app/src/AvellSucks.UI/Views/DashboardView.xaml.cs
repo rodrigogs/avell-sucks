@@ -35,7 +35,7 @@ public partial class DashboardView : UserControl
         Color.FromRgb(0x34, 0xE5, 0xA0), // ok-green
         Color.FromRgb(0xF4, 0xC0, 0x4A), // warn-amber
     };
-    private readonly Dictionary<string, DiskRow> _diskRows = new();
+    private readonly Dictionary<string, DiskUsageRow> _diskRows = new();
 
     // The pump is owned and disposed by MainWindow and shared with the Fan view;
     // this view only subscribes/unsubscribes around its own visibility.
@@ -231,9 +231,9 @@ public partial class DashboardView : UserControl
             if (!_diskRows.TryGetValue(d.Name, out var row))
             {
                 var color = DriveColors[i % DriveColors.Length];
-                row = new DiskRow(d.Name, color);
+                row = new DiskUsageRow(d.Name, color);
                 _diskRows[d.Name] = row;
-                DiskRows.Children.Add(row.Root);
+                DiskRows.Children.Add(row);
             }
             row.Update(d);
         }
@@ -245,7 +245,7 @@ public partial class DashboardView : UserControl
             foreach (var kv in _diskRows) if (!seen.Contains(kv.Key)) gone.Add(kv.Key);
             foreach (var name in gone)
             {
-                DiskRows.Children.Remove(_diskRows[name].Root);
+                DiskRows.Children.Remove(_diskRows[name]);
                 _diskRows.Remove(name);
             }
         }
@@ -270,68 +270,6 @@ public partial class DashboardView : UserControl
         else if (SensorNotice.Visibility != Visibility.Collapsed)
         {
             SensorNotice.Visibility = Visibility.Collapsed;
-        }
-    }
-
-    // One disk drive's row: a color chip (drive identity) + letter, a reused
-    // CapacityBar (severity fill), and used/total text. Color tags the drive;
-    // the bar still recolors amber/red as it fills, so a full disk reads as risk.
-    private sealed class DiskRow
-    {
-        public readonly FrameworkElement Root;
-        private readonly CapacityBar _bar;
-        private readonly TextBlock _text;
-
-        public DiskRow(string name, Color color)
-        {
-            var outer = new StackPanel { Margin = new Thickness(0, 0, 0, 6) };
-
-            var head = new DockPanel();
-            var chip = new Border
-            {
-                CornerRadius = new CornerRadius(3),
-                Background = Brand.Frozen(color),
-                Width = 14,
-                Height = 14,
-                VerticalAlignment = VerticalAlignment.Center,
-                Child = new TextBlock
-                {
-                    Text = name.Replace(":", ""),
-                    FontSize = 9,
-                    FontWeight = FontWeights.Bold,
-                    Foreground = Brand.Frozen(Brand.Bg),
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
-                },
-            };
-            DockPanel.SetDock(chip, Dock.Left);
-            head.Children.Add(chip);
-
-            _text = new TextBlock
-            {
-                Text = "—",
-                FontFamily = (FontFamily)Application.Current.FindResource("MonoFont"),
-                FontSize = 11,
-                Foreground = Brand.Frozen(Brand.Ink3),
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(6, 0, 0, 0),
-            };
-            head.Children.Add(_text);
-
-            _bar = new CapacityBar { Height = 7, Margin = new Thickness(0, 5, 0, 0), WarnAt = 0.85, CriticalAt = 0.95 };
-
-            outer.Children.Add(head);
-            outer.Children.Add(_bar);
-            Root = outer;
-        }
-
-        public void Update(DriveUsage d)
-        {
-            _bar.Fraction = d.UsedFraction;
-            // used / total here; the tile header already carries total free, so the
-            // row complements it instead of repeating "free".
-            _text.Text = $"{Bytes(d.UsedBytes)} / {Bytes(d.TotalBytes)}";
         }
     }
 }

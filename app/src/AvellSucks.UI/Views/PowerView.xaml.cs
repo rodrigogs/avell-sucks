@@ -19,7 +19,9 @@ public partial class PowerView : UserControl
     // written during construction / XAML init / initial hydration actuates the
     // EC. (A card auto-checking or a slider raising ValueChanged during
     // InitializeComponent must NOT trigger a hardware write.)
-    private bool _loading = true;
+    // Starts suppressed: cards auto-checking / sliders raising ValueChanged during
+    // InitializeComponent + initial hydration must not actuate the EC.
+    private readonly LoadingGate _loading = new(startActive: true);
 
     public PowerView()
     {
@@ -134,11 +136,12 @@ public partial class PowerView : UserControl
 
         var state = await _power.GetAsync();
 
-        _loading = true;
+        // Hydrate the controls, then clear the startup suppression (the gate started
+        // active in the ctor so InitializeComponent + this first load never actuate).
         CardFor(state.Mode).IsChecked = true;
         ShowEnvelope(state.Mode, state.Limits);
         LoadSliders(state.Limits);
-        _loading = false;
+        _loading.End();
 
         // Seed the reconciler baseline from the ACTIVE SCHEME (same source the
         // monitor polls) so it doesn't fire a spurious "changed on device" toast
@@ -155,12 +158,13 @@ public partial class PowerView : UserControl
     private async void OnExternalModeChanged(PerformanceMode mode)
     {
         App.Trace($"PowerStateMonitor: external power-plan change detected → {mode}");
-        _loading = true;
-        CardFor(mode).IsChecked = true;
         var preset = await _power.GetPresetAsync(mode);
-        ShowEnvelope(mode, preset);
-        LoadSliders(preset);
-        _loading = false;
+        using (_loading.Begin())
+        {
+            CardFor(mode).IsChecked = true;
+            ShowEnvelope(mode, preset);
+            LoadSliders(preset);
+        }
         Toaster.Show(WriteState.Verified,
             string.Format(Loc.T("Common.ChangedOnDevice"), string.Format(Loc.T("Power.ModeName"), Meta(mode).Name)));
     }
@@ -171,12 +175,12 @@ public partial class PowerView : UserControl
         if (sender is not RadioButton rb) return;
         var mode = ModeOf(rb);
 
-        // Capture the intent-to-write BEFORE any await. During load, OnLoaded sets
-        // _loading=true and checks a card (firing this handler); the first await
-        // below would yield, OnLoaded would set _loading=false, and on resume the
-        // "_loading" guard would wrongly read false → a spurious write + toast on
-        // simply opening the tab. Latch it up front so an await can't corrupt it.
-        var isUserAction = !_loading;
+        // Capture the intent-to-write BEFORE any await. During load the gate is
+        // active and checking a card fires this handler; the await below would
+        // yield, the load could clear the gate, and on resume the guard would
+        // wrongly read "user action" → a spurious write on simply opening the tab.
+        // Latch it up front so an await can't corrupt it.
+        var isUserAction = !_loading.Active;
 
         var preset = await _power.GetPresetAsync(mode);
         ShowEnvelope(mode, preset);
@@ -184,12 +188,8 @@ public partial class PowerView : UserControl
         // Load the sliders to match, without their ValueChanged writing back.
         // Checked can fire during InitializeComponent before later elements exist.
         if (Pl1Slider is not null)
-        {
-            var wasLoading = _loading;
-            _loading = true;
-            LoadSliders(preset);
-            _loading = wasLoading;
-        }
+            using (_loading.Begin())
+                LoadSliders(preset);
 
         if (!isUserAction) return; // hydration selection — never write
         _limitWrite.Cancel(); // mode press supersedes a pending slider write
@@ -232,7 +232,7 @@ public partial class PowerView : UserControl
             return;
 
         UpdateSliderReadouts();
-        if (_loading) return;
+        if (_loading.Active) return;
 
         // Manual edit feeds the live envelope, then writes through on settle
         // (debounced) — no Apply button.
