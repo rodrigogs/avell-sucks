@@ -173,24 +173,66 @@ public class SafeEcWriterTests
     }
 
     // ------------------------------------------------------------------
-    // Backend failure during write
+    // Backend failure during write — must NOT throw (UI awaits from async void)
     // ------------------------------------------------------------------
 
     [Fact]
-    public async Task Backend_exception_during_write_is_audit_logged_and_rethrown()
+    public async Task Backend_exception_during_write_returns_failed_result_without_throwing()
     {
         var (writer, fake) = MakeWriter(allowWrites: true);
         fake.Seed(FanAddr, 0);
         fake.WriteException = new InvalidOperationException("WMI failure");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => writer.TryWriteAsync(FanAddr, 0, "auto").AsTask());
+        // Previously this rethrew and crashed the app (async-void callers); it must
+        // now come back as a Failed result instead.
+        var result = await writer.TryWriteAsync(FanAddr, 0, "auto");
 
+        Assert.True(result.Allowed);
+        Assert.False(result.Executed);
+        Assert.False(result.Verified);
+        Assert.Contains("WMI failure", result.Error);
         Assert.Single(fake.AuditEntries);
-        var entry = fake.AuditEntries[0];
-        Assert.True(entry.Allowed);
-        Assert.False(entry.Executed);
-        Assert.Contains("WMI failure", entry.Error);
+        Assert.Contains("WMI failure", fake.AuditEntries[0].Error);
+    }
+
+    [Fact]
+    public async Task Write_is_refused_when_pre_read_has_no_known_prior_state()
+    {
+        var (writer, fake) = MakeWriter(allowWrites: true);
+        // Deliberately DO NOT seed FanAddr → pre-read returns Ok=false.
+        var result = await writer.TryWriteAsync(FanAddr, 64, "boost");
+
+        Assert.True(result.Allowed);
+        Assert.False(result.Executed);
+        Assert.False(result.Verified);
+        Assert.Contains("known prior state", result.Error);
+        Assert.Empty(fake.Writes); // must not touch the backend without a baseline
+    }
+
+    // ------------------------------------------------------------------
+    // Settle + re-write retry loop (the class's core value-add)
+    // ------------------------------------------------------------------
+
+    [Fact]
+    public async Task Swallowed_first_write_is_re_issued_and_eventually_verifies()
+    {
+        var (writer, fake) = MakeWriter(allowWrites: true);
+        fake.Seed(FanAddr, 64); // currently Boost
+
+        // Simulate the EC swallowing the first write to 0 (auto): the register
+        // keeps reading back 64 until the SECOND write lands.
+        var writeCount = 0;
+        fake.ReadBackOverride = (_, v) =>
+        {
+            writeCount++;
+            return writeCount >= 2 ? v : 64; // first write ignored, second takes
+        };
+
+        var result = await writer.TryWriteAsync(FanAddr, 0, "auto");
+
+        Assert.True(result.Verified, "the re-issued write should eventually verify");
+        Assert.True(fake.Writes.Count >= 2, "the write must have been re-issued (>1)");
+        Assert.Null(result.Error);
     }
 
     // ------------------------------------------------------------------

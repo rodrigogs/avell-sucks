@@ -22,7 +22,15 @@ public partial class App : Application
 
     public App()
     {
-        DispatcherUnhandledException += (_, e) => Log($"DispatcherUnhandledException: {e.Exception}");
+        // Last-resort safety net: log and KEEP RUNNING rather than terminate on an
+        // unhandled dispatcher exception. The write pipeline already returns failures
+        // as results instead of throwing; this catches anything else that slips out
+        // of an async-void handler so a stray exception can't kill the app.
+        DispatcherUnhandledException += (_, e) =>
+        {
+            Log($"DispatcherUnhandledException (handled): {e.Exception}");
+            e.Handled = true;
+        };
         AppDomain.CurrentDomain.UnhandledException += (_, e) =>
             Log($"UnhandledException (terminating={e.IsTerminating}): {e.ExceptionObject}");
     }
