@@ -16,10 +16,6 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
 
-    <Style x:Key="PanelRaised" TargetType="Border" BasedOn="{StaticResource Panel}">
-        <Setter Property="Background" Value="{StaticResource Surface2}"/>
-    </Style>
-
     <!-- Compact panel — denser padding for data-dense dashboards -->
     <Style x:Key="PanelTight" TargetType="Border" BasedOn="{StaticResource Panel}">
         <Setter Property="Padding" Value="13"/>
@@ -33,41 +29,6 @@
                     <Border CornerRadius="{StaticResource RadiusSm}"
                             BorderBrush="{StaticResource Cyan}" BorderThickness="2"
                             Margin="-3" SnapsToDevicePixels="True"/>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- ===== Primary button — neon magenta fill ===== -->
-    <Style x:Key="PrimaryButton" TargetType="Button">
-        <Setter Property="Foreground" Value="{StaticResource OnNeon}"/>
-        <Setter Property="Background" Value="{StaticResource Magenta}"/>
-        <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
-        <Setter Property="FontSize" Value="{StaticResource FsBody}"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Padding" Value="18,10"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="bd" Background="{TemplateBinding Background}"
-                            CornerRadius="{StaticResource RadiusSm}"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="bd" Property="Effect" Value="{StaticResource GlowMagenta}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="bd" Property="Opacity" Value="0.85"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="bd" Property="Background" Value="{StaticResource Surface2}"/>
-                            <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -103,60 +64,6 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
                             <Setter TargetName="bd" Property="Opacity" Value="0.5"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- ===== Danger button ===== -->
-    <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource SecondaryButton}">
-        <Setter Property="Foreground" Value="{StaticResource Danger}"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="bd" Background="{StaticResource DangerTint}"
-                            BorderBrush="{StaticResource Danger}" BorderThickness="1"
-                            CornerRadius="{StaticResource RadiusSm}"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="bd" Property="Effect" Value="{StaticResource GlowDanger}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="bd" Property="Opacity" Value="0.85"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- ===== Icon / ghost button (nav rail, top bar) ===== -->
-    <Style x:Key="GhostButton" TargetType="Button">
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
-        <Setter Property="FontSize" Value="{StaticResource FsBody}"/>
-        <Setter Property="Padding" Value="10,8"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="bd" Background="{TemplateBinding Background}"
-                            CornerRadius="{StaticResource RadiusSm}"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="bd" Property="Background" Value="{StaticResource HoverWash}"/>
-                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

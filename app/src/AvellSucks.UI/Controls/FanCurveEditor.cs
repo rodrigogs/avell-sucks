@@ -96,31 +96,23 @@ public sealed class FanCurveEditor : FrameworkElement
         new GradientStop(Brand.Violet, 0.5),
         new GradientStop(Brand.Magenta, 1.0),
     };
-    private static readonly Pen LinePen = FrozenPen(
-        new LinearGradientBrush(CurveStops, new Point(0, 0), new Point(1, 0)), 2.5, PenLineJoin.Round);
-    private static readonly Brush CurveFill = FrozenBrush(new LinearGradientBrush(new GradientStopCollection
+    private static readonly Pen LinePen = Brand.FrozenPen(
+        FrozenGradient(CurveStops), 2.5, PenLineJoin.Round);
+    private static readonly Brush CurveFill = FrozenGradient(new GradientStopCollection
     {
-        new GradientStop(Color.FromArgb(0x33, Brand.Cyan.R, Brand.Cyan.G, Brand.Cyan.B), 0.0),
-        new GradientStop(Color.FromArgb(0x33, Brand.Magenta.R, Brand.Magenta.G, Brand.Magenta.B), 1.0),
-    }, new Point(0, 0), new Point(1, 0)));
+        new GradientStop(Brand.WithAlpha(Brand.Cyan, 0x33), 0.0),
+        new GradientStop(Brand.WithAlpha(Brand.Magenta, 0x33), 1.0),
+    });
     private static readonly Typeface MonoFace = new(new FontFamily("Cascadia Code, Consolas, monospace"),
         FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
 
-    private static Pen FrozenPen(Color c, double thickness, PenLineJoin join = PenLineJoin.Miter)
-        => FrozenPen(Brand.Frozen(c), thickness, join);
-
-    private static Pen FrozenPen(Brush b, double thickness, PenLineJoin join = PenLineJoin.Miter)
+    // Left→right (temperature-axis) gradient, frozen once. The stroke and the fill
+    // under the curve both use it so they read as one cool→hot body.
+    private static Brush FrozenGradient(GradientStopCollection stops)
     {
-        if (b.CanFreeze && !b.IsFrozen) b.Freeze();
-        var pen = new Pen(b, thickness) { LineJoin = join };
-        pen.Freeze();
-        return pen;
-    }
-
-    private static Brush FrozenBrush(Brush b)
-    {
-        if (b.CanFreeze && !b.IsFrozen) b.Freeze();
-        return b;
+        var g = new LinearGradientBrush(stops, new Point(0, 0), new Point(1, 0));
+        g.Freeze();
+        return g;
     }
 
     private Rect PlotRect => new(PadLeft, PadTop,
@@ -267,14 +259,14 @@ public sealed class FanCurveEditor : FrameworkElement
             var nodeColor = CurveColorAt(_points[i].TemperatureC);
 
             if (active)
-                dc.DrawEllipse(Brand.Frozen(Color.FromArgb(0x33, nodeColor.R, nodeColor.G, nodeColor.B)),
+                dc.DrawEllipse(Brand.Frozen(Brand.WithAlpha(nodeColor, 0x33)),
                     null, c, NodeRadius + 8, NodeRadius + 8);
             else if (hover)
-                dc.DrawEllipse(Brand.Frozen(Color.FromArgb(0x22, nodeColor.R, nodeColor.G, nodeColor.B)),
+                dc.DrawEllipse(Brand.Frozen(Brand.WithAlpha(nodeColor, 0x22)),
                     null, c, NodeRadius + 5, NodeRadius + 5);
 
             double rad = NodeRadius + (active ? 2 : hover ? 1 : 0);
-            dc.DrawEllipse(NodeFill, FrozenPen(nodeColor, active ? 3 : 2.5), c, rad, rad);
+            dc.DrawEllipse(NodeFill, Brand.FrozenPen(nodeColor, active ? 3 : 2.5), c, rad, rad);
             dc.DrawEllipse(Brand.Frozen(nodeColor), null, c, 2.5, 2.5);
 
             var tempFt = Text($"{_points[i].TemperatureC}°", 10.5, Ink3Brush);
@@ -379,13 +371,13 @@ public sealed class FanCurveEditor : FrameworkElement
         double y = r.Bottom - Math.Clamp(pwm / MaxPwm, 0, 1) * r.Height;
         var dot = new Point(x, y);
 
-        var guide = new Pen(Brand.Frozen(Color.FromArgb(0x77, color.R, color.G, color.B)), 1.5)
+        var guide = new Pen(Brand.Frozen(Brand.WithAlpha(color, 0x77)), 1.5)
         { DashStyle = new DashStyle(new double[] { 3, 3 }, 0) };
         guide.Freeze();
         dc.DrawLine(guide, new Point(x, r.Bottom), dot);
 
-        dc.DrawEllipse(Brand.Frozen(Color.FromArgb(0x33, color.R, color.G, color.B)), null, dot, 8, 8);
-        dc.DrawEllipse(Brand.Frozen(color), FrozenPen(Brand.Bg, 1.5), dot, 4.5, 4.5);
+        dc.DrawEllipse(Brand.Frozen(Brand.WithAlpha(color, 0x33)), null, dot, 8, 8);
+        dc.DrawEllipse(Brand.Frozen(color), Brand.FrozenPen(Brand.Bg, 1.5), dot, 4.5, 4.5);
     }
 
     // Consolidated live readout, top-left inside the plot: one row per active
@@ -402,7 +394,7 @@ public sealed class FanCurveEditor : FrameworkElement
         double boxH = padY * 2 + lineH * rows.Count;
         var box = new Rect(r.Left + 10, r.Top + 10, boxW, boxH);
         dc.DrawRoundedRectangle(Brand.Frozen(Color.FromArgb(0xCC, 0x1C, 0x16, 0x22)),
-            FrozenPen(Color.FromArgb(0x40, 0x3A, 0x2F, 0x47), 1), box, 6, 6);
+            Brand.FrozenPen(Color.FromArgb(0x40, 0x3A, 0x2F, 0x47), 1), box, 6, 6);
 
         for (int i = 0; i < rows.Count; i++)
         {

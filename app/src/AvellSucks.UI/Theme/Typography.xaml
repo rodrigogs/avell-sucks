@@ -33,19 +33,8 @@
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
     </Style>
 
-    <Style x:Key="H2" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource UiFontDisplay}"/>
-        <Setter Property="FontSize" Value="{StaticResource FsH2}"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
-    </Style>
-
-    <Style x:Key="H3" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
-        <Setter Property="FontSize" Value="{StaticResource FsH3}"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
-    </Style>
+    <!-- H2/H3 named styles removed — unused (the views size headings directly via
+         the FsH2/FsH3 doubles, which stay). -->
 
     <Style x:Key="Body" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
