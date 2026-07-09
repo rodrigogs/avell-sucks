@@ -195,10 +195,10 @@ public partial class PowerView : UserControl
         _limitWrite.Cancel(); // mode press supersedes a pending slider write
         _monitor?.NoteLocalWrite(mode); // our own switch — not an external change
 
-        var label = string.Format(Loc.T("Power.ModeName"), Meta(mode).Name);
-        Toaster.Show(WriteState.Pending, label);
-        var result = await _power.SetModeAsync(mode);
-        Toaster.Show(result.State, string.Format(Loc.T("Power.ModeOn"), Meta(mode).Name), result.Error);
+        await Toaster.Apply(
+            string.Format(Loc.T("Power.ModeName"), Meta(mode).Name),
+            string.Format(Loc.T("Power.ModeOn"), Meta(mode).Name),
+            () => _power.SetModeAsync(mode));
     }
 
     private void ShowEnvelope(PerformanceMode mode, PowerLimits limits)
@@ -242,11 +242,8 @@ public partial class PowerView : UserControl
     }
 
     private async void ApplyLimitsNow()
-    {
-        Toaster.Show(WriteState.Pending, Loc.T("Power.Limits"));
-        var result = await _power.SetLimitsAsync(CurrentLimits());
-        Toaster.Show(result.State, Loc.T("Power.LimitsSet"), result.Error);
-    }
+        => await Toaster.Apply(Loc.T("Power.Limits"), Loc.T("Power.LimitsSet"),
+            () => _power.SetLimitsAsync(CurrentLimits()));
 
     private void UpdateSliderReadouts()
     {

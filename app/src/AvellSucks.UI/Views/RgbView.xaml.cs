@@ -126,8 +126,7 @@ public partial class RgbView : UserControl
             RgbDirection.LeftToRight,
             (byte)Math.Round(BrightnessSlider.Value));
 
-        Toaster.Show(WriteState.Pending, Loc.T("Rgb.Lighting"));
-        var result = await _rgb.ApplyAsync(effect);
-        Toaster.Show(result.State, Loc.T("Rgb.LightingApplied"), result.Error);
+        await Toaster.Apply(Loc.T("Rgb.Lighting"), Loc.T("Rgb.LightingApplied"),
+            () => _rgb.ApplyAsync(effect));
     }
 }

@@ -1,7 +1,7 @@
 # OpenAPI-ish notes — GamingCenter local API
 
 Base URL: `http://127.0.0.1:5055/`
-Secure alternative: `https://127.0.0.1:5055/` with `GAMING_CENTER_REQUIRE_HTTPS=1`.
+Secure alternative: `https://127.0.0.1:5055/` with `GAMINGCENTER_REQUIRE_HTTPS=1`.
 Documentation: `/swagger` and `/openapi/v1.json` are served when the app is built with `Microsoft.AspNetCore.OpenApi`.
 Events: text/event-stream at `/events`.
 
@@ -76,4 +76,4 @@ Content-Type: text/plain; charset=utf-8
 - Bind-only: server listens on localhost loopback.
 - Loopback enforcement middleware rejects non-loopback before controller execution.
 - Auth in MVP is loopback binding; future hardening may add mTLS or bearer tokens.
-- When `GAMING_CENTER_REQUIRE_HTTPS=1`, plain HTTP returns `400 Bad Request`.
+- When `GAMINGCENTER_REQUIRE_HTTPS=1`, plain HTTP returns `400 Bad Request`.

@@ -149,6 +149,23 @@ public partial class FanView : UserControl
         ResetBtn.Visibility = CurrentMode() == "auto" ? Visibility.Collapsed : Visibility.Visible;
     }
 
+    // Run a fan write while the reconciler is suspended (so it can't yank the
+    // selection mid-settle), with the standard Pending/result toast, then resume
+    // the reconciler on the SETTLED mode: the intended mode if the write verified,
+    // otherwise whatever the device actually reads back (or "auto" if unreadable).
+    // This is the one subtle ternary the three write paths all share.
+    private async System.Threading.Tasks.Task<ControlResult> WriteReconciledAsync(
+        string settledMode, string pendingLabel, string doneLabel,
+        System.Func<System.Threading.Tasks.ValueTask<ControlResult>> write)
+    {
+        _monitor?.Suspend();
+        var result = await Toaster.Apply(pendingLabel, doneLabel, write);
+        _monitor?.Resume(result.State == WriteState.Verified
+            ? settledMode
+            : (await _fan.GetModeAsync() ?? "auto"));
+        return result;
+    }
+
     // Selecting a mode actuates immediately — no Apply button.
     private async void OnModeChecked(object sender, RoutedEventArgs e)
     {
@@ -159,11 +176,9 @@ public partial class FanView : UserControl
         UpdateResetVisibility();
 
         _curveWrite.Cancel(); // a mode press supersedes a pending curve write
-        _monitor?.Suspend();  // don't let the reconciler yank the selection while this settles
-        Toaster.Show(WriteState.Pending, ModeLabel(mode));
-        var result = await _fan.SetModeAsync(mode);
-        Toaster.Show(result.State, string.Format(Loc.T("Fan.ModeSet"), ModeLabel(mode)), result.Error);
-        _monitor?.Resume(result.State == WriteState.Verified ? mode : (await _fan.GetModeAsync() ?? "auto"));
+        await WriteReconciledAsync(
+            mode, ModeLabel(mode), string.Format(Loc.T("Fan.ModeSet"), ModeLabel(mode)),
+            () => _fan.SetModeAsync(mode));
     }
 
     // Dragging a curve point re-applies the custom curve on settle.
@@ -176,13 +191,12 @@ public partial class FanView : UserControl
 
     private async void ApplyCurveNow()
     {
-        _monitor?.Suspend(); // curve write flips mode to custom; let it settle
-        Toaster.Show(WriteState.Pending, Loc.T("Fan.Curve"));
-        var result = await _fan.SetCurveAsync(Curve.Points.ToArray());
-        Toaster.Show(result.State, Loc.T("Fan.CurveApplied"), result.Error);
+        // A curve write flips the mode to custom; settle on "custom" if verified.
+        var result = await WriteReconciledAsync(
+            "custom", Loc.T("Fan.Curve"), Loc.T("Fan.CurveApplied"),
+            () => _fan.SetCurveAsync(Curve.Points.ToArray()));
         if (result.State == WriteState.Verified && !_loading)
             SelectMode("custom");
-        _monitor?.Resume(result.State == WriteState.Verified ? "custom" : (await _fan.GetModeAsync() ?? "auto"));
     }
 
     // The one explicit escape hatch: hand the fan back to Auto.
@@ -194,12 +208,10 @@ public partial class FanView : UserControl
         Curve.SetPoints(curve);
         _loading = false;
 
-        _monitor?.Suspend();
-        Toaster.Show(WriteState.Pending, ModeLabel("auto"));
-        var result = await _fan.SetModeAsync("auto");
+        var result = await WriteReconciledAsync(
+            "auto", ModeLabel("auto"), string.Format(Loc.T("Fan.ModeSet"), ModeLabel("auto")),
+            () => _fan.SetModeAsync("auto"));
         if (result.State == WriteState.Verified) SelectMode("auto");
-        Toaster.Show(result.State, string.Format(Loc.T("Fan.ModeSet"), ModeLabel("auto")), result.Error);
-        _monitor?.Resume(result.State == WriteState.Verified ? "auto" : (await _fan.GetModeAsync() ?? "auto"));
     }
 
     private static string ModeLabel(string mode) => mode switch

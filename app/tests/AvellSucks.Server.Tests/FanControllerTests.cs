@@ -156,7 +156,7 @@ public class FanControllerTests
         var result = await controller.SetCurveAsync(request, CancellationToken.None);
 
         var ok = Assert.IsType<OkObjectResult>(result.Result);
-        var writeResult = Assert.IsType<FanCurveWriteResultDto>(ok.Value);
+        var writeResult = Assert.IsType<BatchWriteResultDto>(ok.Value);
         Assert.True(writeResult.Verified);
         Assert.Equal(
             [(1859, 24), (1860, 48), (1861, 72), (1862, 96), (1863, 120), (FanAddr, 160)],
