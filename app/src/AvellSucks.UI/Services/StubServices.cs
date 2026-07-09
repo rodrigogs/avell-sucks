@@ -39,7 +39,8 @@ internal static class WriteGateInfo
         }
     }
 
-    private static bool IsElevated()
+    /// <summary>True when the process runs elevated (admin). Shared with HardwareServices.</summary>
+    internal static bool IsElevated()
     {
         try
         {

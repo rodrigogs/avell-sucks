@@ -109,7 +109,7 @@ public static class HardwareServices
             if (s_built) return;
             s_built = true;
 
-            var elevated = IsElevated();
+            var elevated = WriteGateInfo.IsElevated();
             var allow = WriteGateInfo.EcWritesEnabled;
             var gate = new WriteGate(allow);
             App.Trace($"HardwareServices: elevated={elevated} writesEnabled={allow} " +
@@ -160,16 +160,5 @@ public static class HardwareServices
                 s_backend = null; s_writer = null; s_gate = null;
             }
         }
-    }
-
-    private static bool IsElevated()
-    {
-        try
-        {
-            using var id = System.Security.Principal.WindowsIdentity.GetCurrent();
-            return new System.Security.Principal.WindowsPrincipal(id)
-                .IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
-        }
-        catch { return false; }
     }
 }

@@ -38,13 +38,10 @@ public partial class SettingsView : UserControl
         StartMinimized.IsChecked = _settings.StartMinimized;
         HideOnMinimize.IsChecked = _settings.HideOnMinimize;
 
-        RefreshUpdateTexts();
-
         // The version line and the update-status line are set imperatively (their
-        // {loc:Tr} bindings get replaced by literals), so re-localize them when the
-        // language changes at runtime. This is a cached, app-lifetime view, so no
-        // unsubscribe is needed.
-        Loc.Instance.PropertyChanged += (_, _) => RefreshUpdateTexts();
+        // {loc:Tr} bindings get replaced by literals), so re-localize them now and
+        // on every runtime language change.
+        Loc.OnCultureChanged(RefreshUpdateTexts);
 
         _loading = false;
 

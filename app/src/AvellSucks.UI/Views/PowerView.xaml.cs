@@ -24,7 +24,6 @@ public partial class PowerView : UserControl
     public PowerView()
     {
         InitializeComponent();
-        BuildModeCards();
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
 
@@ -35,12 +34,14 @@ public partial class PowerView : UserControl
         }
 
         // Cards and the envelope label are set imperatively (not {loc:Tr}), so
-        // re-localize them when the language changes at runtime.
-        Loc.Instance.PropertyChanged += (_, _) =>
-        {
-            BuildModeCards();
-            if (EnvelopeMode is not null) EnvelopeMode.Text = Meta(CurrentMode()).Name;
-        };
+        // build them now and rebuild on every runtime language change.
+        Loc.OnCultureChanged(RelocalizeCards);
+    }
+
+    private void RelocalizeCards()
+    {
+        BuildModeCards();
+        if (EnvelopeMode is not null) EnvelopeMode.Text = Meta(CurrentMode()).Name;
     }
 
     // ---- Mode metadata (name, one-line meaning, accent by intensity) ----

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AvellSucks.Core.Platforms;
 using AvellSucks.Core.Rgb;
 
 namespace AvellSucks.UI.Services;
@@ -14,6 +15,9 @@ public sealed record ControlResult(bool Allowed, bool Executed, bool Verified, s
     public static ControlResult Ok() => new(true, true, true, null);
     public static ControlResult Blocked(string why) => new(false, false, false, why);
     public static ControlResult Failed(string why) => new(true, true, false, why);
+
+    /// <summary>Project an EC write result onto the UI's control-result contract (1:1).</summary>
+    public static ControlResult From(EcWriteResult r) => new(r.Allowed, r.Executed, r.Verified, r.Error);
 
     /// <summary>Overall state for badge rendering.</summary>
     public WriteState State =>

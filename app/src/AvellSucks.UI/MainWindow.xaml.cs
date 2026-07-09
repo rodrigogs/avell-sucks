@@ -48,9 +48,8 @@ public partial class MainWindow : Window
         Loaded += OnLoaded;
         TabHost.Content = _dashboard;
         // The top-bar title/subtitle are set imperatively (not {loc:Tr} bindings),
-        // so re-localize them when the language changes at runtime.
-        Loc.Instance.PropertyChanged += (_, _) => RefreshHeader();
-        RefreshHeader();
+        // so re-localize them now and on every runtime language change.
+        Loc.OnCultureChanged(RefreshHeader);
 
         // Optional deep-link to a tab for screenshot validation (GC_START_TAB=fan|rgb|power).
         var startTab = Environment.GetEnvironmentVariable("GC_START_TAB")?.Trim().ToLowerInvariant();
