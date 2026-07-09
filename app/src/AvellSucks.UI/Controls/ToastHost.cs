@@ -28,15 +28,17 @@ namespace AvellSucks.UI.Controls;
 /// </summary>
 public sealed class ToastHost : Grid
 {
-    // Palette (mirrors Theme/Palette.xaml).
+    // Colors come from the shared Brand tokens so the toast palette can't drift
+    // from the rest of the UI (it used to re-declare every one by hand). Overlay
+    // and Ink2 have no Brand token yet, so they stay local.
     private static readonly Color Overlay = Color.FromRgb(0x2E, 0x24, 0x38);
-    private static readonly Color Ink     = Color.FromRgb(0xF2, 0xEE, 0xF6);
+    private static readonly Color Ink     = Brand.Ink;
     private static readonly Color Ink2    = Color.FromRgb(0xC1, 0xB6, 0xCF);
-    private static readonly Color Ink3    = Color.FromRgb(0x94, 0x8A, 0xA3);
-    private static readonly Color Ok      = Color.FromRgb(0x34, 0xE5, 0xA0);
-    private static readonly Color Cyan    = Color.FromRgb(0x22, 0xD3, 0xEE);
-    private static readonly Color Danger  = Color.FromRgb(0xF5, 0x48, 0x4A);
-    private static readonly Color Warn    = Color.FromRgb(0xF4, 0xC0, 0x4A);
+    private static readonly Color Ink3    = Brand.Ink3;
+    private static readonly Color Ok      = Brand.Ok;
+    private static readonly Color Cyan    = Brand.Cyan;
+    private static readonly Color Danger  = Brand.Danger;
+    private static readonly Color Warn    = Brand.Warn;
 
     // Segoe MDL2 Assets glyphs.
     private const string GlyphOk      = ""; // Completed (check circle)
@@ -140,7 +142,7 @@ public sealed class ToastHost : Grid
             BorderThickness = new Thickness(1);
             // Edge tinted toward the accent — reads on the dark surface without a
             // full neon border (no neon-on-neon).
-            BorderBrush = Brand.Frozen(Color.FromArgb(0x66, spec.Accent.R, spec.Accent.G, spec.Accent.B));
+            BorderBrush = Brand.Frozen(Brand.WithAlpha(spec.Accent, 0x66));
             MinWidth = 220;
             MaxWidth = 420;
             SnapsToDevicePixels = true;
@@ -166,7 +168,7 @@ public sealed class ToastHost : Grid
             var chip = new Border
             {
                 Width = 30, Height = 30, CornerRadius = new CornerRadius(8),
-                Background = Brand.Frozen(Color.FromArgb(0x26, spec.Accent.R, spec.Accent.G, spec.Accent.B)),
+                Background = Brand.Frozen(Brand.WithAlpha(spec.Accent, 0x26)),
                 VerticalAlignment = VerticalAlignment.Center,
             };
             var glyph = new TextBlock

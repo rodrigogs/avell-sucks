@@ -51,8 +51,6 @@ public static class Thermal
         _ => Critical,
     };
 
-    public static Color ColorFor(double tempC, ThermalKind kind) => ColorFor(BandFor(tempC, kind));
-
     /// <summary>
     /// Normalized heat 0..1 across the readable range (30→100°C), used to
     /// interpolate the glow bloom (BlurRadius 8→28, Opacity 0.5→0.9).

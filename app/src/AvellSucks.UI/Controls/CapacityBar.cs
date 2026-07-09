@@ -52,20 +52,13 @@ public sealed class CapacityBar : FrameworkElement
     // Healthy fill + threshold tick never change, so build them once instead of
     // per render (matches LoadTempGauge's cached-gradient/-pen pattern).
     private static readonly Brush HealthyFill = FrozenGradient(Brand.Cyan, Brand.Magenta);
-    private static readonly Pen TickPen = FrozenPen(Color.FromArgb(0xAA, 0xF3, 0xEC, 0xFF), 1.5);
+    private static readonly Pen TickPen = Brand.FrozenPen(Color.FromArgb(0xAA, 0xF3, 0xEC, 0xFF), 1.5);
 
     private static Brush FrozenGradient(Color a, Color b)
     {
         var g = new LinearGradientBrush(a, b, new Point(0, 0), new Point(1, 0));
         g.Freeze();
         return g;
-    }
-
-    private static Pen FrozenPen(Color c, double thickness)
-    {
-        var p = new Pen(Brand.Frozen(c), thickness);
-        p.Freeze();
-        return p;
     }
 
     protected override void OnRender(DrawingContext dc)

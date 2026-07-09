@@ -46,19 +46,12 @@ public sealed class KeyboardPreview : FrameworkElement
     // never does). Backing == Brand.Bg so the preview sits on the same base as the
     // rest of the UI.
     private static readonly Brush s_boardFill = Brand.Frozen(Brand.Bg);
-    private static readonly Pen s_boardRim = FrozenPen(Color.FromArgb(0x50, 0x3A, 0x2F, 0x47), 1);
+    private static readonly Pen s_boardRim = Brand.FrozenPen(Color.FromArgb(0x50, 0x3A, 0x2F, 0x47), 1);
 
     public KeyboardPreview()
     {
         Loaded += (_, _) => RestartAnimation();
         Unloaded += (_, _) => BeginAnimation(PhaseProperty, null);
-    }
-
-    private static Pen FrozenPen(Color c, double thickness)
-    {
-        var p = new Pen(Brand.Frozen(c), thickness);
-        p.Freeze();
-        return p;
     }
 
     private void RestartAnimation()

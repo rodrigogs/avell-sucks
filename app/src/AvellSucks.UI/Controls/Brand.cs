@@ -2,6 +2,7 @@ using System.Windows.Media;
 
 namespace AvellSucks.UI.Controls;
 
+
 /// <summary>
 /// Single source of truth for brand colors and a frozen-brush helper, shared by
 /// the owner-drawn controls. Keeps the neon palette in one place so it can't
@@ -31,4 +32,24 @@ public static class Brand
         b.Freeze();
         return b;
     }
+
+    /// <summary>
+    /// Frozen pen from a brand color — the pen equivalent of <see cref="Frozen"/>.
+    /// The owner-drawn controls each used to re-declare this; it lives here so
+    /// there is one copy.
+    /// </summary>
+    public static Pen FrozenPen(Color c, double thickness, PenLineJoin join = PenLineJoin.Miter)
+        => FrozenPen(Frozen(c), thickness, join);
+
+    /// <summary>Frozen pen from an existing brush (freezes it first if it can).</summary>
+    public static Pen FrozenPen(Brush brush, double thickness, PenLineJoin join = PenLineJoin.Miter)
+    {
+        if (brush.CanFreeze && !brush.IsFrozen) brush.Freeze();
+        var pen = new Pen(brush, thickness) { LineJoin = join };
+        pen.Freeze();
+        return pen;
+    }
+
+    /// <summary>Same color at a new alpha — the "tint an existing brand color" idiom in one place.</summary>
+    public static Color WithAlpha(Color c, byte alpha) => Color.FromArgb(alpha, c.R, c.G, c.B);
 }

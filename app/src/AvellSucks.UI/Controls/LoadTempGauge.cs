@@ -50,8 +50,8 @@ public sealed class LoadTempGauge : FrameworkElement
     public ThermalKind Kind { get => (ThermalKind)GetValue(KindProperty); set => SetValue(KindProperty, value); }
     private double RenderLoad { get => (double)GetValue(RenderLoadProperty); set => SetValue(RenderLoadProperty, value); }
 
-    private static readonly Brush TrackBrush = Brand.Frozen(Color.FromRgb(0x24, 0x10, 0x41));
-    private static readonly Brush Ink3 = Brand.Frozen(Color.FromRgb(0x7C, 0x6A, 0xA6));
+    private static readonly Brush TrackBrush = Brand.Frozen(Brand.Track);
+    private static readonly Brush Ink3 = Brand.Frozen(Brand.Ink3);
     private static readonly FontFamily MonoFamily = new("Cascadia Code, Consolas, monospace");
     private static readonly FontFamily UiFamily = new("Segoe UI, sans-serif");
 
