@@ -69,7 +69,7 @@ public sealed class FanStateMonitor : IDisposable
         {
             var fanMode = await _backend.InterpretFanModeAsync().ConfigureAwait(true);
             if (fanMode is null) return; // unreadable; leave last state
-            var mode = MapRaw(fanMode.RawValue);
+            var mode = FanModeMap.KeyFor(fanMode.RawValue);
 
             // First reading establishes the baseline silently.
             if (_baseline is null) { _baseline = mode; return; }
@@ -89,16 +89,6 @@ public sealed class FanStateMonitor : IDisposable
             _busy = false;
         }
     }
-
-    // Control-byte value → UI mode key (mirrors WmiFanService/FanController).
-    private static string MapRaw(int raw) => raw switch
-    {
-        0 => "auto",
-        64 => "boost",
-        160 => "custom",
-        129 => "L1", 130 => "L2", 131 => "L3", 132 => "L4", 133 => "L5",
-        _ => "auto",
-    };
 
     public void Dispose()
     {

@@ -69,22 +69,14 @@ public sealed class WmiEcBackend : IEcBackend, IEcWriter, IAsyncDisposable
             return null;
         var raw = controlField.Value & 0xFF;
 
-        var description = raw switch
-        {
-            0 => "Normal/Smart",
-            64 => "FanBoost/Cold Mode",
-            >= 128 and <= 132 => $"Custom Level {raw - 128}",
-            160 => "Advanced Custom",
-            _ => $"Unknown Control ({raw})"
-        };
-        var isAuto = raw is 0 or 64;
-
         return new FanMode(
             Source: nameof(WmiEcBackend),
             Timestamp: DateTimeOffset.UtcNow,
             RawValue: raw,
-            IsAuto: isAuto,
-            Description: description);
+            IsAuto: FanModeMap.IsAutoManaged(raw),
+            // Was ">= 128 and <= 132" — an off-by-one that mislabelled L5 (133) and
+            // wrongly matched 128. FanModeMap.Describe handles 129..133 correctly.
+            Description: FanModeMap.Describe(raw));
     }
 
     /// <summary>

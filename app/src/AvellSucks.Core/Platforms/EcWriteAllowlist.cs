@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using AvellSucks.Core.Hardware;
 
 namespace AvellSucks.Core.Platforms;
 
@@ -39,8 +40,8 @@ public sealed class EcWriteAllowlist
     /// </remarks>
     public static readonly EcWriteRule[] FanControlRules =
     [
-        new(1873, "ADDR_MAFAN_CONTROL_BYTE — fan mode",
-            0, 64, 160, 129, 130, 131, 132, 133),
+        new(FanModeMap.ControlByteAddress, "ADDR_MAFAN_CONTROL_BYTE — fan mode",
+            FanModeMap.ControlBytes),
         new(1859, "ADDR_MYFAN2_L1_PWM — custom L1 PWM", Enumerable.Range(0, 0x8C + 1).ToArray()),
         new(1860, "ADDR_MYFAN2_L2_PWM — custom L2 PWM", Enumerable.Range(0, 0x8C + 1).ToArray()),
         new(1861, "ADDR_MYFAN2_L3_PWM — custom L3 PWM", Enumerable.Range(0, 0x8C + 1).ToArray()),
