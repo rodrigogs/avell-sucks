@@ -82,15 +82,17 @@ public partial class FanView : UserControl
         _pump.Tick += OnTelemetry;
         _pump.Start();
 
+        // Re-evaluate every activation: the write gate is now live-toggleable
+        // (Settings → Hardware writes) and this view is cached, so reconcile the
+        // notice with the current gate on each revisit, not once on first load.
+        GateNotice.Visibility = _fan.WritesEnabled ? Visibility.Collapsed : Visibility.Visible;
+
         // One-time initial state load.
         if (!_initialized)
         {
             _initialized = true;
             using (_loading.Begin())
             {
-                if (!_fan.WritesEnabled)
-                    GateNotice.Visibility = Visibility.Visible;
-
                 var mode = await _fan.GetModeAsync();
                 SelectMode(mode ?? "auto");
                 _monitor?.NoteLocalWrite(mode ?? "auto"); // seed baseline with device state
