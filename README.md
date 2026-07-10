@@ -16,7 +16,7 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0-A855F7?labelColor=1c1622)](https://dotnet.microsoft.com)
 [![UI](https://img.shields.io/badge/UI-WPF-22D3EE?labelColor=1c1622)](#)
 [![i18n](https://img.shields.io/badge/i18n-EN%20%7C%20PT--BR-FF2E88?labelColor=1c1622)](#languages)
-[![Tests](https://img.shields.io/badge/tests-82%20passing-34E5A0?labelColor=1c1622)](#build-from-source)
+[![CI](https://github.com/rodrigogs/avell-sucks/actions/workflows/ci.yml/badge.svg)](https://github.com/rodrigogs/avell-sucks/actions/workflows/ci.yml)
 
 <sub>Unofficial · not affiliated with, endorsed by, or supported by Avell. Use on the hardware it was built for.</sub>
 
@@ -179,11 +179,21 @@ leaving Boost).
 
 ## Safety
 
+> ⚠️ **No warranty. This can damage or brick your laptop. Use at your own risk.**
+> Every register here was reverse-engineered and verified on **one machine** — an
+> Avell with an Intel **i7-8750H**. On a different laptop the same EC address can
+> mean something else entirely, and the read-back verify will still "confirm" the
+> write because it only checks that the byte landed, not that it was safe. Writing
+> CPU power limits and raw EC bytes at ring-0 is exactly the kind of thing that can
+> overheat, destabilize, or permanently harm hardware. If you are not prepared to
+> lose the machine, do not enable hardware writes on anything but the model above.
+
 This writes low-level hardware registers. The allowlist restricts *which*
 (address, value) pairs are permitted; every write is verified by read-back, rolled
 back on mismatch, and audited to JSONL. Power-limit and EC writes are the sharp
 edges, the UI makes their gated/blocked/failed state legible, never buries it.
-Use on the hardware it was built for.
+Hardware writes are gated: run with `GAMINGCENTER_ALLOW_EC_WRITES=0` for a
+read-only preview, or leave them off entirely if you are not on the target model.
 
 ## Build from source
 
@@ -200,7 +210,7 @@ dotnet run --project src/AvellSucks.UI
 # or the local control server + API
 dotnet run --project src/AvellSucks.Server -- 5055
 
-# tests (82: safe-write pipeline, allowlist, write gate, fan controller, audit log)
+# tests (115: safe-write pipeline, allowlist, write gate, fan map, audit log)
 dotnet test AvellSucks.Replacement.slnx
 ```
 
@@ -227,6 +237,10 @@ assemblies over `\\wsl.localhost\...` adds ~9 s to startup.
 - `scripts/*.ps1`: reproducible Windows inventory/probe scripts.
 
 ## License
+
+Licensed under the [Apache License 2.0](LICENSE) — free to use, modify, and
+redistribute, with an explicit **no-warranty / limitation-of-liability** clause
+(see the Safety note above; this software touches hardware at your own risk).
 
 Personal, unofficial project. **Not affiliated with Avell.** "Avell" and "Gaming
 Center" are the property of their respective owners; used here only to describe
