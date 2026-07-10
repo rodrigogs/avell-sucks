@@ -74,7 +74,7 @@ public sealed class LocalFanService : IFanService
     public ValueTask<ControlResult> SetModeAsync(string mode, CancellationToken ct = default)
     {
         if (!WritesEnabled)
-            return new(ControlResult.Blocked("EC writes disabled (GAMINGCENTER_ALLOW_EC_WRITES=0)"));
+            return new(ControlResult.Blocked("Hardware writes are disabled. Enable them in Settings."));
         _mode = mode;
         return new(ControlResult.Ok());
     }
@@ -85,7 +85,7 @@ public sealed class LocalFanService : IFanService
     public ValueTask<ControlResult> SetCurveAsync(IReadOnlyList<FanPoint> points, CancellationToken ct = default)
     {
         if (!WritesEnabled)
-            return new(ControlResult.Blocked("EC writes disabled (GAMINGCENTER_ALLOW_EC_WRITES=0)"));
+            return new(ControlResult.Blocked("Hardware writes are disabled. Enable them in Settings."));
         _curve = new List<FanPoint>(points);
         _mode = "custom";
         return new(ControlResult.Ok());
@@ -111,7 +111,7 @@ public sealed class LocalPowerService : IPowerService
     public ValueTask<ControlResult> SetModeAsync(PerformanceMode mode, CancellationToken ct = default)
     {
         if (!WritesEnabled)
-            return new(ControlResult.Blocked("Hardware writes disabled (GAMINGCENTER_ALLOW_EC_WRITES=0)"));
+            return new(ControlResult.Blocked("Hardware writes are disabled. Enable them in Settings."));
         _mode = mode;
         _limits = Presets[mode];
         return new(ControlResult.Ok());
@@ -120,7 +120,7 @@ public sealed class LocalPowerService : IPowerService
     public ValueTask<ControlResult> SetLimitsAsync(PowerLimits limits, CancellationToken ct = default)
     {
         if (!WritesEnabled)
-            return new(ControlResult.Blocked("Hardware writes disabled (GAMINGCENTER_ALLOW_EC_WRITES=0)"));
+            return new(ControlResult.Blocked("Hardware writes are disabled. Enable them in Settings."));
         _limits = limits;
         return new(ControlResult.Ok());
     }

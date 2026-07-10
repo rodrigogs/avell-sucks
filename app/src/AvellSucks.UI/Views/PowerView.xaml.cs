@@ -138,11 +138,17 @@ public partial class PowerView : UserControl
 
         var state = await _power.GetAsync();
 
-        // Hydrate the controls, then clear the startup suppression (the gate started
-        // active in the ctor so InitializeComponent + this first load never actuate).
-        CardFor(state.Mode).IsChecked = true;
-        ShowEnvelope(state.Mode, state.Limits);
-        LoadSliders(state.Limits);
+        // Hydrate the controls under a suppression scope EVERY activation: this view
+        // is cached, so a revisit re-runs hydration; without the scope, setting the
+        // card's IsChecked here (when the active mode changed while away) would fire
+        // OnModeChecked as a "user action" and issue a spurious write. Begin() also
+        // covers the ctor's startActive on first load; End() then clears it once.
+        using (_loading.Begin())
+        {
+            CardFor(state.Mode).IsChecked = true;
+            ShowEnvelope(state.Mode, state.Limits);
+            LoadSliders(state.Limits);
+        }
         _loading.End();
 
         // Seed the reconciler baseline from the ACTIVE SCHEME (same source the
@@ -195,12 +201,32 @@ public partial class PowerView : UserControl
 
         if (!isUserAction) return; // hydration selection — never write
         _limitWrite.Cancel(); // mode press supersedes a pending slider write
-        _monitor?.NoteLocalWrite(mode); // our own switch — not an external change
 
-        await Toaster.Apply(
+        // Suspend the reconciler across the write (a tick mid-settle mustn't yank
+        // the card), then anchor the baseline on the SETTLED mode: the intended one
+        // only if the write verified, otherwise the mode the device is actually in.
+        // Seeding the baseline BEFORE the write (the old NoteLocalWrite) meant a
+        // gate-blocked write left the baseline on a mode never applied, so the next
+        // poll fired a phantom "changed on device" toast and reverted the card.
+        _monitor?.Suspend();
+        var result = await Toaster.Apply(
             string.Format(Loc.T("Power.ModeName"), Meta(mode).Name),
             string.Format(Loc.T("Power.ModeOn"), Meta(mode).Name),
             () => _power.SetModeAsync(mode));
+
+        var settled = result.State == WriteState.Verified ? mode : (await _power.GetAsync()).Mode;
+        _monitor?.Resume(settled);
+
+        // If the write didn't take (blocked/failed), reflect the mode the machine is
+        // actually in — never leave the UI selecting a mode we didn't apply.
+        if (settled != mode)
+            using (_loading.Begin())
+            {
+                var settledPreset = await _power.GetPresetAsync(settled);
+                CardFor(settled).IsChecked = true;
+                ShowEnvelope(settled, settledPreset);
+                LoadSliders(settledPreset);
+            }
     }
 
     private void ShowEnvelope(PerformanceMode mode, PowerLimits limits)
