@@ -16,7 +16,7 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0-A855F7?labelColor=1c1622)](https://dotnet.microsoft.com)
 [![UI](https://img.shields.io/badge/UI-WPF-22D3EE?labelColor=1c1622)](#)
 [![i18n](https://img.shields.io/badge/i18n-EN%20%7C%20PT--BR-FF2E88?labelColor=1c1622)](#idiomas)
-[![Testes](https://img.shields.io/badge/testes-82%20passando-34E5A0?labelColor=1c1622)](#compilar-do-c%C3%B3digo)
+[![CI](https://github.com/rodrigogs/avell-sucks/actions/workflows/ci.yml/badge.svg)](https://github.com/rodrigogs/avell-sucks/actions/workflows/ci.yml)
 
 <sub>Não oficial · sem vínculo com, aprovação de, ou suporte da Avell. Use no hardware para o qual foi feito.</sub>
 
@@ -182,11 +182,23 @@ Solução .NET 10 (`app/AvellSucks.Replacement.slnx`):
 
 ## Segurança
 
+> ⚠️ **Sem garantia. Isto pode danificar ou brickar seu notebook. Use por sua conta e risco.**
+> Cada registrador aqui foi obtido por engenharia reversa e validado em **uma única
+> máquina** — um Avell com Intel **i7-8750H**. Em outro notebook o mesmo endereço de
+> EC pode significar outra coisa, e a releitura de verificação ainda vai "confirmar"
+> a escrita, porque só checa que o byte entrou, não que era seguro. Escrever limites
+> de potência da CPU e bytes crus de EC em ring-0 é exatamente o tipo de coisa que
+> pode superaquecer, desestabilizar ou danificar o hardware permanentemente. Se você
+> não está disposto a perder a máquina, não habilite escritas de hardware fora do
+> modelo acima.
+
 Isto escreve em registradores de hardware de baixo nível. A allowlist restringe
 *quais* pares (endereço, valor) são permitidos; toda escrita é verificada por
 releitura, revertida em divergência, e auditada em JSONL. As escritas de limite de
 potência e de EC são as pontas afiadas: a interface deixa o estado
-gated/bloqueado/falho legível, nunca o esconde. Use no hardware para o qual foi feito.
+gated/bloqueado/falho legível, nunca o esconde. As escritas são gated: rode com
+`GAMINGCENTER_ALLOW_EC_WRITES=0` para um preview somente-leitura, ou deixe-as
+desligadas se você não está no modelo alvo.
 
 ## Compilar do código
 
@@ -203,7 +215,7 @@ dotnet run --project src/AvellSucks.UI
 # ou o servidor de controle local + API
 dotnet run --project src/AvellSucks.Server -- 5055
 
-# testes (82: pipeline de escrita segura, allowlist, gate de escrita, controlador da ventoinha, log de auditoria)
+# testes (115: pipeline de escrita segura, allowlist, gate de escrita, mapa da ventoinha, log de auditoria)
 dotnet test AvellSucks.Replacement.slnx
 ```
 
@@ -231,6 +243,11 @@ tempo de inicialização.
 - `scripts/*.ps1`: scripts reproduzíveis de inventário/sondagem no Windows.
 
 ## Licença
+
+Licenciado sob a [Apache License 2.0](LICENSE) — livre para usar, modificar e
+redistribuir, com cláusula explícita de **sem garantia / limitação de
+responsabilidade** (veja a nota de Segurança acima; este software mexe em hardware
+por sua conta e risco).
 
 Projeto pessoal e não oficial. **Sem vínculo com a Avell.** "Avell" e "Gaming
 Center" são propriedade de seus respectivos donos; usados aqui apenas para

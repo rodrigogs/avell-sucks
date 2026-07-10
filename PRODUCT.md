@@ -6,7 +6,7 @@ product
 
 ## Users
 
-Rodrigo — single power user on his own Avell gaming laptop (RODRIGO-AVELL, Windows). Technical, opinionated, runs this instead of the OEM Gaming Center. Context of use: at the desk, adjusting fan/power/RGB before or during gaming, and glancing at live telemetry while the machine is under load. Fluent enough to expect the tool to be fast, honest about hardware state, and never lie about whether a write succeeded.
+Rodrigo — single power user on his own Avell gaming laptop (Windows). Technical, opinionated, runs this instead of the OEM Gaming Center. Context of use: at the desk, adjusting fan/power/RGB before or during gaming, and glancing at live telemetry while the machine is under load. Fluent enough to expect the tool to be fast, honest about hardware state, and never lie about whether a write succeeded.
 
 ## Product Purpose
 

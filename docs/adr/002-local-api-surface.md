@@ -17,7 +17,7 @@ Options considered:
 
 Use a single loopback ASP.NET Core server with:
 
-- **REST** over `https://127.0.0.1:{PORT}` for requests
+- **REST** over `http://127.0.0.1:{PORT}` for requests (HTTPS is opt-in; loopback-only binding is the primary boundary)
 - **Server-Sent Events (SSE)** at `/events` for telemetry
 - **Bind enforcement**: validate `HttpContext.Connection.RemoteIpAddress` is loopback or reversible connections require client certs.
 - **No external network exposure**: no binding to `0.0.0.0`/`*`; Kestrel is configured to loopback only.
