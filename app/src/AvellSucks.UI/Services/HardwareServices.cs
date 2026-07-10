@@ -80,17 +80,20 @@ public static class HardwareServices
             s_built = true;
 
             var elevated = WriteGateInfo.IsElevated();
-            var allow = WriteGateInfo.EcWritesEnabled;
-            var gate = new WriteGate(allow);
-            App.Trace($"HardwareServices: elevated={elevated} writesEnabled={allow} " +
+            // The gate re-reads the policy on every write, so flipping the Settings
+            // toggle enables/disables writes live — no pipeline rebuild, no restart.
+            var gate = new WriteGate(() => WriteGateInfo.EcWritesEnabled);
+            App.Trace($"HardwareServices: elevated={elevated} writesEnabled(now)={WriteGateInfo.EcWritesEnabled} " +
                       $"(env GAMINGCENTER_ALLOW_EC_WRITES='{Environment.GetEnvironmentVariable("GAMINGCENTER_ALLOW_EC_WRITES") ?? "(unset)"}')");
 
-            // Writes-enabled policy lives in WriteGateInfo: elevated ⇒ on by
-            // default, unless the env var explicitly forces it off. Only stand up
-            // the real WMI pipeline when writes are enabled.
-            if (!allow)
+            // Build the REAL backend whenever we're elevated: reads/telemetry and the
+            // reconcilers must reflect true hardware state even in read-only (writes-
+            // off) mode — showing stub data while claiming to be live would violate
+            // the app's honesty principle. The gate (above) governs WRITES only; a
+            // write while the toggle is off is denied+audited by SafeEcWriter.
+            if (!elevated)
             {
-                App.Trace("HardwareServices: STUB path — writes disabled (not elevated, or forced off). No hardware writes, no reconciler.");
+                App.Trace("HardwareServices: STUB path — not elevated. No real EC access (reads or writes).");
                 return;
             }
 

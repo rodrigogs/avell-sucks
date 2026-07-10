@@ -189,6 +189,10 @@
   <data name="Settings.StartWithWindows.Hint" xml:space="preserve"><value>Launch AvellSucks when you sign in to Windows.</value></data>
   <data name="Settings.StartMinimized" xml:space="preserve"><value>Start minimized</value></data>
   <data name="Settings.StartMinimized.Hint" xml:space="preserve"><value>Open straight to the tray, without showing the window.</value></data>
+  <data name="Settings.HardwareSection" xml:space="preserve"><value>HARDWARE WRITES</value></data>
+  <data name="Settings.EnableWrites" xml:space="preserve"><value>Enable hardware writes</value></data>
+  <data name="Settings.EnableWrites.Hint" xml:space="preserve"><value>Off by default. Reading works without this; turning it on lets the app write EC registers and CPU power limits. Only safe on the model it was built for — it can damage other hardware.</value></data>
+  <data name="Settings.EnableWrites.EnvLocked" xml:space="preserve"><value>Controlled by the GAMINGCENTER_ALLOW_EC_WRITES environment variable — this toggle is disabled while it is set.</value></data>
   <data name="Settings.WindowSection" xml:space="preserve"><value>WINDOW</value></data>
   <data name="Settings.HideOnMinimize" xml:space="preserve"><value>Hide to tray on minimize</value></data>
   <data name="Settings.HideOnMinimize.Hint" xml:space="preserve"><value>Minimizing sends the window to the system tray instead of the taskbar.</value></data>

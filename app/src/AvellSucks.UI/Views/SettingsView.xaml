@@ -1,6 +1,7 @@
 <UserControl x:Class="AvellSucks.UI.Views.SettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctl="clr-namespace:AvellSucks.UI.Controls"
              xmlns:loc="clr-namespace:AvellSucks.UI.Localization">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
@@ -54,6 +55,28 @@
                             <TextBlock Text="{loc:Tr Settings.StartMinimized.Hint}" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
                         </StackPanel>
                     </DockPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Hardware writes (opt-in, off by default) -->
+            <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
+                <StackPanel>
+                    <TextBlock Text="{loc:Tr Settings.HardwareSection}" Style="{StaticResource SectionLabel}"/>
+
+                    <DockPanel Margin="0,12,0,0">
+                        <ToggleButton x:Name="EnableWrites" Style="{StaticResource NeonToggle}"
+                                      AutomationProperties.Name="{loc:Tr Settings.EnableWrites}"
+                                      DockPanel.Dock="Right" Checked="OnEnableWrites" Unchecked="OnEnableWrites"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Tr Settings.EnableWrites}" Style="{StaticResource FieldLabel}"/>
+                            <TextBlock Text="{loc:Tr Settings.EnableWrites.Hint}" Style="{StaticResource Caption}"
+                                       Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <ctl:NoticeBanner x:Name="WritesEnvNotice" Margin="0,12,0,0" Visibility="Collapsed"
+                                      Severity="Warn" Glyph="&#xE72E;" Small="True"
+                                      Text="{loc:Tr Settings.EnableWrites.EnvLocked}"/>
                 </StackPanel>
             </Border>
 

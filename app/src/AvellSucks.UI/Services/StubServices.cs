@@ -13,31 +13,38 @@ namespace AvellSucks.UI.Services;
 /// (WmiEcBackend / ITeRgbBackend) when wiring real hardware.
 /// </summary>
 /// <summary>
-/// Single policy for whether the UI may actuate hardware.
+/// Single policy for whether the UI may WRITE to hardware. Writes are OFF by
+/// default and opt-in — reads/telemetry work whenever the process is elevated,
+/// but the reverse-engineered EC/PL writes (validated on one machine) stay
+/// disabled until the user turns them on in Settings.
 ///
-/// Rule: an elevated (Administrator) process may write BY DEFAULT — the app
-/// manifest is requireAdministrator precisely so it can drive the EC, so
-/// launching it IS the consent. The GAMINGCENTER_ALLOW_EC_WRITES env var is an
-/// optional override:
-///   • "0" / "false" / "no"  → force writes OFF (safe/demo mode, even elevated)
-///   • "1" / "true"          → force writes ON  (also lets a non-elevated dev
-///                              process opt in, matching the Server's behaviour)
-///   • unset                 → follow elevation (on when elevated, off otherwise)
+/// Resolution order:
+///   • env GAMINGCENTER_ALLOW_EC_WRITES "0"/"false"/"no" → force OFF
+///   • env GAMINGCENTER_ALLOW_EC_WRITES "1"/"true"       → force ON (Server parity,
+///                                                          self-tests, dev opt-in)
+///   • otherwise → the persisted user setting (AppSettings.EnableHardwareWrites),
+///                 which defaults to false
 /// Writes remain protected downstream by the allowlist + read-back verify +
-/// rollback + audit, regardless of this gate.
+/// rollback + audit, regardless of this gate. This is re-read live, so toggling
+/// the Settings switch takes effect without a restart.
 /// </summary>
 internal static class WriteGateInfo
 {
-    public static bool EcWritesEnabled
+    /// <summary>The env override, if the var is set to a recognised value; else null.</summary>
+    internal static bool? EnvOverride()
     {
-        get
-        {
-            var raw = Environment.GetEnvironmentVariable("GAMINGCENTER_ALLOW_EC_WRITES");
-            if (raw is "0" or "false" or "FALSE" or "False" or "no" or "NO") return false; // forced off
-            if (raw is "1" or "true" or "TRUE" or "True") return true;                       // forced on
-            return IsElevated();                                                             // default: follow elevation
-        }
+        var raw = Environment.GetEnvironmentVariable("GAMINGCENTER_ALLOW_EC_WRITES");
+        if (raw is "0" or "false" or "FALSE" or "False" or "no" or "NO") return false;
+        if (raw is "1" or "true" or "TRUE" or "True") return true;
+        return null;
     }
+
+    /// <summary>True when the env var forces the gate (user toggle is then locked).</summary>
+    internal static bool IsEnvForced => EnvOverride() is not null;
+
+    /// <summary>Live gate state: env override if set, else the persisted opt-in (default off).</summary>
+    public static bool EcWritesEnabled =>
+        EnvOverride() ?? Settings.SettingsStore.Current.Settings.EnableHardwareWrites;
 
     /// <summary>True when the process runs elevated (admin). Shared with HardwareServices.</summary>
     internal static bool IsElevated()

@@ -13,13 +13,23 @@ public sealed class WriteGate
     public static WriteGate Disabled { get; } = new(allowWrites: false);
 
     private readonly bool _allowWrites;
+    private readonly Func<bool>? _provider;
 
     public WriteGate(bool allowWrites) => _allowWrites = allowWrites;
 
     /// <summary>
-    /// True only when writes have been explicitly enabled.
+    /// A live gate whose allowed-state is re-read from <paramref name="allowProvider"/>
+    /// on every check — lets a host flip writes on/off at runtime (e.g. a Settings
+    /// toggle) without rebuilding the write pipeline.
     /// </summary>
-    public bool IsWriteAllowed => _allowWrites;
+    public WriteGate(Func<bool> allowProvider)
+        => _provider = allowProvider ?? throw new ArgumentNullException(nameof(allowProvider));
+
+    /// <summary>
+    /// True only when writes are currently enabled. Re-evaluated per call when the
+    /// gate was constructed with a provider.
+    /// </summary>
+    public bool IsWriteAllowed => _provider?.Invoke() ?? _allowWrites;
 
     /// <summary>
     /// Creates a gate whose state is driven by the
@@ -40,7 +50,7 @@ public sealed class WriteGate
     /// </summary>
     public void EnsureAllowed()
     {
-        if (!_allowWrites)
+        if (!IsWriteAllowed)
             throw new InvalidOperationException(
                 "EC writes are disabled by default. "
                 + "Construct WriteGate(allowWrites: true) or set "
