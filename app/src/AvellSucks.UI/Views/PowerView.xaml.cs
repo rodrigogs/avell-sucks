@@ -131,8 +131,10 @@ public partial class PowerView : UserControl
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        if (!_power.WritesEnabled)
-            GateNotice.Visibility = Visibility.Visible;
+        // Re-evaluate every activation: the write gate is now live-toggleable
+        // (Settings → Hardware writes), and this view is cached, so the notice must
+        // reconcile with the current gate on each revisit, not latch on first load.
+        GateNotice.Visibility = _power.WritesEnabled ? Visibility.Collapsed : Visibility.Visible;
 
         var state = await _power.GetAsync();
 

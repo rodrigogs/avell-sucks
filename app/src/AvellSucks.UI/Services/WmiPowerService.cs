@@ -71,6 +71,14 @@ public sealed class WmiPowerService : IPowerService
 
     public async ValueTask<ControlResult> SetModeAsync(PerformanceMode mode, CancellationToken ct = default)
     {
+        // Selecting a performance mode actuates the machine (it switches the Windows
+        // power plan AND writes the PL preset), so it must honor the same write gate
+        // as every EC write — otherwise the read/write decouple would let a mode
+        // switch mutate system power state while writes are "off". Deny up front,
+        // consistent with the fan path and the stub service.
+        if (!_gate.IsWriteAllowed)
+            return ControlResult.Blocked("Hardware writes are disabled. Enable them in Settings to change the performance mode.");
+
         // The mode's PRIMARY, verifiable lever is the Windows power plan — that's
         // what actually switches on this machine (read back via powercfg). The CPU
         // PL bytes are a best-effort second layer: on this board they live in Intel
