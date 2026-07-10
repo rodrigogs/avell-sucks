@@ -1,6 +1,7 @@
 using System.Windows.Controls;
 using AvellSucks.UI.Controls;
 using AvellSucks.UI.Localization;
+using AvellSucks.UI.Services;
 using AvellSucks.UI.Settings;
 using AvellSucks.UI.Startup;
 
@@ -38,6 +39,15 @@ public partial class SettingsView : UserControl
         StartWithWindows.IsChecked = AutoStart.IsEnabled();
         StartMinimized.IsChecked = _settings.StartMinimized;
         HideOnMinimize.IsChecked = _settings.HideOnMinimize;
+
+        // Hardware writes: reflect the live gate. When the env var forces the
+        // state, the persisted toggle can't change anything, so lock it and say so.
+        EnableWrites.IsChecked = WriteGateInfo.EcWritesEnabled;
+        if (WriteGateInfo.IsEnvForced)
+        {
+            EnableWrites.IsEnabled = false;
+            WritesEnvNotice.Visibility = System.Windows.Visibility.Visible;
+        }
 
         // The version line and the update-status line are set imperatively (their
         // {loc:Tr} bindings get replaced by literals), so re-localize them now and
@@ -93,6 +103,17 @@ public partial class SettingsView : UserControl
     {
         if (_loading.Active) return;
         _settings.HideOnMinimize = HideOnMinimize.IsChecked == true;
+        SettingsStore.Current.Save();
+    }
+
+    // Opt in/out of hardware writes. Persisted and read live by the write gate, so
+    // it takes effect immediately (a Fan/Power apply switches between actuating and
+    // showing the "writes disabled" notice without a restart). Env-forced state is
+    // handled by locking the toggle in the ctor, so this only runs on user intent.
+    private void OnEnableWrites(object sender, System.Windows.RoutedEventArgs e)
+    {
+        if (_loading.Active) return;
+        _settings.EnableHardwareWrites = EnableWrites.IsChecked == true;
         SettingsStore.Current.Save();
     }
 

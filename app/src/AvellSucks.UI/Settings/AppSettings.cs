@@ -27,6 +27,15 @@ public sealed class AppSettings
 
     /// <summary>Start minimized to the tray (useful together with StartWithWindows).</summary>
     public bool StartMinimized { get; set; }
+
+    /// <summary>
+    /// Allow the app to WRITE to hardware (EC registers + CPU power limits).
+    /// Off by default: reading/telemetry always works when elevated, but the
+    /// reverse-engineered writes — validated on one machine — stay disabled until
+    /// the user opts in (Settings → Hardware writes). The
+    /// <c>GAMINGCENTER_ALLOW_EC_WRITES</c> env var still force-overrides this.
+    /// </summary>
+    public bool EnableHardwareWrites { get; set; }
 }
 
 [JsonSerializable(typeof(AppSettings))]
