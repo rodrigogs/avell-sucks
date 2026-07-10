@@ -162,9 +162,17 @@ public partial class FanView : UserControl
     {
         _monitor?.Suspend();
         var result = await Toaster.Apply(pendingLabel, doneLabel, write);
-        _monitor?.Resume(result.State == WriteState.Verified
+        var settled = result.State == WriteState.Verified
             ? settledMode
-            : (await _fan.GetModeAsync() ?? "auto"));
+            : (await _fan.GetModeAsync() ?? "auto");
+        _monitor?.Resume(settled);
+
+        // If the write didn't take (blocked/failed), snap the selection back to the
+        // mode the device is actually in — never leave a chip selected on a mode we
+        // didn't apply.
+        if (!string.Equals(settled, settledMode, System.StringComparison.OrdinalIgnoreCase))
+            using (_loading.Begin())
+                SelectMode(settled);
         return result;
     }
 

@@ -43,4 +43,13 @@ public sealed class PowerStateMonitor : StateReconciler<PerformanceMode>
         }
         catch { /* leave unset; first tick seeds silently */ }
     }
+
+    /// <summary>
+    /// Suspend external-change detection while a local mode write is settling, so a
+    /// tick mid-write can't yank the card selection. Mirrors FanStateMonitor.
+    /// </summary>
+    public void Suspend() => Suspended = true;
+
+    /// <summary>Resume detection, re-seeding the baseline to the settled mode.</summary>
+    public void Resume(PerformanceMode mode) { SetBaseline(mode); Suspended = false; }
 }
