@@ -113,7 +113,7 @@
   <data name="Fan.CurveCaption" xml:space="preserve"><value>temperature → fan PWM · shaded = where the machine ran (last 60s)</value></data>
   <data name="Fan.ChangesApply" xml:space="preserve"><value>Changes apply as you edit.</value></data>
   <data name="Fan.ResetToAuto" xml:space="preserve"><value>Reset to auto</value></data>
-  <data name="Fan.Gate" xml:space="preserve"><value>Preview only: hardware control is off. Run AvellSucks as administrator to actuate the fan (or unset GAMINGCENTER_ALLOW_EC_WRITES if you forced it off).</value></data>
+  <data name="Fan.Gate" xml:space="preserve"><value>Preview only: hardware writes are off. Turn them on in Settings → Hardware writes to actuate the fan. (Overridden by GAMINGCENTER_ALLOW_EC_WRITES when set.)</value></data>
   <data name="Fan.Hint.Default" xml:space="preserve"><value>Auto balances noise and temps. Boost runs fans cold. Custom uses the curve below.</value></data>
   <data name="Fan.Hint.Auto" xml:space="preserve"><value>Auto balances noise and temperature automatically.</value></data>
   <data name="Fan.Hint.Boost" xml:space="preserve"><value>Boost runs the fans cold: maximum cooling, loudest.</value></data>
@@ -137,7 +137,7 @@
   <data name="Power.Advanced" xml:space="preserve"><value>Advanced: tune power limits manually</value></data>
   <data name="Power.AdvancedWarn" xml:space="preserve"><value>Raising the power envelope increases heat and draw. Change in small steps.</value></data>
   <data name="Power.ChangesApply" xml:space="preserve"><value>Changes apply immediately.</value></data>
-  <data name="Power.Gate" xml:space="preserve"><value>Preview only: hardware control is off. Run AvellSucks as administrator to actuate power limits (or unset GAMINGCENTER_ALLOW_EC_WRITES if you forced it off).</value></data>
+  <data name="Power.Gate" xml:space="preserve"><value>Preview only: hardware writes are off. Turn them on in Settings → Hardware writes to actuate power limits. (Overridden by GAMINGCENTER_ALLOW_EC_WRITES when set.)</value></data>
   <data name="Power.Gaming" xml:space="preserve"><value>Gaming</value></data>
   <data name="Power.Gaming.Tag" xml:space="preserve"><value>Max performance, fans free</value></data>
   <data name="Power.High" xml:space="preserve"><value>High</value></data>

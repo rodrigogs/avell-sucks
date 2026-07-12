@@ -113,7 +113,7 @@
   <data name="Fan.CurveCaption" xml:space="preserve"><value>temperatura → PWM da ventoinha · sombreado = onde a máquina operou (últimos 60s)</value></data>
   <data name="Fan.ChangesApply" xml:space="preserve"><value>As alterações são aplicadas conforme você edita.</value></data>
   <data name="Fan.ResetToAuto" xml:space="preserve"><value>Voltar para auto</value></data>
-  <data name="Fan.Gate" xml:space="preserve"><value>Somente pré-visualização: o controle de hardware está desligado. Execute o AvellSucks como administrador para acionar a ventoinha (ou remova GAMINGCENTER_ALLOW_EC_WRITES se você o forçou para off).</value></data>
+  <data name="Fan.Gate" xml:space="preserve"><value>Somente pré-visualização: a escrita no hardware está desligada. Ligue em Configurações → Escrita no hardware para acionar a ventoinha. (Sobrescrito por GAMINGCENTER_ALLOW_EC_WRITES quando definida.)</value></data>
   <data name="Fan.Hint.Default" xml:space="preserve"><value>Auto equilibra ruído e temperatura. Boost deixa as ventoinhas geladas. Personalizado usa a curva abaixo.</value></data>
   <data name="Fan.Hint.Auto" xml:space="preserve"><value>Auto equilibra ruído e temperatura automaticamente.</value></data>
   <data name="Fan.Hint.Boost" xml:space="preserve"><value>Boost deixa as ventoinhas geladas: refrigeração máxima, mais barulhento.</value></data>
@@ -137,7 +137,7 @@
   <data name="Power.Advanced" xml:space="preserve"><value>Avançado: ajustar os limites de potência manualmente</value></data>
   <data name="Power.AdvancedWarn" xml:space="preserve"><value>Aumentar o envelope de potência eleva o calor e o consumo. Mude em passos pequenos.</value></data>
   <data name="Power.ChangesApply" xml:space="preserve"><value>As alterações são aplicadas imediatamente.</value></data>
-  <data name="Power.Gate" xml:space="preserve"><value>Somente pré-visualização: o controle de hardware está desligado. Execute o AvellSucks como administrador para acionar os limites de potência (ou remova GAMINGCENTER_ALLOW_EC_WRITES se você o forçou para off).</value></data>
+  <data name="Power.Gate" xml:space="preserve"><value>Somente pré-visualização: a escrita no hardware está desligada. Ligue em Configurações → Escrita no hardware para acionar os limites de potência. (Sobrescrito por GAMINGCENTER_ALLOW_EC_WRITES quando definida.)</value></data>
   <data name="Power.Gaming" xml:space="preserve"><value>Gaming</value></data>
   <data name="Power.Gaming.Tag" xml:space="preserve"><value>Desempenho máximo, ventoinhas livres</value></data>
   <data name="Power.High" xml:space="preserve"><value>Alto</value></data>
