@@ -91,7 +91,6 @@
   <data name="Dash.Clock" xml:space="preserve"><value>CLOCK</value></data>
   <data name="Dash.Committed" xml:space="preserve"><value>COMMITTED</value></data>
   <data name="Dash.Committed.Sub" xml:space="preserve"><value>RAM + pagefile</value></data>
-  <data name="Dash.Trend60" xml:space="preserve"><value>60s</value></data>
   <data name="Dash.Power" xml:space="preserve"><value>POWER</value></data>
   <data name="Dash.HotSpot" xml:space="preserve"><value>HOT SPOT</value></data>
   <data name="Dash.Cooling" xml:space="preserve"><value>COOLING</value></data>

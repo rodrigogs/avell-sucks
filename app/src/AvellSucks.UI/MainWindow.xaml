@@ -4,7 +4,7 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:ctl="clr-namespace:AvellSucks.UI.Controls"
         xmlns:loc="clr-namespace:AvellSucks.UI.Localization"
-        Title="AvellSucks" Height="720" Width="1120"
+        Title="AvellSucks" Height="720" Width="1280"
         WindowStartupLocation="Manual"
         ResizeMode="CanResize" MinWidth="820" MinHeight="560"
         Background="{StaticResource AppBackdrop}"

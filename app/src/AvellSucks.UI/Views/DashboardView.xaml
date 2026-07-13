@@ -10,68 +10,81 @@
              space at the bottom. MinHeight binds the viewport so short windows scroll. -->
         <Grid MinHeight="{Binding ViewportHeight, ElementName=Scroller}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>   <!-- 0: CPU + GPU hero -->
+                <RowDefinition Height="*"/>      <!-- 0: CPU + GPU hero cards (gauge + freq + embedded trend; soaks the slack) -->
                 <RowDefinition Height="Auto"/>   <!-- 1: capacity strip -->
                 <RowDefinition Height="Auto"/>   <!-- 2: cooling + network -->
-                <RowDefinition Height="*"/>      <!-- 3: 60 s trend (soaks the slack) -->
-                <RowDefinition Height="Auto"/>   <!-- 4: sensor notice -->
+                <RowDefinition Height="Auto"/>   <!-- 3: sensor notice -->
             </Grid.RowDefinitions>
 
-            <!-- ===== CPU + GPU tiles ===== -->
+            <!-- ===== CPU + GPU hero cards ===== -->
+            <!-- Each card stacks gauge → frequency → its own 60 s trend (temp line
+                 over a load carpet). The cards are the tall heroes (star row) and
+                 grow to fill the viewport; the embedded trend gets a horizontal
+                 inset so it reads as a compact instrument inside the card, not a
+                 full-bleed chart. -->
             <Grid Grid.Row="0" Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- CPU tile -->
+                <!-- CPU card -->
                 <Border Grid.Column="0" Style="{StaticResource PanelTight}" Margin="0,0,5,0">
-                    <StackPanel>
-                        <DockPanel>
-                            <TextBlock Text="CPU" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
-                            <TextBlock x:Name="CpuName" Text="—" Style="{StaticResource Caption}"
-                                       DockPanel.Dock="Right" HorizontalAlignment="Right"
-                                       FontFamily="{StaticResource MonoFont}"/>
-                        </DockPanel>
-                        <ctl:LoadTempGauge x:Name="CpuGauge" Height="140" Margin="0,4,0,0" Kind="Cpu"/>
-                        <!-- CPU exposes only load+temp (both in the gauge) and clock on this
-                             platform; no power/hot-spot. One clean readout, no status badge. -->
-                        <StackPanel Margin="0,8,0,0">
-                            <TextBlock Text="{loc:Tr Dash.Clock}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                            <TextBlock x:Name="CpuClock" Text="—" Style="{StaticResource Mono}" FontSize="14"
-                                       HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Top">
+                            <DockPanel>
+                                <TextBlock Text="CPU" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
+                                <TextBlock x:Name="CpuName" Text="—" Style="{StaticResource Caption}"
+                                           DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                           FontFamily="{StaticResource MonoFont}"/>
+                            </DockPanel>
+                            <ctl:LoadTempGauge x:Name="CpuGauge" Height="140" Margin="0,4,0,0" Kind="Cpu"/>
+                            <!-- CPU exposes only load+temp (both in the gauge) and clock on this
+                                 platform; no power/hot-spot. One clean readout, no status badge. -->
+                            <StackPanel Margin="0,8,0,0">
+                                <TextBlock Text="{loc:Tr Dash.Clock}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="CpuClock" Text="—" Style="{StaticResource Mono}" FontSize="14"
+                                           HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
+                        <!-- 60 s trend: the DockPanel's last child, so it FILLS the
+                             space below the frequency to the card's bottom (no dead
+                             gap). Horizontal inset keeps it narrower than the card. -->
+                        <ctl:TrendChart x:Name="CpuTrend" Kind="Cpu" MinHeight="110" Margin="20,10,20,2"/>
+                    </DockPanel>
                 </Border>
 
-                <!-- GPU tile -->
+                <!-- GPU card -->
                 <Border Grid.Column="1" Style="{StaticResource PanelTight}" Margin="5,0,0,0">
-                    <StackPanel>
-                        <DockPanel>
-                            <TextBlock Text="GPU" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
-                            <TextBlock x:Name="GpuName" Text="—" Style="{StaticResource Caption}"
-                                       DockPanel.Dock="Right" HorizontalAlignment="Right"
-                                       FontFamily="{StaticResource MonoFont}"/>
-                        </DockPanel>
-                        <ctl:LoadTempGauge x:Name="GpuGauge" Height="140" Margin="0,4,0,0" Kind="Gpu"/>
-                        <UniformGrid Columns="3" Margin="0,8,0,0">
-                            <StackPanel>
-                                <TextBlock Text="{loc:Tr Dash.Clock}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="GpuClock" Text="—" Style="{StaticResource Mono}" FontSize="14"
-                                           HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
-                            </StackPanel>
-                            <StackPanel>
-                                <TextBlock Text="{loc:Tr Dash.Power}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="GpuPower" Text="—" Style="{StaticResource Mono}" FontSize="14"
-                                           HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
-                            </StackPanel>
-                            <StackPanel>
-                                <TextBlock Text="{loc:Tr Dash.HotSpot}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="GpuHotSpot" Text="—" Style="{StaticResource Mono}" FontSize="14"
-                                           HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
-                            </StackPanel>
-                        </UniformGrid>
-                    </StackPanel>
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Top">
+                            <DockPanel>
+                                <TextBlock Text="GPU" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
+                                <TextBlock x:Name="GpuName" Text="—" Style="{StaticResource Caption}"
+                                           DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                           FontFamily="{StaticResource MonoFont}"/>
+                            </DockPanel>
+                            <ctl:LoadTempGauge x:Name="GpuGauge" Height="140" Margin="0,4,0,0" Kind="Gpu"/>
+                            <UniformGrid Columns="3" Margin="0,8,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="{loc:Tr Dash.Clock}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
+                                    <TextBlock x:Name="GpuClock" Text="—" Style="{StaticResource Mono}" FontSize="14"
+                                               HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{loc:Tr Dash.Power}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
+                                    <TextBlock x:Name="GpuPower" Text="—" Style="{StaticResource Mono}" FontSize="14"
+                                               HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{loc:Tr Dash.HotSpot}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
+                                    <TextBlock x:Name="GpuHotSpot" Text="—" Style="{StaticResource Mono}" FontSize="14"
+                                               HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
+                                </StackPanel>
+                            </UniformGrid>
+                        </StackPanel>
+                        <ctl:TrendChart x:Name="GpuTrend" Kind="Gpu" MinHeight="110" Margin="20,10,20,2"/>
+                    </DockPanel>
                 </Border>
             </Grid>
 
@@ -209,41 +222,8 @@
                 </Border>
             </Grid>
 
-            <!-- ===== 60 s trend: CPU | GPU (temp line over a load carpet) ===== -->
-            <!-- The star row: these grow to fill the viewport, answering the one
-                 question the radial gauges can't — "did it spike / throttle while I
-                 wasn't watching?". Fed by the same 1 Hz tick; no extra polling. -->
-            <Grid Grid.Row="3" MinHeight="150">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Border Grid.Column="0" Style="{StaticResource PanelTight}" Margin="0,0,5,0">
-                    <DockPanel>
-                        <DockPanel DockPanel.Dock="Top">
-                            <TextBlock Text="CPU" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
-                            <TextBlock Text="{loc:Tr Dash.Trend60}" Style="{StaticResource Caption}"
-                                       DockPanel.Dock="Right" HorizontalAlignment="Right"/>
-                        </DockPanel>
-                        <ctl:TrendChart x:Name="CpuTrend" Margin="0,6,0,0" Kind="Cpu"/>
-                    </DockPanel>
-                </Border>
-
-                <Border Grid.Column="1" Style="{StaticResource PanelTight}" Margin="5,0,0,0">
-                    <DockPanel>
-                        <DockPanel DockPanel.Dock="Top">
-                            <TextBlock Text="GPU" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
-                            <TextBlock Text="{loc:Tr Dash.Trend60}" Style="{StaticResource Caption}"
-                                       DockPanel.Dock="Right" HorizontalAlignment="Right"/>
-                        </DockPanel>
-                        <ctl:TrendChart x:Name="GpuTrend" Margin="0,6,0,0" Kind="Gpu"/>
-                    </DockPanel>
-                </Border>
-            </Grid>
-
             <!-- Degraded-sensor notice -->
-            <ctl:NoticeBanner Grid.Row="4" x:Name="SensorNotice" Margin="0,10,0,0" Visibility="Collapsed"
+            <ctl:NoticeBanner Grid.Row="3" x:Name="SensorNotice" Margin="0,10,0,0" Visibility="Collapsed"
                               Severity="Warn" Glyph="&#xE7BA;"/>
 
         </Grid>
