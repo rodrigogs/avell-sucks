@@ -88,7 +88,8 @@ hardware pra provar.
 - **RGB**: superfície de iluminação do teclado (ITE HID). Interface e contrato
   prontos, mas o backend está incompleto e não testado (veja [acima](#o-teclado-por-que-o-rgb-n%C3%A3o-%C3%A9-testado)).
 - **Painel**: carga de CPU/GPU, temperaturas, clocks, memória, disco, rede e o
-  perfil de refrigeração ativo, ao vivo, a ~1 Hz.
+  perfil de refrigeração ativo, ao vivo, a ~1 Hz — com gráficos de tendência de
+  60 segundos de CPU/GPU embutidos nos cards principais.
 - **Reativo**: mudanças feitas fora do app (o app antigo da fabricante, a tecla Fn
   física da ventoinha, outro trocador de plano de energia) aparecem aqui em poucos
   segundos. Ele espelha o dispositivo; nunca assume que sua própria última escrita
@@ -106,6 +107,12 @@ hardware pra provar.
 
 > **Requer Windows 10/11 (x64) e direitos de administrador.** O app fala com o
 > Embedded Controller e com sensores ring-0, então precisa rodar elevado.
+>
+> ⚠️ **A escrita no hardware vem LIGADA por padrão e os registradores são
+> específicos do Avell i7-8750H para o qual isto foi feito.** Em outro modelo os
+> controles de ventoinha/potência podem se comportar mal ou danificar o hardware —
+> desligue a escrita em **Configurações → Escrita no hardware** (ou defina
+> `GAMINGCENTER_ALLOW_EC_WRITES=0`) antes de mexer neles. Veja [Segurança](#segurança).
 
 1. Baixe o **`AvellSucks-Setup.exe`** mais recente na página de
    [**Releases**](https://github.com/rodrigogs/avell-sucks/releases/latest).
@@ -173,7 +180,7 @@ Solução .NET 10 (`app/AvellSucks.Replacement.slnx`):
 - `AvellSucks.Core`: contratos de hardware, pipeline de escrita segura, modelos (portável).
 - `AvellSucks.Core.Windows`: `WmiEcBackend` (leitura/escrita WMI no EC).
 - `AvellSucks.Api` / `AvellSucks.Server`: API de controle ASP.NET local opcional
-  (só loopback), expondo `/api/fan/*`, `/api/system/snapshot`, `/events` (SSE).
+  (só loopback), expondo `/api/fan/*`, `/api/power/*`, `/api/system/snapshot`, `/events` (SSE).
 - `AvellSucks.UI`: o app WPF (escuro, cyberpunk), telemetria via
   LibreHardwareMonitor, reconciliadores reativos por aba. Localização em tempo de
   execução (`.resx` + um provedor `Loc` e a markup extension `{loc:Tr}`) troca o
@@ -188,17 +195,19 @@ Solução .NET 10 (`app/AvellSucks.Replacement.slnx`):
 > EC pode significar outra coisa, e a releitura de verificação ainda vai "confirmar"
 > a escrita, porque só checa que o byte entrou, não que era seguro. Escrever limites
 > de potência da CPU e bytes crus de EC em ring-0 é exatamente o tipo de coisa que
-> pode superaquecer, desestabilizar ou danificar o hardware permanentemente. Se você
-> não está disposto a perder a máquina, não habilite escritas de hardware fora do
-> modelo acima.
+> pode superaquecer, desestabilizar ou danificar o hardware permanentemente. **A
+> escrita vem LIGADA por padrão** (é um control center para a máquina para a qual
+> foi feito), então se você está em qualquer outro modelo, desligue *antes* — em
+> **Configurações → Escrita no hardware** ou com `GAMINGCENTER_ALLOW_EC_WRITES=0` —
+> antes de tocar nos controles de ventoinha/potência.
 
 Isto escreve em registradores de hardware de baixo nível. A allowlist restringe
 *quais* pares (endereço, valor) são permitidos; toda escrita é verificada por
 releitura, revertida em divergência, e auditada em JSONL. As escritas de limite de
 potência e de EC são as pontas afiadas: a interface deixa o estado
-gated/bloqueado/falho legível, nunca o esconde. As escritas são gated: rode com
-`GAMINGCENTER_ALLOW_EC_WRITES=0` para um preview somente-leitura, ou deixe-as
-desligadas se você não está no modelo alvo.
+gated/bloqueado/falho legível, nunca o esconde. A escrita vem ligada por padrão;
+mude para um preview somente-leitura em **Configurações → Escrita no hardware** (ou
+force com `GAMINGCENTER_ALLOW_EC_WRITES=0`) se você não está no modelo alvo.
 
 ## Compilar do código
 

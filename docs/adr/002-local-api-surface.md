@@ -41,4 +41,7 @@ Named-pipe gRPC is deferred until privileged/local-UI separation ships.
 ## Alternatives
 
 - **gRPC over named pipes** — rejected for MVP due to client friction, but tracked as a future ADR.
-- **Plain HTTP over loopback** — rejected because HTTPS auth model simplifies later hardening.
+- **HTTPS-by-default over loopback** — considered, but **not** the shipped default:
+  loopback binding is already the primary boundary, so the server ships plain
+  `http://127.0.0.1:5055` and HTTPS is opt-in via `GAMINGCENTER_REQUIRE_HTTPS=1`
+  (keeps `curl`/browser smoke-testing frictionless; a dev cert isn't needed to run).

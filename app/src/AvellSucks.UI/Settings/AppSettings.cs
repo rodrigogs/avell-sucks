@@ -19,7 +19,7 @@ public sealed class AppSettings
     /// <summary>UI language. Default follows the system culture (pt/pt-BR → PT, else EN).</summary>
     public LanguagePreference Language { get; set; } = LanguagePreference.System;
 
-    /// <summary>Launch the app when the user signs in to Windows (HKCU Run key).</summary>
+    /// <summary>Launch the app when the user signs in to Windows (elevated Scheduled Task; see AutoStart).</summary>
     public bool StartWithWindows { get; set; }
 
     /// <summary>Minimize sends the window to the tray instead of the taskbar.</summary>

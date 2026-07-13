@@ -86,7 +86,8 @@ hardware to prove it on.
 - **RGB**: keyboard lighting surface (ITE HID). UI and contract are in place,
   but the backend is unfinished and untested (see [above](#the-keyboard-why-rgb-is-untested)).
 - **Dashboard**: live CPU/GPU load, temps, clocks, memory, disk, network and the
-  active cooling profile, streamed ~1 Hz.
+  active cooling profile, streamed ~1 Hz — with embedded 60-second CPU/GPU trend
+  charts in the hero cards.
 - **Reactive**: changes made outside the app (the old OEM tool, the physical Fn
   fan key, another power-plan switcher) show up here within a couple of seconds.
   It mirrors the device; it never assumes its own last write is still true.
@@ -103,6 +104,12 @@ hardware to prove it on.
 
 > **Requires Windows 10/11 (x64) and administrator rights.** The app talks to the
 > Embedded Controller and ring-0 sensors, so it must run elevated.
+>
+> ⚠️ **Hardware writes are ON by default and the registers are specific to the
+> Avell i7-8750H this was built for.** On a different model the fan/power controls
+> can misbehave or damage hardware — turn writes off in **Settings → Hardware
+> writes** (or set `GAMINGCENTER_ALLOW_EC_WRITES=0`) before touching them. See
+> [Safety](#safety).
 
 1. Download the latest **`AvellSucks-Setup.exe`** from the
    [**Releases**](https://github.com/rodrigogs/avell-sucks/releases/latest) page.
@@ -170,7 +177,7 @@ leaving Boost).
 - `AvellSucks.Core`: hardware contracts, safe-write pipeline, models (portable).
 - `AvellSucks.Core.Windows`: `WmiEcBackend` (WMI EC read/write).
 - `AvellSucks.Api` / `AvellSucks.Server`: optional local ASP.NET control API
-  (loopback-only) exposing `/api/fan/*`, `/api/system/snapshot`, `/events` (SSE).
+  (loopback-only) exposing `/api/fan/*`, `/api/power/*`, `/api/system/snapshot`, `/events` (SSE).
 - `AvellSucks.UI`: the WPF app (dark, cyberpunk), telemetry via
   LibreHardwareMonitor, reactive reconcilers per tab. Runtime localization
   (`.resx` + a `Loc` provider and `{loc:Tr}` markup extension) switches language
@@ -185,15 +192,18 @@ leaving Boost).
 > mean something else entirely, and the read-back verify will still "confirm" the
 > write because it only checks that the byte landed, not that it was safe. Writing
 > CPU power limits and raw EC bytes at ring-0 is exactly the kind of thing that can
-> overheat, destabilize, or permanently harm hardware. If you are not prepared to
-> lose the machine, do not enable hardware writes on anything but the model above.
+> overheat, destabilize, or permanently harm hardware. **Writes are ON by default**
+> (it's a control center for the machine it was built for), so if you are on any
+> other model, turn them off *first* — in **Settings → Hardware writes** or with
+> `GAMINGCENTER_ALLOW_EC_WRITES=0` — before you touch the fan/power controls.
 
 This writes low-level hardware registers. The allowlist restricts *which*
 (address, value) pairs are permitted; every write is verified by read-back, rolled
 back on mismatch, and audited to JSONL. Power-limit and EC writes are the sharp
 edges, the UI makes their gated/blocked/failed state legible, never buries it.
-Hardware writes are gated: run with `GAMINGCENTER_ALLOW_EC_WRITES=0` for a
-read-only preview, or leave them off entirely if you are not on the target model.
+Writes are on by default; switch to a read-only preview in **Settings → Hardware
+writes** (or force it with `GAMINGCENTER_ALLOW_EC_WRITES=0`) if you are not on the
+target model.
 
 ## Build from source
 

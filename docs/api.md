@@ -66,6 +66,48 @@ Content-Type: application/json
 
 Notes:
 - `cpuPercent` is null in the MVP because deriving CPU % from multi-sample `TimeSpan` is not implemented yet.
+- Each process object also carries a `"path"` field (currently always `null`).
+
+### `GET /api/fan/mode`
+
+Current fan mode, interpreted from the EC control byte (`FanController`).
+Returns a `FanMode` (`auto` / `boost` / `custom` / `L1`..`L5`).
+
+### `GET /api/fan/curve`
+
+The five temp→PWM custom-curve levels. Returns `{ "levels": [ { "temperatureC", "pwm", "address" } ] }`.
+
+### `GET /api/fan/diagnostic`
+
+Raw EC snapshot of the fan registers (an `EcSnapshot`), for debugging.
+
+### `POST /api/fan/mode`
+
+Body `{ "mode": "boost" }` — one of `auto`, `boost`, `custom`, `L1`..`L5`.
+Unknown modes → `400`. Returns the `EcWriteResult`; gate-blocked → `403`,
+read-back-verify failure → `500`.
+
+### `POST /api/fan/curve`
+
+Body `{ "levels": [ { "temperatureC", "pwm", "address" }, ... ] }` — exactly five
+levels; temperatures 30–100 °C, strictly ascending; PWM 0–140 (`0x8C`). Writes
+each level then flips the mode to custom; returns a `BatchWriteResultDto`. Invalid
+curve → `400`, gate-blocked → `403`.
+
+### `GET /api/power/profile`
+
+Current CPU power-limit profile (PL1/PL2/PL4 watts) from the EC — a
+`PowerProfileState`. Unsupported hardware → `501`; degraded read → `503`.
+
+### `POST /api/power/profile`
+
+Body `{ "pl1": 45, "pl2": 90, "pl4": 107 }` — any subset; omitted fields are left
+unchanged. Byte-valued watts (0–254). Returns a `BatchWriteResultDto`;
+gate-blocked → `403`. An empty body (no change) returns an empty result.
+
+> All fan/power writes go through the same `SafeEcWriter` pipeline (gate →
+> allowlist → read-back verify → rollback → audit) and require the write gate open
+> (`GAMINGCENTER_ALLOW_EC_WRITES=1` for the server).
 
 ### Error schema
 
