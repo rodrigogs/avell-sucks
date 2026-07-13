@@ -18,7 +18,10 @@ namespace AvellSucks.UI.Controls;
 /// </summary>
 public sealed class TrendChart : FrameworkElement
 {
-    private const double PadLeft = 10, PadRight = 10, PadTop = 8, PadBottom = 16;
+    // Tight paddings: the readout + time captions were removed as redundant (the
+    // gauge above shows the live temp/load; the right edge is "now" by definition),
+    // so the plot uses nearly the whole tile.
+    private const double PadLeft = 6, PadRight = 6, PadTop = 6, PadBottom = 6;
     private const double TMin = 30, TMax = 105;   // covers CPU crit 95 + GPU crit 102
     private const int HistCapacity = 60;          // 60 s at 1 Hz
 
@@ -48,8 +51,6 @@ public sealed class TrendChart : FrameworkElement
     private static readonly Brush TrackBrush = Brand.Frozen(Brand.Track);
     private static readonly Brush GridBrushSoft = Brand.Frozen(Color.FromArgb(0x24, 0x3A, 0x2F, 0x47));
     private static readonly Brush Ink3Brush = Brand.Frozen(Brand.Ink3);
-    private static readonly Brush ReadoutFill = Brand.Frozen(Color.FromArgb(0xCC, 0x1C, 0x16, 0x22));
-    private static readonly Pen ReadoutBorder = Brand.FrozenPen(Color.FromArgb(0x40, 0x3A, 0x2F, 0x47), 1);
 
     // One cached, frozen pen per thermal band — the temp line recolors per segment
     // without allocating a pen each frame (the LoadTempGauge perf rule).
@@ -102,7 +103,7 @@ public sealed class TrendChart : FrameworkElement
         }
 
         int count = _temp.Count;
-        if (count == 0) { DrawTimeCaptions(dc, r); return; }
+        if (count == 0) return;
 
         // LOAD carpet: bottom-anchored area in the identity color, low alpha.
         DrawLoadCarpet(dc, r, count);
@@ -116,9 +117,6 @@ public sealed class TrendChart : FrameworkElement
             var na = Text(Loc.T("Gauge.TempNa"), 12, Ink3Brush);
             dc.DrawText(na, new Point(r.Left + (r.Width - na.Width) / 2, r.Top + (r.Height - na.Height) / 2));
         }
-
-        DrawTimeCaptions(dc, r);
-        DrawReadout(dc, r);
     }
 
     // Thermal band start temps for the current Kind (from Thermal.BandFor cutoffs).
@@ -208,45 +206,6 @@ public sealed class TrendChart : FrameworkElement
             }
         }
         return any;
-    }
-
-    // Top-left readout: "87° · 96%" — temp in its band color, load in Ink3.
-    private void DrawReadout(DrawingContext dc, Rect r)
-    {
-        double? t = LastNonNull(_temp);
-        double? p = LastNonNull(_load);
-        if (t is null && p is null) return;
-
-        const double padX = 9, padY = 5;
-        var tempStr = t is double tv ? $"{tv:0}°C" : "—";
-        var loadStr = p is double pv ? $"{pv:0}%" : "—";
-        var tempFt = Text(tempStr, 12, t is double tt ? Brand.Frozen(Thermal.ColorFor(Thermal.BandFor(tt, Kind))) : Ink3Brush);
-        var sepFt = Text("  ·  ", 12, Ink3Brush);
-        var loadFt = Text(loadStr, 12, Ink3Brush);
-
-        double w = tempFt.Width + sepFt.Width + loadFt.Width + padX * 2;
-        double h = Math.Max(tempFt.Height, loadFt.Height) + padY * 2;
-        var box = new Rect(r.Left + 6, r.Top + 6, w, h);
-        dc.DrawRoundedRectangle(ReadoutFill, ReadoutBorder, box, 6, 6);
-
-        double x = box.Left + padX, y = box.Top + padY;
-        dc.DrawText(tempFt, new Point(x, y)); x += tempFt.Width;
-        dc.DrawText(sepFt, new Point(x, y)); x += sepFt.Width;
-        dc.DrawText(loadFt, new Point(x, y));
-    }
-
-    private void DrawTimeCaptions(DrawingContext dc, Rect r)
-    {
-        var left = Text("-60s", 9, Ink3Brush);
-        var right = Text("now", 9, Ink3Brush);
-        dc.DrawText(left, new Point(r.Left, r.Bottom + 2));
-        dc.DrawText(right, new Point(r.Right - right.Width, r.Bottom + 2));
-    }
-
-    private static double? LastNonNull(List<double?> list)
-    {
-        for (int i = list.Count - 1; i >= 0; i--) if (list[i] is double v) return v;
-        return null;
     }
 
     private FormattedText Text(string s, double size, Brush brush) =>
