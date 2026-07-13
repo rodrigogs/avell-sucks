@@ -224,12 +224,15 @@ origin v1.2.3`). O [workflow de release](.github/workflows/release.yml) publica 
 build self-contained win-x64, compila o instalador Inno Setup, e anexa o
 `AvellSucks-Setup.exe` a um GitHub Release.
 
-**Gate de escrita:** escritas no hardware ficam **desligadas por padrão**. Leitura/
-telemetria funciona quando elevado; ligue as escritas em **Configurações → Escrita
-no hardware** (persistido). A variável de ambiente `GAMINGCENTER_ALLOW_EC_WRITES`
-força e trava o botão (`0`/`false` off — preview/demo; `1`/`true` on — também deixa
-um processo de dev não elevado ou o pipeline do servidor optar por ligar). *(A
-variável mantém o nome original por compatibilidade com o pipeline do servidor.)*
+**Gate de escrita:** escritas no hardware ficam **ligadas por padrão** (é um
+control center para a máquina para a qual foi feito). Desligue em **Configurações →
+Escrita no hardware** (persistido) para uma pré-visualização somente-leitura. A
+variável de ambiente `GAMINGCENTER_ALLOW_EC_WRITES` força e trava o botão
+(`0`/`false` off — preview/demo; `1`/`true` on — também deixa um processo de dev
+não elevado ou o pipeline do servidor escrever). *(A variável mantém o nome
+original por compatibilidade com o pipeline do servidor.)* Veja o **aviso de
+segurança acima**: os registradores são específicos do modelo — não deixe a escrita
+ligada se você não está no hardware alvo.
 
 **Nota de performance:** rode a partir de uma cópia em **disco local**, não pelo
 caminho UNC do WSL: carregar assemblies por `\\wsl.localhost\...` adiciona ~9 s ao
