@@ -1,9 +1,9 @@
 # Architecture (as shipped)
 
 How AvellSucks is actually built — the real, current design. (An earlier
-"Reactive Architecture Spec" in `DESIGN.md` proposed a CommunityToolkit.Mvvm + DI
-+ store-based stack; that was **not adopted** — the notes below describe what
-runs. See [§Not adopted](#not-adopted).)
+"Reactive Architecture Spec" proposed a CommunityToolkit.Mvvm + DI + store-based
+stack; that was **not adopted** — the notes below describe what runs. See
+[§Not adopted](#not-adopted).)
 
 ## Solution layout
 
@@ -81,7 +81,7 @@ tag. Details in the READMEs.
 
 ## Not adopted
 
-The `DESIGN.md` "Reactive Architecture Spec" proposed CommunityToolkit.Mvvm
+The earlier "Reactive Architecture Spec" proposed CommunityToolkit.Mvvm
 `ObservableObject` view-models bound to a single `IHardwareStateService`, composed
 with `Microsoft.Extensions.DependencyInjection`, plus a WMI `AcpiTest_EventULong`
 `ManagementEventWatcher`. **None of that shipped.** The reactivity goal it aimed
