@@ -111,9 +111,17 @@ public partial class DashboardView : UserControl
         GpuPower.Text = Watts(t.GpuPowerW);
         GpuHotSpot.Text = t.GpuHotSpotC is double hs ? $"{hs:0}°" : "—";
 
-        // ---- Memory: RAM / Commit / VRAM ----
+        // ---- 60 s trend: feed the same 1 Hz sample to the per-processor charts ----
+        CpuTrend.PushSample(t.CpuLoadTotal, t.CpuTempC);
+        GpuTrend.PushSample(t.GpuLoad, t.GpuTempC);
+
+        // ---- Memory: RAM / Committed / VRAM ----
         SetCapacity(RamBar, RamPct, RamText, t.RamLoad, t.RamUsedGb, t.RamTotalGb, "GB");
         SetCapacity(SwapBar, SwapPct, SwapText, t.SwapLoad, t.SwapUsedGb, t.SwapTotalGb, "GB");
+        // Self-teaching tick on the Committed bar: mark where physical RAM ends, so
+        // fill left of the tick = RAM-backed and right = leaning on the pagefile.
+        SwapBar.TickAt = (t.RamTotalGb is double rt && t.SwapTotalGb is double st && st > 0)
+            ? Math.Clamp(rt / st, 0, 1) : double.NaN;
 
         if (t.GpuVramUsedMb is double vu && t.GpuVramTotalMb is double vt && vt > 0)
         {
