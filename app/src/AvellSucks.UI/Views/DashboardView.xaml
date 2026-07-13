@@ -3,11 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ctl="clr-namespace:AvellSucks.UI.Controls"
              xmlns:loc="clr-namespace:AvellSucks.UI.Localization">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel>
+    <ScrollViewer x:Name="Scroller" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <!-- Grid (not StackPanel) so the page OWNS the viewport height: the trend
+             section lives in a star row and grows to fill the space on tall/maximized
+             windows, instead of every group pinning to min-height and leaving dead
+             space at the bottom. MinHeight binds the viewport so short windows scroll. -->
+        <Grid MinHeight="{Binding ViewportHeight, ElementName=Scroller}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>   <!-- 0: CPU + GPU hero -->
+                <RowDefinition Height="Auto"/>   <!-- 1: capacity strip -->
+                <RowDefinition Height="Auto"/>   <!-- 2: cooling + network -->
+                <RowDefinition Height="*"/>      <!-- 3: 60 s trend (soaks the slack) -->
+                <RowDefinition Height="Auto"/>   <!-- 4: sensor notice -->
+            </Grid.RowDefinitions>
 
             <!-- ===== CPU + GPU tiles ===== -->
-            <Grid Margin="0,0,0,10">
+            <Grid Grid.Row="0" Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -22,7 +33,7 @@
                                        DockPanel.Dock="Right" HorizontalAlignment="Right"
                                        FontFamily="{StaticResource MonoFont}"/>
                         </DockPanel>
-                        <ctl:LoadTempGauge x:Name="CpuGauge" Height="132" Margin="0,4,0,0" Kind="Cpu"/>
+                        <ctl:LoadTempGauge x:Name="CpuGauge" Height="140" Margin="0,4,0,0" Kind="Cpu"/>
                         <!-- CPU exposes only load+temp (both in the gauge) and clock on this
                              platform; no power/hot-spot. One clean readout, no status badge. -->
                         <StackPanel Margin="0,8,0,0">
@@ -42,7 +53,7 @@
                                        DockPanel.Dock="Right" HorizontalAlignment="Right"
                                        FontFamily="{StaticResource MonoFont}"/>
                         </DockPanel>
-                        <ctl:LoadTempGauge x:Name="GpuGauge" Height="132" Margin="0,4,0,0" Kind="Gpu"/>
+                        <ctl:LoadTempGauge x:Name="GpuGauge" Height="140" Margin="0,4,0,0" Kind="Gpu"/>
                         <UniformGrid Columns="3" Margin="0,8,0,0">
                             <StackPanel>
                                 <TextBlock Text="{loc:Tr Dash.Clock}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
@@ -64,8 +75,8 @@
                 </Border>
             </Grid>
 
-            <!-- ===== Capacity: RAM / Commit / VRAM (volatile) + Disk (storage) ===== -->
-            <Grid Margin="0,0,0,10">
+            <!-- ===== Capacity: RAM / Committed / VRAM (volatile) + Disk (storage) ===== -->
+            <Grid Grid.Row="1" Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -86,16 +97,22 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Committed = Windows commit charge (all processes' committed virtual
+                     memory: RAM-backed first, pagefile as overflow). NOT "swap" — swap is
+                     only the overflow portion. The subcaption + the dynamic tick (set in
+                     code to where physical RAM ends) teach what the word alone can't. -->
                 <Border Grid.Column="1" Style="{StaticResource PanelTight}" Margin="5,0,5,0">
                     <StackPanel>
                         <DockPanel>
-                            <TextBlock Text="COMMIT" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
+                            <TextBlock Text="{loc:Tr Dash.Committed}" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
                             <TextBlock x:Name="SwapPct" Text="—" DockPanel.Dock="Right" HorizontalAlignment="Right"
                                        Style="{StaticResource Mono}" Foreground="{StaticResource Ink}"/>
                         </DockPanel>
-                        <ctl:CapacityBar x:Name="SwapBar" Height="9" Margin="0,7,0,0" WarnAt="0.85" CriticalAt="0.95" TickAt="0.9"/>
+                        <ctl:CapacityBar x:Name="SwapBar" Height="9" Margin="0,7,0,0" WarnAt="0.85" CriticalAt="0.95"/>
                         <TextBlock x:Name="SwapText" Text="—" Style="{StaticResource Caption}"
                                    FontFamily="{StaticResource MonoFont}" Margin="0,4,0,0"/>
+                        <TextBlock Text="{loc:Tr Dash.Committed.Sub}" Style="{StaticResource Caption}"
+                                   FontSize="10" Margin="0,1,0,0"/>
                     </StackPanel>
                 </Border>
 
@@ -129,7 +146,7 @@
             </Grid>
 
             <!-- ===== Cooling + Network ===== -->
-            <Grid>
+            <Grid Grid.Row="2" Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -192,10 +209,43 @@
                 </Border>
             </Grid>
 
+            <!-- ===== 60 s trend: CPU | GPU (temp line over a load carpet) ===== -->
+            <!-- The star row: these grow to fill the viewport, answering the one
+                 question the radial gauges can't — "did it spike / throttle while I
+                 wasn't watching?". Fed by the same 1 Hz tick; no extra polling. -->
+            <Grid Grid.Row="3" MinHeight="150">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource PanelTight}" Margin="0,0,5,0">
+                    <DockPanel>
+                        <DockPanel DockPanel.Dock="Top">
+                            <TextBlock Text="CPU" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
+                            <TextBlock Text="{loc:Tr Dash.Trend60}" Style="{StaticResource Caption}"
+                                       DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                        </DockPanel>
+                        <ctl:TrendChart x:Name="CpuTrend" Margin="0,6,0,0" Kind="Cpu"/>
+                    </DockPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource PanelTight}" Margin="5,0,0,0">
+                    <DockPanel>
+                        <DockPanel DockPanel.Dock="Top">
+                            <TextBlock Text="GPU" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
+                            <TextBlock Text="{loc:Tr Dash.Trend60}" Style="{StaticResource Caption}"
+                                       DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                        </DockPanel>
+                        <ctl:TrendChart x:Name="GpuTrend" Margin="0,6,0,0" Kind="Gpu"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+
             <!-- Degraded-sensor notice -->
-            <ctl:NoticeBanner x:Name="SensorNotice" Margin="0,10,0,0" Visibility="Collapsed"
+            <ctl:NoticeBanner Grid.Row="4" x:Name="SensorNotice" Margin="0,10,0,0" Visibility="Collapsed"
                               Severity="Warn" Glyph="&#xE7BA;"/>
 
-        </StackPanel>
+        </Grid>
     </ScrollViewer>
 </UserControl>
