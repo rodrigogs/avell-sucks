@@ -11,13 +11,18 @@ license](LICENSE) and the README's Safety section). Running hardware writes on a
 unverified machine can overheat, destabilize, or permanently damage it. Use at
 your own risk.
 
-Hardware writes are **off by default everywhere** and opt-in:
+Hardware writes are gated per surface:
 
-- **Server / API and Core:** writes stay off unless `GAMINGCENTER_ALLOW_EC_WRITES=1`.
-- **WPF app:** reading/telemetry works when elevated, but writes stay off until you
-  turn them on in **Settings → Hardware writes** (a persisted per-user choice). The
-  `GAMINGCENTER_ALLOW_EC_WRITES` env var force-overrides the toggle (`1` on, `0`
-  off) and locks it.
+- **WPF app:** writes are **on by default** — it's a control center for the machine
+  it was built for. Turn them off in **Settings → Hardware writes** (a persisted
+  per-user choice) for a read-only preview. The `GAMINGCENTER_ALLOW_EC_WRITES` env
+  var force-overrides the toggle (`1` on, `0` off) and locks it.
+- **Server / API and Core:** writes stay **off** unless `GAMINGCENTER_ALLOW_EC_WRITES=1`
+  — the automation surface demands an explicit opt-in.
+
+The registers were reverse-engineered on one machine (Avell i7-8750H); the writes
+default on because that is the author's own hardware. On any other model, turn
+writes off — the same EC address can mean something else.
 
 Every write goes through: gate → allowlist (only known address/value pairs) →
 before-snapshot → write → read-back verify → rollback on mismatch → JSONL audit.

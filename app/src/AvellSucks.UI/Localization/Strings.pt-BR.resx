@@ -191,7 +191,7 @@
   <data name="Settings.StartMinimized.Hint" xml:space="preserve"><value>Abrir direto na bandeja, sem mostrar a janela.</value></data>
   <data name="Settings.HardwareSection" xml:space="preserve"><value>ESCRITA NO HARDWARE</value></data>
   <data name="Settings.EnableWrites" xml:space="preserve"><value>Habilitar escrita no hardware</value></data>
-  <data name="Settings.EnableWrites.Hint" xml:space="preserve"><value>Desligado por padrão. Leitura funciona sem isto; ligar permite ao app escrever registradores do EC e limites de potência da CPU. Só é seguro no modelo para o qual foi feito — pode danificar outro hardware.</value></data>
+  <data name="Settings.EnableWrites.Hint" xml:space="preserve"><value>Ligado por padrão. Permite ao app escrever registradores do EC e limites de potência da CPU; desligue para uma pré-visualização somente-leitura. Só é seguro no modelo para o qual foi feito — pode danificar outro hardware.</value></data>
   <data name="Settings.EnableWrites.EnvLocked" xml:space="preserve"><value>Controlado pela variável de ambiente GAMINGCENTER_ALLOW_EC_WRITES — este botão fica desabilitado enquanto ela estiver definida.</value></data>
   <data name="Settings.WindowSection" xml:space="preserve"><value>JANELA</value></data>
   <data name="Settings.HideOnMinimize" xml:space="preserve"><value>Esconder na bandeja ao minimizar</value></data>

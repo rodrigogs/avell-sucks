@@ -30,12 +30,13 @@ public sealed class AppSettings
 
     /// <summary>
     /// Allow the app to WRITE to hardware (EC registers + CPU power limits).
-    /// Off by default: reading/telemetry always works when elevated, but the
-    /// reverse-engineered writes — validated on one machine — stay disabled until
-    /// the user opts in (Settings → Hardware writes). The
-    /// <c>GAMINGCENTER_ALLOW_EC_WRITES</c> env var still force-overrides this.
+    /// On by default: this is a control center for the machine it was built for,
+    /// so the fan/power controls actuate out of the box. Turn it off in
+    /// Settings → Hardware writes for a read-only preview. The
+    /// <c>GAMINGCENTER_ALLOW_EC_WRITES</c> env var still force-overrides this
+    /// (<c>0</c> forces off regardless of the saved setting).
     /// </summary>
-    public bool EnableHardwareWrites { get; set; }
+    public bool EnableHardwareWrites { get; set; } = true;
 }
 
 [JsonSerializable(typeof(AppSettings))]

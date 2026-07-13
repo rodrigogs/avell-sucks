@@ -219,12 +219,14 @@ v1.2.3`). The [release workflow](.github/workflows/release.yml) publishes a
 self-contained win-x64 build, compiles the Inno Setup installer, and attaches
 `AvellSucks-Setup.exe` to a GitHub Release.
 
-**Write gate:** hardware writes are **off by default**. Reading/telemetry works
-when elevated; turn writes on in **Settings → Hardware writes** (persisted). The
-env var `GAMINGCENTER_ALLOW_EC_WRITES` force-overrides and locks the toggle
-(`0`/`false` off — preview/demo; `1`/`true` on — also lets a non-elevated dev
-process or the server pipeline opt in). *(The env var keeps its original name for
-compatibility with the server pipeline.)*
+**Write gate:** hardware writes are **on by default** (this is a control center
+for the machine it was built for). Turn them off in **Settings → Hardware writes**
+(persisted) for a read-only preview. The env var `GAMINGCENTER_ALLOW_EC_WRITES`
+force-overrides and locks the toggle (`0`/`false` off — preview/demo; `1`/`true`
+on — also lets a non-elevated dev process or the server pipeline write). *(The env
+var keeps its original name for compatibility with the server pipeline.)* Note the
+**safety warning above**: the registers are model-specific — don't leave writes on
+if you're not on the target hardware.
 
 **Perf note:** run from a **local disk** copy, not the WSL UNC path, loading
 assemblies over `\\wsl.localhost\...` adds ~9 s to startup.

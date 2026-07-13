@@ -13,17 +13,16 @@ namespace AvellSucks.UI.Services;
 /// (WmiEcBackend / ITeRgbBackend) when wiring real hardware.
 /// </summary>
 /// <summary>
-/// Single policy for whether the UI may WRITE to hardware. Writes are OFF by
-/// default and opt-in — reads/telemetry work whenever the process is elevated,
-/// but the reverse-engineered EC/PL writes (validated on one machine) stay
-/// disabled until the user turns them on in Settings.
+/// Single policy for whether the UI may WRITE to hardware. Writes are ON by
+/// default — this is a control center for the machine it was built for — and can
+/// be turned off in Settings for a read-only preview.
 ///
 /// Resolution order:
 ///   • env GAMINGCENTER_ALLOW_EC_WRITES "0"/"false"/"no" → force OFF
 ///   • env GAMINGCENTER_ALLOW_EC_WRITES "1"/"true"       → force ON (Server parity,
-///                                                          self-tests, dev opt-in)
+///                                                          self-tests, dev)
 ///   • otherwise → the persisted user setting (AppSettings.EnableHardwareWrites),
-///                 which defaults to false
+///                 which defaults to true
 /// Writes remain protected downstream by the allowlist + read-back verify +
 /// rollback + audit, regardless of this gate. This is re-read live, so toggling
 /// the Settings switch takes effect without a restart.
@@ -42,7 +41,7 @@ internal static class WriteGateInfo
     /// <summary>True when the env var forces the gate (user toggle is then locked).</summary>
     internal static bool IsEnvForced => EnvOverride() is not null;
 
-    /// <summary>Live gate state: env override if set, else the persisted opt-in (default off).</summary>
+    /// <summary>Live gate state: env override if set, else the persisted setting (default on).</summary>
     public static bool EcWritesEnabled =>
         EnvOverride() ?? Settings.SettingsStore.Current.Settings.EnableHardwareWrites;
 
