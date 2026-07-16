@@ -205,6 +205,41 @@ Writes are on by default; switch to a read-only preview in **Settings → Hardwa
 writes** (or force it with `GAMINGCENTER_ALLOW_EC_WRITES=0`) if you are not on the
 target model.
 
+## Remote access & MCP
+
+The control API and an MCP server can be exposed on your network so other devices
+(or an AI agent) can read telemetry and, if you allow it, change fan/power. It is
+**safe by default**: localhost-only, no auth, no remote writes, MCP off. Configure
+it all from **Settings → Remote access** — the app writes the hot-reloaded config
+to `%ProgramData%\AvellSucks\service.json` and the service picks it up.
+
+Typical setup:
+
+1. **Run as a background service** — installs a Windows service that keeps the
+   API/MCP available with the app closed.
+2. **Expose on the network** — pick your **Tailscale** IP (recommended) or a LAN
+   address. Leave it on `127.0.0.1` for localhost only.
+3. **Generate an access token** — shown **once**; copy it immediately. Only its
+   SHA-256 hash is stored. Remote callers send it as `Authorization: Bearer <token>`.
+   Optionally also require a client certificate (mTLS).
+4. **Enable MCP** — serves a Streamable HTTP MCP server at `/mcp` under the same auth.
+5. **Allow remote hardware writes** — off by default. Authenticated remote clients
+   can read freely; they can only actuate fan/power once you turn this on.
+
+> ⚠️ Prefer a **Tailscale** address. **Do not bind `0.0.0.0`** on an untrusted
+> network — that exposes the port to everyone who can reach the interface. A remote
+> caller with no valid token (and no mTLS) is always rejected (fail-closed), but a
+> private overlay like Tailscale is still the right default.
+
+If you leave **firewall auto-open** off, add the inbound rule manually (elevated):
+
+```powershell
+netsh advfirewall firewall add rule name="AvellSucks Control Service" dir=in action=allow protocol=TCP localport=5055
+```
+
+See [`docs/api.md`](docs/api.md) for the full auth model, the `/mcp` endpoint, and
+an authenticated request example.
+
 ## Build from source
 
 **Requirements:** Windows on the Avell, .NET 10 SDK, run **as Administrator**

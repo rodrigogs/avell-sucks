@@ -1,3 +1,4 @@
+using AvellSucks.Api.Security;
 using AvellSucks.Core.Hardware;
 using AvellSucks.Core.Models;
 using AvellSucks.Core.Platforms;
@@ -25,11 +26,13 @@ public sealed class PowerController : ControllerBase
 {
     private readonly IEcBackend _backend;
     private readonly SafeEcWriter _writer;
+    private readonly RemoteWriteAuthorizer _remoteWrite;
 
-    public PowerController(IEcBackend backend, SafeEcWriter writer)
+    public PowerController(IEcBackend backend, SafeEcWriter writer, RemoteWriteAuthorizer remoteWrite)
     {
         _backend = backend;
         _writer = writer;
+        _remoteWrite = remoteWrite;
     }
 
     /// <summary>
@@ -63,13 +66,20 @@ public sealed class PowerController : ControllerBase
         if (!request.HasAnyChange())
             return Ok(BatchWriteResultDto.Empty);
 
+        var gate = _remoteWrite.Check();
+        if (!gate.Allowed)
+            return StatusCode(StatusCodes.Status403Forbidden, gate.Reason);
+
+        var origin = _remoteWrite.DescribeCaller();
+        var identity = User.Identity?.AuthenticationType;
         var results = new List<EcWriteResult>();
 
         if (request.Pl1.HasValue)
         {
             var r = await _writer.TryWriteAsync(
                 PowerRegisters.Pl1, request.Pl1.Value,
-                reason: "api:power/profile:pl1", ct).ConfigureAwait(false);
+                reason: "api:power/profile:pl1", cancellationToken: ct,
+                origin: origin, identity: identity).ConfigureAwait(false);
             results.Add(r);
 
             if (!r.Allowed || !r.Verified)
@@ -80,7 +90,8 @@ public sealed class PowerController : ControllerBase
         {
             var r = await _writer.TryWriteAsync(
                 PowerRegisters.Pl2, request.Pl2.Value,
-                reason: "api:power/profile:pl2", ct).ConfigureAwait(false);
+                reason: "api:power/profile:pl2", cancellationToken: ct,
+                origin: origin, identity: identity).ConfigureAwait(false);
             results.Add(r);
 
             if (!r.Allowed || !r.Verified)
@@ -91,7 +102,8 @@ public sealed class PowerController : ControllerBase
         {
             var r = await _writer.TryWriteAsync(
                 PowerRegisters.Pl4, request.Pl4.Value,
-                reason: "api:power/profile:pl4", ct).ConfigureAwait(false);
+                reason: "api:power/profile:pl4", cancellationToken: ct,
+                origin: origin, identity: identity).ConfigureAwait(false);
             results.Add(r);
 
             if (!r.Allowed || !r.Verified)

@@ -209,6 +209,45 @@ gated/bloqueado/falho legível, nunca o esconde. A escrita vem ligada por padrã
 mude para um preview somente-leitura em **Configurações → Escrita no hardware** (ou
 force com `GAMINGCENTER_ALLOW_EC_WRITES=0`) se você não está no modelo alvo.
 
+## Acesso remoto & MCP
+
+A API de controle e um servidor MCP podem ser expostos na sua rede para que outros
+dispositivos (ou um agente de IA) leiam a telemetria e, se você permitir, alterem
+fan/power. É **seguro por padrão**: só localhost, sem autenticação, sem escrita
+remota, MCP desligado. Configure tudo em **Configurações → Acesso remoto** — o app
+escreve a config (com hot-reload) em `%ProgramData%\AvellSucks\service.json` e o
+serviço a recarrega.
+
+Configuração típica:
+
+1. **Executar como serviço em segundo plano** — instala um serviço do Windows que
+   mantém a API/MCP disponível com o app fechado.
+2. **Expor na rede** — escolha seu IP do **Tailscale** (recomendado) ou um endereço
+   da LAN. Deixe em `127.0.0.1` para só localhost.
+3. **Gerar token de acesso** — exibido **uma única vez**; copie na hora. Só o hash
+   SHA-256 é armazenado. Clientes remotos o enviam como `Authorization: Bearer <token>`.
+   Opcionalmente, exija também um certificado de cliente (mTLS).
+4. **Habilitar MCP** — serve um servidor MCP via Streamable HTTP em `/mcp` sob a
+   mesma autenticação.
+5. **Permitir escrita de hardware remota** — desligado por padrão. Clientes remotos
+   autenticados podem ler à vontade; só conseguem atuar em fan/power depois que você
+   ligar isto.
+
+> ⚠️ Prefira um endereço do **Tailscale**. **Não faça bind em `0.0.0.0`** numa rede
+> não confiável — isso expõe a porta a todos que alcançam a interface. Um chamador
+> remoto sem token válido (e sem mTLS) é sempre rejeitado (fail-closed), mas uma
+> rede overlay privada como o Tailscale ainda é o padrão correto.
+
+Se você deixar o **abrir porta no firewall automaticamente** desligado, adicione a
+regra de entrada manualmente (elevado):
+
+```powershell
+netsh advfirewall firewall add rule name="AvellSucks Control Service" dir=in action=allow protocol=TCP localport=5055
+```
+
+Veja [`docs/api.md`](docs/api.md) para o modelo de autenticação completo, o endpoint
+`/mcp` e um exemplo de requisição autenticada.
+
 ## Compilar do código
 
 **Requisitos:** Windows no Avell, .NET 10 SDK, rodar **como Administrador** (acesso

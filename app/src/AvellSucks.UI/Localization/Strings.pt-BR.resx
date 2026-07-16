@@ -76,7 +76,7 @@
   <data name="Tab.Rgb.Sub" xml:space="preserve"><value>Iluminação do teclado: efeitos, cor e zonas</value></data>
   <data name="Tab.Power.Sub" xml:space="preserve"><value>Modos de energia: plano do Windows e envelope de potência da CPU</value></data>
   <data name="Tab.About.Sub" xml:space="preserve"><value>O que é isto, e por que existe</value></data>
-  <data name="Tab.Settings.Sub" xml:space="preserve"><value>Idioma, inicialização e comportamento da janela</value></data>
+  <data name="Tab.Settings.Sub" xml:space="preserve"><value>Escrita de hardware, acesso remoto e preferências do app</value></data>
 
   <!-- ===== Gateway status ===== -->
 
@@ -180,13 +180,11 @@
   <data name="Toast.Ready" xml:space="preserve"><value>Pronto</value></data>
 
   <!-- ===== Settings ===== -->
-  <data name="Settings.LanguageSection" xml:space="preserve"><value>IDIOMA</value></data>
   <data name="Settings.Language" xml:space="preserve"><value>Idioma da interface</value></data>
   <data name="Settings.Language.Hint" xml:space="preserve"><value>Aplica na hora. Sua escolha fica salva.</value></data>
   <data name="Settings.Language.System" xml:space="preserve"><value>Igual ao sistema</value></data>
   <data name="Settings.Language.En" xml:space="preserve"><value>English</value></data>
   <data name="Settings.Language.Pt" xml:space="preserve"><value>Português</value></data>
-  <data name="Settings.StartupSection" xml:space="preserve"><value>INICIALIZAÇÃO</value></data>
   <data name="Settings.StartWithWindows" xml:space="preserve"><value>Iniciar com o Windows</value></data>
   <data name="Settings.StartWithWindows.Hint" xml:space="preserve"><value>Abrir o AvellSucks quando você entrar no Windows.</value></data>
   <data name="Settings.StartMinimized" xml:space="preserve"><value>Iniciar minimizado</value></data>
@@ -195,7 +193,6 @@
   <data name="Settings.EnableWrites" xml:space="preserve"><value>Habilitar escrita no hardware</value></data>
   <data name="Settings.EnableWrites.Hint" xml:space="preserve"><value>Ligado por padrão. Permite ao app escrever registradores do EC e limites de potência da CPU; desligue para uma pré-visualização somente-leitura. Só é seguro no modelo para o qual foi feito — pode danificar outro hardware.</value></data>
   <data name="Settings.EnableWrites.EnvLocked" xml:space="preserve"><value>Controlado pela variável de ambiente GAMINGCENTER_ALLOW_EC_WRITES — este botão fica desabilitado enquanto ela estiver definida.</value></data>
-  <data name="Settings.WindowSection" xml:space="preserve"><value>JANELA</value></data>
   <data name="Settings.HideOnMinimize" xml:space="preserve"><value>Esconder na bandeja ao minimizar</value></data>
   <data name="Settings.HideOnMinimize.Hint" xml:space="preserve"><value>Minimizar manda a janela para a bandeja do sistema em vez da barra de tarefas.</value></data>
   <data name="Settings.UpdatesSection" xml:space="preserve"><value>ATUALIZAÇÕES</value></data>
@@ -210,6 +207,36 @@
   <data name="Settings.Updates.Failed" xml:space="preserve"><value>A atualização falhou. Tente de novo, ou baixe do GitHub.</value></data>
   <data name="Update.Available.Title" xml:space="preserve"><value>Atualização disponível: {0}</value></data>
   <data name="Update.Available.Hint" xml:space="preserve"><value>Abra Configurações para instalar.</value></data>
+
+  <data name="Settings.PreferencesSection" xml:space="preserve"><value>Preferências</value></data>
+
+  <!-- ===== Settings · Remote access ===== -->
+  <data name="Settings.RemoteSection" xml:space="preserve"><value>Acesso remoto</value></data>
+  <data name="Settings.Remote.Group.Binding" xml:space="preserve"><value>Vínculo de rede</value></data>
+  <data name="Settings.Remote.Group.Auth" xml:space="preserve"><value>Autenticação</value></data>
+  <data name="Settings.Remote.Group.Capabilities" xml:space="preserve"><value>Recursos</value></data>
+  <data name="Settings.Remote.Https.Hint" xml:space="preserve"><value>Servir sobre TLS com um certificado autoassinado.</value></data>
+  <data name="Settings.Remote.Mtls.Hint" xml:space="preserve"><value>Também exigir um certificado de cliente, fixado por impressão digital.</value></data>
+  <data name="Settings.Remote.Mcp.Hint" xml:space="preserve"><value>Expor o endpoint MCP em /mcp sob a mesma autenticação.</value></data>
+  <data name="Settings.Remote.Firewall.Hint" xml:space="preserve"><value>Adicionar a regra de entrada no firewall para a porta automaticamente.</value></data>
+  <data name="Settings.Remote.Service" xml:space="preserve"><value>Executar como serviço em segundo plano</value></data>
+  <data name="Settings.Remote.Service.Hint" xml:space="preserve"><value>Instala um serviço do Windows que mantém a API/MCP disponível com o app fechado.</value></data>
+  <data name="Settings.Remote.Expose" xml:space="preserve"><value>Expor na rede</value></data>
+  <data name="Settings.Remote.Expose.Hint" xml:space="preserve"><value>Desligado = só localhost. Escolha um endereço Tailscale/LAN para acessar de outros dispositivos. Exige autenticação.</value></data>
+  <data name="Settings.Remote.Address" xml:space="preserve"><value>Endereço de bind</value></data>
+  <data name="Settings.Remote.Port" xml:space="preserve"><value>Porta</value></data>
+  <data name="Settings.Remote.Https" xml:space="preserve"><value>Usar HTTPS (autoassinado)</value></data>
+  <data name="Settings.Remote.GenerateToken" xml:space="preserve"><value>Gerar token de acesso</value></data>
+  <data name="Settings.Remote.TokenShownOnce" xml:space="preserve"><value>Copie este token agora — ele é exibido só uma vez: {0}</value></data>
+  <data name="Settings.Remote.Mtls" xml:space="preserve"><value>Exigir certificado de cliente (mTLS)</value></data>
+  <data name="Settings.Remote.RemoteWrites" xml:space="preserve"><value>Permitir escrita de hardware remota</value></data>
+  <data name="Settings.Remote.RemoteWrites.Hint" xml:space="preserve"><value>PERIGO: permite que clientes remotos autenticados alterem fan/power. Desligado por padrão.</value></data>
+  <data name="Settings.Remote.Mcp" xml:space="preserve"><value>Habilitar servidor MCP (/mcp)</value></data>
+  <data name="Settings.Remote.Firewall" xml:space="preserve"><value>Abrir a porta no firewall automaticamente</value></data>
+  <data name="Settings.Remote.Status.Stopped" xml:space="preserve"><value>Serviço parado</value></data>
+  <data name="Settings.Remote.Status.Running" xml:space="preserve"><value>Em execução em {0}</value></data>
+  <data name="Settings.Remote.Status.Exposed" xml:space="preserve"><value>Exposto na rede</value></data>
+  <data name="Settings.Remote.Status.Loopback" xml:space="preserve"><value>Somente localhost</value></data>
 
   <!-- ===== About ===== -->
   <data name="About.Tagline" xml:space="preserve"><value>O control center que este notebook devia ter vindo com.</value></data>

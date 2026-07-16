@@ -5,6 +5,7 @@
   <Project Path="src/AvellSucks.Core/AvellSucks.Core.csproj" />
   <Project Path="src/AvellSucks.Core.Windows/AvellSucks.Core.Windows.csproj" />
   <Project Path="src/AvellSucks.Api/AvellSucks.Api.csproj" />
+  <Project Path="src/AvellSucks.Mcp/AvellSucks.Mcp.csproj" />
   <Project Path="src/AvellSucks.Server/AvellSucks.Server.csproj" />
   <Project Path="src/AvellSucks.UI/AvellSucks.UI.csproj" />
   <Project Path="tests/AvellSucks.Core.Tests/AvellSucks.Core.Tests.csproj" />

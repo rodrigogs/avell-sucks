@@ -254,6 +254,21 @@ public class SafeEcWriterTests
         Assert.Equal((FanAddr, 64), fake.Writes[0]);
     }
 
+    [Fact]
+    public async Task TryWrite_records_origin_and_identity_in_audit()
+    {
+        var (writer, fake) = MakeWriter(allowWrites: true);
+        fake.Seed(FanAddr, 0);
+
+        await writer.TryWriteAsync(
+            FanAddr, 64, "api:fan/mode=boost",
+            origin: "remote 100.72.1.5 via Bearer", identity: "bearer-client");
+
+        var entry = Assert.Single(fake.AuditEntries);
+        Assert.Equal("remote 100.72.1.5 via Bearer", entry.Attempt.Origin);
+        Assert.Equal("bearer-client", entry.Attempt.Identity);
+    }
+
     [Theory]
     [InlineData(0,   "auto")]
     [InlineData(64,  "boost")]

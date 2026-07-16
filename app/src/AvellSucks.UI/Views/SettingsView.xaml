@@ -6,60 +6,11 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
 
-            <!-- Language -->
+            <!-- ============================================================
+                 Hardware writes — the sharp edge, first. Its own panel so the
+                 write gate reads as the load-bearing safety control it is.
+                 ============================================================ -->
             <Border Style="{StaticResource Panel}">
-                <StackPanel>
-                    <TextBlock Text="{loc:Tr Settings.LanguageSection}" Style="{StaticResource SectionLabel}"/>
-                    <DockPanel Margin="0,12,0,0">
-                        <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">
-                            <TextBlock Text="{loc:Tr Settings.Language}" Style="{StaticResource FieldLabel}"/>
-                            <TextBlock Text="{loc:Tr Settings.Language.Hint}" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
-                        </StackPanel>
-                        <Border Style="{StaticResource SegmentBar}" DockPanel.Dock="Right" HorizontalAlignment="Right">
-                            <StackPanel Orientation="Horizontal">
-                                <RadioButton x:Name="LangSystem" GroupName="lang" Style="{StaticResource SegmentToggle}"
-                                             Content="{loc:Tr Settings.Language.System}" Checked="OnLanguageChecked"/>
-                                <RadioButton x:Name="LangEn" GroupName="lang" Style="{StaticResource SegmentToggle}"
-                                             Content="{loc:Tr Settings.Language.En}" Checked="OnLanguageChecked"/>
-                                <RadioButton x:Name="LangPt" GroupName="lang" Style="{StaticResource SegmentToggle}"
-                                             Content="{loc:Tr Settings.Language.Pt}" Checked="OnLanguageChecked"/>
-                            </StackPanel>
-                        </Border>
-                    </DockPanel>
-                </StackPanel>
-            </Border>
-
-            <!-- Startup -->
-            <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
-                <StackPanel>
-                    <TextBlock Text="{loc:Tr Settings.StartupSection}" Style="{StaticResource SectionLabel}"/>
-
-                    <DockPanel Margin="0,12,0,0">
-                        <ToggleButton x:Name="StartWithWindows" Style="{StaticResource NeonToggle}"
-                                      AutomationProperties.Name="{loc:Tr Settings.StartWithWindows}"
-                                      DockPanel.Dock="Right" Checked="OnStartWithWindows" Unchecked="OnStartWithWindows"/>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="{loc:Tr Settings.StartWithWindows}" Style="{StaticResource FieldLabel}"/>
-                            <TextBlock Text="{loc:Tr Settings.StartWithWindows.Hint}" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
-                        </StackPanel>
-                    </DockPanel>
-
-                    <Rectangle Height="1" Fill="{StaticResource Hairline}" Margin="0,14,0,0"/>
-
-                    <DockPanel Margin="0,14,0,0">
-                        <ToggleButton x:Name="StartMinimized" Style="{StaticResource NeonToggle}"
-                                      AutomationProperties.Name="{loc:Tr Settings.StartMinimized}"
-                                      DockPanel.Dock="Right" Checked="OnStartMinimized" Unchecked="OnStartMinimized"/>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="{loc:Tr Settings.StartMinimized}" Style="{StaticResource FieldLabel}"/>
-                            <TextBlock Text="{loc:Tr Settings.StartMinimized.Hint}" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
-                        </StackPanel>
-                    </DockPanel>
-                </StackPanel>
-            </Border>
-
-            <!-- Hardware writes (opt-in, off by default) -->
-            <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
                 <StackPanel>
                     <TextBlock Text="{loc:Tr Settings.HardwareSection}" Style="{StaticResource SectionLabel}"/>
 
@@ -70,7 +21,7 @@
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Text="{loc:Tr Settings.EnableWrites}" Style="{StaticResource FieldLabel}"/>
                             <TextBlock Text="{loc:Tr Settings.EnableWrites.Hint}" Style="{StaticResource Caption}"
-                                       Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                       Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="440" HorizontalAlignment="Left"/>
                         </StackPanel>
                     </DockPanel>
 
@@ -80,12 +31,211 @@
                 </StackPanel>
             </Border>
 
-            <!-- Window -->
+            <!-- ============================================================
+                 Remote access — the instrument panel. Live status strip up top
+                 (state carried by dot + glyph + text, never hue alone), then the
+                 exposure controls grouped into Binding / Authentication /
+                 Capabilities so a dense surface reads as structure.
+                 ============================================================ -->
             <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
                 <StackPanel>
-                    <TextBlock Text="{loc:Tr Settings.WindowSection}" Style="{StaticResource SectionLabel}"/>
+                    <DockPanel>
+                        <TextBlock Text="{loc:Tr Settings.RemoteSection}" Style="{StaticResource SectionLabel}"
+                                   DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                    </DockPanel>
 
+                    <!-- Live status strip: dot + glyph + one honest line about the current state. -->
+                    <Border x:Name="RemoteStatusStrip" Style="{StaticResource StatusStrip}" Margin="0,12,0,0">
+                        <DockPanel>
+                            <Ellipse x:Name="RemoteStatusDot" Width="9" Height="9" DockPanel.Dock="Left"
+                                     VerticalAlignment="Center" Margin="0,0,10,0"
+                                     Fill="{StaticResource Ink3}"/>
+                            <TextBlock x:Name="RemoteStatusGlyph" DockPanel.Dock="Left" Text="&#xE785;"
+                                       FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center"
+                                       Margin="0,0,10,0" Foreground="{StaticResource Ink3}"/>
+                            <TextBlock x:Name="RemoteStatusText" VerticalAlignment="Center"
+                                       Foreground="{StaticResource Ink}" TextTrimming="CharacterEllipsis"/>
+                        </DockPanel>
+                    </Border>
+
+                    <!-- Run as service -->
+                    <DockPanel Margin="0,14,0,0">
+                        <ToggleButton x:Name="RunAsService" Style="{StaticResource NeonToggle}"
+                                      DockPanel.Dock="Right" Checked="OnRunAsService" Unchecked="OnRunAsService"
+                                      AutomationProperties.Name="{loc:Tr Settings.Remote.Service}"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Tr Settings.Remote.Service}" Style="{StaticResource FieldLabel}"/>
+                            <TextBlock Text="{loc:Tr Settings.Remote.Service.Hint}" Style="{StaticResource Caption}"
+                                       Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="440" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- Expose on the network -->
+                    <DockPanel Margin="0,14,0,0">
+                        <ToggleButton x:Name="ExposeNetwork" Style="{StaticResource NeonToggle}"
+                                      DockPanel.Dock="Right" Checked="OnExposeNetwork" Unchecked="OnExposeNetwork"
+                                      AutomationProperties.Name="{loc:Tr Settings.Remote.Expose}"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Tr Settings.Remote.Expose}" Style="{StaticResource FieldLabel}"/>
+                            <TextBlock Text="{loc:Tr Settings.Remote.Expose.Hint}" Style="{StaticResource Caption}"
+                                       Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="440" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- Exposure detail, revealed only when exposing off-loopback -->
+                    <StackPanel x:Name="ExposeDetails" Margin="0,4,0,0" Visibility="Collapsed">
+
+                        <!-- ── Binding ── -->
+                        <TextBlock Text="{loc:Tr Settings.Remote.Group.Binding}" Style="{StaticResource SubSectionLabel}" Margin="0,16,0,0"/>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{loc:Tr Settings.Remote.Address}" Style="{StaticResource FieldLabel}"
+                                       VerticalAlignment="Center" Margin="0,0,14,0"/>
+                            <ComboBox x:Name="AddressPicker" Grid.Column="1" Style="{StaticResource NeonCombo}"
+                                      ItemContainerStyle="{StaticResource NeonComboItem}"
+                                      SelectionChanged="OnAddressChanged"/>
+                        </Grid>
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{loc:Tr Settings.Remote.Port}" Style="{StaticResource FieldLabel}"
+                                       VerticalAlignment="Center" Margin="0,0,14,0"/>
+                            <TextBox x:Name="PortBox" Grid.Column="1" Style="{StaticResource MonoInput}"
+                                     HorizontalAlignment="Left" Width="110" LostFocus="OnPortChanged"/>
+                        </Grid>
+
+                        <!-- ── Authentication ── -->
+                        <TextBlock Text="{loc:Tr Settings.Remote.Group.Auth}" Style="{StaticResource SubSectionLabel}" Margin="0,18,0,0"/>
+                        <DockPanel Margin="0,10,0,0">
+                            <ToggleButton x:Name="UseHttps" Style="{StaticResource NeonToggle}" DockPanel.Dock="Right"
+                                          Checked="OnUseHttps" Unchecked="OnUseHttps"
+                                          AutomationProperties.Name="{loc:Tr Settings.Remote.Https}"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{loc:Tr Settings.Remote.Https}" Style="{StaticResource FieldLabel}"/>
+                                <TextBlock Text="{loc:Tr Settings.Remote.Https.Hint}" Style="{StaticResource Caption}"
+                                           Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="440" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <DockPanel Margin="0,12,0,0">
+                            <ToggleButton x:Name="UseMtls" Style="{StaticResource NeonToggle}" DockPanel.Dock="Right"
+                                          Checked="OnUseMtls" Unchecked="OnUseMtls"
+                                          AutomationProperties.Name="{loc:Tr Settings.Remote.Mtls}"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{loc:Tr Settings.Remote.Mtls}" Style="{StaticResource FieldLabel}"/>
+                                <TextBlock Text="{loc:Tr Settings.Remote.Mtls.Hint}" Style="{StaticResource Caption}"
+                                           Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="440" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <Button x:Name="GenerateTokenBtn" Margin="0,12,0,0" HorizontalAlignment="Left"
+                                Style="{StaticResource SecondaryButton}"
+                                Content="{loc:Tr Settings.Remote.GenerateToken}" Click="OnGenerateToken"/>
+                        <ctl:NoticeBanner x:Name="TokenNotice" Margin="0,10,0,0" Visibility="Collapsed"
+                                          Severity="Ok" Glyph="&#xE8D7;" Small="True" Text=""/>
+
+                        <!-- ── Capabilities ── -->
+                        <TextBlock Text="{loc:Tr Settings.Remote.Group.Capabilities}" Style="{StaticResource SubSectionLabel}" Margin="0,18,0,0"/>
+
+                        <!-- Remote hardware writes: DANGER. Tinted, glyphed, set apart. -->
+                        <Border Style="{StaticResource DangerRow}" Margin="0,10,0,0">
+                            <DockPanel>
+                                <ToggleButton x:Name="RemoteWrites" Style="{StaticResource NeonToggle}" DockPanel.Dock="Right"
+                                              Checked="OnRemoteWrites" Unchecked="OnRemoteWrites"
+                                              AutomationProperties.Name="{loc:Tr Settings.Remote.RemoteWrites}"/>
+                                <TextBlock DockPanel.Dock="Left" Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets"
+                                           FontSize="15" Foreground="{StaticResource Danger}"
+                                           VerticalAlignment="Top" Margin="0,1,11,0"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{loc:Tr Settings.Remote.RemoteWrites}" Style="{StaticResource FieldLabel}"
+                                               Foreground="{StaticResource Ink}"/>
+                                    <TextBlock Text="{loc:Tr Settings.Remote.RemoteWrites.Hint}" Style="{StaticResource Caption}"
+                                               Foreground="{StaticResource Ink2}"
+                                               Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="420" HorizontalAlignment="Left"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+
+                        <DockPanel Margin="0,12,0,0">
+                            <ToggleButton x:Name="EnableMcp" Style="{StaticResource NeonToggle}" DockPanel.Dock="Right"
+                                          Checked="OnEnableMcp" Unchecked="OnEnableMcp"
+                                          AutomationProperties.Name="{loc:Tr Settings.Remote.Mcp}"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{loc:Tr Settings.Remote.Mcp}" Style="{StaticResource FieldLabel}"/>
+                                <TextBlock Text="{loc:Tr Settings.Remote.Mcp.Hint}" Style="{StaticResource Caption}"
+                                           Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="440" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <DockPanel Margin="0,12,0,0">
+                            <ToggleButton x:Name="FirewallAutoOpen" Style="{StaticResource NeonToggle}" DockPanel.Dock="Right"
+                                          Checked="OnFirewallAutoOpen" Unchecked="OnFirewallAutoOpen"
+                                          AutomationProperties.Name="{loc:Tr Settings.Remote.Firewall}"/>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{loc:Tr Settings.Remote.Firewall}" Style="{StaticResource FieldLabel}"/>
+                                <TextBlock Text="{loc:Tr Settings.Remote.Firewall.Hint}" Style="{StaticResource Caption}"
+                                           Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="440" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- ============================================================
+                 Preferences — the benign, set-once knobs. Consolidated from the
+                 old Language / Startup / Window panels (three near-empty cards →
+                 one), so the surface isn't a stack of identical panels.
+                 ============================================================ -->
+            <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
+                <StackPanel>
+                    <TextBlock Text="{loc:Tr Settings.PreferencesSection}" Style="{StaticResource SectionLabel}"/>
+
+                    <!-- Language -->
                     <DockPanel Margin="0,12,0,0">
+                        <Border Style="{StaticResource SegmentBar}" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton x:Name="LangSystem" GroupName="lang" Style="{StaticResource SegmentToggle}"
+                                             Content="{loc:Tr Settings.Language.System}" Checked="OnLanguageChecked"/>
+                                <RadioButton x:Name="LangEn" GroupName="lang" Style="{StaticResource SegmentToggle}"
+                                             Content="{loc:Tr Settings.Language.En}" Checked="OnLanguageChecked"/>
+                                <RadioButton x:Name="LangPt" GroupName="lang" Style="{StaticResource SegmentToggle}"
+                                             Content="{loc:Tr Settings.Language.Pt}" Checked="OnLanguageChecked"/>
+                            </StackPanel>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Tr Settings.Language}" Style="{StaticResource FieldLabel}"/>
+                            <TextBlock Text="{loc:Tr Settings.Language.Hint}" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <Rectangle Height="1" Fill="{StaticResource Hairline}" Margin="0,14,0,0"/>
+
+                    <!-- Start with Windows -->
+                    <DockPanel Margin="0,14,0,0">
+                        <ToggleButton x:Name="StartWithWindows" Style="{StaticResource NeonToggle}"
+                                      AutomationProperties.Name="{loc:Tr Settings.StartWithWindows}"
+                                      DockPanel.Dock="Right" Checked="OnStartWithWindows" Unchecked="OnStartWithWindows"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Tr Settings.StartWithWindows}" Style="{StaticResource FieldLabel}"/>
+                            <TextBlock Text="{loc:Tr Settings.StartWithWindows.Hint}" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- Start minimized -->
+                    <DockPanel Margin="0,14,0,0">
+                        <ToggleButton x:Name="StartMinimized" Style="{StaticResource NeonToggle}"
+                                      AutomationProperties.Name="{loc:Tr Settings.StartMinimized}"
+                                      DockPanel.Dock="Right" Checked="OnStartMinimized" Unchecked="OnStartMinimized"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Tr Settings.StartMinimized}" Style="{StaticResource FieldLabel}"/>
+                            <TextBlock Text="{loc:Tr Settings.StartMinimized.Hint}" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- Hide on minimize -->
+                    <DockPanel Margin="0,14,0,0">
                         <ToggleButton x:Name="HideOnMinimize" Style="{StaticResource NeonToggle}"
                                       AutomationProperties.Name="{loc:Tr Settings.HideOnMinimize}"
                                       DockPanel.Dock="Right" Checked="OnHideOnMinimize" Unchecked="OnHideOnMinimize"/>

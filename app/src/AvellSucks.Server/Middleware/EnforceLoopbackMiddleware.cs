@@ -1,3 +1,4 @@
+using AvellSucks.Core.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
@@ -13,7 +14,7 @@ namespace AvellSucks.Server;
 public static class LoopbackSecurityExtensions
 {
     /// <summary>
-    /// Adds 403 enforcement that rejects anything not coming from localhost/link-local.
+    /// Adds 403 enforcement that rejects anything not coming from machine-local loopback.
     /// </summary>
     public static IApplicationBuilder UseLoopbackOnly(this IApplicationBuilder app, bool requireHttps = false)
     {
@@ -37,11 +38,8 @@ public static class LoopbackSecurityExtensions
         });
     }
 
-    private static bool IsLoopback(System.Net.IPAddress? ip) =>
-        ip is not null && (
-            System.Net.IPAddress.IsLoopback(ip) ||
-            ip.Equals(System.Net.IPAddress.Parse("127.0.0.1")) ||
-            ip.Equals(System.Net.IPAddress.Parse("::1")) ||
-            ip.IsIPv6LinkLocal);
+    // Single source of truth for "machine-local": delegate to CallerInfo.IsLoopback
+    // (127.0.0.0/8 and ::1 only). IPv6 link-local is deliberately NOT loopback.
+    private static bool IsLoopback(System.Net.IPAddress? ip) => CallerInfo.IsLoopback(ip);
 }
 

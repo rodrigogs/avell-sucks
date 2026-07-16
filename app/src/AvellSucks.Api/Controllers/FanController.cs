@@ -1,3 +1,4 @@
+using AvellSucks.Api.Security;
 using AvellSucks.Core.Hardware;
 using AvellSucks.Core.Models;
 using AvellSucks.Core.Platforms;
@@ -23,11 +24,13 @@ public sealed class FanController : ControllerBase
 
     private readonly IEcBackend _backend;
     private readonly SafeEcWriter _writer;
+    private readonly RemoteWriteAuthorizer _remoteWrite;
 
-    public FanController(IEcBackend backend, SafeEcWriter writer)
+    public FanController(IEcBackend backend, SafeEcWriter writer, RemoteWriteAuthorizer remoteWrite)
     {
         _backend = backend;
         _writer = writer;
+        _remoteWrite = remoteWrite;
     }
 
     /// <summary>
@@ -82,6 +85,10 @@ public sealed class FanController : ControllerBase
         [FromBody] SetFanCurveRequest request,
         CancellationToken ct)
     {
+        var gate = _remoteWrite.Check();
+        if (!gate.Allowed)
+            return StatusCode(StatusCodes.Status403Forbidden, gate.Reason);
+
         if (!TryValidateCurve(request, out var error))
             return BadRequest(error);
 
@@ -92,7 +99,9 @@ public sealed class FanController : ControllerBase
             var result = await _writer.TryWriteAsync(
                 s_curveAddresses[i], level.Pwm,
                 reason: $"api:fan/curve:L{i + 1}={level.TemperatureC}C:{level.Pwm}",
-                ct).ConfigureAwait(false);
+                cancellationToken: ct,
+                origin: _remoteWrite.DescribeCaller(),
+                identity: User.Identity?.AuthenticationType).ConfigureAwait(false);
             results.Add(result);
 
             if (!result.Allowed)
@@ -104,7 +113,9 @@ public sealed class FanController : ControllerBase
         var modeResult = await _writer.TryWriteAsync(
             MAFanControl, CustomFanMode,
             reason: "api:fan/curve:enable-custom",
-            ct).ConfigureAwait(false);
+            cancellationToken: ct,
+            origin: _remoteWrite.DescribeCaller(),
+            identity: User.Identity?.AuthenticationType).ConfigureAwait(false);
         results.Add(modeResult);
 
         if (!modeResult.Allowed)
@@ -160,6 +171,10 @@ public sealed class FanController : ControllerBase
         [FromBody] SetFanModeRequest request,
         CancellationToken ct)
     {
+        var gate = _remoteWrite.Check();
+        if (!gate.Allowed)
+            return StatusCode(StatusCodes.Status403Forbidden, gate.Reason);
+
         if (!FanModeMap.TryByteFor(request.Mode ?? "", out var value))
             return BadRequest(
                 $"Unknown mode '{request.Mode}'. Valid: auto, boost, custom, L1..L5");
@@ -167,7 +182,9 @@ public sealed class FanController : ControllerBase
         var result = await _writer.TryWriteAsync(
             MAFanControl, value,
             reason: $"api:fan/mode={request.Mode}",
-            ct).ConfigureAwait(false);
+            cancellationToken: ct,
+            origin: _remoteWrite.DescribeCaller(),
+            identity: User.Identity?.AuthenticationType).ConfigureAwait(false);
 
         if (!result.Allowed)
             return StatusCode(StatusCodes.Status403Forbidden, result);

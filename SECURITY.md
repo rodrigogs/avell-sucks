@@ -29,10 +29,34 @@ before-snapshot → write → read-back verify → rollback on mismatch → JSON
 
 ## Network surface
 
-The optional local API (`AvellSucks.Server`) binds **127.0.0.1 only** and rejects
-any non-loopback client. It is a separate, opt-in process; the WPF app does not
-start it. There is no authentication beyond the loopback restriction — do not
-expose it beyond localhost (e.g. via a reverse proxy or port forward).
+The optional control server (`AvellSucks.Server`) can stay localhost-only or be
+exposed on the network (LAN / Tailscale) and additionally host an MCP server at
+`/mcp`. Exposure is governed by a **fail-closed** model:
+
+- **Safe by default.** Out of the box it binds `127.0.0.1`, has no auth, does not
+  allow remote writes, and does not run MCP. Nothing is exposed unless you turn it
+  on in **Settings → Remote access**.
+- **Loopback exempt, everything else must authenticate.** Requests from
+  machine-local loopback (`127.0.0.0/8` and `::1`) pass without credentials. Every
+  other origin — including IPv6 link-local (`fe80::/10`) — must present a valid
+  bearer token and/or a client certificate (mTLS).
+- **No auth configured ⇒ remote rejected.** If neither a token nor mTLS is set, a
+  non-loopback request cannot authenticate and is denied — exposure can never be
+  accidentally open.
+- **Only the token hash is stored.** The bearer token is persisted and logged only
+  as its SHA-256 hash and compared in constant time; the plaintext exists solely in
+  the request header and momentarily in the UI when generated (shown once).
+- **Remote writes are separately gated and off by default.** An authenticated
+  remote client can read but cannot actuate fan/power unless `AllowRemoteWrites` is
+  on — in addition to the existing local write gate. A remote-write denial is a
+  distinct, truthful `403`, never a silent success.
+- **mTLS fails closed.** With mTLS enabled and a configured CA thumbprint, a client
+  certificate that does not match the thumbprint is rejected.
+- The `/mcp` endpoint is behind the same authorization policy. Prefer a Tailscale
+  address; do not bind `0.0.0.0` on an untrusted network.
+
+Config lives in `%ProgramData%\AvellSucks\service.json` (hot-reloaded). The firewall
+port stays closed unless you enable auto-open (or add the `netsh` rule manually).
 
 ## Reporting a vulnerability
 

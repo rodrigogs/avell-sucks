@@ -6,7 +6,7 @@ using System.Windows.Media;
 namespace AvellSucks.UI.Controls;
 
 /// <summary>Severity of a <see cref="NoticeBanner"/> — picks its tint + accent.</summary>
-public enum NoticeSeverity { Warn, Danger }
+public enum NoticeSeverity { Warn, Danger, Ok }
 
 /// <summary>
 /// A tinted inline notice: an MDL2 glyph pinned left + a wrapping message, on a
@@ -88,9 +88,12 @@ public sealed class NoticeBanner : Border
 
     private void ApplySeverity()
     {
-        var (tint, accent) = Severity == NoticeSeverity.Danger
-            ? ("DangerTint", "Danger")
-            : ("WarnTint", "Warn");
+        var (tint, accent) = Severity switch
+        {
+            NoticeSeverity.Danger => ("DangerTint", "Danger"),
+            NoticeSeverity.Ok => ("OkTint", "Ok"),
+            _ => ("WarnTint", "Warn"),
+        };
         Background = (Brush)Application.Current.FindResource(tint);
         var accentBrush = (Brush)Application.Current.FindResource(accent);
         BorderBrush = accentBrush;

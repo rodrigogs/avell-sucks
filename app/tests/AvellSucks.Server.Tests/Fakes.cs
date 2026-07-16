@@ -62,3 +62,19 @@ internal sealed class ListAuditLog : IWriteAuditLog
         return ValueTask.CompletedTask;
     }
 }
+
+internal sealed class StaticOptionsMonitor<T>(T value) : Microsoft.Extensions.Options.IOptionsMonitor<T>
+{
+    public T CurrentValue { get; } = value;
+    public T Get(string? name) => CurrentValue;
+    public System.IDisposable? OnChange(System.Action<T, string?> listener) => null;
+}
+
+// Minimal IOptionsMonitor<AuthenticationSchemeOptions> for the handler base ctor.
+internal sealed class OptionsMonitorStub : Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions>
+{
+    private readonly Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions _o = new();
+    public Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions CurrentValue => _o;
+    public Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions Get(string? name) => _o;
+    public System.IDisposable? OnChange(System.Action<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, string?> listener) => null;
+}

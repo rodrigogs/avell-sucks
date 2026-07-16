@@ -11,12 +11,15 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0-rc.2.*" />
     <PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.0-rc.2.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="10.0.0-rc.2.*" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AvellSucks.Core\AvellSucks.Core.csproj" />
     <ProjectReference Include="..\AvellSucks.Core.Windows\AvellSucks.Core.Windows.csproj" />
     <ProjectReference Include="..\AvellSucks.Api\AvellSucks.Api.csproj" />
+    <ProjectReference Include="..\AvellSucks.Mcp\AvellSucks.Mcp.csproj" />
   </ItemGroup>
 
 </Project>
