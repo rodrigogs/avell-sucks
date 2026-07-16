@@ -18,6 +18,10 @@
     <ProjectReference Include="..\..\src\AvellSucks.Server\AvellSucks.Server.csproj" />
     <ProjectReference Include="..\..\src\AvellSucks.Api\AvellSucks.Api.csproj" />
     <ProjectReference Include="..\..\src\AvellSucks.Mcp\AvellSucks.Mcp.csproj" />
+    <!-- UI reference is for the pure, WPF-free settings model (AppSettings /
+         RestoreProfile) + its source-gen JSON context, so the round-trip test can
+         catch a missing [JsonSerializable] registration (a runtime-only failure). -->
+    <ProjectReference Include="..\..\src\AvellSucks.UI\AvellSucks.UI.csproj" />
   </ItemGroup>
 
 </Project>

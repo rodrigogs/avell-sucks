@@ -217,6 +217,12 @@ public partial class PowerView : UserControl
         var settled = result.State == WriteState.Verified ? mode : (await _power.GetAsync()).Mode;
         _monitor?.Resume(settled);
 
+        // Persist the applied performance mode so it survives a reboot (the EC/plan
+        // state is re-actuated on next launch by ProfileRestorer). Only on a
+        // verified write — never persist a blocked/failed apply.
+        if (result.State == WriteState.Verified)
+            CapturePowerMode(mode);
+
         // If the write didn't take (blocked/failed), reflect the mode the machine is
         // actually in — never leave the UI selecting a mode we didn't apply.
         if (settled != mode)
@@ -297,4 +303,14 @@ public partial class PowerView : UserControl
 
     private PowerLimits CurrentLimits() =>
         new((int)Pl1Slider.Value, (int)Pl2Slider.Value, (int)Pl4Slider.Value);
+
+    // Record a verified power-mode apply into AppSettings.RestoreProfile so it can
+    // be re-actuated on the next launch (see Services.ProfileRestorer).
+    private static void CapturePowerMode(PerformanceMode mode)
+    {
+        var s = Settings.SettingsStore.Current.Settings;
+        var p = s.RestoreProfile ??= new Settings.RestoreProfile();
+        p.PowerMode = mode;
+        Settings.SettingsStore.Current.Save();
+    }
 }
