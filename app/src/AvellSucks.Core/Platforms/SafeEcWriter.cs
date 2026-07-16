@@ -40,12 +40,13 @@ public sealed class SafeEcWriter
     /// </summary>
     public async ValueTask<EcWriteResult> TryWriteAsync(
         int address, int value, string reason,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        string? origin = null, string? identity = null)
     {
         var now = DateTimeOffset.UtcNow;
         var attempt = new EcWriteAttempt(
             now, address, $"0x{address:X}",
-            value, $"0x{value:X}", reason);
+            value, $"0x{value:X}", reason, origin, identity);
 
         // --- Gate ---
         if (!_gate.IsWriteAllowed)

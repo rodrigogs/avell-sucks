@@ -384,6 +384,124 @@
         </Setter>
     </Style>
 
+    <!-- ===== Sub-section label (inside a panel; smaller/quieter than SectionLabel) =====
+         Groups related rows within one panel so a dense settings panel reads as
+         structure, not a flat wall of toggles. Wide tracking, muted ink. -->
+    <Style x:Key="SubSectionLabel" TargetType="TextBlock" BasedOn="{StaticResource SectionLabel}">
+        <Setter Property="FontSize" Value="{StaticResource FsCaption}"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+    </Style>
+
+    <!-- ===== Status strip =====
+         A single-line state readout with a leading dot + glyph + text. The dot and
+         glyph carry meaning WITH the text (never hue alone), so it stays legible and
+         honest about the current state. Recolor Background/BorderBrush per state at
+         the call site (Surface2 = neutral, DangerTint = live-exposed warning, etc). -->
+    <Style x:Key="StatusStrip" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource Surface2}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Hairline}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSm}"/>
+        <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <!-- ===== Danger row =====
+         Wraps a settings row whose action is destructive/risky (remote hardware
+         writes) so it reads as sharp-edged, not identical to a benign toggle.
+         Danger tint fill + danger hairline; pair with a warning glyph in the row. -->
+    <Style x:Key="DangerRow" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource DangerTint}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Danger}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSm}"/>
+        <Setter Property="Padding" Value="12,11"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <!-- ===== ComboBox (bind-address picker) — matches MonoInput surface vocabulary ===== -->
+    <Style x:Key="NeonComboToggle" TargetType="ToggleButton">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="bd" Background="{StaticResource Surface2}"
+                            BorderBrush="{StaticResource Hairline}" BorderThickness="1"
+                            CornerRadius="{StaticResource RadiusSm}">
+                        <Grid>
+                            <ContentPresenter Margin="10,7" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="10"
+                                       Foreground="{StaticResource Ink3}" HorizontalAlignment="Right"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Cyan}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NeonCombo" TargetType="ComboBox">
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="{StaticResource FsBody}"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <ToggleButton x:Name="tgl" Style="{StaticResource NeonComboToggle}"
+                                      Focusable="False" ClickMode="Press"
+                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        <ContentPresenter x:Name="cp" Margin="10,0,28,0" VerticalAlignment="Center"
+                                          IsHitTestVisible="False"
+                                          Content="{TemplateBinding SelectionBoxItem}"
+                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
+                        <Popup x:Name="PART_Popup" Placement="Bottom" AllowsTransparency="True"
+                               IsOpen="{TemplateBinding IsDropDownOpen}" Focusable="False" PopupAnimation="Fade">
+                            <Border Background="{StaticResource Overlay}" BorderBrush="{StaticResource Hairline}"
+                                    BorderThickness="1" CornerRadius="{StaticResource RadiusSm}"
+                                    MinWidth="{TemplateBinding ActualWidth}" MaxHeight="240" Margin="0,4,0,0">
+                                <ScrollViewer><ItemsPresenter/></ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NeonComboItem" TargetType="ComboBoxItem">
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border x:Name="bd" Background="Transparent" Padding="{TemplateBinding Padding}"
+                            CornerRadius="{StaticResource RadiusSm}" Margin="3,1">
+                        <ContentPresenter/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource HoverWash}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+                        </Trigger>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource CyanTint}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Default window-wide text color -->
     <Style TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>

@@ -14,3 +14,6 @@ TestResults/
 # Impeccable design-skill local cache
 .impeccable/
 **/.impeccable/
+
+# Internal dev process (specs, plans, runbooks scaffolding) — not published
+docs/superpowers/

@@ -12,7 +12,9 @@ public sealed record EcWriteAttempt(
     string HexAddress,
     int RequestedValue,
     string RequestedValueHex,
-    string Reason);
+    string Reason,
+    string? Origin = null,      // audit: caller origin (loopback / remote IP)
+    string? Identity = null);   // audit: authenticated identity (bearer/cert), null when local
 
 /// <summary>
 /// Full record of a write attempt including verification and rollback state.

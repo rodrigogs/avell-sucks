@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\AvellSucks.Server\AvellSucks.Server.csproj" />
     <ProjectReference Include="..\..\src\AvellSucks.Api\AvellSucks.Api.csproj" />
+    <ProjectReference Include="..\..\src\AvellSucks.Mcp\AvellSucks.Mcp.csproj" />
   </ItemGroup>
 
 </Project>

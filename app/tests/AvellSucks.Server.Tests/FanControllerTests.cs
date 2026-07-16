@@ -1,6 +1,7 @@
 using AvellSucks.Api.Controllers;
 using AvellSucks.Core.Models;
 using AvellSucks.Core.Platforms;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +26,17 @@ public class FanControllerTests
             writer: backend,
             audit: audit);
 
-        return (new FanController(backend, writer), backend, audit);
+        var httpCtx = new DefaultHttpContext();
+        httpCtx.Connection.RemoteIpAddress = System.Net.IPAddress.Loopback;
+        var authorizer = new AvellSucks.Api.Security.RemoteWriteAuthorizer(
+            new HttpContextAccessor { HttpContext = httpCtx },
+            new StaticOptionsMonitor<AvellSucks.Core.Service.NetworkServiceConfig>(new()));
+
+        var controller = new FanController(backend, writer, authorizer)
+        {
+            ControllerContext = new ControllerContext { HttpContext = httpCtx },
+        };
+        return (controller, backend, audit);
     }
 
     // --- GET /api/fan/mode ---
