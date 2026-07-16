@@ -167,6 +167,14 @@ public partial class FanView : UserControl
             : (await _fan.GetModeAsync() ?? "auto");
         _monitor?.Resume(settled);
 
+        // Persist the applied fan MODE so it survives a reboot (the EC forgets it;
+        // ProfileRestorer reapplies on next launch). Only on a verified write —
+        // never persist a blocked/failed apply. This is the single funnel every fan
+        // mode write (mode chip, reset) passes through; a curve write additionally
+        // persists its points in ApplyCurveNow.
+        if (result.State == WriteState.Verified)
+            CaptureFanMode(settled);
+
         // If the write didn't take (blocked/failed), snap the selection back to the
         // mode the device is actually in — never leave a chip selected on a mode we
         // didn't apply.
@@ -202,11 +210,42 @@ public partial class FanView : UserControl
     private async void ApplyCurveNow()
     {
         // A curve write flips the mode to custom; settle on "custom" if verified.
+        var points = Curve.Points.ToArray();
         var result = await WriteReconciledAsync(
             "custom", Loc.T("Fan.Curve"), Loc.T("Fan.CurveApplied"),
-            () => _fan.SetCurveAsync(Curve.Points.ToArray()));
-        if (result.State == WriteState.Verified && !_loading.Active)
-            SelectMode("custom");
+            () => _fan.SetCurveAsync(points));
+        if (result.State == WriteState.Verified)
+        {
+            // Persist the applied CURVE (WriteReconciledAsync already captured
+            // FanMode="custom" and cleared the curve; overwrite with the points so a
+            // reboot restores the full curve, not just the custom flag).
+            CaptureFanCurve(points);
+            if (!_loading.Active) SelectMode("custom");
+        }
+    }
+
+    // ---- Reboot-persistence capture (see Services.ProfileRestorer) ----
+    // Record a verified fan apply into AppSettings.RestoreProfile so it can be
+    // re-actuated on the next launch. Fan mode clears any saved curve; a curve
+    // apply sets FanMode="custom" + the points.
+    private static void CaptureFanMode(string mode)
+    {
+        var s = Settings.SettingsStore.Current.Settings;
+        var p = s.RestoreProfile ??= new Settings.RestoreProfile();
+        p.FanMode = mode;
+        p.FanCurve = null;
+        Settings.SettingsStore.Current.Save();
+    }
+
+    private static void CaptureFanCurve(FanPoint[] points)
+    {
+        var s = Settings.SettingsStore.Current.Settings;
+        var p = s.RestoreProfile ??= new Settings.RestoreProfile();
+        p.FanMode = "custom";
+        p.FanCurve = points
+            .Select(pt => new Settings.FanCurvePoint { TemperatureC = pt.TemperatureC, Pwm = pt.Pwm })
+            .ToList();
+        Settings.SettingsStore.Current.Save();
     }
 
     // The one explicit escape hatch: hand the fan back to Auto.

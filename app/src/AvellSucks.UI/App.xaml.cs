@@ -92,6 +92,12 @@ public partial class App : Application
             // Settings) — never auto-applies on launch, which would yank the app
             // out from under the user. Failures/no-connection are ignored silently.
             _ = CheckForUpdatesAsync();
+
+            // Re-actuate the last-applied Fan + Power profile (the EC forgets it
+            // across a reboot). Fire-and-forget AFTER the window is shown, off the
+            // UI-blocking path — EC writes settle async and must not delay first
+            // paint. Respects the write gate and never throws (see ProfileRestorer).
+            _ = AvellSucks.UI.Services.ProfileRestorer.RestoreAsync();
         }
         catch (Exception ex)
         {

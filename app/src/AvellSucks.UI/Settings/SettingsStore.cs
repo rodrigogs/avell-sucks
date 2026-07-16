@@ -41,8 +41,7 @@ public sealed class SettingsStore
         try
         {
             settings = File.Exists(FilePath)
-                ? JsonSerializer.Deserialize(File.ReadAllText(FilePath), typeof(AppSettings), JsonOpts) as AppSettings
-                  ?? new AppSettings()
+                ? Deserialize(File.ReadAllText(FilePath)) ?? new AppSettings()
                 : new AppSettings();
         }
         catch
@@ -53,13 +52,25 @@ public sealed class SettingsStore
         return new SettingsStore(settings);
     }
 
+    /// <summary>
+    /// Serialize settings with the source-gen JSON context (same options used to
+    /// persist). Public so a test can round-trip the model and catch a missing
+    /// <c>[JsonSerializable]</c> registration — which throws only at runtime.
+    /// </summary>
+    public static string Serialize(AppSettings settings) =>
+        JsonSerializer.Serialize(settings, typeof(AppSettings), JsonOpts);
+
+    /// <summary>Deserialize settings JSON with the source-gen context (inverse of <see cref="Serialize"/>).</summary>
+    public static AppSettings? Deserialize(string json) =>
+        JsonSerializer.Deserialize(json, typeof(AppSettings), JsonOpts) as AppSettings;
+
     /// <summary>Persist the current settings to disk (best-effort).</summary>
     public void Save()
     {
         try
         {
             Directory.CreateDirectory(Dir);
-            File.WriteAllText(FilePath, JsonSerializer.Serialize(Settings, typeof(AppSettings), JsonOpts));
+            File.WriteAllText(FilePath, Serialize(Settings));
         }
         catch (Exception ex)
         {
