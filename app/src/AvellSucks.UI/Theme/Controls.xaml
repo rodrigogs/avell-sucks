@@ -509,4 +509,81 @@
         <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
     </Style>
 
+    <!-- ===== Tray context menu =====
+         The tray menu renders in its own popup outside the window's visual tree, so
+         it does NOT inherit the app chrome — left unstyled it falls back to the
+         system light menu, and the app's global TextBlock Foreground (Ink2, a light
+         violet-gray) bleeds onto that near-white background, making enabled items
+         look disabled. These explicit styles theme it to match the dark app and give
+         real hover / checked / disabled states so enabled items read as enabled. -->
+    <Style x:Key="TrayMenuItem" TargetType="MenuItem">
+        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
+        <Setter Property="FontSize" Value="{StaticResource FsBody}"/>
+        <Setter Property="Padding" Value="10,7"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MenuItem">
+                    <Border x:Name="bd" Background="{TemplateBinding Background}"
+                            CornerRadius="{StaticResource RadiusSm}" Padding="{TemplateBinding Padding}" Margin="3,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="22"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <!-- check mark (only shows when IsChecked) -->
+                            <TextBlock x:Name="chk" Grid.Column="0" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets"
+                                       FontSize="12" VerticalAlignment="Center" Visibility="Collapsed"
+                                       Foreground="{StaticResource Magenta}"/>
+                            <ContentPresenter Grid.Column="1" ContentSource="Header" VerticalAlignment="Center"
+                                              RecognizesAccessKey="True"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource HoverWash}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="chk" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+                            <Setter TargetName="bd" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TrayContextMenu" TargetType="ContextMenu">
+        <Setter Property="Background" Value="{StaticResource Overlay}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Hairline}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="3"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource TrayMenuItem}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContextMenu">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{StaticResource RadiusMd}"
+                            Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TraySeparator" TargetType="Separator">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Separator">
+                    <Rectangle Height="1" Fill="{StaticResource Hairline}" Margin="8,4"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

@@ -25,12 +25,12 @@
                         IconSource="pack://application:,,,/app.ico"
                         TrayMouseDoubleClick="OnTrayDoubleClick">
             <tb:TaskbarIcon.ContextMenu>
-                <ContextMenu Opened="OnTrayMenuOpened">
+                <ContextMenu Opened="OnTrayMenuOpened" Style="{StaticResource TrayContextMenu}">
                     <MenuItem Header="{loc:Tr Tray.Open}" Click="OnTrayOpen"/>
-                    <Separator/>
+                    <Separator Style="{StaticResource TraySeparator}"/>
                     <MenuItem Header="{loc:Tr Tray.StartWithWindows}" x:Name="AutoStartItem"
                               IsCheckable="True" Click="OnToggleAutoStart"/>
-                    <Separator/>
+                    <Separator Style="{StaticResource TraySeparator}"/>
                     <MenuItem Header="{loc:Tr Tray.Exit}" Click="OnTrayExit"/>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
