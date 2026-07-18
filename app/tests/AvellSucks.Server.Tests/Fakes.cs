@@ -21,6 +21,8 @@ internal sealed class StubEcBackend : IEcBackend, IEcWriter
 
     public void SetMode(FanMode? mode) => _mode = mode;
 
+    public void Seed(int address, int value) => _registers[address] = value;
+
     public void SeedCurve(IReadOnlyList<int> values)
     {
         var addresses = new[] { 1859, 1860, 1861, 1862, 1863 };

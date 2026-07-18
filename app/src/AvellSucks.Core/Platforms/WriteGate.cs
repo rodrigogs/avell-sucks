@@ -1,7 +1,8 @@
 namespace AvellSucks.Core.Platforms;
 
 /// <summary>
-/// Explicit gate controlling whether EC writes may proceed.
+/// Explicit gate controlling whether hardware mutations may proceed. It began as
+/// the EC-write gate, so the environment variable keeps its compatibility name.
 /// Disabled by default; must be deliberately constructed or enabled via
 /// the <c>GAMINGCENTER_ALLOW_EC_WRITES</c> environment variable.
 /// </summary>

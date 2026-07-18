@@ -156,6 +156,12 @@ public partial class App : Application
                         Log($"selftest transition → {seq}: State={r.State} Error={r.Error ?? "none"}");
                     }
                     break;
+                case "machine-controls":
+                    RunMachineControlsSelfTest(turnOffDisplay: false);
+                    break;
+                case "machine-display-off":
+                    RunMachineControlsSelfTest(turnOffDisplay: true);
+                    break;
                 default:
                     Log($"selftest: unknown test '{test}'");
                     break;
@@ -163,6 +169,88 @@ public partial class App : Application
         }
         catch (Exception ex) { Log($"selftest '{test}' threw: {ex}"); }
     }
+
+    // Exercises the exact UI service pipeline. Potentially sticky PnP operations
+    // are paired with a finally restore; the radio operation only reasserts ON so
+    // this diagnostic cannot intentionally cut its own network connection.
+    private static void RunMachineControlsSelfTest(bool turnOffDisplay)
+    {
+        var controls = AvellSucks.UI.Services.HardwareServices.MachineControls();
+        if (controls is null)
+        {
+            Log("selftest machine-controls: service unavailable (not elevated or unsupported hardware)");
+            return;
+        }
+
+        var before = controls.GetStatusAsync().AsTask().GetAwaiter().GetResult();
+        Log($"selftest machine-controls: before radios={before.WirelessRadiosEnabled} " +
+            $"wifi={before.WifiPresent} bt={before.BluetoothPresent} touchpad={before.TouchpadEnabled} " +
+            $"webcam={before.WebcamEnabled} brightness={before.BrightnessPercent} display={before.DisplayPowerControlAvailable} " +
+            $"error={before.Error ?? "none"}");
+
+        var radio = controls.SetWirelessRadiosAsync(true, "selftest:machine-controls/radio")
+            .AsTask().GetAwaiter().GetResult();
+        LogMachineResult("radio-on", radio);
+
+        try
+        {
+            var off = controls.SetTouchpadEnabledAsync(false, "selftest:machine-controls/touchpad-off")
+                .AsTask().GetAwaiter().GetResult();
+            LogMachineResult("touchpad-off", off);
+        }
+        finally
+        {
+            var on = controls.SetTouchpadEnabledAsync(true, "selftest:machine-controls/touchpad-restore")
+                .AsTask().GetAwaiter().GetResult();
+            LogMachineResult("touchpad-restore", on);
+        }
+
+        try
+        {
+            var off = controls.SetWebcamEnabledAsync(false, "selftest:machine-controls/webcam-off")
+                .AsTask().GetAwaiter().GetResult();
+            LogMachineResult("webcam-off", off);
+        }
+        finally
+        {
+            var on = controls.SetWebcamEnabledAsync(true, "selftest:machine-controls/webcam-restore")
+                .AsTask().GetAwaiter().GetResult();
+            LogMachineResult("webcam-restore", on);
+        }
+
+        if (before.BrightnessPercent is byte original)
+        {
+            var probe = original > 5 ? original - 1 : original + 1;
+            try
+            {
+                var changed = controls.SetBrightnessAsync(probe, "selftest:machine-controls/brightness")
+                    .AsTask().GetAwaiter().GetResult();
+                LogMachineResult($"brightness-{probe}", changed);
+            }
+            finally
+            {
+                var restored = controls.SetBrightnessAsync(original, "selftest:machine-controls/brightness-restore")
+                    .AsTask().GetAwaiter().GetResult();
+                LogMachineResult($"brightness-restore-{original}", restored);
+            }
+        }
+
+        if (turnOffDisplay)
+        {
+            var display = controls.TurnOffDisplayAsync("selftest:machine-controls/display-off")
+                .AsTask().GetAwaiter().GetResult();
+            LogMachineResult("display-off", display);
+        }
+
+        var after = controls.GetStatusAsync().AsTask().GetAwaiter().GetResult();
+        Log($"selftest machine-controls: after radios={after.WirelessRadiosEnabled} " +
+            $"wifi={after.WifiPresent} bt={after.BluetoothPresent} touchpad={after.TouchpadEnabled} " +
+            $"webcam={after.WebcamEnabled} brightness={after.BrightnessPercent} error={after.Error ?? "none"}");
+    }
+
+    private static void LogMachineResult(string operation, AvellSucks.Core.Hardware.MachineControlResult result)
+        => Log($"selftest machine-controls {operation}: Outcome={result.Outcome} Allowed={result.Allowed} " +
+            $"Executed={result.Executed} Verified={result.Verified} Message={result.Message ?? "none"}");
 
     // Headless sensor check: opens the SensorPump exactly as the Dashboard does and
     // reports SensorsAvailable + a live sample once the off-thread monitor resolves.

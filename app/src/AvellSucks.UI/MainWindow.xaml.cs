@@ -25,11 +25,13 @@ public partial class MainWindow : Window
     // fires 4 preset reads; FanView/PowerView create polling monitors) before the
     // window even appeared. Lazy construction keeps first-open cheap.
     private FanView? _fan;
+    private DevicesView? _devices;
     private RgbView? _rgb;
     private PowerView? _power;
     private AboutView? _about;
     private SettingsView? _settings;
     private FanView Fan => _fan ??= new FanView(_pump);
+    private DevicesView Devices => _devices ??= new DevicesView();
     private RgbView Rgb => _rgb ??= new RgbView();
     private PowerView Power => _power ??= new PowerView();
     private AboutView About => _about ??= new AboutView();
@@ -56,6 +58,7 @@ public partial class MainWindow : Window
         RadioButton? initial = startTab switch
         {
             "fan" => NavFan,
+            "devices" => NavDevices,
             "rgb" => NavRgb,
             "power" => NavPower,
             "about" => NavAbout,
@@ -177,6 +180,7 @@ public partial class MainWindow : Window
         (UserControl view, string titleKey, string subKey) target = rb.Name switch
         {
             nameof(NavFan) => (Fan, "Nav.Fan", "Tab.Fan.Sub"),
+            nameof(NavDevices) => (Devices, "Nav.Devices", "Tab.Devices.Sub"),
             nameof(NavRgb) => (Rgb, "Nav.Rgb", "Tab.Rgb.Sub"),
             nameof(NavPower) => (Power, "Nav.Performance", "Tab.Power.Sub"),
             nameof(NavAbout) => (About, "Nav.About", "Tab.About.Sub"),

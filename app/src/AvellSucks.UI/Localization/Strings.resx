@@ -61,6 +61,7 @@
 
   <!-- ===== Navigation / tray ===== -->
   <data name="Nav.Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Nav.Devices" xml:space="preserve"><value>Devices</value></data>
   <data name="Nav.Fan" xml:space="preserve"><value>Fan</value></data>
   <data name="Nav.Rgb" xml:space="preserve"><value>RGB</value></data>
   <data name="Nav.Performance" xml:space="preserve"><value>Performance</value></data>
@@ -72,11 +73,39 @@
 
   <!-- ===== Tab subtitles ===== -->
   <data name="Tab.Dashboard.Sub" xml:space="preserve"><value>Live telemetry from EC, WMI and onboard sensors</value></data>
+  <data name="Tab.Devices.Sub" xml:space="preserve"><value>Internal radios, input devices, camera and display</value></data>
   <data name="Tab.Fan.Sub" xml:space="preserve"><value>Fan modes and the custom temperature curve</value></data>
   <data name="Tab.Rgb.Sub" xml:space="preserve"><value>Keyboard lighting: effects, color and zones</value></data>
   <data name="Tab.Power.Sub" xml:space="preserve"><value>Power modes: Windows plan and CPU power envelope</value></data>
   <data name="Tab.About.Sub" xml:space="preserve"><value>What this is, and why it exists</value></data>
   <data name="Tab.Settings.Sub" xml:space="preserve"><value>Hardware writes, remote access, and app preferences</value></data>
+
+  <!-- ===== Device controls ===== -->
+  <data name="Common.On" xml:space="preserve"><value>on</value></data>
+  <data name="Common.Off" xml:space="preserve"><value>off</value></data>
+  <data name="Devices.Unavailable" xml:space="preserve"><value>Machine controls are unavailable. Run AvellSucks as administrator on the supported Avell G1555 hardware.</value></data>
+  <data name="Devices.Wireless.Section" xml:space="preserve"><value>Connectivity</value></data>
+  <data name="Devices.Wireless" xml:space="preserve"><value>Internal wireless radios</value></data>
+  <data name="Devices.Wireless.Hint" xml:space="preserve"><value>Controls the Intel 9560 Wi-Fi and Bluetooth hardware latch together through the embedded controller.</value></data>
+  <data name="Devices.Wireless.Status" xml:space="preserve"><value>Wi-Fi: {0} · Bluetooth: {1}</value></data>
+  <data name="Devices.Wireless.Enabled" xml:space="preserve"><value>Wi-Fi and Bluetooth enabled</value></data>
+  <data name="Devices.Wireless.Disabled" xml:space="preserve"><value>Wi-Fi and Bluetooth disabled</value></data>
+  <data name="Devices.InputPrivacy.Section" xml:space="preserve"><value>Input &amp; privacy</value></data>
+  <data name="Devices.Touchpad" xml:space="preserve"><value>Built-in touchpad</value></data>
+  <data name="Devices.Touchpad.Hint" xml:space="preserve"><value>Temporarily enables or disables the verified UNIW0001 I²C precision-touchpad device. It is enabled again after reboot.</value></data>
+  <data name="Devices.Touchpad.Enabled" xml:space="preserve"><value>Touchpad enabled</value></data>
+  <data name="Devices.Touchpad.Disabled" xml:space="preserve"><value>Touchpad disabled</value></data>
+  <data name="Devices.Webcam" xml:space="preserve"><value>Integrated webcam</value></data>
+  <data name="Devices.Webcam.Hint" xml:space="preserve"><value>Enables or disables the verified USB camera interface at the Windows device layer.</value></data>
+  <data name="Devices.Webcam.Enabled" xml:space="preserve"><value>Webcam enabled</value></data>
+  <data name="Devices.Webcam.Disabled" xml:space="preserve"><value>Webcam disabled</value></data>
+  <data name="Devices.Display.Section" xml:space="preserve"><value>Display</value></data>
+  <data name="Devices.Brightness" xml:space="preserve"><value>Panel brightness</value></data>
+  <data name="Devices.Brightness.Set" xml:space="preserve"><value>Brightness set to {0}%</value></data>
+  <data name="Devices.Display.Off" xml:space="preserve"><value>Turn display off</value></data>
+  <data name="Devices.Display.Off.Hint" xml:space="preserve"><value>Sends Windows' monitor-power command. Mouse or keyboard input wakes the display again.</value></data>
+  <data name="Devices.Display.Off.Requested" xml:space="preserve"><value>Display power-off requested</value></data>
+  <data name="Devices.Gate" xml:space="preserve"><value>Hardware writes are disabled. Turn them on in Settings to use these controls.</value></data>
 
   <!-- ===== Gateway status ===== -->
 

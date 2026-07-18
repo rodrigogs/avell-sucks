@@ -109,6 +109,24 @@ gate-blocked → `403`. An empty body (no change) returns an empty result.
 > allowlist → read-back verify → rollback → audit) and require the write gate open
 > (`GAMINGCENTER_ALLOW_EC_WRITES=1` for the server).
 
+### Device controls
+
+- `GET /api/devices` — model support, wireless state, PnP device state, brightness
+  and interactive display-control availability.
+- `POST /api/devices/wireless` — body `{ "enabled": true }`.
+- `POST /api/devices/touchpad` — body `{ "enabled": true }`.
+- `POST /api/devices/webcam` — body `{ "enabled": true }`.
+- `POST /api/devices/brightness` — body `{ "percent": 75 }`, range 0–100.
+- `POST /api/devices/display/off` — no body. This returns `Requested`, because
+  Windows cannot reliably prove that the physical panel powered off.
+
+Device mutations require the verified Avell 1555 identity and the same local and
+remote write gates as fan/power. PnP and brightness operations use Windows APIs;
+wireless uses the fixed model-specific EC transaction documented in
+[`hardware/device-controls-avell-1555.md`](hardware/device-controls-avell-1555.md).
+Responses expose `Blocked`, `Failed`, `Requested`, or `Verified` rather than
+conflating command dispatch with physical verification.
+
 ### Error schema
 
 Unless otherwise noted, non-success responses return plain text bodies:
@@ -138,10 +156,10 @@ authentication model. The rules:
   link-local neighbor is a different machine on the same link and must
   authenticate — `CallerInfo.IsLoopback` gates authentication itself, so it does
   not exempt link-local.
-- **Remote writes are separately gated.** Hardware **writes** (fan/power) from a
+- **Remote writes are separately gated.** Hardware **writes** (fan/power/devices) from a
   non-loopback caller pass the existing `WriteGate` **and** a second remote-write
   gate. That gate is **off by default**: an authenticated remote client can read
-  freely but cannot actuate fan/power unless `AllowRemoteWrites` is on. A
+  freely but cannot actuate fan/power/devices unless `AllowRemoteWrites` is on. A
   remote-write denial is a distinct, truthful `403` (separate from a
   `WriteGate`-closed `403`), never a silent success.
 - **mTLS fails closed.** When mTLS is enabled with a configured CA thumbprint, a
@@ -184,8 +202,11 @@ When `mcpEnabled` is on, the server hosts a Model Context Protocol server over
 **Streamable HTTP** at `/mcp`, under the **same** authentication model as the REST
 API (loopback exempt; remote requires bearer and/or mTLS). Tools:
 
-- `get_system_snapshot`, `get_fan_mode`, `get_power_profile` — reads, available to
+- `get_system_snapshot`, `get_fan_mode`, `get_power_profile`,
+  `get_machine_controls` — reads, available to
   any authenticated caller.
-- `set_fan_mode`, `set_power_profile` — writes, gated by the remote-write policy.
+- `set_fan_mode`, `set_power_profile`, `set_wireless_radios`,
+  `set_touchpad_enabled`, `set_webcam_enabled`, `set_panel_brightness` and
+  `turn_off_display` — writes, gated by the remote-write policy.
   A blocked write returns a truthful denial message; the tool never claims a gated
   write succeeded.

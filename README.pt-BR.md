@@ -85,6 +85,9 @@ hardware pra provar.
 - **Desempenho**: quatro modos (Gaming / Alto / Equilibrado / Economia) que trocam
   o **plano de energia do Windows** ativo e escrevem os bytes de limite de potência
   da CPU (PL1/PL2/PL4).
+- **Dispositivos**: controles validados de Wi-Fi + Bluetooth, touchpad I2C,
+  webcam, brilho do painel interno e desligamento da tela. As escritas EC do rádio
+  têm gate por modelo; touchpad/webcam/brilho usam PnP/WMI com releitura.
 - **RGB**: superfície de iluminação do teclado (ITE HID). Interface e contrato
   prontos, mas o backend está incompleto e não testado (veja [acima](#o-teclado-por-que-o-rgb-n%C3%A3o-%C3%A9-testado)).
 - **Painel**: carga de CPU/GPU, temperaturas, clocks, memória, disco, rede e o
@@ -156,6 +159,7 @@ na **RAM do Embedded Controller**, alcançada por um método WMI ACPI em `root\W
 | `0x751` (1873) | byte de controle da ventoinha, 0 auto, 0x40 boost, 0xA0 personalizado, 0x81-0x85 L1-L5 |
 | `0x743`-`0x747` (1859-1863) | níveis de PWM personalizados |
 | `0x783`/`0x784`/`0x785` (1923-1925) | bytes de ajuste PL1/PL2/PL4 (watts) |
+| `0x47B` / `0x7A1` | estado / trigger dos rádios (`0x80` Wi-Fi, `0x20` Bluetooth), somente Avell 1555 |
 | `0x730`-`0x732` / `0x734`-`0x736` | padrões de PL Gaming / Office (somente leitura) |
 
 Nesta placa os registradores de PL leem `0`: os limites reais da CPU são geridos
@@ -178,9 +182,9 @@ backoff (o EC engole escritas no meio da transição, principalmente ao sair do 
 ### Arquitetura
 Solução .NET 10 (`app/AvellSucks.Replacement.slnx`):
 - `AvellSucks.Core`: contratos de hardware, pipeline de escrita segura, modelos (portável).
-- `AvellSucks.Core.Windows`: `WmiEcBackend` (leitura/escrita WMI no EC).
+- `AvellSucks.Core.Windows`: backends WMI EC, PnP, brilho e energia da tela.
 - `AvellSucks.Api` / `AvellSucks.Server`: API de controle ASP.NET local opcional
-  (só loopback), expondo `/api/fan/*`, `/api/power/*`, `/api/system/snapshot`, `/events` (SSE).
+  expondo `/api/fan/*`, `/api/power/*`, `/api/devices/*`, `/api/system/snapshot`, `/events` (SSE).
 - `AvellSucks.UI`: o app WPF (escuro, cyberpunk), telemetria via
   LibreHardwareMonitor, reconciliadores reativos por aba. Localização em tempo de
   execução (`.resx` + um provedor `Loc` e a markup extension `{loc:Tr}`) troca o
@@ -213,7 +217,7 @@ force com `GAMINGCENTER_ALLOW_EC_WRITES=0`) se você não está no modelo alvo.
 
 A API de controle e um servidor MCP podem ser expostos na sua rede para que outros
 dispositivos (ou um agente de IA) leiam a telemetria e, se você permitir, alterem
-fan/power. É **seguro por padrão**: só localhost, sem autenticação, sem escrita
+fan/power/dispositivos. É **seguro por padrão**: só localhost, sem autenticação, sem escrita
 remota, MCP desligado. Configure tudo em **Configurações → Acesso remoto** — o app
 escreve a config (com hot-reload) em `%ProgramData%\AvellSucks\service.json` e o
 serviço a recarrega.
@@ -230,7 +234,7 @@ Configuração típica:
 4. **Habilitar MCP** — serve um servidor MCP via Streamable HTTP em `/mcp` sob a
    mesma autenticação.
 5. **Permitir escrita de hardware remota** — desligado por padrão. Clientes remotos
-   autenticados podem ler à vontade; só conseguem atuar em fan/power depois que você
+   autenticados podem ler à vontade; só conseguem atuar em fan/power/dispositivos depois que você
    ligar isto.
 
 > ⚠️ Prefira um endereço do **Tailscale**. **Não faça bind em `0.0.0.0`** numa rede
