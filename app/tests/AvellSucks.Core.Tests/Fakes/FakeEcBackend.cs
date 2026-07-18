@@ -26,6 +26,9 @@ internal sealed class FakeEcBackend : IEcBackend, IEcWriter, IWriteAuditLog
     /// If set, WriteAsync throws to simulate a backend failure.
     /// </summary>
     public Exception? WriteException { get; set; }
+    public int? ThrowOnWriteNumber { get; set; }
+
+    private int _writeAttempts;
 
     public void Seed(int address, int value) => _registers[address] = value;
 
@@ -65,6 +68,9 @@ internal sealed class FakeEcBackend : IEcBackend, IEcWriter, IWriteAuditLog
     public ValueTask<EcField> WriteAsync(
         int address, int value, CancellationToken cancellationToken = default)
     {
+        _writeAttempts++;
+        if (ThrowOnWriteNumber == _writeAttempts)
+            throw new InvalidOperationException($"Injected failure on EC write {_writeAttempts}.");
         if (WriteException is not null)
             throw WriteException;
 

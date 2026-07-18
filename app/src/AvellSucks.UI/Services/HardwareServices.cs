@@ -24,6 +24,7 @@ public static class HardwareServices
     private static WmiEcBackend? s_backend;
     private static SafeEcWriter? s_writer;
     private static WriteGate? s_gate;
+    private static IMachineControlService? s_machineControls;
 
     /// <summary>
     /// The fan service: real (WMI-backed) when EC writes are enabled and the
@@ -68,6 +69,16 @@ public static class HardwareServices
     /// <summary>RGB stays on the stub: no HID backend implemented yet.</summary>
     public static IRgbService CreateRgbService() => new LocalRgbService();
 
+    /// <summary>
+    /// Model-specific radio/touchpad/webcam/panel controls, or null when the app
+    /// is not elevated and therefore cannot safely expose the real backend.
+    /// </summary>
+    public static IMachineControlService? MachineControls()
+    {
+        EnsurePipeline();
+        return s_machineControls;
+    }
+
     /// <summary>True once the real WMI pipeline is live (diagnostics/UX may query).</summary>
     public static bool IsRealBackendActive { get { EnsurePipeline(); return s_backend is not null; } }
 
@@ -105,10 +116,15 @@ public static class HardwareServices
                 // UI: swallow audit-write errors so logging can't break a hardware write.
                 var audit = new JsonlAuditLog(Path.Combine(auditDir, "ec-write-audit.jsonl"), swallowWriteErrors: true);
                 var writer = EcPipeline.BuildWriter(backend, backend, gate, audit);
+                var machineAudit = new JsonlMachineControlAuditLog(
+                    Path.Combine(auditDir, "machine-control-audit.jsonl"), swallowWriteErrors: true);
+                var machineControls = new MachineControlService(
+                    backend, backend, new WindowsMachineControlBackend(), gate, machineAudit);
 
                 s_gate = gate;
                 s_backend = backend;
                 s_writer = writer;
+                s_machineControls = machineControls;
 
                 // Diagnostic-only reachability probe — fire-and-forget OFF the
                 // calling thread. It used to block here with .GetResult(), and
@@ -131,7 +147,7 @@ public static class HardwareServices
             catch (Exception ex)
             {
                 App.Trace($"HardwareServices: pipeline build failed → STUB. {ex.Message}");
-                s_backend = null; s_writer = null; s_gate = null;
+                s_backend = null; s_writer = null; s_gate = null; s_machineControls = null;
             }
         }
     }

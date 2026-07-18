@@ -5,9 +5,11 @@ namespace AvellSucks.Core.Hardware;
 /// <summary>
 /// Contract for EC write operations. The Windows <c>WmiEcBackend</c> will
 /// implement this alongside <see cref="IEcBackend"/>; tests use a recording
-/// fake. Writing is always gated by <see cref="Platforms.WriteGate"/> and
-/// <see cref="Platforms.EcWriteAllowlist"/> — never call this directly from
-/// application code. Use <c>SafeEcWriter</c> instead.
+/// fake. Generic writes are gated by <see cref="Platforms.WriteGate"/> and
+/// <see cref="Platforms.EcWriteAllowlist"/> through <c>SafeEcWriter</c>. A
+/// model-specific orchestrator may call this primitive only when it owns an
+/// equivalent gate, fixed address/mask policy, rollback and audit (for example
+/// the volatile radio-trigger sequence).
 /// </summary>
 public interface IEcWriter
 {

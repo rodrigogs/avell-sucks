@@ -84,6 +84,19 @@ public static class ServerHostBuilder
         });
         builder.Services.AddSingleton<SafeEcWriter>();
 
+        builder.Services.AddSingleton<WindowsMachineControlBackend>();
+        builder.Services.AddSingleton<IPlatformMachineControlBackend>(sp =>
+            sp.GetRequiredService<WindowsMachineControlBackend>());
+        builder.Services.AddSingleton<IMachineControlAuditLog>(_ =>
+        {
+            var dir = Environment.GetEnvironmentVariable("GAMINGCENTER_AUDIT_DIR")
+                      ?? Path.Combine(
+                          Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                          "AvellSucks");
+            return new JsonlMachineControlAuditLog(Path.Combine(dir, "machine-control-audit.jsonl"));
+        });
+        builder.Services.AddSingleton<IMachineControlService, MachineControlService>();
+
         // --- Request context + remote-write authorizer (shared with MCP) ---
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<AvellSucks.Api.Security.RemoteWriteAuthorizer>();

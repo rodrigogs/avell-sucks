@@ -72,6 +72,8 @@
                     <RadioButton x:Name="NavDashboard" GroupName="nav" Style="{StaticResource NavItemStyle}"
                                  IsChecked="True" Tag="&#xE80F;" Content="{loc:Tr Nav.Dashboard}"
                                  Checked="OnNavChecked"/>
+                    <RadioButton x:Name="NavDevices" GroupName="nav" Style="{StaticResource NavItemStyle}"
+                                 Tag="&#xE950;" Content="{loc:Tr Nav.Devices}" Checked="OnNavChecked"/>
                     <RadioButton x:Name="NavFan" GroupName="nav" Style="{StaticResource NavItemStyle}"
                                  Tag="&#xE9CA;" Content="{loc:Tr Nav.Fan}" Checked="OnNavChecked"/>
                     <RadioButton x:Name="NavRgb" GroupName="nav" Style="{StaticResource NavItemStyle}"

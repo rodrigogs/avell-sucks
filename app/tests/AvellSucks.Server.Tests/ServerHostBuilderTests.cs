@@ -23,5 +23,7 @@ public class ServerHostBuilderTests
         Assert.NotNull(app);
         // Services from the pipeline resolve (proves DI wiring didn't regress).
         Assert.NotNull(app.Services.GetService(typeof(AvellSucks.Core.Platforms.SafeEcWriter)));
+        Assert.NotNull(app.Services.GetService(typeof(AvellSucks.Core.Hardware.IMachineControlService)));
+        Assert.NotNull(app.Services.GetService(typeof(AvellSucks.Core.Hardware.IPlatformMachineControlBackend)));
     }
 }

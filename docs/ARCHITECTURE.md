@@ -11,8 +11,8 @@ stack; that was **not adopted** — the notes below describe what runs. See
 
 | Project | Role |
 |---|---|
-| `AvellSucks.Core` | Portable contracts + models + the safe-write pipeline (`SafeEcWriter`, `EcWriteAllowlist`, `WriteGate`, `FanModeMap`, `EcPipeline`, `JsonlAuditLog`, `BatchWriteResultDto`). No Windows deps. |
-| `AvellSucks.Core.Windows` | `WmiEcBackend` — the WMI ACPI EC read/write backend (Windows-only). |
+| `AvellSucks.Core` | Portable contracts + models + safe-write orchestration (`SafeEcWriter` and model-specific `MachineControlService`). No Windows deps. |
+| `AvellSucks.Core.Windows` | Windows backends: WMI ACPI EC access plus PnP, brightness and interactive display-power controls. |
 | `AvellSucks.UI` | The WPF app — the shipped product. Drives hardware **in-process** via Core + Core.Windows. |
 | `AvellSucks.Api` | ASP.NET MVC controllers + `SystemSnapshotBuilder` for the optional loopback server. |
 | `AvellSucks.Server` | Optional loopback HTTP host (`127.0.0.1:5055`) wiring the Api over Core via DI. |
@@ -29,7 +29,8 @@ Server is an optional automation surface.
   `HardwareServices` is a small static composition root that picks the real
   WMI-backed services when writes are enabled and elevated, else in-memory stubs
   (`Local*Service`) — so the app runs anywhere.
-- **Services** (`IFanService`, `IPowerService`, `IRgbService`) return a
+- **Services** (`IFanService`, `IPowerService`, `IRgbService`,
+  `IMachineControlService`) return a
   `ControlResult` (Allowed/Executed/Verified/Error) that maps 1:1 to Core's
   `EcWriteResult`.
 - **Telemetry:** one `SensorPump` (1 Hz) owns a LibreHardwareMonitor monitor,
@@ -65,11 +66,26 @@ UI service / Api controller
 Register facts and the EC WMI protocol are documented in
 [`reverse-engineering.md`](reverse-engineering.md).
 
+Device controls that are not generic EC writes use a sibling path:
+
+```
+UI / API / MCP
+  → MachineControlService
+      model identity → write gate → fixed operation policy
+      → WindowsMachineControlBackend (PnP / brightness / display)
+        or fixed 0x47B + 0x7A1 radio transaction
+      → verify / rollback where observable → JsonlMachineControlAuditLog
+```
+
+The trigger register `0x7A1` is consumed by firmware, so the radio sequence cannot
+use generic exact-readback semantics. Its fixed masks, rollback and model gate are
+documented in [`hardware/device-controls-avell-1555.md`](hardware/device-controls-avell-1555.md).
+
 ## Optional loopback server
 
 `AvellSucks.Server` hosts `AvellSucks.Api` on `http://127.0.0.1:5055` (HTTPS
 opt-in via `GAMINGCENTER_REQUIRE_HTTPS=1`), loopback-only (non-localhost → 403),
-no auth. Endpoints in [`api.md`](api.md). Same Core pipeline, wired with
+no auth. Endpoints in [`api.md`](api.md), including `/api/devices/*`. Same Core pipeline, wired with
 `Microsoft.Extensions.DependencyInjection` instead of the UI's static root.
 
 ## Distribution

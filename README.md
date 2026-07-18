@@ -83,6 +83,9 @@ hardware to prove it on.
   curve. Applies live as you edit; no Apply button.
 - **Performance**: four modes (Gaming / High / Balanced / Saving) that switch
   the active **Windows power plan** and write the CPU power-limit bytes (PL1/PL2/PL4).
+- **Devices**: verified controls for Wi-Fi + Bluetooth, the I2C touchpad, webcam,
+  internal-panel brightness and display-off. EC radio writes are model-gated;
+  touchpad/webcam/brightness use Windows PnP/WMI APIs with read-back.
 - **RGB**: keyboard lighting surface (ITE HID). UI and contract are in place,
   but the backend is unfinished and untested (see [above](#the-keyboard-why-rgb-is-untested)).
 - **Dashboard**: live CPU/GPU load, temps, clocks, memory, disk, network and the
@@ -152,7 +155,8 @@ Controller RAM**, reached through a WMI ACPI method on `root\WMI`:
 |---|---|
 | `0x751` (1873) | fan control byte, 0 auto, 0x40 boost, 0xA0 custom, 0x81-0x85 L1-L5 |
 | `0x743`-`0x747` (1859-1863) | custom PWM levels |
-| `0x783`/`0x784`/`0x785` (1923-1925) | PL1/PL2/PL4 setting bytes (watts) |
+| `0x783`/`0x784`/`0x785` (1923-1925) | PL1/PL2/PL4 adjustment bytes (watts) |
+| `0x47B` / `0x7A1` | wireless state / firmware trigger (`0x80` Wi-Fi, `0x20` Bluetooth), Avell 1555 only |
 | `0x730`-`0x732` / `0x734`-`0x736` | Gaming / Office PL defaults (read-only) |
 
 On this board the PL registers read `0`: the real CPU limits are managed by
@@ -175,9 +179,9 @@ leaving Boost).
 ### Architecture
 .NET 10 solution (`app/AvellSucks.Replacement.slnx`):
 - `AvellSucks.Core`: hardware contracts, safe-write pipeline, models (portable).
-- `AvellSucks.Core.Windows`: `WmiEcBackend` (WMI EC read/write).
+- `AvellSucks.Core.Windows`: WMI EC, PnP, brightness and display-power backends.
 - `AvellSucks.Api` / `AvellSucks.Server`: optional local ASP.NET control API
-  (loopback-only) exposing `/api/fan/*`, `/api/power/*`, `/api/system/snapshot`, `/events` (SSE).
+  exposing `/api/fan/*`, `/api/power/*`, `/api/devices/*`, `/api/system/snapshot`, `/events` (SSE).
 - `AvellSucks.UI`: the WPF app (dark, cyberpunk), telemetry via
   LibreHardwareMonitor, reactive reconcilers per tab. Runtime localization
   (`.resx` + a `Loc` provider and `{loc:Tr}` markup extension) switches language
@@ -208,7 +212,7 @@ target model.
 ## Remote access & MCP
 
 The control API and an MCP server can be exposed on your network so other devices
-(or an AI agent) can read telemetry and, if you allow it, change fan/power. It is
+(or an AI agent) can read telemetry and, if you allow it, change fan/power/devices. It is
 **safe by default**: localhost-only, no auth, no remote writes, MCP off. Configure
 it all from **Settings → Remote access** — the app writes the hot-reloaded config
 to `%ProgramData%\AvellSucks\service.json` and the service picks it up.
@@ -224,7 +228,7 @@ Typical setup:
    Optionally also require a client certificate (mTLS).
 4. **Enable MCP** — serves a Streamable HTTP MCP server at `/mcp` under the same auth.
 5. **Allow remote hardware writes** — off by default. Authenticated remote clients
-   can read freely; they can only actuate fan/power once you turn this on.
+   can read freely; they can only actuate fan/power/devices once you turn this on.
 
 > ⚠️ Prefer a **Tailscale** address. **Do not bind `0.0.0.0`** on an untrusted
 > network — that exposes the port to everyone who can reach the interface. A remote

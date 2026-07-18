@@ -61,6 +61,7 @@
 
   <!-- ===== Navigation / tray ===== -->
   <data name="Nav.Dashboard" xml:space="preserve"><value>Painel</value></data>
+  <data name="Nav.Devices" xml:space="preserve"><value>Dispositivos</value></data>
   <data name="Nav.Fan" xml:space="preserve"><value>Ventoinha</value></data>
   <data name="Nav.Rgb" xml:space="preserve"><value>RGB</value></data>
   <data name="Nav.Performance" xml:space="preserve"><value>Desempenho</value></data>
@@ -72,11 +73,39 @@
 
   <!-- ===== Tab subtitles ===== -->
   <data name="Tab.Dashboard.Sub" xml:space="preserve"><value>Telemetria ao vivo do EC, WMI e sensores da placa</value></data>
+  <data name="Tab.Devices.Sub" xml:space="preserve"><value>Rádios internos, dispositivos de entrada, câmera e tela</value></data>
   <data name="Tab.Fan.Sub" xml:space="preserve"><value>Modos de ventoinha e a curva de temperatura personalizada</value></data>
   <data name="Tab.Rgb.Sub" xml:space="preserve"><value>Iluminação do teclado: efeitos, cor e zonas</value></data>
   <data name="Tab.Power.Sub" xml:space="preserve"><value>Modos de energia: plano do Windows e envelope de potência da CPU</value></data>
   <data name="Tab.About.Sub" xml:space="preserve"><value>O que é isto, e por que existe</value></data>
   <data name="Tab.Settings.Sub" xml:space="preserve"><value>Escrita de hardware, acesso remoto e preferências do app</value></data>
+
+  <!-- ===== Controles de dispositivos ===== -->
+  <data name="Common.On" xml:space="preserve"><value>ligado</value></data>
+  <data name="Common.Off" xml:space="preserve"><value>desligado</value></data>
+  <data name="Devices.Unavailable" xml:space="preserve"><value>Os controles da máquina estão indisponíveis. Execute o AvellSucks como administrador no hardware Avell G1555 suportado.</value></data>
+  <data name="Devices.Wireless.Section" xml:space="preserve"><value>Conectividade</value></data>
+  <data name="Devices.Wireless" xml:space="preserve"><value>Rádios sem fio internos</value></data>
+  <data name="Devices.Wireless.Hint" xml:space="preserve"><value>Controla em conjunto o latch físico do Wi-Fi e Bluetooth Intel 9560 pelo embedded controller.</value></data>
+  <data name="Devices.Wireless.Status" xml:space="preserve"><value>Wi-Fi: {0} · Bluetooth: {1}</value></data>
+  <data name="Devices.Wireless.Enabled" xml:space="preserve"><value>Wi-Fi e Bluetooth ligados</value></data>
+  <data name="Devices.Wireless.Disabled" xml:space="preserve"><value>Wi-Fi e Bluetooth desligados</value></data>
+  <data name="Devices.InputPrivacy.Section" xml:space="preserve"><value>Entrada e privacidade</value></data>
+  <data name="Devices.Touchpad" xml:space="preserve"><value>Touchpad interno</value></data>
+  <data name="Devices.Touchpad.Hint" xml:space="preserve"><value>Liga ou desliga temporariamente o touchpad de precisão I²C UNIW0001 verificado. Ele volta a ligar após reiniciar.</value></data>
+  <data name="Devices.Touchpad.Enabled" xml:space="preserve"><value>Touchpad ligado</value></data>
+  <data name="Devices.Touchpad.Disabled" xml:space="preserve"><value>Touchpad desligado</value></data>
+  <data name="Devices.Webcam" xml:space="preserve"><value>Webcam integrada</value></data>
+  <data name="Devices.Webcam.Hint" xml:space="preserve"><value>Liga ou desliga a interface USB verificada da câmera no nível de dispositivos do Windows.</value></data>
+  <data name="Devices.Webcam.Enabled" xml:space="preserve"><value>Webcam ligada</value></data>
+  <data name="Devices.Webcam.Disabled" xml:space="preserve"><value>Webcam desligada</value></data>
+  <data name="Devices.Display.Section" xml:space="preserve"><value>Tela</value></data>
+  <data name="Devices.Brightness" xml:space="preserve"><value>Brilho do painel</value></data>
+  <data name="Devices.Brightness.Set" xml:space="preserve"><value>Brilho ajustado para {0}%</value></data>
+  <data name="Devices.Display.Off" xml:space="preserve"><value>Desligar tela</value></data>
+  <data name="Devices.Display.Off.Hint" xml:space="preserve"><value>Envia o comando de energia do monitor do Windows. Movimento do mouse ou teclado liga a tela novamente.</value></data>
+  <data name="Devices.Display.Off.Requested" xml:space="preserve"><value>Desligamento da tela solicitado</value></data>
+  <data name="Devices.Gate" xml:space="preserve"><value>A escrita no hardware está desligada. Ative-a em Configurações para usar estes controles.</value></data>
 
   <!-- ===== Gateway status ===== -->
 
