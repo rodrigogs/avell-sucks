@@ -10,6 +10,7 @@ screenshot*.png
 TestResults/
 [Bb]in/
 [Oo]bj/
+dist/
 
 # Impeccable design-skill local cache
 .impeccable/
