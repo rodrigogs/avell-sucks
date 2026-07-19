@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using AvellSucks.Core.Hardware;
 using AvellSucks.UI.Controls;
 using AvellSucks.UI.Localization;
@@ -26,7 +28,13 @@ public partial class DevicesView : UserControl
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
         _initialized = true;
-        GateNotice.Visibility = WriteGateInfo.EcWritesEnabled ? Visibility.Collapsed : Visibility.Visible;
+        var writesEnabled = WriteGateInfo.EcWritesEnabled;
+        GateNotice.Visibility = writesEnabled ? Visibility.Collapsed : Visibility.Visible;
+        SetInlineStatus(
+            GateStatusDot,
+            GateStatusText,
+            Loc.T(writesEnabled ? "Devices.Overview.WritesOn" : "Devices.Overview.ReadOnly"),
+            writesEnabled ? "Warn" : "Ink3");
         UnavailableNotice.Visibility = _controls is null ? Visibility.Visible : Visibility.Collapsed;
         await RefreshAsync();
     }
@@ -37,25 +45,39 @@ public partial class DevicesView : UserControl
         {
             WirelessToggle.IsEnabled = TouchpadToggle.IsEnabled = WebcamToggle.IsEnabled = false;
             BrightnessSlider.IsEnabled = DisplayOffButton.IsEnabled = false;
+            SetInlineStatus(
+                MachineStatusDot,
+                MachineStatusText,
+                Loc.T("Devices.Overview.Unavailable"),
+                "Warn");
+            SetBinaryStatus(WifiStatusDot, WifiStatusText, null);
+            SetBinaryStatus(BluetoothStatusDot, BluetoothStatusText, null);
+            SetBinaryStatus(TouchpadStatusDot, TouchpadStatusText, null);
+            SetBinaryStatus(WebcamStatusDot, WebcamStatusText, null);
             return;
         }
 
         var status = await _controls.GetStatusAsync();
         UnavailableNotice.Visibility = status.SupportedMachine ? Visibility.Collapsed : Visibility.Visible;
+        SetInlineStatus(
+            MachineStatusDot,
+            MachineStatusText,
+            Loc.T(status.SupportedMachine ? "Devices.Overview.Supported" : "Devices.Overview.Unsupported"),
+            status.SupportedMachine ? "Ok" : "Warn");
         var canMutate = status.SupportedMachine && WriteGateInfo.EcWritesEnabled;
         using (_loading.Begin())
         {
             WirelessToggle.IsEnabled = canMutate && status.WirelessRadiosEnabled.HasValue;
             WirelessToggle.IsChecked = status.WirelessRadiosEnabled;
-            WirelessStatus.Text = string.Format(
-                Loc.T("Devices.Wireless.Status"),
-                status.WifiPresent ? Loc.T("Common.On") : Loc.T("Common.Off"),
-                status.BluetoothPresent ? Loc.T("Common.On") : Loc.T("Common.Off"));
+            SetBinaryStatus(WifiStatusDot, WifiStatusText, status.WifiPresent);
+            SetBinaryStatus(BluetoothStatusDot, BluetoothStatusText, status.BluetoothPresent);
 
             TouchpadToggle.IsEnabled = canMutate && status.TouchpadEnabled.HasValue;
             TouchpadToggle.IsChecked = status.TouchpadEnabled;
+            SetBinaryStatus(TouchpadStatusDot, TouchpadStatusText, status.TouchpadEnabled);
             WebcamToggle.IsEnabled = canMutate && status.WebcamEnabled.HasValue;
             WebcamToggle.IsChecked = status.WebcamEnabled;
+            SetBinaryStatus(WebcamStatusDot, WebcamStatusText, status.WebcamEnabled);
 
             BrightnessSlider.IsEnabled = canMutate && status.BrightnessPercent.HasValue;
             if (status.BrightnessPercent is byte brightness)
@@ -73,6 +95,37 @@ public partial class DevicesView : UserControl
 
         if (!string.IsNullOrWhiteSpace(status.Error))
             App.Trace($"DevicesView status: {status.Error}");
+    }
+
+    private void SetBinaryStatus(Ellipse dot, TextBlock text, bool? enabled)
+    {
+        if (!enabled.HasValue)
+        {
+            SetInlineStatus(
+                dot,
+                text,
+                Loc.T("Devices.State.Unavailable"),
+                "Warn");
+            return;
+        }
+
+        SetInlineStatus(
+            dot,
+            text,
+            Loc.T(enabled.Value ? "Common.On" : "Common.Off"),
+            enabled.Value ? "Ok" : "Ink3");
+    }
+
+    private void SetInlineStatus(
+        Ellipse dot,
+        TextBlock text,
+        string label,
+        string accentBrushKey)
+    {
+        var accent = (Brush)FindResource(accentBrushKey);
+        dot.Fill = accent;
+        text.Foreground = accent;
+        text.Text = label;
     }
 
     private async void OnWirelessChanged(object sender, RoutedEventArgs e)

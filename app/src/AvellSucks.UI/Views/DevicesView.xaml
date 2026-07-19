@@ -5,98 +5,299 @@
              xmlns:loc="clr-namespace:AvellSucks.UI.Localization">
     <UserControl.Resources>
         <Style x:Key="DevicesToggle" TargetType="ToggleButton" BasedOn="{StaticResource NeonToggle}">
+            <Setter Property="IsEnabled" Value="False"/>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.35"/></Trigger>
             </Style.Triggers>
         </Style>
         <Style x:Key="DevicesSlider" TargetType="Slider" BasedOn="{StaticResource NeonSlider}">
+            <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.35"/></Trigger>
             </Style.Triggers>
         </Style>
         <Style x:Key="DevicesButton" TargetType="Button" BasedOn="{StaticResource SecondaryButton}">
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="IsEnabled" Value="False"/>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.35"/></Trigger>
             </Style.Triggers>
         </Style>
+
+        <!-- Local SettingsCard vocabulary: restrained surfaces, 8 px rhythm, accent only for state/action. -->
+        <Style x:Key="DeviceGroup" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource Surface}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Hairline}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="{StaticResource RadiusMd}"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+        <Style x:Key="DeviceRow" TargetType="Border">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="14"/>
+            <Setter Property="MinHeight" Value="80"/>
+        </Style>
+        <Style x:Key="DeviceIconBox" TargetType="Border">
+            <Setter Property="Width" Value="36"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Background" Value="{StaticResource Surface2}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Hairline}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="DeviceIcon" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="DeviceTitle" TargetType="TextBlock" BasedOn="{StaticResource FieldLabel}">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        </Style>
+        <Style x:Key="DeviceDescription" TargetType="TextBlock" BasedOn="{StaticResource Caption}">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="LineHeight" Value="18"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,3,0,0"/>
+        </Style>
+        <Style x:Key="DeviceSection" TargetType="TextBlock" BasedOn="{StaticResource SectionLabel}">
+            <Setter Property="Margin" Value="2,16,0,8"/>
+            <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        </Style>
+        <Style x:Key="StatusPill" TargetType="Border">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="StatusPillText" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
+            <Setter Property="FontSize" Value="11.5"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
     </UserControl.Resources>
+
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel>
-            <ctl:NoticeBanner x:Name="UnavailableNotice" Visibility="Collapsed"
+        <StackPanel MaxWidth="1080" HorizontalAlignment="Left">
+            <!-- Operational context: useful safety state, not a decorative hero. -->
+            <Border Style="{StaticResource DeviceGroup}" Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Style="{StaticResource DeviceIconBox}" Background="{StaticResource VioletTint}"
+                            BorderBrush="{StaticResource Violet}">
+                        <TextBlock Text="&#xE950;" Style="{StaticResource DeviceIcon}" Foreground="{StaticResource Violet}"/>
+                    </Border>
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <TextBlock Text="{loc:Tr Devices.Overview.Title}" Style="{StaticResource DeviceTitle}" TextWrapping="Wrap"/>
+                        <TextBlock Text="{loc:Tr Devices.Overview.Hint}" Style="{StaticResource DeviceDescription}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border x:Name="MachineStatusPill" Style="{StaticResource StatusPill}">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse x:Name="MachineStatusDot" Width="6" Height="6" Fill="{StaticResource Ink3}"
+                                         Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="MachineStatusText" Text="—" Style="{StaticResource StatusPillText}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border x:Name="GateStatusPill" Style="{StaticResource StatusPill}" Margin="8,0,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse x:Name="GateStatusDot" Width="6" Height="6" Fill="{StaticResource Ink3}"
+                                         Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="GateStatusText" Text="—" Style="{StaticResource StatusPillText}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <ctl:NoticeBanner x:Name="UnavailableNotice" Margin="0,10,0,0" Visibility="Collapsed"
                               Severity="Warn" Glyph="&#xE783;" Text="{loc:Tr Devices.Unavailable}"/>
-
-            <Border Style="{StaticResource Panel}">
-                <StackPanel>
-                    <TextBlock Text="{loc:Tr Devices.Wireless.Section}" Style="{StaticResource SectionLabel}"/>
-                    <DockPanel Margin="0,12,0,0">
-                        <ToggleButton x:Name="WirelessToggle" Style="{StaticResource DevicesToggle}" DockPanel.Dock="Right"
-                                      Checked="OnWirelessChanged" Unchecked="OnWirelessChanged"
-                                      AutomationProperties.Name="{loc:Tr Devices.Wireless}"/>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="{loc:Tr Devices.Wireless}" Style="{StaticResource FieldLabel}"/>
-                            <TextBlock Text="{loc:Tr Devices.Wireless.Hint}" Style="{StaticResource Caption}"
-                                       Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="520"/>
-                        </StackPanel>
-                    </DockPanel>
-                    <TextBlock x:Name="WirelessStatus" Style="{StaticResource Caption}" Margin="0,10,0,0"/>
-                </StackPanel>
-            </Border>
-
-            <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
-                <StackPanel>
-                    <TextBlock Text="{loc:Tr Devices.InputPrivacy.Section}" Style="{StaticResource SectionLabel}"/>
-
-                    <DockPanel Margin="0,12,0,0">
-                        <ToggleButton x:Name="TouchpadToggle" Style="{StaticResource DevicesToggle}" DockPanel.Dock="Right"
-                                      Checked="OnTouchpadChanged" Unchecked="OnTouchpadChanged"
-                                      AutomationProperties.Name="{loc:Tr Devices.Touchpad}"/>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="{loc:Tr Devices.Touchpad}" Style="{StaticResource FieldLabel}"/>
-                            <TextBlock Text="{loc:Tr Devices.Touchpad.Hint}" Style="{StaticResource Caption}"
-                                       Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="520"/>
-                        </StackPanel>
-                    </DockPanel>
-
-                    <Rectangle Height="1" Fill="{StaticResource Hairline}" Margin="0,14,0,0"/>
-
-                    <DockPanel Margin="0,14,0,0">
-                        <ToggleButton x:Name="WebcamToggle" Style="{StaticResource DevicesToggle}" DockPanel.Dock="Right"
-                                      Checked="OnWebcamChanged" Unchecked="OnWebcamChanged"
-                                      AutomationProperties.Name="{loc:Tr Devices.Webcam}"/>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="{loc:Tr Devices.Webcam}" Style="{StaticResource FieldLabel}"/>
-                            <TextBlock Text="{loc:Tr Devices.Webcam.Hint}" Style="{StaticResource Caption}"
-                                       Margin="0,2,0,0" TextWrapping="Wrap" MaxWidth="520"/>
-                        </StackPanel>
-                    </DockPanel>
-                </StackPanel>
-            </Border>
-
-            <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
-                <StackPanel>
-                    <TextBlock Text="{loc:Tr Devices.Display.Section}" Style="{StaticResource SectionLabel}"/>
-                    <DockPanel Margin="0,12,0,0">
-                        <TextBlock Text="{loc:Tr Devices.Brightness}" Style="{StaticResource FieldLabel}" DockPanel.Dock="Left"/>
-                        <TextBlock x:Name="BrightnessValue" Text="—" Style="{StaticResource Mono}" DockPanel.Dock="Right"
-                                   HorizontalAlignment="Right" Foreground="{StaticResource Ink}"/>
-                    </DockPanel>
-                    <Slider x:Name="BrightnessSlider" Style="{StaticResource DevicesSlider}" Minimum="0" Maximum="100"
-                            TickFrequency="1" Margin="0,7,0,14" ValueChanged="OnBrightnessChanged"/>
-
-                    <DockPanel>
-                        <Button x:Name="DisplayOffButton" Style="{StaticResource DevicesButton}" DockPanel.Dock="Right"
-                                Content="{loc:Tr Devices.Display.Off}" Click="OnDisplayOff"/>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="{loc:Tr Devices.Display.Off}" Style="{StaticResource FieldLabel}"/>
-                            <TextBlock Text="{loc:Tr Devices.Display.Off.Hint}" Style="{StaticResource Caption}"
-                                       Margin="0,2,14,0" TextWrapping="Wrap" MaxWidth="420"/>
-                        </StackPanel>
-                    </DockPanel>
-                </StackPanel>
-            </Border>
-
-            <ctl:NoticeBanner x:Name="GateNotice" Margin="0,16,0,0" Visibility="Collapsed"
+            <ctl:NoticeBanner x:Name="GateNotice" Margin="0,10,0,0" Visibility="Collapsed"
                               Severity="Warn" Glyph="&#xE72E;" Text="{loc:Tr Devices.Gate}"/>
+
+            <TextBlock Text="{loc:Tr Devices.Wireless.Section}" Style="{StaticResource DeviceSection}"/>
+            <Border Style="{StaticResource DeviceGroup}">
+                <Border Style="{StaticResource DeviceRow}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Style="{StaticResource DeviceIconBox}">
+                            <TextBlock Text="&#xE701;" Style="{StaticResource DeviceIcon}"/>
+                        </Border>
+                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                            <TextBlock Text="{loc:Tr Devices.Wireless}" Style="{StaticResource DeviceTitle}"/>
+                            <TextBlock Text="{loc:Tr Devices.Wireless.Hint}" Style="{StaticResource DeviceDescription}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border x:Name="WifiStatusPill" Style="{StaticResource StatusPill}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse x:Name="WifiStatusDot" Width="6" Height="6" Fill="{StaticResource Ink3}"
+                                             Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Wi-Fi" Style="{StaticResource StatusPillText}"/>
+                                    <TextBlock x:Name="WifiStatusText" Text="—" Style="{StaticResource StatusPillText}" Margin="6,0,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            <Border x:Name="BluetoothStatusPill" Style="{StaticResource StatusPill}" Margin="6,0,12,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse x:Name="BluetoothStatusDot" Width="6" Height="6" Fill="{StaticResource Ink3}"
+                                             Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Bluetooth" Style="{StaticResource StatusPillText}"/>
+                                    <TextBlock x:Name="BluetoothStatusText" Text="—" Style="{StaticResource StatusPillText}" Margin="6,0,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            <ToggleButton x:Name="WirelessToggle" Style="{StaticResource DevicesToggle}"
+                                          Checked="OnWirelessChanged" Unchecked="OnWirelessChanged"
+                                          AutomationProperties.Name="{loc:Tr Devices.Wireless}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Border>
+
+            <TextBlock Text="{loc:Tr Devices.InputPrivacy.Section}" Style="{StaticResource DeviceSection}"/>
+            <Border Style="{StaticResource DeviceGroup}">
+                <StackPanel>
+                    <Border Style="{StaticResource DeviceRow}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Style="{StaticResource DeviceIconBox}">
+                                <TextBlock Text="&#xE7F8;" Style="{StaticResource DeviceIcon}"/>
+                            </Border>
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                <TextBlock Text="{loc:Tr Devices.Touchpad}" Style="{StaticResource DeviceTitle}"/>
+                                <TextBlock Text="{loc:Tr Devices.Touchpad.Hint}" Style="{StaticResource DeviceDescription}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Border x:Name="TouchpadStatusPill" Style="{StaticResource StatusPill}" Margin="0,0,12,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse x:Name="TouchpadStatusDot" Width="6" Height="6" Fill="{StaticResource Ink3}"
+                                                 Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock x:Name="TouchpadStatusText" Text="—" Style="{StaticResource StatusPillText}"/>
+                                    </StackPanel>
+                                </Border>
+                                <ToggleButton x:Name="TouchpadToggle" Style="{StaticResource DevicesToggle}"
+                                              Checked="OnTouchpadChanged" Unchecked="OnTouchpadChanged"
+                                              AutomationProperties.Name="{loc:Tr Devices.Touchpad}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Rectangle Height="1" Fill="{StaticResource Hairline}" Margin="14,0"/>
+
+                    <Border Style="{StaticResource DeviceRow}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Style="{StaticResource DeviceIconBox}">
+                                <TextBlock Text="&#xE714;" Style="{StaticResource DeviceIcon}"/>
+                            </Border>
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                <TextBlock Text="{loc:Tr Devices.Webcam}" Style="{StaticResource DeviceTitle}"/>
+                                <TextBlock Text="{loc:Tr Devices.Webcam.Hint}" Style="{StaticResource DeviceDescription}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Border x:Name="WebcamStatusPill" Style="{StaticResource StatusPill}" Margin="0,0,12,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse x:Name="WebcamStatusDot" Width="6" Height="6" Fill="{StaticResource Ink3}"
+                                                 Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock x:Name="WebcamStatusText" Text="—" Style="{StaticResource StatusPillText}"/>
+                                    </StackPanel>
+                                </Border>
+                                <ToggleButton x:Name="WebcamToggle" Style="{StaticResource DevicesToggle}"
+                                              Checked="OnWebcamChanged" Unchecked="OnWebcamChanged"
+                                              AutomationProperties.Name="{loc:Tr Devices.Webcam}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="{loc:Tr Devices.Display.Section}" Style="{StaticResource DeviceSection}"/>
+            <Border Style="{StaticResource DeviceGroup}">
+                <StackPanel>
+                    <Border Style="{StaticResource DeviceRow}" MinHeight="92">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.RowSpan="2" Grid.Column="0" Style="{StaticResource DeviceIconBox}">
+                                <TextBlock Text="&#xE706;" Style="{StaticResource DeviceIcon}"/>
+                            </Border>
+                            <TextBlock Grid.Column="2" Text="{loc:Tr Devices.Brightness}" Style="{StaticResource DeviceTitle}"
+                                       VerticalAlignment="Center"/>
+                            <Border Grid.Column="3" Style="{StaticResource StatusPill}" Padding="10,4">
+                                <TextBlock x:Name="BrightnessValue" Text="—" Style="{StaticResource Mono}"
+                                           FontSize="12" Foreground="{StaticResource Ink}"/>
+                            </Border>
+                            <Slider x:Name="BrightnessSlider" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"
+                                    Style="{StaticResource DevicesSlider}" Minimum="0" Maximum="100"
+                                    TickFrequency="1" Margin="0,9,0,0" ValueChanged="OnBrightnessChanged"
+                                    AutomationProperties.Name="{loc:Tr Devices.Brightness}"/>
+                        </Grid>
+                    </Border>
+
+                    <Rectangle Height="1" Fill="{StaticResource Hairline}" Margin="14,0"/>
+
+                    <Border Style="{StaticResource DeviceRow}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Style="{StaticResource DeviceIconBox}">
+                                <TextBlock Text="&#xE7E8;" Style="{StaticResource DeviceIcon}"/>
+                            </Border>
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                <TextBlock Text="{loc:Tr Devices.Display.Off}" Style="{StaticResource DeviceTitle}"/>
+                                <TextBlock Text="{loc:Tr Devices.Display.Off.Hint}" Style="{StaticResource DeviceDescription}"/>
+                            </StackPanel>
+                            <Button x:Name="DisplayOffButton" Grid.Column="4" Style="{StaticResource DevicesButton}"
+                                    Content="{loc:Tr Devices.Display.Off}" Click="OnDisplayOff"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

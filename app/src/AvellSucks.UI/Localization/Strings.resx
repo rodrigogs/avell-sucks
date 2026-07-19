@@ -87,7 +87,6 @@
   <data name="Devices.Wireless.Section" xml:space="preserve"><value>Connectivity</value></data>
   <data name="Devices.Wireless" xml:space="preserve"><value>Internal wireless radios</value></data>
   <data name="Devices.Wireless.Hint" xml:space="preserve"><value>Controls the Intel 9560 Wi-Fi and Bluetooth hardware latch together through the embedded controller.</value></data>
-  <data name="Devices.Wireless.Status" xml:space="preserve"><value>Wi-Fi: {0} · Bluetooth: {1}</value></data>
   <data name="Devices.Wireless.Enabled" xml:space="preserve"><value>Wi-Fi and Bluetooth enabled</value></data>
   <data name="Devices.Wireless.Disabled" xml:space="preserve"><value>Wi-Fi and Bluetooth disabled</value></data>
   <data name="Devices.InputPrivacy.Section" xml:space="preserve"><value>Input &amp; privacy</value></data>
@@ -106,6 +105,14 @@
   <data name="Devices.Display.Off.Hint" xml:space="preserve"><value>Sends Windows' monitor-power command. Mouse or keyboard input wakes the display again.</value></data>
   <data name="Devices.Display.Off.Requested" xml:space="preserve"><value>Display power-off requested</value></data>
   <data name="Devices.Gate" xml:space="preserve"><value>Hardware writes are disabled. Turn them on in Settings to use these controls.</value></data>
+  <data name="Devices.Overview.Title" xml:space="preserve"><value>Avell 1555 hardware controls</value></data>
+  <data name="Devices.Overview.Hint" xml:space="preserve"><value>Live control through Windows and the embedded controller, with verification and audit.</value></data>
+  <data name="Devices.Overview.Supported" xml:space="preserve"><value>Supported machine</value></data>
+  <data name="Devices.Overview.Unsupported" xml:space="preserve"><value>Unsupported machine</value></data>
+  <data name="Devices.Overview.Unavailable" xml:space="preserve"><value>Controls unavailable</value></data>
+  <data name="Devices.Overview.WritesOn" xml:space="preserve"><value>Hardware writes on</value></data>
+  <data name="Devices.Overview.ReadOnly" xml:space="preserve"><value>Read-only mode</value></data>
+  <data name="Devices.State.Unavailable" xml:space="preserve"><value>unavailable</value></data>
 
   <!-- ===== Gateway status ===== -->
 
