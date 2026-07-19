@@ -81,8 +81,6 @@
   <data name="Tab.Settings.Sub" xml:space="preserve"><value>Hardware writes, remote access, and app preferences</value></data>
 
   <!-- ===== Device controls ===== -->
-  <data name="Common.On" xml:space="preserve"><value>on</value></data>
-  <data name="Common.Off" xml:space="preserve"><value>off</value></data>
   <data name="Devices.Unavailable" xml:space="preserve"><value>Machine controls are unavailable. Run AvellSucks as administrator on the supported Avell G1555 hardware.</value></data>
   <data name="Devices.Wireless.Section" xml:space="preserve"><value>Connectivity</value></data>
   <data name="Devices.Wireless" xml:space="preserve"><value>Internal wireless radios</value></data>
@@ -112,7 +110,6 @@
   <data name="Devices.Overview.Unavailable" xml:space="preserve"><value>Controls unavailable</value></data>
   <data name="Devices.Overview.WritesOn" xml:space="preserve"><value>Hardware writes on</value></data>
   <data name="Devices.Overview.ReadOnly" xml:space="preserve"><value>Read-only mode</value></data>
-  <data name="Devices.State.Unavailable" xml:space="preserve"><value>unavailable</value></data>
 
   <!-- ===== Gateway status ===== -->
 

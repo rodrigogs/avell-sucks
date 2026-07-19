@@ -50,10 +50,9 @@ public partial class DevicesView : UserControl
                 MachineStatusText,
                 Loc.T("Devices.Overview.Unavailable"),
                 "Warn");
-            SetBinaryStatus(WifiStatusDot, WifiStatusText, null);
-            SetBinaryStatus(BluetoothStatusDot, BluetoothStatusText, null);
-            SetBinaryStatus(TouchpadStatusDot, TouchpadStatusText, null);
-            SetBinaryStatus(WebcamStatusDot, WebcamStatusText, null);
+            SetDotStatus(WirelessStatusDot, null);
+            SetDotStatus(TouchpadStatusDot, null);
+            SetDotStatus(WebcamStatusDot, null);
             return;
         }
 
@@ -69,15 +68,14 @@ public partial class DevicesView : UserControl
         {
             WirelessToggle.IsEnabled = canMutate && status.WirelessRadiosEnabled.HasValue;
             WirelessToggle.IsChecked = status.WirelessRadiosEnabled;
-            SetBinaryStatus(WifiStatusDot, WifiStatusText, status.WifiPresent);
-            SetBinaryStatus(BluetoothStatusDot, BluetoothStatusText, status.BluetoothPresent);
+            SetDotStatus(WirelessStatusDot, status.WirelessRadiosEnabled);
 
             TouchpadToggle.IsEnabled = canMutate && status.TouchpadEnabled.HasValue;
             TouchpadToggle.IsChecked = status.TouchpadEnabled;
-            SetBinaryStatus(TouchpadStatusDot, TouchpadStatusText, status.TouchpadEnabled);
+            SetDotStatus(TouchpadStatusDot, status.TouchpadEnabled);
             WebcamToggle.IsEnabled = canMutate && status.WebcamEnabled.HasValue;
             WebcamToggle.IsChecked = status.WebcamEnabled;
-            SetBinaryStatus(WebcamStatusDot, WebcamStatusText, status.WebcamEnabled);
+            SetDotStatus(WebcamStatusDot, status.WebcamEnabled);
 
             BrightnessSlider.IsEnabled = canMutate && status.BrightnessPercent.HasValue;
             if (status.BrightnessPercent is byte brightness)
@@ -97,23 +95,15 @@ public partial class DevicesView : UserControl
             App.Trace($"DevicesView status: {status.Error}");
     }
 
-    private void SetBinaryStatus(Ellipse dot, TextBlock text, bool? enabled)
+    /// <summary>Projects a nullable device state onto the decorative status shape.</summary>
+    private static void SetDotStatus(StatusDot dot, bool? enabled)
     {
-        if (!enabled.HasValue)
+        dot.Status = enabled switch
         {
-            SetInlineStatus(
-                dot,
-                text,
-                Loc.T("Devices.State.Unavailable"),
-                "Warn");
-            return;
-        }
-
-        SetInlineStatus(
-            dot,
-            text,
-            Loc.T(enabled.Value ? "Common.On" : "Common.Off"),
-            enabled.Value ? "Ok" : "Ink3");
+            true => DeviceStatus.On,
+            false => DeviceStatus.Off,
+            null => DeviceStatus.Unknown,
+        };
     }
 
     private void SetInlineStatus(

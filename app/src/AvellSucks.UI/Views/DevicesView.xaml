@@ -150,22 +150,7 @@
                             <TextBlock Text="{loc:Tr Devices.Wireless.Hint}" Style="{StaticResource DeviceDescription}"/>
                         </StackPanel>
                         <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
-                            <Border x:Name="WifiStatusPill" Style="{StaticResource StatusPill}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Ellipse x:Name="WifiStatusDot" Width="6" Height="6" Fill="{StaticResource Ink3}"
-                                             Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Wi-Fi" Style="{StaticResource StatusPillText}"/>
-                                    <TextBlock x:Name="WifiStatusText" Text="—" Style="{StaticResource StatusPillText}" Margin="6,0,0,0"/>
-                                </StackPanel>
-                            </Border>
-                            <Border x:Name="BluetoothStatusPill" Style="{StaticResource StatusPill}" Margin="6,0,12,0">
-                                <StackPanel Orientation="Horizontal">
-                                    <Ellipse x:Name="BluetoothStatusDot" Width="6" Height="6" Fill="{StaticResource Ink3}"
-                                             Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Bluetooth" Style="{StaticResource StatusPillText}"/>
-                                    <TextBlock x:Name="BluetoothStatusText" Text="—" Style="{StaticResource StatusPillText}" Margin="6,0,0,0"/>
-                                </StackPanel>
-                            </Border>
+                            <ctl:StatusDot x:Name="WirelessStatusDot" Status="Unknown" Margin="0,0,12,0"/>
                             <ToggleButton x:Name="WirelessToggle" Style="{StaticResource DevicesToggle}"
                                           Checked="OnWirelessChanged" Unchecked="OnWirelessChanged"
                                           AutomationProperties.Name="{loc:Tr Devices.Wireless}"/>
@@ -194,13 +179,7 @@
                                 <TextBlock Text="{loc:Tr Devices.Touchpad.Hint}" Style="{StaticResource DeviceDescription}"/>
                             </StackPanel>
                             <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border x:Name="TouchpadStatusPill" Style="{StaticResource StatusPill}" Margin="0,0,12,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse x:Name="TouchpadStatusDot" Width="6" Height="6" Fill="{StaticResource Ink3}"
-                                                 Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                        <TextBlock x:Name="TouchpadStatusText" Text="—" Style="{StaticResource StatusPillText}"/>
-                                    </StackPanel>
-                                </Border>
+                                <ctl:StatusDot x:Name="TouchpadStatusDot" Status="Unknown" Margin="0,0,12,0"/>
                                 <ToggleButton x:Name="TouchpadToggle" Style="{StaticResource DevicesToggle}"
                                               Checked="OnTouchpadChanged" Unchecked="OnTouchpadChanged"
                                               AutomationProperties.Name="{loc:Tr Devices.Touchpad}"/>
@@ -227,13 +206,7 @@
                                 <TextBlock Text="{loc:Tr Devices.Webcam.Hint}" Style="{StaticResource DeviceDescription}"/>
                             </StackPanel>
                             <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border x:Name="WebcamStatusPill" Style="{StaticResource StatusPill}" Margin="0,0,12,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse x:Name="WebcamStatusDot" Width="6" Height="6" Fill="{StaticResource Ink3}"
-                                                 Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                        <TextBlock x:Name="WebcamStatusText" Text="—" Style="{StaticResource StatusPillText}"/>
-                                    </StackPanel>
-                                </Border>
+                                <ctl:StatusDot x:Name="WebcamStatusDot" Status="Unknown" Margin="0,0,12,0"/>
                                 <ToggleButton x:Name="WebcamToggle" Style="{StaticResource DevicesToggle}"
                                               Checked="OnWebcamChanged" Unchecked="OnWebcamChanged"
                                               AutomationProperties.Name="{loc:Tr Devices.Webcam}"/>

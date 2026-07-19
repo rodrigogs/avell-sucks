@@ -81,8 +81,6 @@
   <data name="Tab.Settings.Sub" xml:space="preserve"><value>Escrita de hardware, acesso remoto e preferências do app</value></data>
 
   <!-- ===== Controles de dispositivos ===== -->
-  <data name="Common.On" xml:space="preserve"><value>ligado</value></data>
-  <data name="Common.Off" xml:space="preserve"><value>desligado</value></data>
   <data name="Devices.Unavailable" xml:space="preserve"><value>Os controles da máquina estão indisponíveis. Execute o AvellSucks como administrador no hardware Avell G1555 suportado.</value></data>
   <data name="Devices.Wireless.Section" xml:space="preserve"><value>Conectividade</value></data>
   <data name="Devices.Wireless" xml:space="preserve"><value>Rádios sem fio internos</value></data>
@@ -112,7 +110,6 @@
   <data name="Devices.Overview.Unavailable" xml:space="preserve"><value>Controles indisponíveis</value></data>
   <data name="Devices.Overview.WritesOn" xml:space="preserve"><value>Escrita de hardware ativa</value></data>
   <data name="Devices.Overview.ReadOnly" xml:space="preserve"><value>Modo somente leitura</value></data>
-  <data name="Devices.State.Unavailable" xml:space="preserve"><value>indisponível</value></data>
 
   <!-- ===== Gateway status ===== -->
 
