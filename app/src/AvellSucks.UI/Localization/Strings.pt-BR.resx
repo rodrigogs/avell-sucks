@@ -86,8 +86,7 @@
   <data name="Devices.Unavailable" xml:space="preserve"><value>Os controles da máquina estão indisponíveis. Execute o AvellSucks como administrador no hardware Avell G1555 suportado.</value></data>
   <data name="Devices.Wireless.Section" xml:space="preserve"><value>Conectividade</value></data>
   <data name="Devices.Wireless" xml:space="preserve"><value>Rádios sem fio internos</value></data>
-  <data name="Devices.Wireless.Hint" xml:space="preserve"><value>Controla em conjunto o latch físico do Wi-Fi e Bluetooth Intel 9560 pelo embedded controller.</value></data>
-  <data name="Devices.Wireless.Status" xml:space="preserve"><value>Wi-Fi: {0} · Bluetooth: {1}</value></data>
+  <data name="Devices.Wireless.Hint" xml:space="preserve"><value>Controla em conjunto a chave física do Wi-Fi e Bluetooth Intel 9560 pelo controlador embarcado.</value></data>
   <data name="Devices.Wireless.Enabled" xml:space="preserve"><value>Wi-Fi e Bluetooth ligados</value></data>
   <data name="Devices.Wireless.Disabled" xml:space="preserve"><value>Wi-Fi e Bluetooth desligados</value></data>
   <data name="Devices.InputPrivacy.Section" xml:space="preserve"><value>Entrada e privacidade</value></data>
@@ -106,6 +105,14 @@
   <data name="Devices.Display.Off.Hint" xml:space="preserve"><value>Envia o comando de energia do monitor do Windows. Movimento do mouse ou teclado liga a tela novamente.</value></data>
   <data name="Devices.Display.Off.Requested" xml:space="preserve"><value>Desligamento da tela solicitado</value></data>
   <data name="Devices.Gate" xml:space="preserve"><value>A escrita no hardware está desligada. Ative-a em Configurações para usar estes controles.</value></data>
+  <data name="Devices.Overview.Title" xml:space="preserve"><value>Controles de hardware do Avell 1555</value></data>
+  <data name="Devices.Overview.Hint" xml:space="preserve"><value>Controle em tempo real pelo Windows e controlador embarcado, com verificação e auditoria.</value></data>
+  <data name="Devices.Overview.Supported" xml:space="preserve"><value>Máquina compatível</value></data>
+  <data name="Devices.Overview.Unsupported" xml:space="preserve"><value>Máquina não compatível</value></data>
+  <data name="Devices.Overview.Unavailable" xml:space="preserve"><value>Controles indisponíveis</value></data>
+  <data name="Devices.Overview.WritesOn" xml:space="preserve"><value>Escrita de hardware ativa</value></data>
+  <data name="Devices.Overview.ReadOnly" xml:space="preserve"><value>Modo somente leitura</value></data>
+  <data name="Devices.State.Unavailable" xml:space="preserve"><value>indisponível</value></data>
 
   <!-- ===== Gateway status ===== -->
 
