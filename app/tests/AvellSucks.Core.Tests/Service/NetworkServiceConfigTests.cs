@@ -20,6 +20,7 @@ public class NetworkServiceConfigTests
         Assert.False(cfg.AllowRemoteWrites);
         Assert.False(cfg.McpEnabled);
         Assert.False(cfg.FirewallAutoOpen);
+        Assert.False(cfg.RestoreWirelessRadiosOnBoot);
     }
 
     [Fact]
@@ -35,16 +36,19 @@ public class NetworkServiceConfigTests
             AllowRemoteWrites = true,
             McpEnabled = true,
             FirewallAutoOpen = true,
+            RestoreWirelessRadiosOnBoot = true,
         };
 
         var json = JsonSerializer.Serialize(cfg, new JsonSerializerOptions(JsonSerializerDefaults.Web));
         Assert.Contains("\"bindAddress\":\"100.72.1.5\"", json);
         Assert.Contains("\"allowRemoteWrites\":true", json);
+        Assert.Contains("\"restoreWirelessRadiosOnBoot\":true", json);
 
         var back = JsonSerializer.Deserialize<NetworkServiceConfig>(json, new JsonSerializerOptions(JsonSerializerDefaults.Web))!;
         Assert.Equal("100.72.1.5", back.BindAddress);
         Assert.True(back.Auth.MtlsEnabled);
         Assert.Equal("DE:AD", back.Auth.MtlsCaThumbprint);
         Assert.True(back.McpEnabled);
+        Assert.True(back.RestoreWirelessRadiosOnBoot);
     }
 }

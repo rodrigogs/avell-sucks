@@ -122,10 +122,36 @@ public partial class DevicesView : UserControl
     {
         if (!_initialized || _loading.Active || _controls is null) return;
         var enabled = WirelessToggle.IsChecked == true;
-        await ApplyAsync(
+        var result = await ApplyAsync(
             Loc.T("Devices.Wireless"),
             enabled ? Loc.T("Devices.Wireless.Enabled") : Loc.T("Devices.Wireless.Disabled"),
             () => _controls.SetWirelessRadiosAsync(enabled, "ui:devices/wireless"));
+
+        // Persist the user's verified intent so the Session 0 service can
+        // reconcile the radios at boot (before login). Only a Verified outcome
+        // touches the flag — never Requested/Failed/Blocked, so a flaky write
+        // can't silently arm (or disarm) an automatic restore. See
+        // Server.Hosting.WirelessBootRestoreService.
+        if (result.Outcome == MachineControlOutcome.Verified)
+            PersistBootRestoreIntent(restoreOnBoot: enabled);
+    }
+
+    private static void PersistBootRestoreIntent(bool restoreOnBoot)
+    {
+        try
+        {
+            var cfg = new ServiceConfigManager();
+            var remote = cfg.Load();
+            if (remote.RestoreWirelessRadiosOnBoot == restoreOnBoot) return;
+            remote.RestoreWirelessRadiosOnBoot = restoreOnBoot;
+            cfg.Save(remote);
+        }
+        catch (Exception ex)
+        {
+            // Persistence is best-effort; a failure here must not undo the
+            // hardware change the user just made. Leave a trace instead.
+            App.Trace($"DevicesView: wireless boot-restore persist failed — {ex.GetType().Name}: {ex.Message}");
+        }
     }
 
     private async void OnTouchpadChanged(object sender, RoutedEventArgs e)
@@ -177,7 +203,7 @@ public partial class DevicesView : UserControl
             refreshOnSuccess: false);
     }
 
-    private async Task ApplyAsync(
+    private async Task<MachineControlResult> ApplyAsync(
         string pendingLabel,
         string doneLabel,
         Func<ValueTask<MachineControlResult>> operation,
@@ -203,5 +229,6 @@ public partial class DevicesView : UserControl
 
         if (refreshOnSuccess || result.Outcome is MachineControlOutcome.Blocked or MachineControlOutcome.Failed)
             await RefreshAsync();
+        return result;
     }
 }

@@ -23,8 +23,16 @@ public sealed class WindowsServiceControl
 
     public void Install(string exePath)
     {
-        // binPath must point at the server exe; auto-start disabled (UI starts it).
-        Sc($"create \"{ServiceName}\" binPath= \"{exePath}\" DisplayName= \"{DisplayName}\" start= demand");
+        // start= auto boots the service at machine start (Session 0, LocalSystem
+        // by default) — BEFORE any user logs in. This is required so the wireless
+        // boot-restore can reconcile the radios when no one is signed in. The
+        // service still ignores interactive-only controls (display-off) via its
+        // own Environment.UserInteractive guards.
+        Sc($"create \"{ServiceName}\" binPath= \"{exePath}\" DisplayName= \"{DisplayName}\" start= auto");
+        // Explicit LocalSystem account + no password. sc create already defaults
+        // to LocalSystem, but stating it makes the "runs as SYSTEM, no login"
+        // contract explicit and survives future default changes.
+        Sc($"config \"{ServiceName}\" obj= LocalSystem");
     }
 
     public void Uninstall()

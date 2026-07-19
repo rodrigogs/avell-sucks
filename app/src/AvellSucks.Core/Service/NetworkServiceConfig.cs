@@ -36,6 +36,24 @@ public sealed class NetworkServiceConfig
 
     /// <summary>When true, the service opens the Windows Firewall port on start.</summary>
     public bool FirewallAutoOpen { get; set; }
+
+    /// <summary>
+    /// When true and the machine is the verified Avell 1555, the service
+    /// re-enables the Wi-Fi + Bluetooth radios on startup (and after a reboot)
+    /// when they are currently OFF. Default false: nothing is touched unless the
+    /// user explicitly turned wireless on from the UI and it was verified.
+    ///
+    /// <b>One-directional:</b> the restore path only ever calls
+    /// <c>SetWirelessRadiosAsync(true)</c>. It never turns radios OFF. A missing
+    /// or false flag means the service leaves the radios exactly as the EC/BIOS
+    /// left them at boot.
+    ///
+    /// Rationale: the EC forgets the radio state byte across a cold boot, and on
+    /// the G1555 the radios can come up hardware-gated (Code 22) even when the
+    /// user had them on. Persisting the verified-on intent lets the Session 0
+    /// service (no login required) reconcile them to the user's last state.
+    /// </summary>
+    public bool RestoreWirelessRadiosOnBoot { get; set; }
 }
 
 /// <summary>Authentication configuration. Required for non-loopback callers.</summary>

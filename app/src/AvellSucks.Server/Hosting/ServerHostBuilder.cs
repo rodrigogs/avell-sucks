@@ -97,6 +97,10 @@ public static class ServerHostBuilder
         });
         builder.Services.AddSingleton<IMachineControlService, MachineControlService>();
 
+        // Session 0 wireless boot-restore. Self-skips when not running as a
+        // Windows Service (console/dev), so it is safe to register unconditionally.
+        builder.Services.AddHostedService<WirelessBootRestoreService>();
+
         // --- Request context + remote-write authorizer (shared with MCP) ---
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<AvellSucks.Api.Security.RemoteWriteAuthorizer>();
