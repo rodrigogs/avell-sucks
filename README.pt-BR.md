@@ -31,12 +31,6 @@
   <a href="#compilar-do-c%C3%B3digo">Compilar</a>
 </h4>
 
-<div align="center">
-
-<img src="docs/assets/dashboard.png" alt="Painel do AvellSucks" width="820" />
-
-</div>
-
 ---
 
 ## Por que isto existe

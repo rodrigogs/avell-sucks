@@ -31,12 +31,6 @@
   <a href="#build-from-source">Build</a>
 </h4>
 
-<div align="center">
-
-<img src="docs/assets/dashboard.png" alt="AvellSucks dashboard" width="820" />
-
-</div>
-
 ---
 
 ## Why this exists
