@@ -17,8 +17,9 @@ under `HKLM\SOFTWARE\OEM\GamingCenter`. Native/driver layer: `ECIO.dll`,
 `inpoutx64.DLL`, `HardwareAccess.dll` (Confuser-protected; Intel IronCity —
 OcMailbox/MSR/TurboRatio/TDP). PDB path evidence: `D:\Max\Source\GamingCenter\...`.
 Decompiled with `ilspycmd`. Full recon: [`evidence/inventory.json`](evidence/inventory.json),
-[`evidence/process-detail.json`](evidence/process-detail.json),
-[`evidence/strings/`](evidence/strings/).
+[`evidence/process-detail.json`](evidence/process-detail.json). Verbatim string dumps
+from the OEM binaries are intentionally **not** redistributed — see
+[§9](#9-evidence-index).
 
 ## 2. EC access primitive (CONFIRMED)
 
@@ -119,6 +120,9 @@ probing. Cross-ref: `SafeEcWriter.cs`, `EcWriteAllowlist.cs`, `WriteGate.cs`.
 - [`evidence/ec-read-probe.json`](evidence/ec-read-probe.json) — early read-only EC snapshot (pre-PL discovery).
 - [`evidence/inventory.json`](evidence/inventory.json) — OEM process/service/driver recon.
 - [`evidence/process-detail.json`](evidence/process-detail.json) — per-process detail.
-- [`evidence/strings/`](evidence/strings/) — verbatim string dumps from the OEM binaries.
+- ~~`evidence/strings/`~~ — verbatim string dumps from the proprietary OEM binaries.
+  **Removed from the public repo for licensing.** Regenerate locally with
+  `strings`/`ilspycmd` if you want to reproduce the RE; the findings themselves are
+  summarized above and in [`archive/research-re-study.json`](archive/research-re-study.json).
 - [`archive/research-re-study.json`](archive/research-re-study.json) — the full OEM RE dossier.
 - [`archive/re-log-2025-07.md`](archive/re-log-2025-07.md) — the original hand-written RE notes.

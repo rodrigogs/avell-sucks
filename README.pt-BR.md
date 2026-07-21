@@ -267,7 +267,8 @@ dotnet run --project src/AvellSucks.UI
 # ou o servidor de controle local + API
 dotnet run --project src/AvellSucks.Server -- 5055
 
-# testes (115: pipeline de escrita segura, allowlist, gate de escrita, mapa da ventoinha, log de auditoria)
+# testes (233: pipeline de escrita segura, allowlist, gate de escrita, mapa da
+# ventoinha, log de auditoria, orquestrador de controles, política de boot-restore)
 dotnet test AvellSucks.Replacement.slnx
 ```
 

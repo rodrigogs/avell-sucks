@@ -259,7 +259,8 @@ dotnet run --project src/AvellSucks.UI
 # or the local control server + API
 dotnet run --project src/AvellSucks.Server -- 5055
 
-# tests (115: safe-write pipeline, allowlist, write gate, fan map, audit log)
+# tests (233: safe-write pipeline, allowlist, write gate, fan map, audit log,
+# machine-control orchestrator, wireless boot-restore policy)
 dotnet test AvellSucks.Replacement.slnx
 ```
 

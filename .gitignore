@@ -18,3 +18,8 @@ dist/
 
 # Internal dev process (specs, plans, runbooks scaffolding) — not published
 docs/superpowers/
+
+# Verbatim string dumps from proprietary OEM binaries (kept locally only).
+# The reverse-engineering findings these supported are summarized in
+# docs/reverse-engineering.md; the raw dumps are not redistributed.
+docs/evidence/strings/
