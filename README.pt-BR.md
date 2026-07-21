@@ -106,6 +106,49 @@ hardware pra provar.
 
 <sub>**Marca:** um instrumento de desempenho cyberpunk: *carregado, preciso, vivo*. Neon magenta→ciano sobre violeta-preto profundo.</sub>
 
+## Capturas de tela
+
+<div align="center">
+
+**Painel** — carga de CPU/GPU, temperaturas, clocks e o perfil de refrigeração ativo
+
+<img src="docs/assets/screenshots/dashboard.png" alt="Painel do AvellSucks" width="820" />
+
+</div>
+
+<details>
+<summary><b>Mais painéis</b> (Ventoinha, Dispositivos, Desempenho, RGB, Configurações, Sobre)</summary>
+
+<div align="center">
+
+**Ventoinha** — modos e curva personalizada de temperatura→PWM
+
+<img src="docs/assets/screenshots/fan.png" alt="Painel de ventoinha do AvellSucks" width="820" />
+
+**Dispositivos** — Wi-Fi + Bluetooth, touchpad, webcam, brilho, desligar tela
+
+<img src="docs/assets/screenshots/devices.png" alt="Painel de dispositivos do AvellSucks" width="820" />
+
+**Desempenho** — modos de energia e ajuste de limite de potência da CPU
+
+<img src="docs/assets/screenshots/power.png" alt="Painel de desempenho do AvellSucks" width="820" />
+
+**RGB** — superfície de iluminação do teclado (backend em desenvolvimento)
+
+<img src="docs/assets/screenshots/rgb.png" alt="Painel RGB do AvellSucks" width="820" />
+
+**Configurações** — idioma, iniciar com o Windows, minimizar para a bandeja
+
+<img src="docs/assets/screenshots/settings.png" alt="Painel de configurações do AvellSucks" width="820" />
+
+**Sobre** — versão, links e o aviso de segurança/autoria
+
+<img src="docs/assets/screenshots/about.png" alt="Painel sobre do AvellSucks" width="820" />
+
+</div>
+
+</details>
+
 ## Instalação
 
 > **Requer Windows 10/11 (x64) e direitos de administrador.** O app fala com o

@@ -103,6 +103,49 @@ hardware to prove it on.
 
 <sub>**Brand:** a cyberpunk performance instrument, *charged, precise, alive*. Neon magenta→cyan on deep violet-black.</sub>
 
+## Screenshots
+
+<div align="center">
+
+**Dashboard** — live CPU/GPU load, temps, clocks, and the active cooling profile
+
+<img src="docs/assets/screenshots/dashboard.png" alt="AvellSucks dashboard" width="820" />
+
+</div>
+
+<details>
+<summary><b>More panels</b> (Fan, Devices, Performance, RGB, Settings, About)</summary>
+
+<div align="center">
+
+**Fan** — modes and a custom temperature→PWM curve
+
+<img src="docs/assets/screenshots/fan.png" alt="AvellSucks fan panel" width="820" />
+
+**Devices** — Wi-Fi + Bluetooth, touchpad, webcam, brightness, display-off
+
+<img src="docs/assets/screenshots/devices.png" alt="AvellSucks devices panel" width="820" />
+
+**Performance** — power modes and CPU power-limit tuning
+
+<img src="docs/assets/screenshots/power.png" alt="AvellSucks performance panel" width="820" />
+
+**RGB** — keyboard lighting surface (backend in development)
+
+<img src="docs/assets/screenshots/rgb.png" alt="AvellSucks RGB panel" width="820" />
+
+**Settings** — language, start-with-Windows, minimize-to-tray
+
+<img src="docs/assets/screenshots/settings.png" alt="AvellSucks settings panel" width="820" />
+
+**About** — version, links, and the safety/authorship notice
+
+<img src="docs/assets/screenshots/about.png" alt="AvellSucks about panel" width="820" />
+
+</div>
+
+</details>
+
 ## Install
 
 > **Requires Windows 10/11 (x64) and administrator rights.** The app talks to the
