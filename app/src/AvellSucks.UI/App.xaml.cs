@@ -56,6 +56,17 @@ public partial class App : Application
             return;
         }
 
+        // Headless, apply-and-exit entry point for the wireless resume path.
+        // This is deliberately an argument (not an environment-only self-test) so
+        // Task Scheduler or an operator can invoke the same reconciliation without
+        // displaying the WPF window.
+        if (Array.IndexOf(e.Args, "--reconcile-wireless") >= 0)
+        {
+            RunWirelessResumeReconcile();
+            Shutdown();
+            return;
+        }
+
         // Diagnostic: exercise the real fan-service write path headlessly and exit.
         // GC_SELFTEST=fan-boost drives WmiFanService.SetModeAsync("boost") through
         // the exact pipeline the UI uses (SafeEcWriter → EC), so the outcome can be
@@ -70,6 +81,10 @@ public partial class App : Application
 
         try
         {
+            // The app remains resident in the tray after logon, so it is the
+            // durable receiver for the Windows resume notification. A logon task
+            // alone cannot run again when the machine wakes from sleep.
+            AvellSucks.UI.Services.WirelessResumeRestorer.Start();
             var window = new MainWindow();
             if (AvellSucks.UI.Settings.SettingsStore.Current.Settings.StartMinimized)
             {
@@ -104,6 +119,12 @@ public partial class App : Application
             Log($"FATAL in OnStartup: {ex}");
             throw;
         }
+    }
+
+    protected override void OnExit(ExitEventArgs e)
+    {
+        AvellSucks.UI.Services.WirelessResumeRestorer.Stop();
+        base.OnExit(e);
     }
 
     // Background update check on startup: notify via a toast if a newer release
@@ -168,6 +189,15 @@ public partial class App : Application
             }
         }
         catch (Exception ex) { Log($"selftest '{test}' threw: {ex}"); }
+    }
+
+    private static void RunWirelessResumeReconcile()
+    {
+        Log("CLI --reconcile-wireless: invoking wireless resume reconciler.");
+        AvellSucks.UI.Services.WirelessResumeRestorer
+            .ReconcileAsync("cli:reconcile-wireless", waitForDevices: true)
+            .GetAwaiter().GetResult();
+        Log("CLI --reconcile-wireless: completed.");
     }
 
     // Exercises the exact UI service pipeline. Potentially sticky PnP operations
