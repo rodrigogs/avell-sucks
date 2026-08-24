@@ -74,6 +74,8 @@
   <!-- ===== Tab subtitles ===== -->
   <data name="Tab.Dashboard.Sub" xml:space="preserve"><value>Live telemetry from EC, WMI and onboard sensors</value></data>
   <data name="Tab.Devices.Sub" xml:space="preserve"><value>Internal radios, input devices, camera and display</value></data>
+  <data name="Dash.Dgpu.Tooltip" xml:space="preserve"><value>Dedicated GPU load</value></data>
+  <data name="Dash.Igpu.Tooltip" xml:space="preserve"><value>Integrated GPU load</value></data>
   <data name="Tab.Fan.Sub" xml:space="preserve"><value>Fan modes and the custom temperature curve</value></data>
   <data name="Tab.Rgb.Sub" xml:space="preserve"><value>Keyboard lighting: effects, color and zones</value></data>
   <data name="Tab.Power.Sub" xml:space="preserve"><value>Power modes: Windows plan and CPU power envelope</value></data>

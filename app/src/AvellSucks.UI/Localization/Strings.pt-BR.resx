@@ -74,6 +74,8 @@
   <!-- ===== Tab subtitles ===== -->
   <data name="Tab.Dashboard.Sub" xml:space="preserve"><value>Telemetria ao vivo do EC, WMI e sensores da placa</value></data>
   <data name="Tab.Devices.Sub" xml:space="preserve"><value>Rádios internos, dispositivos de entrada, câmera e tela</value></data>
+  <data name="Dash.Dgpu.Tooltip" xml:space="preserve"><value>Carga da GPU dedicada</value></data>
+  <data name="Dash.Igpu.Tooltip" xml:space="preserve"><value>Carga da GPU integrada</value></data>
   <data name="Tab.Fan.Sub" xml:space="preserve"><value>Modos de ventoinha e a curva de temperatura personalizada</value></data>
   <data name="Tab.Rgb.Sub" xml:space="preserve"><value>Iluminação do teclado: efeitos, cor e zonas</value></data>
   <data name="Tab.Power.Sub" xml:space="preserve"><value>Modos de energia: plano do Windows e envelope de potência da CPU</value></data>

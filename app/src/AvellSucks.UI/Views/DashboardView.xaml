@@ -59,12 +59,30 @@
                     <DockPanel>
                         <StackPanel DockPanel.Dock="Top">
                             <DockPanel>
-                                <TextBlock Text="GPU" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"/>
+                                <TextBlock Text="dGPU" Style="{StaticResource SectionLabel}" DockPanel.Dock="Left"
+                                           ToolTip="{loc:Tr Dash.Dgpu.Tooltip}"/>
                                 <TextBlock x:Name="GpuName" Text="—" Style="{StaticResource Caption}"
                                            DockPanel.Dock="Right" HorizontalAlignment="Right"
                                            FontFamily="{StaticResource MonoFont}"/>
                             </DockPanel>
-                            <ctl:LoadTempGauge x:Name="GpuGauge" Height="140" Margin="0,4,0,0" Kind="Gpu"/>
+
+                            <!-- dGPU gauge (hero) + iGPU mini-gauge side by side. The
+                                 mini-gauge answers "is the display GPU busy" without
+                                 competing with the dGPU readout for space. -->
+                            <Grid Margin="0,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ctl:LoadTempGauge x:Name="GpuGauge" Grid.Column="0" Height="140" Kind="Gpu"/>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="14,0,0,0"
+                                            ToolTip="{loc:Tr Dash.Igpu.Tooltip}">
+                                    <ctl:MiniLoadGauge x:Name="IGpuGauge" Width="64" Height="64"/>
+                                    <TextBlock Text="iGPU" Style="{StaticResource Caption}" Foreground="{StaticResource Ink3}"
+                                               HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Grid>
+
                             <UniformGrid Columns="3" Margin="0,8,0,0">
                                 <StackPanel>
                                     <TextBlock Text="{loc:Tr Dash.Clock}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>

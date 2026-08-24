@@ -107,6 +107,7 @@ public partial class DashboardView : UserControl
         GpuGauge.Load = t.GpuLoad ?? 0;
         GpuGauge.TempC = t.GpuTempC;
         GpuName.Text = t.GpuName ?? "—";
+        IGpuGauge.Load = t.IGpuLoad ?? 0;
         GpuClock.Text = Mhz(t.GpuClockMhz);
         GpuPower.Text = Watts(t.GpuPowerW);
         GpuHotSpot.Text = t.GpuHotSpotC is double hs ? $"{hs:0}°" : "—";

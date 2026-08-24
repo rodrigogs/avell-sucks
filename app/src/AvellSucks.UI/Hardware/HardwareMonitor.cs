@@ -78,6 +78,7 @@ public sealed class HardwareMonitor : IDisposable
         var mem = new List<ISensor>();
         var virt = new List<ISensor>();
         ISensor[]? discreteGpu = null;
+        ISensor[]? igpu = null;
         int discreteScore = -1;
         string? discreteGpuName = null;  // local, reset every call (no stale carry-over)
         string? cpuName = null;
@@ -94,9 +95,15 @@ public sealed class HardwareMonitor : IDisposable
                     cpuName ??= hw.Name;
                     break;
 
+                case HardwareType.GpuIntel:
+                    // Integrated GPU (Intel UHD on this platform): keep it as its
+                    // own series — the dashboard shows it next to the dGPU because
+                    // in Optimus the iGPU does the everyday composition work.
+                    igpu ??= hw.Sensors.ToArray();
+                    break;
+
                 case HardwareType.GpuNvidia:
                 case HardwareType.GpuAmd:
-                case HardwareType.GpuIntel:
                     // Prefer the discrete GPU: rank by whether it reports a core
                     // temperature and dedicated VRAM (integrated GPUs usually don't).
                     int score =
@@ -155,6 +162,10 @@ public sealed class HardwareMonitor : IDisposable
             // GPU — discrete card reports the full set via NVAPI.
             GpuName = discreteGpuName,
             GpuLoad = Val(gpu, SensorType.Load, "GPU Core"),
+            // Intel exposes the 3D engine aggregate as "D3D 3D"; fall back to any
+            // live Load sensor so the iGPU line never reads dead while working.
+            IGpuLoad = Val(igpu ?? Array.Empty<ISensor>(), SensorType.Load, "D3D 3D")
+                       ?? First(igpu ?? Array.Empty<ISensor>(), SensorType.Load, _ => true),
             GpuTempC = Val(gpu, SensorType.Temperature, "GPU Core"),
             GpuHotSpotC = Val(gpu, SensorType.Temperature, "GPU Hot Spot"),
             GpuClockMhz = Val(gpu, SensorType.Clock, "GPU Core"),

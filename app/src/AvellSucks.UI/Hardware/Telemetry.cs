@@ -18,6 +18,7 @@ public sealed record Telemetry
     // GPU (discrete preferred)
     public string? GpuName { get; init; }
     public double? GpuLoad { get; init; }          // % core
+    public double? IGpuLoad { get; init; }         // % 3D core (integrated Intel UHD)
     public double? GpuTempC { get; init; }         // °C core
     public double? GpuHotSpotC { get; init; }      // °C hot spot
     public double? GpuClockMhz { get; init; }      // MHz core
