@@ -58,6 +58,7 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
         <Style x:Key="DeviceDescription" TargetType="TextBlock" BasedOn="{StaticResource Caption}">
             <Setter Property="FontSize" Value="12"/>
@@ -86,18 +87,23 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel MaxWidth="1080" HorizontalAlignment="Left">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                  HorizontalContentAlignment="Stretch">
+        <StackPanel MaxWidth="1080" HorizontalAlignment="Stretch">
             <!-- Operational context: useful safety state, not a decorative hero. -->
             <Border Style="{StaticResource DeviceGroup}" Padding="16,14">
-                <Grid>
+                <Grid x:Name="OverviewGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="40"/>
                         <ColumnDefinition Width="12"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="16"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition x:Name="OverviewActionGap" Width="16"/>
+                        <ColumnDefinition x:Name="OverviewActionColumn" Width="Auto"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
                     <Border Grid.Column="0" Style="{StaticResource DeviceIconBox}" Background="{StaticResource VioletTint}"
                             BorderBrush="{StaticResource Violet}">
@@ -107,7 +113,8 @@
                         <TextBlock Text="{loc:Tr Devices.Overview.Title}" Style="{StaticResource DeviceTitle}" TextWrapping="Wrap"/>
                         <TextBlock Text="{loc:Tr Devices.Overview.Hint}" Style="{StaticResource DeviceDescription}"/>
                     </StackPanel>
-                    <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                    <StackPanel x:Name="OverviewStatusPanel" Grid.Column="4" Orientation="Horizontal"
+                                HorizontalAlignment="Right" VerticalAlignment="Center">
                         <Border x:Name="MachineStatusPill" Style="{StaticResource StatusPill}">
                             <StackPanel Orientation="Horizontal">
                                 <Ellipse x:Name="MachineStatusDot" Width="6" Height="6" Fill="{StaticResource Ink3}"
@@ -134,14 +141,18 @@
             <TextBlock Text="{loc:Tr Devices.Wireless.Section}" Style="{StaticResource DeviceSection}"/>
             <Border Style="{StaticResource DeviceGroup}">
                 <Border Style="{StaticResource DeviceRow}">
-                    <Grid>
+                    <Grid x:Name="WirelessGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40"/>
                             <ColumnDefinition Width="12"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition x:Name="WirelessActionGap" Width="16"/>
+                            <ColumnDefinition x:Name="WirelessActionColumn" Width="Auto"/>
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
                         <Border Grid.Column="0" Style="{StaticResource DeviceIconBox}">
                             <TextBlock Text="&#xE701;" Style="{StaticResource DeviceIcon}"/>
                         </Border>
@@ -149,7 +160,8 @@
                             <TextBlock Text="{loc:Tr Devices.Wireless}" Style="{StaticResource DeviceTitle}"/>
                             <TextBlock Text="{loc:Tr Devices.Wireless.Hint}" Style="{StaticResource DeviceDescription}"/>
                         </StackPanel>
-                        <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                        <StackPanel x:Name="WirelessActionPanel" Grid.Column="4" Orientation="Horizontal"
+                                    HorizontalAlignment="Right" VerticalAlignment="Center">
                             <ctl:StatusDot x:Name="WirelessStatusDot" Status="Unknown" Margin="0,0,12,0"/>
                             <ToggleButton x:Name="WirelessToggle" Style="{StaticResource DevicesToggle}"
                                           Checked="OnWirelessChanged" Unchecked="OnWirelessChanged"
@@ -163,14 +175,18 @@
             <Border Style="{StaticResource DeviceGroup}">
                 <StackPanel>
                     <Border Style="{StaticResource DeviceRow}">
-                        <Grid>
+                        <Grid x:Name="TouchpadGrid">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="16"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition x:Name="TouchpadActionGap" Width="16"/>
+                                <ColumnDefinition x:Name="TouchpadActionColumn" Width="Auto"/>
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
                             <Border Grid.Column="0" Style="{StaticResource DeviceIconBox}">
                                 <TextBlock Text="&#xE7F8;" Style="{StaticResource DeviceIcon}"/>
                             </Border>
@@ -178,7 +194,8 @@
                                 <TextBlock Text="{loc:Tr Devices.Touchpad}" Style="{StaticResource DeviceTitle}"/>
                                 <TextBlock Text="{loc:Tr Devices.Touchpad.Hint}" Style="{StaticResource DeviceDescription}"/>
                             </StackPanel>
-                            <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                            <StackPanel x:Name="TouchpadActionPanel" Grid.Column="4" Orientation="Horizontal"
+                                        HorizontalAlignment="Right" VerticalAlignment="Center">
                                 <ctl:StatusDot x:Name="TouchpadStatusDot" Status="Unknown" Margin="0,0,12,0"/>
                                 <ToggleButton x:Name="TouchpadToggle" Style="{StaticResource DevicesToggle}"
                                               Checked="OnTouchpadChanged" Unchecked="OnTouchpadChanged"
@@ -190,14 +207,18 @@
                     <Rectangle Height="1" Fill="{StaticResource Hairline}" Margin="14,0"/>
 
                     <Border Style="{StaticResource DeviceRow}">
-                        <Grid>
+                        <Grid x:Name="WebcamGrid">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="16"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition x:Name="WebcamActionGap" Width="16"/>
+                                <ColumnDefinition x:Name="WebcamActionColumn" Width="Auto"/>
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
                             <Border Grid.Column="0" Style="{StaticResource DeviceIconBox}">
                                 <TextBlock Text="&#xE714;" Style="{StaticResource DeviceIcon}"/>
                             </Border>
@@ -205,7 +226,8 @@
                                 <TextBlock Text="{loc:Tr Devices.Webcam}" Style="{StaticResource DeviceTitle}"/>
                                 <TextBlock Text="{loc:Tr Devices.Webcam.Hint}" Style="{StaticResource DeviceDescription}"/>
                             </StackPanel>
-                            <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                            <StackPanel x:Name="WebcamActionPanel" Grid.Column="4" Orientation="Horizontal"
+                                        HorizontalAlignment="Right" VerticalAlignment="Center">
                                 <ctl:StatusDot x:Name="WebcamStatusDot" Status="Unknown" Margin="0,0,12,0"/>
                                 <ToggleButton x:Name="WebcamToggle" Style="{StaticResource DevicesToggle}"
                                               Checked="OnWebcamChanged" Unchecked="OnWebcamChanged"
@@ -250,14 +272,18 @@
                     <Rectangle Height="1" Fill="{StaticResource Hairline}" Margin="14,0"/>
 
                     <Border Style="{StaticResource DeviceRow}">
-                        <Grid>
+                        <Grid x:Name="DisplayOffGrid">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="16"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition x:Name="DisplayOffActionGap" Width="16"/>
+                                <ColumnDefinition x:Name="DisplayOffActionColumn" Width="Auto"/>
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
                             <Border Grid.Column="0" Style="{StaticResource DeviceIconBox}">
                                 <TextBlock Text="&#xE7E8;" Style="{StaticResource DeviceIcon}"/>
                             </Border>
@@ -266,6 +292,7 @@
                                 <TextBlock Text="{loc:Tr Devices.Display.Off.Hint}" Style="{StaticResource DeviceDescription}"/>
                             </StackPanel>
                             <Button x:Name="DisplayOffButton" Grid.Column="4" Style="{StaticResource DevicesButton}"
+                                    HorizontalAlignment="Right" VerticalAlignment="Center"
                                     Content="{loc:Tr Devices.Display.Off}" Click="OnDisplayOff"/>
                         </Grid>
                     </Border>

@@ -17,12 +17,51 @@ public partial class DevicesView : UserControl
     private readonly LoadingGate _loading = new();
     private readonly Debouncer _brightnessWrite = new(450);
     private bool _initialized;
+    private bool? _compactLayout;
+
+    // At MainWindow.MinWidth the navigation and host chrome leave this view
+    // roughly 544 DIPs wide. Reflow actions below copy before it gets squeezed.
+    private const double CompactLayoutBreakpoint = 640;
 
     public DevicesView()
     {
         InitializeComponent();
         Loaded += OnLoaded;
+        SizeChanged += OnSizeChanged;
         Unloaded += (_, _) => _brightnessWrite.Cancel();
+    }
+
+    private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        => ApplyResponsiveLayout(e.NewSize.Width < CompactLayoutBreakpoint);
+
+    private void ApplyResponsiveLayout(bool compact)
+    {
+        if (_compactLayout == compact) return;
+        _compactLayout = compact;
+
+        ConfigureResponsiveRow(
+            OverviewStatusPanel, OverviewActionGap, OverviewActionColumn, compact,
+            compactAlignment: HorizontalAlignment.Left);
+        ConfigureResponsiveRow(WirelessActionPanel, WirelessActionGap, WirelessActionColumn, compact);
+        ConfigureResponsiveRow(TouchpadActionPanel, TouchpadActionGap, TouchpadActionColumn, compact);
+        ConfigureResponsiveRow(WebcamActionPanel, WebcamActionGap, WebcamActionColumn, compact);
+        ConfigureResponsiveRow(DisplayOffButton, DisplayOffActionGap, DisplayOffActionColumn, compact);
+    }
+
+    private static void ConfigureResponsiveRow(
+        FrameworkElement action,
+        ColumnDefinition actionGap,
+        ColumnDefinition actionColumn,
+        bool compact,
+        HorizontalAlignment compactAlignment = HorizontalAlignment.Right)
+    {
+        actionGap.Width = compact ? new GridLength(0) : new GridLength(16);
+        actionColumn.Width = compact ? new GridLength(0) : GridLength.Auto;
+        Grid.SetRow(action, compact ? 1 : 0);
+        Grid.SetColumn(action, compact ? 2 : 4);
+        Grid.SetColumnSpan(action, compact ? 3 : 1);
+        action.HorizontalAlignment = compact ? compactAlignment : HorizontalAlignment.Right;
+        action.Margin = compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
     }
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
