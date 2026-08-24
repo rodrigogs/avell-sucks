@@ -45,6 +45,24 @@ jobs:
             -p:DebugType=None -p:DebugSymbols=false `
             -o dist/publish
 
+      # The control service (AvellSucks.Server.exe) hosts the Session 0 wireless
+      # boot-restore and the remote-control API. It MUST land in the same install
+      # directory as the UI: the installer ships the whole publish tree and the
+      # service binPath is {app}\AvellSucks.Server.exe. Publishing only the UI
+      # silently ships a broken service (installed but binary missing), which is
+      # exactly how the Wi-Fi boot-restore stopped working.
+      - name: Publish control service
+        shell: pwsh
+        run: |
+          dotnet publish app/src/AvellSucks.Server/AvellSucks.Server.csproj `
+            -c Release -r win-x64 --self-contained true `
+            -p:Version=$env:VERSION `
+            -p:FileVersion=$env:VERSION4 `
+            -p:AssemblyVersion=$env:VERSION4 `
+            -p:InformationalVersion=$env:VERSION `
+            -p:DebugType=None -p:DebugSymbols=false `
+            -o dist/publish
+
       - name: Install Inno Setup
         shell: pwsh
         # No --version pin: take the latest Inno Setup on the Chocolatey feed
