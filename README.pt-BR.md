@@ -84,8 +84,9 @@ hardware pra provar.
   têm gate por modelo; touchpad/webcam/brilho usam PnP/WMI com releitura.
 - **RGB**: superfície de iluminação do teclado (ITE HID). Interface e contrato
   prontos, mas o backend está incompleto e não testado (veja [acima](#o-teclado-por-que-o-rgb-n%C3%A3o-%C3%A9-testado)).
-- **Painel**: carga de CPU/GPU, temperaturas, clocks, memória, disco, rede e o
-  perfil de refrigeração ativo, ao vivo, a ~1 Hz — com gráficos de tendência de
+- **Painel**: carga de CPU/GPU (GPU dedicada, mais um mini-medidor separado para a
+  GPU integrada em notebooks Optimus), temperaturas, clocks, memória, disco, rede e
+  o perfil de refrigeração ativo, ao vivo, a ~1 Hz — com gráficos de tendência de
   60 segundos de CPU/GPU embutidos nos cards principais.
 - **Reativo**: mudanças feitas fora do app (o app antigo da fabricante, a tecla Fn
   física da ventoinha, outro trocador de plano de energia) aparecem aqui em poucos
@@ -262,7 +263,9 @@ serviço a recarrega.
 Configuração típica:
 
 1. **Executar como serviço em segundo plano** — instala um serviço do Windows que
-   mantém a API/MCP disponível com o app fechado.
+   mantém a API/MCP disponível com o app fechado. O serviço também **restaura o
+   Wi-Fi + Bluetooth na inicialização do computador** (Session 0, antes do login)
+   quando você os deixou LIGADOS — o EC esquece o estado dos rádios num boot a frio.
 2. **Expor na rede** — escolha seu IP do **Tailscale** (recomendado) ou um endereço
    da LAN. Deixe em `127.0.0.1` para só localhost.
 3. **Gerar token de acesso** — exibido **uma única vez**; copie na hora. Só o hash
@@ -310,9 +313,10 @@ dotnet test AvellSucks.Replacement.slnx
 ```
 
 **Publicar um release:** envie uma tag de versão (`git tag v1.2.3 && git push
-origin v1.2.3`). O [workflow de release](.github/workflows/release.yml) publica um
-build self-contained win-x64, compila o instalador Inno Setup, e anexa o
-`AvellSucks-Setup.exe` a um GitHub Release.
+origin v1.2.3`). O [workflow de release](.github/workflows/release.yml) publica a
+UI **e o serviço de controle** (`AvellSucks.Server.exe`, que hospeda o boot-restore
+e a API remota) como build self-contained win-x64, compila o instalador Inno Setup,
+e anexa o `AvellSucks-Setup.exe` a um GitHub Release.
 
 **Gate de escrita:** escritas no hardware ficam **ligadas por padrão** (é um
 control center para a máquina para a qual foi feito). Desligue em **Configurações →
